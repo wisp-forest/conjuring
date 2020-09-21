@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.glisco.conjuring.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "ConjurerLogic"
+  ],
+  "client": [
+    "TooltipMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

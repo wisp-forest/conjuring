@@ -1,0 +1,10 @@
+{
+  "block.conjuring.conjurer" : "Conjurer",
+  "itemGroup.conjuring.general" : "Conjuring",
+  "item.conjuring.conjuring_focus" : "Conjuring Focus",
+  "item.conjuring.haste_charm" : "Haste Charm",
+  "item.conjuring.plentifulness_charm" : "Plentifulness Charm",
+  "item.conjuring.ignorance_charm" : "Ignorance Charm",
+  "item.conjuring.scope_charm" : "Scope Charm",
+  "item.conjuring.conjuring_rod" : "Conjuring Rod"
+}
