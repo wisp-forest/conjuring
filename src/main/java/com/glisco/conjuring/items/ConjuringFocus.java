@@ -54,4 +54,16 @@ public class ConjuringFocus extends Item {
         String entityName = "entity." + stack.getTag().getCompound("Entity").getString("id").replace(':', '.');
         tooltip.add(new TranslatableText(entityName).setStyle(Style.EMPTY.withColor(TextColor.parse("gray"))));
     }
+
+    public static ItemStack create(EntityType<?> entityType) {
+        ItemStack focus = new ItemStack(ConjuringCommon.CONJURING_FOCUS);
+        CompoundTag stackTag = focus.getOrCreateTag();
+
+        CompoundTag entityTag = new CompoundTag();
+        entityTag.putString("id", Registry.ENTITY_TYPE.getId(entityType).toString());
+
+        stackTag.put("Entity", entityTag);
+        focus.setTag(stackTag);
+        return focus;
+    }
 }

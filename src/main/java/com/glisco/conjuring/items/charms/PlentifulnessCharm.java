@@ -6,6 +6,6 @@ import net.minecraft.util.Rarity;
 
 public class PlentifulnessCharm extends Item {
     public PlentifulnessCharm() {
-        super(new Settings().rarity(Rarity.UNCOMMON).group(ConjuringCommon.CONJURING_GROUP).maxCount(4));
+        super(new Settings().rarity(Rarity.UNCOMMON).group(ConjuringCommon.CONJURING_GROUP).maxCount(8));
     }
 }

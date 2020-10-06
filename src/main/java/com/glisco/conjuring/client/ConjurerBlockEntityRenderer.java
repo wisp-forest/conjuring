@@ -1,6 +1,7 @@
 package com.glisco.conjuring.client;
 
-import com.glisco.conjuring.blocks.ConjurerBlockEntity;
+import com.glisco.conjuring.blocks.conjurer.ConjurerBlockEntity;
+import com.glisco.conjuring.blocks.conjurer.ModifiedMobSpawnerLogic;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
@@ -9,7 +10,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.MobSpawnerLogic;
 
 public class ConjurerBlockEntityRenderer extends BlockEntityRenderer<ConjurerBlockEntity> {
 
@@ -22,7 +22,7 @@ public class ConjurerBlockEntityRenderer extends BlockEntityRenderer<ConjurerBlo
 
         if (conjurerBlockEntity.isActive()) {
             matrixStack.translate(0.5D, 0.0D, 0.5D);
-            MobSpawnerLogic mobSpawnerLogic = conjurerBlockEntity.getLogic();
+            ModifiedMobSpawnerLogic mobSpawnerLogic = conjurerBlockEntity.getLogic();
             Entity entity = mobSpawnerLogic.getRenderedEntity();
             if (entity != null) {
                 float g = 0.53125F;
@@ -36,7 +36,7 @@ public class ConjurerBlockEntityRenderer extends BlockEntityRenderer<ConjurerBlo
                 matrixStack.translate(0.0D, -0.20000000298023224D, 0.0D);
                 matrixStack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-30.0F));
                 matrixStack.scale(g, g, g);
-                MinecraftClient.getInstance().getEntityRenderManager().render(entity, 0.0D, 0.0D, 0.0D, 0.0F, f, matrixStack, vertexConsumerProvider, i);
+                MinecraftClient.getInstance().getEntityRenderDispatcher().render(entity, 0.0D, 0.0D, 0.0D, 0.0F, f, matrixStack, vertexConsumerProvider, i);
 
             }
         }

@@ -4,10 +4,11 @@
   "package": "com.glisco.conjuring.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "ConjurerLogic"
+    "FlintAndSteelMixin"
   ],
   "client": [
-    "TooltipMixin"
+    "TooltipMixin",
+    "SpawnerParticleMixin"
   ],
   "injectors": {
     "defaultRequire": 1

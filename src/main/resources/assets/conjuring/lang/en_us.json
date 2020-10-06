@@ -1,10 +1,20 @@
 {
   "block.conjuring.conjurer" : "Conjurer",
+  "block.conjuring.soulfire_forge" : "Soulfire Forge",
+  "block.conjuring.soul_funnel" : "Soul Funnel",
+  "block.conjuring.blackstone_pedestal" : "Blackstone Pedestal",
   "itemGroup.conjuring.general" : "Conjuring",
   "item.conjuring.conjuring_focus" : "Conjuring Focus",
+  "item.conjuring.conjuration_essence" : "Conjuration Essence",
   "item.conjuring.haste_charm" : "Haste Charm",
   "item.conjuring.plentifulness_charm" : "Plentifulness Charm",
   "item.conjuring.ignorance_charm" : "Ignorance Charm",
   "item.conjuring.scope_charm" : "Scope Charm",
-  "item.conjuring.conjuring_rod" : "Conjuring Rod"
+  "item.conjuring.conjuring_scepter" : "Conjuring Scepter",
+  "item.conjuring.superior_conjuring_scepter" : "Superior Conjuring Scepter",
+  "item.conjuring.soul_rod" : "Soul Rod",
+  "item.conjuring.soul_alloy" : "Soul Alloy",
+  "item.conjuring.lesser_conjuration_essence" : "Lesser Conjuration Essence",
+  "item.conjuring.gem_socket" : "Gem Socket",
+  "death.attack.soul_projectile" : "%1$s had their Soul violently extracted"
 }

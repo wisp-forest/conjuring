@@ -1,11 +1,10 @@
-package com.glisco.conjuring.blocks;
+package com.glisco.conjuring.blocks.conjurer;
 
 import com.glisco.conjuring.items.ConjuringFocus;
 import com.glisco.conjuring.items.charms.HasteCharm;
 import com.glisco.conjuring.items.charms.IgnoranceCharm;
 import com.glisco.conjuring.items.charms.PlentifulnessCharm;
 import com.glisco.conjuring.items.charms.ScopeCharm;
-import com.glisco.conjuring.mixin.ConjurerLogic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.MobSpawnerEntry;
 
@@ -31,17 +30,17 @@ public class ConjurerHelper {
             List<MobSpawnerEntry> entries = new ArrayList<>();
             entries.add(entry);
 
-            ((ConjurerLogic) conjurer.getLogic()).setSpawnPotentials(entries);
-            ((ConjurerLogic) conjurer.getLogic()).setSpawnEntry(entry);
+            conjurer.getLogic().setSpawnPotentials(entries);
+            conjurer.getLogic().setSpawnEntry(entry);
             conjurer.setActive(true);
         } else {
-            ((ConjurerLogic) conjurer.getLogic()).setRequiredPlayerRange(0);
+            conjurer.getLogic().setRequiredPlayerRange(0);
             conjurer.setActive(false);
             return;
         }
 
         if (hasteCharms.getItem() instanceof HasteCharm) {
-            maxSpawnDelay = 800 - hasteCharms.getCount() * 100;
+            maxSpawnDelay = Math.round(800 - hasteCharms.getCount() * 93.75f);
         }
 
         if (plentifulnessCharms.getItem() instanceof PlentifulnessCharm) {
@@ -56,10 +55,11 @@ public class ConjurerHelper {
             maxNearbyEntites = 6 + ignoranceCharms.getCount() * 2;
         }
 
-        ((ConjurerLogic) conjurer.getLogic()).setRequiredPlayerRange(requiredPlayerRange);
-        ((ConjurerLogic) conjurer.getLogic()).setMaxNearbyEntities(maxNearbyEntites);
-        ((ConjurerLogic) conjurer.getLogic()).setMaxSpawnDelay(maxSpawnDelay);
-        ((ConjurerLogic) conjurer.getLogic()).setMinSpawnDelay(maxSpawnDelay / 4);
-        ((ConjurerLogic) conjurer.getLogic()).setSpawnCount(spawnCount);
+        conjurer.getLogic().setRequiredPlayerRange(requiredPlayerRange);
+        conjurer.getLogic().setMaxNearbyEntities(maxNearbyEntites);
+        conjurer.getLogic().setMaxSpawnDelay(maxSpawnDelay);
+        conjurer.getLogic().setMinSpawnDelay(maxSpawnDelay / 4);
+        conjurer.getLogic().setSpawnCount(spawnCount);
+        conjurer.getLogic().updateSpawns();
     }
 }

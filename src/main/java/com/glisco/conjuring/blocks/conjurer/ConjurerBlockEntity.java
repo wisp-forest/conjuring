@@ -1,8 +1,8 @@
-package com.glisco.conjuring.blocks;
+package com.glisco.conjuring.blocks.conjurer;
 
 import com.glisco.conjuring.ConjurerScreenHandler;
 import com.glisco.conjuring.ConjuringCommon;
-import com.glisco.conjuring.mixin.ConjurerLogic;
+import com.glisco.conjuring.blocks.ImplementedInventory;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -22,15 +22,14 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.MobSpawnerEntry;
-import net.minecraft.world.MobSpawnerLogic;
 import net.minecraft.world.World;
 
-public class ConjurerBlockEntity extends BlockEntity implements Tickable, ConjurerInventory, NamedScreenHandlerFactory, SidedInventory, BlockEntityClientSerializable {
+public class ConjurerBlockEntity extends BlockEntity implements Tickable, ImplementedInventory, NamedScreenHandlerFactory, SidedInventory, BlockEntityClientSerializable {
 
     private boolean active;
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(5, ItemStack.EMPTY);
 
-    private final MobSpawnerLogic logic = new MobSpawnerLogic() {
+    private final ModifiedMobSpawnerLogic logic = new ModifiedMobSpawnerLogic() {
         public void sendStatus(int status) {
             ConjurerBlockEntity.this.world.addSyncedBlockEvent(ConjurerBlockEntity.this.pos, ConjuringCommon.CONJURER_BLOCK, status, 0);
         }
@@ -56,7 +55,7 @@ public class ConjurerBlockEntity extends BlockEntity implements Tickable, Conjur
     public ConjurerBlockEntity() {
         super(ConjuringCommon.CONJURER_BLOCK_ENTITY);
         active = false;
-        ((ConjurerLogic) this.logic).setRequiredPlayerRange(0);
+        this.logic.setRequiredPlayerRange(0);
     }
 
     //Conjurer Logic
@@ -64,7 +63,7 @@ public class ConjurerBlockEntity extends BlockEntity implements Tickable, Conjur
         this.logic.update();
     }
 
-    public MobSpawnerLogic getLogic() {
+    public ModifiedMobSpawnerLogic getLogic() {
         return logic;
     }
 
@@ -82,10 +81,9 @@ public class ConjurerBlockEntity extends BlockEntity implements Tickable, Conjur
         return active;
     }
 
-    public void setActive(boolean active){
+    public void setActive(boolean active) {
         this.active = active;
     }
-
 
     //NBT Logic
     public void fromTag(BlockState state, CompoundTag tag) {

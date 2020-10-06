@@ -6,7 +6,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
 
-public interface ConjurerInventory extends Inventory {
+public interface ImplementedInventory extends Inventory {
 
     /**
      * Retrieves the item list of this inventory.
@@ -17,14 +17,14 @@ public interface ConjurerInventory extends Inventory {
     /**
      * Creates an inventory from the item list.
      */
-    static ConjurerInventory of(DefaultedList<ItemStack> items) {
+    static ImplementedInventory of(DefaultedList<ItemStack> items) {
         return () -> items;
     }
 
     /**
      * Creates a new inventory with the specified size.
      */
-    static ConjurerInventory ofSize(int size) {
+    static ImplementedInventory ofSize(int size) {
         return of(DefaultedList.ofSize(size, ItemStack.EMPTY));
     }
 
@@ -116,7 +116,8 @@ public interface ConjurerInventory extends Inventory {
      * the inventory contents and notify neighboring blocks of inventory changes.
      */
     @Override
-    default void markDirty() { }
+    default void markDirty() {
+    }
 
     /**
      * @return true if the player can use the inventory, false otherwise.

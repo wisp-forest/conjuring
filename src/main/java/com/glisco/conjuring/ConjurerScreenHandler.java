@@ -1,10 +1,10 @@
 package com.glisco.conjuring;
 
 import com.glisco.conjuring.items.ConjuringFocus;
+import com.glisco.conjuring.items.charms.HasteCharm;
 import com.glisco.conjuring.items.charms.IgnoranceCharm;
 import com.glisco.conjuring.items.charms.PlentifulnessCharm;
 import com.glisco.conjuring.items.charms.ScopeCharm;
-import com.glisco.conjuring.items.charms.HasteCharm;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -12,7 +12,6 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.screen.slot.SlotActionType;
 
 public class ConjurerScreenHandler extends ScreenHandler {
 
@@ -68,7 +67,7 @@ public class ConjurerScreenHandler extends ScreenHandler {
         //Player inventory
         for (m = 0; m < 3; ++m) {
             for (l = 0; l < 9; ++l) {
-               this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 110 + m * 18));
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 110 + m * 18));
             }
         }
         //Player Hotbar
@@ -105,12 +104,6 @@ public class ConjurerScreenHandler extends ScreenHandler {
         }
 
         return newStack;
-    }
-
-    @Override
-    public ItemStack onSlotClick(int i, int j, SlotActionType actionType, PlayerEntity playerEntity) {
-        System.out.println(i + " : " + j + " : " + actionType);
-        return super.onSlotClick(i, j, actionType, playerEntity);
     }
 
     @Override

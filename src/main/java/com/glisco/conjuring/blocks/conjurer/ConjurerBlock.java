@@ -1,6 +1,7 @@
-package com.glisco.conjuring.blocks;
+package com.glisco.conjuring.blocks.conjurer;
 
-import com.glisco.conjuring.items.ConjuringRod;
+import com.glisco.conjuring.items.ConjuringScepter;
+import com.glisco.conjuring.items.SuperiorConjuringScepter;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,7 +22,7 @@ public class ConjurerBlock extends BlockWithEntity {
     }
 
     public ConjurerBlock() {
-        this(AbstractBlock.Settings.of(Material.STONE).requiresTool().strength(5.0F).sounds(BlockSoundGroup.METAL).nonOpaque());
+        this(AbstractBlock.Settings.of(Material.METAL).requiresTool().strength(5.0F).sounds(BlockSoundGroup.METAL).nonOpaque());
     }
 
     @Override
@@ -37,7 +38,8 @@ public class ConjurerBlock extends BlockWithEntity {
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 
-        if (!(player.getMainHandStack().getItem() instanceof ConjuringRod)) return ActionResult.PASS;
+        if (!(player.getMainHandStack().getItem() instanceof ConjuringScepter) && !(player.getMainHandStack().getItem() instanceof SuperiorConjuringScepter))
+            return ActionResult.PASS;
 
         if (!world.isClient) {
             NamedScreenHandlerFactory screenHandlerFactory = state.createScreenHandlerFactory(world, pos);

@@ -6,6 +6,6 @@ import net.minecraft.util.Rarity;
 
 public class ScopeCharm extends Item {
     public ScopeCharm() {
-        super(new Settings().rarity(Rarity.UNCOMMON).group(ConjuringCommon.CONJURING_GROUP).maxCount(6));
+        super(new Settings().rarity(Rarity.UNCOMMON).group(ConjuringCommon.CONJURING_GROUP).maxCount(8));
     }
 }
