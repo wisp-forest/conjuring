@@ -4,7 +4,6 @@ import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.SoulfireForgeScreenHandler;
 import com.glisco.conjuring.blocks.ImplementedInventory;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -67,8 +66,6 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
                     targetSmeltTime = currentRecipe.getSmeltTime();
 
                     if (smeltTime == targetSmeltTime) {
-                        this.world.setBlockState(below, Blocks.AIR.getDefaultState());
-
                         this.decrementCraftingItems();
                         this.incrementOutput(currentRecipe.getResult());
                         this.markDirty();
@@ -78,7 +75,8 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
 
                         world.setBlockState(pos, world.getBlockState(pos).with(SoulfireForgeBlock.BURNING, false));
                     } else {
-                        this.world.syncWorldEvent(9006, pos, 0);
+                        //TODO make this client sided
+                        this.world.syncWorldEvent(9001, pos, 0);
                         smeltTime++;
                         progress = Math.round(((float) smeltTime / (float) targetSmeltTime) * 32);
                     }

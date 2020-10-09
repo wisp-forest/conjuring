@@ -9,6 +9,7 @@ import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
@@ -23,6 +24,8 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+
+import java.util.Random;
 
 public class SoulFunnelBlock extends BlockWithEntity {
 
@@ -76,6 +79,23 @@ public class SoulFunnelBlock extends BlockWithEntity {
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 
+        //Pedestal highlighting logic
+        if (player.getStackInHand(hand).equals(ItemStack.EMPTY) && player.isSneaking()) {
+
+            if (world.isClient) {
+                SoulFunnelBlockEntity blockEntity = (SoulFunnelBlockEntity) world.getBlockEntity(pos);
+                for (BlockPos pedestal : blockEntity.getPedestalPositions()) {
+                    for (int i = 0; i < 5; i++) {
+                        WorldHelper.spawnParticle(ParticleTypes.FALLING_OBSIDIAN_TEAR, world, pedestal, 0, 1.35f, 0);
+                        WorldHelper.spawnParticle(ParticleTypes.FALLING_OBSIDIAN_TEAR, world, pedestal, 1, 1.35f, 0);
+                        WorldHelper.spawnParticle(ParticleTypes.FALLING_OBSIDIAN_TEAR, world, pedestal, 0, 1.35f, 1);
+                        WorldHelper.spawnParticle(ParticleTypes.FALLING_OBSIDIAN_TEAR, world, pedestal, 1, 1.35f, 1);
+                    }
+                }
+            }
+            return ActionResult.SUCCESS;
+        }
+
         //Filling logic
         if (player.getStackInHand(hand).getItem().equals(Items.SOUL_SAND) && !state.get(FILLED)) {
             world.setBlockState(pos, state.with(FILLED, true));
@@ -107,15 +127,19 @@ public class SoulFunnelBlock extends BlockWithEntity {
             if (!player.getStackInHand(hand).getItem().equals(ConjuringCommon.CONJURING_FOCUS) || !player.getStackInHand(hand).getOrCreateTag().getCompound("Entity").isEmpty())
                 return ActionResult.PASS;
 
-            funnel.setItem(player.getStackInHand(hand).copy());
-            player.setStackInHand(hand, ItemStack.EMPTY);
-        } else {
-            if (player.getStackInHand(hand).equals(ItemStack.EMPTY)) {
-                player.setStackInHand(hand, funnelFocus);
-            } else {
-                ItemScatterer.spawn(world, pos.getX(), pos.getY() + 0.55d, pos.getZ(), funnelFocus);
+            if (!world.isClient()) {
+                funnel.setItem(player.getStackInHand(hand).copy());
+                player.setStackInHand(hand, ItemStack.EMPTY);
             }
-            funnel.setItem(null);
+        } else {
+            if (!world.isClient() && !funnel.isRitualRunning()) {
+                if (player.getStackInHand(hand).equals(ItemStack.EMPTY)) {
+                    player.setStackInHand(hand, funnelFocus);
+                } else {
+                    ItemScatterer.spawn(world, pos.getX(), pos.getY() + 0.55d, pos.getZ(), funnelFocus);
+                }
+                funnel.setItem(null);
+            }
         }
 
         return ActionResult.SUCCESS;
@@ -129,7 +153,9 @@ public class SoulFunnelBlock extends BlockWithEntity {
         Entity e = world.getOtherEntities(null, new Box(pos)).get(0);
         if (!(e instanceof PathAwareEntity)) return false;
 
-        blockEntity.startRitual(e.getEntityId());
+        if (!world.isClient()) {
+            blockEntity.startRitual(e.getUuid());
+        }
         return true;
     }
 
@@ -140,11 +166,25 @@ public class SoulFunnelBlock extends BlockWithEntity {
 
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof SoulFunnelBlockEntity) {
-                if (((SoulFunnelBlockEntity) blockEntity).getItem() != null) {
-                    ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), ((SoulFunnelBlockEntity) blockEntity).getItem());
-                }
+                SoulFunnelBlockEntity funnel = (SoulFunnelBlockEntity) blockEntity;
+
+                funnel.onBroken();
+
             }
             super.onStateReplaced(state, world, pos, newState, moved);
+        }
+    }
+
+    @Override
+    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+        SoulFunnelBlockEntity funnel = (SoulFunnelBlockEntity) world.getBlockEntity(pos);
+
+        for(BlockPos p : funnel.getPedestalPositions()){
+            if(random.nextDouble() > 0.5f) continue;
+            BlackstonePedestalBlockEntity pedestal = (BlackstonePedestalBlockEntity) world.getBlockEntity(p);
+            if (pedestal.getLinkedFunnel().compareTo(pos) != 0) return;
+
+            WorldHelper.spawnEnchantParticle(world, p, pos.add(0, 1, 0), 0, 0.75f, 0, 0.35f);
         }
     }
 }

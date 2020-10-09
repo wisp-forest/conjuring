@@ -44,6 +44,8 @@ public class BlackstonePedestalBlockEntity extends BlockEntity implements BlockE
         CompoundTag item = tag.getCompound("Item");
         if (!item.isEmpty()) {
             this.renderedItem = ItemStack.fromTag(tag.getCompound("Item"));
+        } else {
+            this.renderedItem = null;
         }
         int[] funnelPos = tag.getIntArray("LinkedFunnel");
         if (funnelPos.length > 0) {
@@ -94,8 +96,16 @@ public class BlackstonePedestalBlockEntity extends BlockEntity implements BlockE
         this.markDirty();
     }
 
-    public void setActiveFunnel(BlockPos activeFunnel) {
-        this.linkedFunnel = activeFunnel;
+    public void setLinkedFunnel(BlockPos linkedFunnel) {
+        this.linkedFunnel = linkedFunnel;
+    }
+
+    public BlockPos getLinkedFunnel() {
+        return linkedFunnel;
+    }
+
+    public boolean isLinked() {
+        return linkedFunnel != null;
     }
 
     public void setRenderedItem(@Nullable ItemStack renderedItem) {

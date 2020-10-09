@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "conjuring:block/conjurer" }
+    "": {
+      "model": "conjuring:block/conjurer"
+    }
   }
 }

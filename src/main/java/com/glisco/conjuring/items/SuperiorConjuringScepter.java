@@ -4,19 +4,15 @@ import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.WorldHelper;
 import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeBlockEntity;
 import com.glisco.conjuring.entities.SoulProjectile;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
+import net.minecraft.item.*;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Rarity;
-import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 
-public class SuperiorConjuringScepter extends Item {
+public class SuperiorConjuringScepter extends Item implements Vanishable {
 
     public SuperiorConjuringScepter(Settings settings) {
         super(settings);
@@ -46,14 +42,34 @@ public class SuperiorConjuringScepter extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        SoulProjectile projectile = new SoulProjectile(world, user.getX(), user.getEyeY(), user.getZ(), user);
-        projectile.setProperties(user, user.pitch, user.yaw, 0f, 1.5f, 1);
+        user.setCurrentHand(hand);
+        return TypedActionResult.success(user.getStackInHand(hand));
+    }
+
+    @Override
+    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+        if(!(user instanceof PlayerEntity)) return;
+        if(72000 - remainingUseTicks < 20) return;
+
         if (!world.isClient()) {
+            SoulProjectile projectile = new SoulProjectile(world, user.getX(), user.getEyeY(), user.getZ(), user);
+            projectile.setProperties(user, user.pitch, user.yaw, 0f, 1.5f, 1);
             world.spawnEntity(projectile);
             WorldHelper.playSound(world, user.getBlockPos(), 15, SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.PLAYERS, 2, 1);
         }
 
-        user.getItemCooldownManager().set(ConjuringCommon.SUPERIOR_CONJURING_SCEPTER, 100);
-        return TypedActionResult.success(user.getStackInHand(hand));
+        if(!((PlayerEntity)user).abilities.creativeMode){
+            ((PlayerEntity)user).getItemCooldownManager().set(ConjuringCommon.SUPERIOR_CONJURING_SCEPTER, 100);
+        }
+    }
+
+    @Override
+    public UseAction getUseAction(ItemStack stack) {
+        return UseAction.BOW;
+    }
+
+    @Override
+    public int getMaxUseTime(ItemStack stack) {
+        return 72000;
     }
 }

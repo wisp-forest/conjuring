@@ -62,10 +62,7 @@ public class BlackstonePedestalBlock extends BlockWithEntity {
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         BlackstonePedestalBlockEntity pedestal = (BlackstonePedestalBlockEntity) world.getBlockEntity(pos);
-        if (pedestal == null) {
-            player.sendMessage(new LiteralText("Null BlockEntity?"), true);
-            return ActionResult.PASS;
-        }
+        if (pedestal.isActive()) return ActionResult.PASS;
 
         ItemStack pedestalItem = pedestal.getRenderedItem();
 
@@ -105,8 +102,16 @@ public class BlackstonePedestalBlock extends BlockWithEntity {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof BlackstonePedestalBlockEntity) {
-                if (((BlackstonePedestalBlockEntity) blockEntity).getRenderedItem() != null) {
+                BlackstonePedestalBlockEntity pedestalEntity = (BlackstonePedestalBlockEntity) blockEntity;
+
+                if (pedestalEntity.getRenderedItem() != null) {
                     ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), ((BlackstonePedestalBlockEntity) blockEntity).getRenderedItem());
+                }
+
+                if (pedestalEntity.isLinked()) {
+                    if (world.getBlockEntity(pedestalEntity.getLinkedFunnel()) instanceof SoulFunnelBlockEntity) {
+                        ((SoulFunnelBlockEntity) world.getBlockEntity(pedestalEntity.getLinkedFunnel())).removePedestal(pos, pedestalEntity.isActive());
+                    }
                 }
             }
             super.onStateReplaced(state, world, pos, newState, moved);

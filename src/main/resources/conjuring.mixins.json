@@ -7,8 +7,8 @@
     "FlintAndSteelMixin"
   ],
   "client": [
-    "TooltipMixin",
-    "SpawnerParticleMixin"
+    "SpawnerParticleMixin",
+    "TooltipMixin"
   ],
   "injectors": {
     "defaultRequire": 1

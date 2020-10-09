@@ -271,6 +271,7 @@ public abstract class ModifiedMobSpawnerLogic {
     public Entity getRenderedEntity() {
         if (this.renderedEntity == null) {
             this.renderedEntity = EntityType.loadEntityWithPassengers(this.spawnEntry.getEntityTag(), this.getWorld(), Function.identity());
+
             if (this.spawnEntry.getEntityTag().getSize() == 1 && this.spawnEntry.getEntityTag().contains("id", 8) && this.renderedEntity instanceof MobEntity) {
             }
         }
