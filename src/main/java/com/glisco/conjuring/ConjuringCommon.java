@@ -9,7 +9,7 @@ import com.glisco.conjuring.blocks.conjurer.ConjurerBlockEntity;
 import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeBlock;
 import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeBlockEntity;
 import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeRecipe;
-import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeRecipeHelper;
+import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeRecipeSerializer;
 import com.glisco.conjuring.entities.SoulProjectile;
 import com.glisco.conjuring.items.*;
 import com.glisco.conjuring.items.charms.HasteCharm;
@@ -20,15 +20,22 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
+import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.item.ModelPredicateProvider;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.item.*;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.loot.ConstantLootTableRange;
 import net.minecraft.loot.condition.RandomChanceLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
@@ -36,6 +43,7 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
+import org.jetbrains.annotations.Nullable;
 
 public class ConjuringCommon implements ModInitializer {
 
@@ -109,17 +117,14 @@ public class ConjuringCommon implements ModInitializer {
         Registry.register(Registry.BLOCK, new Identifier("conjuring", "soul_funnel"), SOUL_FUNNEL);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_funnel"), new BlockItem(SOUL_FUNNEL, new Item.Settings().group(ConjuringCommon.CONJURING_GROUP)));
 
-        SoulfireForgeRecipeHelper.register(new SoulfireForgeRecipe(new ItemStack(CONJURING_SCEPTER), new Item[]{Items.AIR, Items.AIR, Items.DIAMOND, Items.AIR, Items.BLAZE_ROD, Items.AIR, Items.QUARTZ, Items.AIR, Items.AIR}, 200));
-        SoulfireForgeRecipeHelper.register(new SoulfireForgeRecipe(new ItemStack(SOUL_ROD), new Item[]{Items.AIR, Items.BLAZE_ROD, Items.AIR, Items.AIR, CONJURATION_ESSENCE, Items.AIR, Items.AIR, Items.BLAZE_ROD, Items.AIR}, 300));
-        SoulfireForgeRecipeHelper.register(new SoulfireForgeRecipe(new ItemStack(SUPERIOR_CONJURING_SCEPTER), new Item[]{Items.AIR, Items.AIR, Items.NETHER_STAR, Items.AIR, SOUL_ROD, Items.AIR, Items.QUARTZ, Items.AIR, Items.AIR}, 12000));
-        SoulfireForgeRecipeHelper.register(new SoulfireForgeRecipe(new ItemStack(SOUL_ALLOY, 4), new Item[]{Items.SOUL_SOIL, Items.GOLD_INGOT, Items.SOUL_SOIL, Items.IRON_INGOT, Items.NETHERITE_SCRAP, Items.IRON_INGOT, Items.SOUL_SOIL, Items.GOLD_INGOT, Items.SOUL_SOIL}, 600));
-        SoulfireForgeRecipeHelper.register(new SoulfireForgeRecipe(new ItemStack(GEM_SOCKET), new Item[]{Items.AIR, Items.AIR, Items.AIR, Items.NETHER_BRICK, LESSER_CONJURATION_ESSENCE, Items.NETHER_BRICK, Items.AIR, SOUL_ALLOY, Items.AIR}, 100));
+        Registry.register(Registry.RECIPE_SERIALIZER, SoulfireForgeRecipeSerializer.ID, SoulfireForgeRecipeSerializer.INSTANCE);
+        Registry.register(Registry.RECIPE_TYPE, SoulfireForgeRecipe.Type.ID, SoulfireForgeRecipe.Type.INSTANCE);
 
         Registry.register(Registry.ENTITY_TYPE, new Identifier("conjuring", "soul_projectile"), SOUL_PROJECTILE);
 
         LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
             if (SPAWNER_LOOT_TABLE_ID.equals(id)) {
-                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootTableRange.create(1)).withEntry(ItemEntry.builder(CONJURATION_ESSENCE).build());
+                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootTableRange.create(1)).withEntry(ItemEntry.builder(LESSER_CONJURATION_ESSENCE).build()).withCondition(RandomChanceLootCondition.builder(0.35f).build());
 
                 supplier.withPool(poolBuilder.build());
             } else if (new Identifier("minecraft", "chests/simple_dungeon").equals(id)) {

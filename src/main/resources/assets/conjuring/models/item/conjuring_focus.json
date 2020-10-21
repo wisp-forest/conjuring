@@ -1,6 +1,14 @@
 {
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "conjuring:item/conjuring_focus"
-  }
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "conjuring:item/empty_conjuring_focus"
+	},
+	"overrides": [
+		{
+			"predicate": {
+				"has_soul": 1
+			},
+			"model": "conjuring:item/conjuring_focus_filled"
+		}
+	]
 }

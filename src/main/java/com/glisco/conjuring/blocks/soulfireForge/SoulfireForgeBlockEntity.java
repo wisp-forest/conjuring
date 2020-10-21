@@ -16,13 +16,13 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3i;
+
+import java.util.Optional;
 
 public class SoulfireForgeBlockEntity extends BlockEntity implements ImplementedInventory, SidedInventory, NamedScreenHandlerFactory, Tickable {
 
@@ -58,16 +58,15 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
     @Override
     public void tick() {
         if (!this.world.isClient()) {
-            SoulfireForgeRecipe currentRecipe = SoulfireForgeRecipeHelper.getMatchingRecipe(this);
-            BlockPos below = this.pos.subtract(new Vec3i(0, 1, 0));
+            Optional<SoulfireForgeRecipe> currentRecipe = world.getRecipeManager().getFirstMatch(SoulfireForgeRecipe.Type.INSTANCE, this, world);
 
-            if (currentRecipe != null && world.getBlockState(pos).get(SoulfireForgeBlock.BURNING)) {
-                if (checkOutput(currentRecipe.getResult())) {
-                    targetSmeltTime = currentRecipe.getSmeltTime();
+            if (currentRecipe.isPresent() && world.getBlockState(pos).get(SoulfireForgeBlock.BURNING)) {
+                if (checkOutput(currentRecipe.get().getOutput())) {
+                    targetSmeltTime = currentRecipe.get().getSmeltTime();
 
                     if (smeltTime == targetSmeltTime) {
                         this.decrementCraftingItems();
-                        this.incrementOutput(currentRecipe.getResult());
+                        this.incrementOutput(currentRecipe.get().getOutput());
                         this.markDirty();
 
                         progress = 0;
@@ -180,11 +179,11 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
     }
 
     private boolean checkOutput(ItemStack toCompare) {
-        return (items.get(9).getItem() == toCompare.getItem() && (items.get(9).getCount() + toCompare.getCount() < items.get(9).getMaxCount())) || items.get(9) == ItemStack.EMPTY;
+        return (items.get(9).getItem() == toCompare.getItem() && (items.get(9).getCount() + toCompare.getCount() <= items.get(9).getMaxCount())) || items.get(9) == ItemStack.EMPTY;
     }
 
     @Override
     public Text getDisplayName() {
-        return new LiteralText("Soulfire Forge");
+        return new TranslatableText("conjuring.gui.soulfire_forge");
     }
 }

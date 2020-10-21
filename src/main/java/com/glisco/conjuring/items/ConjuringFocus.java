@@ -27,25 +27,6 @@ public class ConjuringFocus extends Item {
     }
 
     @Override
-    public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
-        CompoundTag stackTag = stack.getOrCreateTag();
-
-        if (stackTag.contains("Entity") || entity.getType().equals(EntityType.BEE)) {
-            return ActionResult.PASS;
-        }
-
-        CompoundTag entityTag = new CompoundTag();
-        entityTag.putString("id", Registry.ENTITY_TYPE.getId(entity.getType()).toString());
-
-        stackTag.put("Entity", entityTag);
-        stack.setTag(stackTag);
-        user.setStackInHand(hand, stack);
-
-        entity.remove();
-        return ActionResult.SUCCESS;
-    }
-
-    @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         if (!stack.getOrCreateTag().contains("Entity")) {
             return;

@@ -53,6 +53,11 @@ jar {
     from "LICENSE"
 }
 
+dependencies {
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-api:5.6.1"
+    modRuntime "me.shedaniel:RoughlyEnoughItems:5.6.1"
+}
+
 // configure the maven publication
 publishing {
     publications {

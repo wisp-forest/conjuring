@@ -2,12 +2,14 @@ package com.glisco.conjuring.entities;
 
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.WorldHelper;
+import net.minecraft.client.particle.EnchantGlyphParticle;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.ProjectileDamageSource;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.network.Packet;
@@ -31,6 +33,9 @@ public class SoulProjectile extends ThrownItemEntity {
         super(entityType, world);
         this.setNoGravity(true);
     }
+
+    //This is just here so IntelliJ leaves me alone. It's probably not used. Probably
+    public SoulProjectile(World world){ super(ConjuringCommon.SOUL_PROJECTILE, world); }
 
     @Override
     protected Item getDefaultItem() {
@@ -62,13 +67,13 @@ public class SoulProjectile extends ThrownItemEntity {
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
 
-        if (!(entityHitResult.getEntity() instanceof LivingEntity) || entityHitResult.getEntity() instanceof EnderDragonEntity || entityHitResult.getEntity() instanceof WitherEntity)
+        if (!(entityHitResult.getEntity() instanceof LivingEntity) || entityHitResult.getEntity() instanceof EnderDragonEntity || entityHitResult.getEntity() instanceof WitherEntity || entityHitResult.getEntity() instanceof PlayerEntity)
             return;
         this.remove();
 
         LivingEntity e = (LivingEntity) entityHitResult.getEntity();
 
-        if (e.getHealth() - 1f <= 0) {
+        if (e.getHealth() - 1.5f <= 0) {
             e.dropItem(ConjuringCommon.CONJURATION_ESSENCE);
             e.world.syncWorldEvent(9005, entityHitResult.getEntity().getBlockPos(), 0);
 
