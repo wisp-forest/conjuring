@@ -16,5 +16,6 @@
   "item.conjuring.soul_alloy": "Soul Alloy",
   "item.conjuring.lesser_conjuration_essence": "Lesser Conjuration Essence",
   "item.conjuring.gem_socket": "Gem Socket",
-  "death.attack.soul_projectile": "%1$s had their soul violently extracted"
+  "death.attack.soul_projectile": "%1$s had their soul violently extracted",
+  "conjuring.gui.soulfire_forge": "Soulfire Forge"
 }

@@ -12,7 +12,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 
-public class SuperiorConjuringScepter extends Item implements Vanishable {
+public class SuperiorConjuringScepter extends ConjuringScepter {
 
     public SuperiorConjuringScepter(Settings settings) {
         super(settings);
@@ -29,7 +29,9 @@ public class SuperiorConjuringScepter extends Item implements Vanishable {
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
-        if (!(context.getWorld().getBlockEntity(context.getBlockPos()) instanceof SoulfireForgeBlockEntity)) return ActionResult.PASS;
+        if (!(context.getWorld().getBlockEntity(context.getBlockPos()) instanceof SoulfireForgeBlockEntity)) {
+            return ConjuringScepter.onBlockUse(context);
+        }
 
         SoulfireForgeBlockEntity forge = (SoulfireForgeBlockEntity) context.getWorld().getBlockEntity(context.getBlockPos());
         if (!forge.isRunning()) return ActionResult.PASS;
@@ -42,6 +44,10 @@ public class SuperiorConjuringScepter extends Item implements Vanishable {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        if(user.isSneaking()){
+            return ConjuringScepter.onUse(user, hand);
+        }
+
         user.setCurrentHand(hand);
         return TypedActionResult.success(user.getStackInHand(hand));
     }

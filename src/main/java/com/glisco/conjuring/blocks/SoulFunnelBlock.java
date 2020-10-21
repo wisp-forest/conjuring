@@ -25,6 +25,8 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class SoulFunnelBlock extends BlockWithEntity {
@@ -83,13 +85,17 @@ public class SoulFunnelBlock extends BlockWithEntity {
         if (player.getStackInHand(hand).equals(ItemStack.EMPTY) && player.isSneaking()) {
 
             if (world.isClient) {
-                SoulFunnelBlockEntity blockEntity = (SoulFunnelBlockEntity) world.getBlockEntity(pos);
-                for (BlockPos pedestal : blockEntity.getPedestalPositions()) {
-                    for (int i = 0; i < 5; i++) {
-                        WorldHelper.spawnParticle(ParticleTypes.FALLING_OBSIDIAN_TEAR, world, pedestal, 0, 1.35f, 0);
-                        WorldHelper.spawnParticle(ParticleTypes.FALLING_OBSIDIAN_TEAR, world, pedestal, 1, 1.35f, 0);
-                        WorldHelper.spawnParticle(ParticleTypes.FALLING_OBSIDIAN_TEAR, world, pedestal, 0, 1.35f, 1);
-                        WorldHelper.spawnParticle(ParticleTypes.FALLING_OBSIDIAN_TEAR, world, pedestal, 1, 1.35f, 1);
+
+                List<BlockPos> possiblePedestals = new ArrayList<>();
+                possiblePedestals.add(pos.add(3, 0, 0));
+                possiblePedestals.add(pos.add(-3, 0, 0));
+                possiblePedestals.add(pos.add(0, 0, 3));
+                possiblePedestals.add(pos.add(0, 0, -3));
+
+                for (BlockPos pedestal : possiblePedestals) {
+                    if (world.getBlockEntity(pedestal) instanceof BlackstonePedestalBlockEntity) continue;
+                    for (int i = 0; i < 50; i++) {
+                        WorldHelper.spawnParticle(ParticleTypes.DRIPPING_OBSIDIAN_TEAR, world, pedestal, 0.5f, 0.75f, 0.5f, 0, 0, 0, 0.5f, 0.75f, 0.5f);
                     }
                 }
             }
@@ -113,7 +119,7 @@ public class SoulFunnelBlock extends BlockWithEntity {
         }
 
         //Ritual logic
-        if (player.getStackInHand(hand).getItem().equals(ConjuringCommon.CONJURING_SCEPTER)) {
+        if (player.getStackInHand(hand).getItem().equals(ConjuringCommon.CONJURING_SCEPTER) || player.getStackInHand(hand).getItem().equals(ConjuringCommon.SUPERIOR_CONJURING_SCEPTER)) {
             if (runRitualChecks(world, pos)) return ActionResult.SUCCESS;
         }
 
@@ -179,9 +185,10 @@ public class SoulFunnelBlock extends BlockWithEntity {
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
         SoulFunnelBlockEntity funnel = (SoulFunnelBlockEntity) world.getBlockEntity(pos);
 
-        for(BlockPos p : funnel.getPedestalPositions()){
-            if(random.nextDouble() > 0.5f) continue;
+        for (BlockPos p : funnel.getPedestalPositions()) {
+            if (random.nextDouble() > 0.5f) continue;
             BlackstonePedestalBlockEntity pedestal = (BlackstonePedestalBlockEntity) world.getBlockEntity(p);
+            if (pedestal == null) continue;
             if (pedestal.getLinkedFunnel().compareTo(pos) != 0) return;
 
             WorldHelper.spawnEnchantParticle(world, p, pos.add(0, 1, 0), 0, 0.75f, 0, 0.35f);

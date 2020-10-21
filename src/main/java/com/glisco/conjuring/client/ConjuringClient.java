@@ -11,7 +11,9 @@ import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegi
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
+import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class ConjuringClient implements ClientModInitializer {
@@ -28,6 +30,8 @@ public class ConjuringClient implements ClientModInitializer {
             return new SoulProjectileEntityRenderer(dispatcher);
         });
         ClientSidePacketRegistry.INSTANCE.register(EntityCreatePacket.ID, EntityCreatePacket::onPacket);
+
+        FabricModelPredicateProviderRegistry.register(ConjuringCommon.CONJURING_FOCUS, new Identifier("has_soul"), (stack, world, entity) -> stack.getOrCreateTag().contains("Entity") ? 1f : 0f);
 
         ScreenRegistry.register(ConjuringCommon.CONJURER_SCREEN_HANDLER_TYPE, ConjurerScreen::new);
         ScreenRegistry.register(ConjuringCommon.SOULFIRE_FORGE_SCREEN_HANDLER_TYPE, SoulfireForgeScreen::new);

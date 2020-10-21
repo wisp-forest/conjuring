@@ -10,6 +10,7 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.Hand;
@@ -22,6 +23,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
+import java.util.Optional;
 import java.util.function.ToIntFunction;
 
 public class SoulfireForgeBlock extends BlockWithEntity {
@@ -126,6 +128,7 @@ public class SoulfireForgeBlock extends BlockWithEntity {
             if (screenHandlerFactory != null) {
                 player.openHandledScreen(screenHandlerFactory);
             }
+
         }
         return ActionResult.SUCCESS;
     }

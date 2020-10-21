@@ -2,8 +2,12 @@ package com.glisco.conjuring.blocks.conjurer;
 
 import com.glisco.conjuring.items.ConjuringScepter;
 import com.glisco.conjuring.items.SuperiorConjuringScepter;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.sound.BlockSoundGroup;
@@ -22,7 +26,7 @@ public class ConjurerBlock extends BlockWithEntity {
     }
 
     public ConjurerBlock() {
-        this(AbstractBlock.Settings.of(Material.METAL).requiresTool().strength(5.0F).sounds(BlockSoundGroup.METAL).nonOpaque());
+        this(FabricBlockSettings.of(Material.METAL).requiresTool().strength(5.0F).sounds(BlockSoundGroup.METAL).nonOpaque().breakByTool(FabricToolTags.PICKAXES, 2));
     }
 
     @Override

@@ -13,6 +13,9 @@
     ],
     "main": [
       "com.glisco.conjuring.ConjuringCommon"
+    ],
+    "rei_plugins": [
+      "com.glisco.conjuring.compat.rei.ConjuringPlugin"
     ]
   },
   "mixins": [
