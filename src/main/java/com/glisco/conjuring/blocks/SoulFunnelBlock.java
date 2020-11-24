@@ -189,6 +189,7 @@ public class SoulFunnelBlock extends BlockWithEntity {
             if (random.nextDouble() > 0.5f) continue;
             BlackstonePedestalBlockEntity pedestal = (BlackstonePedestalBlockEntity) world.getBlockEntity(p);
             if (pedestal == null) continue;
+            if (pedestal.getLinkedFunnel() == null) continue;
             if (pedestal.getLinkedFunnel().compareTo(pos) != 0) return;
 
             WorldHelper.spawnEnchantParticle(world, p, pos.add(0, 1, 0), 0, 0.75f, 0, 0.35f);

@@ -10,7 +10,6 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.Hand;
@@ -23,7 +22,6 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-import java.util.Optional;
 import java.util.function.ToIntFunction;
 
 public class SoulfireForgeBlock extends BlockWithEntity {
@@ -62,10 +60,9 @@ public class SoulfireForgeBlock extends BlockWithEntity {
         SHAPE_Z = VoxelShapes.union(BASE, SOUL_SOIL, PLATE, PILLAR_1_Z, PILLAR_2_Z, PILLAR_3_Z, PILLAR_4_Z, SUPPORT_1_Z, SUPPORT_2_Z, SUPPORT_3_Z, SUPPORT_4_Z);
     }
 
-
     //Construction stuff
     public SoulfireForgeBlock() {
-        super(AbstractBlock.Settings.of(Material.STONE).requiresTool().strength(5.0F, 1200.0F).sounds(BlockSoundGroup.STONE).nonOpaque().lightLevel(getLightLevel()));
+        super(AbstractBlock.Settings.of(Material.STONE).requiresTool().strength(5.0F, 1200.0F).sounds(BlockSoundGroup.STONE).nonOpaque().luminance(getLightLevel()));
         setDefaultState(getStateManager().getDefaultState().with(BURNING, false));
     }
 

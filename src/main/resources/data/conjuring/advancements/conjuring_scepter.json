@@ -1,0 +1,35 @@
+{
+  "parent": "conjuring:soulfire_forge",
+  "display": {
+    "icon": {
+      "item": "conjuring:conjuring_scepter"
+    },
+    "title": {
+      "translate": "advancement.conjuring.conjuring_scepter.title"
+    },
+    "description": {
+      "translate": "advancement.conjuring.conjuring_scepter.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "conjuring_scepter": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "conjuring:conjuring_scepter"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "conjuring_scepter"
+    ]
+  ]
+}

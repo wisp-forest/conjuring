@@ -98,6 +98,7 @@ public class BlackstonePedestalBlockEntity extends BlockEntity implements BlockE
 
     public void setLinkedFunnel(BlockPos linkedFunnel) {
         this.linkedFunnel = linkedFunnel;
+        this.markDirty();
     }
 
     public BlockPos getLinkedFunnel() {

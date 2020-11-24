@@ -1,0 +1,35 @@
+{
+  "parent": "conjuring:conjuring_scepter",
+  "display": {
+    "icon": {
+      "item": "conjuring:superior_conjuring_scepter"
+    },
+    "title": {
+      "translate": "advancement.conjuring.superior_conjuring_scepter.title"
+    },
+    "description": {
+      "translate": "advancement.conjuring.superior_conjuring_scepter.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "superior_conjuring_scepter": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "conjuring:superior_conjuring_scepter"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "superior_conjuring_scepter"
+    ]
+  ]
+}

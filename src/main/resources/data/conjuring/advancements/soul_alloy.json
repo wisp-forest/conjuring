@@ -1,0 +1,35 @@
+{
+  "parent": "conjuring:soulfire_forge",
+  "display": {
+    "icon": {
+      "item": "conjuring:soul_alloy"
+    },
+    "title": {
+      "translate": "advancement.conjuring.soul_alloy.title"
+    },
+    "description": {
+      "translate": "advancement.conjuring.soul_alloy.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "soul_alloy": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "conjuring:soul_alloy"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "soul_alloy"
+    ]
+  ]
+}
