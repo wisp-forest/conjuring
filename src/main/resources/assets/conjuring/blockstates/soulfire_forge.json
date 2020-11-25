@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "burning=false,axis=z": {
+      "model": "conjuring:block/soulfire_forge_off",
+      "y": 90
+    },
+    "burning=true,axis=z": {
+      "model": "conjuring:block/soulfire_forge_on",
+      "y": 90
+    },
+    "burning=false,axis=x": {
+      "model": "conjuring:block/soulfire_forge_off"
+    },
+    "burning=true,axis=x": {
+      "model": "conjuring:block/soulfire_forge_on"
+    }
+  }
+}
