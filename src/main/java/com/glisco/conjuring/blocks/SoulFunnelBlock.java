@@ -155,8 +155,8 @@ public class SoulFunnelBlock extends BlockWithEntity {
         SoulFunnelBlockEntity blockEntity = (SoulFunnelBlockEntity) world.getBlockEntity(pos);
         if (blockEntity.getItem() == null) return false;
 
-        if (world.getOtherEntities(null, new Box(pos)).isEmpty()) return false;
-        Entity e = world.getOtherEntities(null, new Box(pos)).get(0);
+        if (world.getEntities(null, new Box(pos)).isEmpty()) return false;
+        Entity e = world.getEntities(null, new Box(pos)).get(0);
         if (!(e instanceof PathAwareEntity)) return false;
 
         if (!world.isClient()) {

@@ -36,7 +36,7 @@ public class ConjurerBlockEntityRenderer extends BlockEntityRenderer<ConjurerBlo
                 matrixStack.translate(0.0D, -0.20000000298023224D, 0.0D);
                 matrixStack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-30.0F));
                 matrixStack.scale(g, g, g);
-                MinecraftClient.getInstance().getEntityRenderDispatcher().render(entity, 0.0D, 0.0D, 0.0D, 0.0F, f, matrixStack, vertexConsumerProvider, i);
+                MinecraftClient.getInstance().getEntityRenderManager().render(entity, 0.0D, 0.0D, 0.0D, 0.0F, f, matrixStack, vertexConsumerProvider, i);
 
             }
         }

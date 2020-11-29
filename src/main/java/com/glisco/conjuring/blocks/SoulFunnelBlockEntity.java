@@ -39,6 +39,7 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.biome.Biomes;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -240,9 +241,9 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
 
         if (!world.isClient()) {
             if (slownessCooldown == 0 && this.getItem() != null) {
-                if (world.getOtherEntities(null, new Box(pos)).isEmpty()) return;
+                if (world.getEntities(null, new Box(pos)).isEmpty()) return;
 
-                Entity e = world.getOtherEntities(null, new Box(pos)).get(0);
+                Entity e = world.getEntities(null, new Box(pos)).get(0);
                 if (e instanceof PlayerEntity || e instanceof EnderDragonEntity || e instanceof WitherEntity || !(e instanceof LivingEntity) || e.getScoreboardTags().contains("affected"))
                     return;
 
@@ -366,7 +367,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
     }
 
     public void calculateStability() {
-        ritualStability += world.getServer().getRegistryManager().get(Registry.BIOME_KEY).getId(world.getBiome(pos)).getPath().equalsIgnoreCase("soul_sand_valley") ? 0.1f : 0f;
+        ritualStability += world.getBiome(pos).equals(Biomes.SOUL_SAND_VALLEY) ? 0.1f : 0f;
 
         List<Item> drops = extractDrops(world.getServer().getLootManager().getTable(((PathAwareEntity) ((ServerWorld) world).getEntity(ritualEntity)).getLootTable()));
 

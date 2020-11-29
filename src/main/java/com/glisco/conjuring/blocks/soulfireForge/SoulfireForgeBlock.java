@@ -62,7 +62,7 @@ public class SoulfireForgeBlock extends BlockWithEntity {
 
     //Construction stuff
     public SoulfireForgeBlock() {
-        super(AbstractBlock.Settings.of(Material.STONE).requiresTool().strength(5.0F, 1200.0F).sounds(BlockSoundGroup.STONE).nonOpaque().luminance(getLightLevel()));
+        super(AbstractBlock.Settings.of(Material.STONE).requiresTool().strength(5.0F, 1200.0F).sounds(BlockSoundGroup.STONE).nonOpaque().lightLevel(getLightLevel()));
         setDefaultState(getStateManager().getDefaultState().with(BURNING, false));
     }
 
