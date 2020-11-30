@@ -7,14 +7,12 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
-public class BlackstonePedestalBlockEntity extends BlockEntity implements BlockEntityClientSerializable, Tickable {
+public class BlackstonePedestalBlockEntity extends BlockEntity implements BlockEntityClientSerializable {
 
     private ItemStack renderedItem;
-    private float itemModelRotation = 0;
     private boolean active = false;
     private BlockPos linkedFunnel = null;
 
@@ -71,20 +69,6 @@ public class BlackstonePedestalBlockEntity extends BlockEntity implements BlockE
     @Override
     public CompoundTag toClientTag(CompoundTag tag) {
         return this.toTag(tag);
-    }
-
-
-    //Actual Logic
-    @Override
-    public void tick() {
-        itemModelRotation += 5;
-        if (itemModelRotation >= 360) {
-            itemModelRotation = 0;
-        }
-    }
-
-    public float getItemModelRotation() {
-        return itemModelRotation;
     }
 
     public boolean isActive() {

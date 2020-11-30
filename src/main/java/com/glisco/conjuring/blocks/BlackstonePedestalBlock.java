@@ -4,7 +4,6 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
@@ -19,22 +18,19 @@ public class BlackstonePedestalBlock extends BlockWithEntity {
 
     private static VoxelShape BASE1 = Block.createCuboidShape(0, 0, 0, 16, 2, 16);
     private static VoxelShape BASE2 = Block.createCuboidShape(2, 2, 2, 14, 4, 14);
-    private static VoxelShape PILLAR = Block.createCuboidShape(4, 3, 4, 12, 16, 12);
+    private static VoxelShape PILLAR = Block.createCuboidShape(4, 4, 4, 12, 17, 12);
 
-    private static VoxelShape ARM1 = Block.createCuboidShape(3, 10, 7, 4, 18, 9);
-    private static VoxelShape ARM2 = Block.createCuboidShape(2, 13, 7, 3, 20, 9);
-    private static VoxelShape ARM3 = Block.createCuboidShape(1, 16, 7, 2, 22, 9);
-    private static VoxelShape ARM4 = Block.createCuboidShape(7, 10, 3, 9, 18, 4);
-    private static VoxelShape ARM5 = Block.createCuboidShape(7, 13, 2, 9, 20, 3);
-    private static VoxelShape ARM6 = Block.createCuboidShape(7, 16, 1, 9, 22, 2);
-    private static VoxelShape ARM7 = Block.createCuboidShape(12, 10, 7, 13, 18, 9);
-    private static VoxelShape ARM8 = Block.createCuboidShape(13, 13, 7, 14, 20, 9);
-    private static VoxelShape ARM9 = Block.createCuboidShape(14, 16, 7, 15, 22, 9);
-    private static VoxelShape ARM10 = Block.createCuboidShape(7, 10, 12, 9, 18, 13);
-    private static VoxelShape ARM11 = Block.createCuboidShape(7, 13, 13, 9, 20, 14);
-    private static VoxelShape ARM12 = Block.createCuboidShape(7, 16, 14, 9, 22, 15);
+    private static VoxelShape PLATE_SOUTH = Block.createCuboidShape(4, 12, 12, 12, 16, 13);
+    private static VoxelShape PLATE_NORTH = Block.createCuboidShape(4, 12, 3, 12, 16, 4);
+    private static VoxelShape PLATE_WEST = Block.createCuboidShape(12, 12, 4, 13, 16, 12);
+    private static VoxelShape PLATE_EAST = Block.createCuboidShape(3, 12, 4, 4, 16, 12);
 
-    private static VoxelShape SHAPE = VoxelShapes.union(BASE1, BASE2, PILLAR, ARM1, ARM2, ARM3, ARM4, ARM5, ARM6, ARM7, ARM8, ARM9, ARM10, ARM11, ARM12);
+    private static VoxelShape ARM_NW = Block.createCuboidShape(12, 11, 2, 14, 20, 4);
+    private static VoxelShape ARM_SW = Block.createCuboidShape(12, 11, 12, 14, 20, 14);
+    private static VoxelShape ARM_SE = Block.createCuboidShape(2, 11, 12, 4, 20, 14);
+    private static VoxelShape ARM_NE = Block.createCuboidShape(2, 11, 2, 4, 20, 4);
+
+    private static VoxelShape SHAPE = VoxelShapes.union(BASE1, BASE2, PILLAR, PLATE_SOUTH, PLATE_NORTH, PLATE_WEST, PLATE_EAST, ARM_NW, ARM_SW, ARM_SE, ARM_NE);
 
 
     //Construction stuff

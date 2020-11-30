@@ -17,6 +17,8 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class BlackstonePedestalBlockEntityRenderer extends BlockEntityRenderer<BlackstonePedestalBlockEntity> {
@@ -25,8 +27,9 @@ public class BlackstonePedestalBlockEntityRenderer extends BlockEntityRenderer<B
         super(blockEntityRenderDispatcher);
     }
 
-    public void render(BlackstonePedestalBlockEntity blockEntity, float f, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
+    public void render(BlackstonePedestalBlockEntity blockEntity, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
         if (blockEntity.getRenderedItem() != null) {
+
             ItemStack item = blockEntity.getRenderedItem();
             BakedModel itemModel = MinecraftClient.getInstance().getItemRenderer().getHeldItemModel(item, null, null);
 
@@ -35,7 +38,7 @@ public class BlackstonePedestalBlockEntityRenderer extends BlockEntityRenderer<B
             matrixStack.push();
             matrixStack.translate(0.5, 1.25, 0.5);
             matrixStack.scale(0.75f, 0.75f, 0.75f);
-            matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(blockEntity.getItemModelRotation()));
+            matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion((blockEntity.getWorld().getTime() % 24000.0F) * 3F));
             MinecraftClient.getInstance().getItemRenderer().renderItem(item, ModelTransformation.Mode.GROUND, false, matrixStack, vertexConsumerProvider, lightAbove, OverlayTexture.DEFAULT_UV, itemModel);
             matrixStack.pop();
 

@@ -191,7 +191,9 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
                         BlockPos pVector = pos.subtract(this.pos);
 
                         ParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, world.getBlockState(pos));
-                        WorldHelper.spawnParticle(particle, world, p, 0.5f, 0.25f, 0.5f, 0.1f);
+                        for (int i = 0; i < 4; i++) {
+                            WorldHelper.spawnParticle(particle, world, p, 0.5f, 0.25f, 0.5f, 0.1f);
+                        }
 
                         WorldHelper.spawnParticle(ParticleTypes.SOUL, world, p, 0.5f, 0.3f, 0.5f, pVector.getX() * -0.05f, 0.075f * particleOffset, pVector.getZ() * -0.05f, 0.1f);
                     }
