@@ -4,9 +4,7 @@ import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeRecipe;
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeDisplay;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -51,7 +49,7 @@ public class SoulfireForgeDisplay implements RecipeDisplay {
         return output;
     }
 
-    public int getSmeltTime(){
+    public int getSmeltTime() {
         return display.getSmeltTime();
     }
 }

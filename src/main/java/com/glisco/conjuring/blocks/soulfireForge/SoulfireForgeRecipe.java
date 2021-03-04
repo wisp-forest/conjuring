@@ -79,12 +79,14 @@ public class SoulfireForgeRecipe implements Recipe<Inventory> {
         return Type.INSTANCE;
     }
 
-    public int getSmeltTime(){
+    public int getSmeltTime() {
         return smeltTime;
     }
 
-    public static class Type implements RecipeType<SoulfireForgeRecipe>{
-        private Type(){}
+    public static class Type implements RecipeType<SoulfireForgeRecipe> {
+        private Type() {
+        }
+
         public static final Type INSTANCE = new Type();
 
         public static final Identifier ID = new Identifier("conjuring", "soulfire_forge");

@@ -17,7 +17,7 @@ public class ConjurerHelper {
         int requiredPlayerRange = 16;
         int spawnCount = 4;
         int maxSpawnDelay = 800;
-        int maxNearbyEntites = 6;
+        int maxNearbyEntities = 6;
 
         ItemStack focus = conjurer.getStack(0);
         ItemStack hasteCharms = conjurer.getStack(1);
@@ -52,11 +52,11 @@ public class ConjurerHelper {
         }
 
         if (ignoranceCharms.getItem() instanceof IgnoranceCharm) {
-            maxNearbyEntites = 6 + ignoranceCharms.getCount() * 2;
+            maxNearbyEntities = 6 + ignoranceCharms.getCount() * 2;
         }
 
         conjurer.getLogic().setRequiredPlayerRange(requiredPlayerRange);
-        conjurer.getLogic().setMaxNearbyEntities(maxNearbyEntites);
+        conjurer.getLogic().setMaxNearbyEntities(maxNearbyEntities);
         conjurer.getLogic().setMaxSpawnDelay(maxSpawnDelay);
         conjurer.getLogic().setMinSpawnDelay(maxSpawnDelay / 4);
         conjurer.getLogic().setSpawnCount(spawnCount);

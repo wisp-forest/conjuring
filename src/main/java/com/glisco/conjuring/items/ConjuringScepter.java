@@ -4,18 +4,15 @@ import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.WorldHelper;
 import com.glisco.conjuring.blocks.BlackstonePedestalBlockEntity;
 import com.glisco.conjuring.blocks.SoulFunnelBlockEntity;
-import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
-import net.minecraft.client.item.ModelPredicateProvider;
-import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleEffect;
-import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Style;
@@ -76,7 +73,7 @@ public class ConjuringScepter extends Item {
         }
     }
 
-    public static ActionResult onBlockUse(ItemUsageContext context){
+    public static ActionResult onBlockUse(ItemUsageContext context) {
         if (!context.getPlayer().isSneaking()) return ActionResult.PASS;
 
         BlockPos pos = context.getBlockPos();
@@ -106,7 +103,7 @@ public class ConjuringScepter extends Item {
         }
     }
 
-    public static TypedActionResult<ItemStack> onUse(PlayerEntity user, Hand hand){
+    public static TypedActionResult<ItemStack> onUse(PlayerEntity user, Hand hand) {
         ItemStack scepter = user.getStackInHand(hand);
 
         if (!user.isSneaking()) return TypedActionResult.pass(scepter);

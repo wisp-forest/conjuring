@@ -6,7 +6,8 @@ import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeBlockEntity;
 import com.glisco.conjuring.entities.SoulProjectile;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.*;
@@ -44,7 +45,7 @@ public class SuperiorConjuringScepter extends ConjuringScepter {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if(user.isSneaking()){
+        if (user.isSneaking()) {
             return ConjuringScepter.onUse(user, hand);
         }
 
@@ -54,8 +55,8 @@ public class SuperiorConjuringScepter extends ConjuringScepter {
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if(!(user instanceof PlayerEntity)) return;
-        if(72000 - remainingUseTicks < 20) return;
+        if (!(user instanceof PlayerEntity)) return;
+        if (72000 - remainingUseTicks < 20) return;
 
         if (!world.isClient()) {
             SoulProjectile projectile = new SoulProjectile(world, user.getX(), user.getEyeY(), user.getZ(), user);
@@ -64,8 +65,8 @@ public class SuperiorConjuringScepter extends ConjuringScepter {
             WorldHelper.playSound(world, user.getBlockPos(), 15, SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.PLAYERS, 2, 1);
         }
 
-        if(!((PlayerEntity)user).abilities.creativeMode){
-            ((PlayerEntity)user).getItemCooldownManager().set(ConjuringCommon.SUPERIOR_CONJURING_SCEPTER, 100);
+        if (!((PlayerEntity) user).abilities.creativeMode) {
+            ((PlayerEntity) user).getItemCooldownManager().set(ConjuringCommon.SUPERIOR_CONJURING_SCEPTER, 100);
         }
     }
 

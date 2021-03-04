@@ -17,8 +17,6 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class BlackstonePedestalBlockEntityRenderer extends BlockEntityRenderer<BlackstonePedestalBlockEntity> {

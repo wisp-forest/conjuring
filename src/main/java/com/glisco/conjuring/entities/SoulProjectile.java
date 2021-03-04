@@ -2,7 +2,6 @@ package com.glisco.conjuring.entities;
 
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.WorldHelper;
-import net.minecraft.client.particle.EnchantGlyphParticle;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.WitherEntity;
@@ -34,8 +33,10 @@ public class SoulProjectile extends ThrownItemEntity {
         this.setNoGravity(true);
     }
 
-    //This is just here so IntelliJ leaves me alone. It's probably not used. Probably
-    public SoulProjectile(World world){ super(ConjuringCommon.SOUL_PROJECTILE, world); }
+    //This is just here so Lint leaves me alone. It's probably not used. Probably
+    public SoulProjectile(World world) {
+        super(ConjuringCommon.SOUL_PROJECTILE, world);
+    }
 
     @Override
     protected Item getDefaultItem() {

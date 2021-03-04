@@ -5,7 +5,7 @@ import com.glisco.conjuring.WorldHelper;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -108,7 +108,7 @@ public class SoulFunnelBlock extends BlockWithEntity {
 
             ItemStack playerStack = player.getStackInHand(hand);
             playerStack.decrement(1);
-            if (playerStack == ItemStack.EMPTY) playerStack = ItemStack.EMPTY;
+            if (playerStack.getCount() == 0) playerStack = ItemStack.EMPTY;
 
             player.setStackInHand(hand, playerStack);
 
@@ -155,9 +155,9 @@ public class SoulFunnelBlock extends BlockWithEntity {
         SoulFunnelBlockEntity blockEntity = (SoulFunnelBlockEntity) world.getBlockEntity(pos);
         if (blockEntity.getItem() == null) return false;
 
-        if (world.getOtherEntities(null, new Box(pos)).isEmpty()) return false;
-        Entity e = world.getOtherEntities(null, new Box(pos)).get(0);
-        if (!(e instanceof PathAwareEntity)) return false;
+        if (world.getOtherEntities(null, new Box(pos, pos.add(1, 3, 1))).isEmpty()) return false;
+        Entity e = world.getOtherEntities(null, new Box(pos, pos.add(1, 3, 1))).get(0);
+        if (!(e instanceof MobEntity)) return false;
 
         if (!world.isClient()) {
             blockEntity.startRitual(e.getUuid());

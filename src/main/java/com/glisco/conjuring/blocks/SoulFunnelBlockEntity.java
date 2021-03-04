@@ -17,7 +17,7 @@ import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -161,7 +161,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
                 if (world.isClient) {
                     world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1, 1, false);
                 } else {
-                    PathAwareEntity e = (PathAwareEntity) ((ServerWorld) world).getEntity(ritualEntity);
+                    MobEntity e = (MobEntity) ((ServerWorld) world).getEntity(ritualEntity);
 
                     particleOffset = e.getHeight() / 2;
                     this.markDirty();
@@ -177,7 +177,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
 
                 if (!world.isClient) {
                     ((ServerWorld) world).getEntity(ritualEntity).setVelocity(0, 0, 0);
-                    ((PathAwareEntity) ((ServerWorld) world).getEntity(ritualEntity)).setAiDisabled(true);
+                    ((MobEntity) ((ServerWorld) world).getEntity(ritualEntity)).setAiDisabled(true);
                 }
 
             } else if (ritualTick > 20 && ritualTick <= 80) {
@@ -201,7 +201,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
                         WorldHelper.spawnParticle(ParticleTypes.SOUL_FIRE_FLAME, world, pos, 0.5f, 1.75f + particleOffset, 0.5f, 0, -0.5f, 0f, 0.25f);
                 } else {
                     if (ritualTick % 10 == 0) {
-                        PathAwareEntity e = (PathAwareEntity) ((ServerWorld) world).getEntity(ritualEntity);
+                        MobEntity e = (MobEntity) ((ServerWorld) world).getEntity(ritualEntity);
                         e.damage(DamageSource.OUT_OF_WORLD, 0.01f);
                     }
                 }
@@ -210,7 +210,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
 
                 if (!world.isClient()) {
 
-                    PathAwareEntity e = (PathAwareEntity) ((ServerWorld) world).getEntity(ritualEntity);
+                    MobEntity e = (MobEntity) ((ServerWorld) world).getEntity(ritualEntity);
 
                     int data = e.world.random.nextDouble() < ritualStability ? 0 : 1;
 
@@ -370,7 +370,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
     public void calculateStability() {
         ritualStability += world.getServer().getRegistryManager().get(Registry.BIOME_KEY).getId(world.getBiome(pos)).getPath().equalsIgnoreCase("soul_sand_valley") ? 0.1f : 0f;
 
-        List<Item> drops = extractDrops(world.getServer().getLootManager().getTable(((PathAwareEntity) ((ServerWorld) world).getEntity(ritualEntity)).getLootTable()));
+        List<Item> drops = extractDrops(world.getServer().getLootManager().getTable(((MobEntity) ((ServerWorld) world).getEntity(ritualEntity)).getLootTable()));
 
         for (BlockPos p : pedestalPositions) {
             if (!(world.getBlockEntity(p) instanceof BlackstonePedestalBlockEntity)) continue;
@@ -391,7 +391,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
             ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1.25, pos.getZ(), new ItemStack(ConjuringCommon.CONJURING_FOCUS));
 
         if (ritualRunning) {
-            PathAwareEntity e = (PathAwareEntity) ((ServerWorld) world).getEntity(ritualEntity);
+            MobEntity e = (MobEntity) ((ServerWorld) world).getEntity(ritualEntity);
 
             world.syncWorldEvent(9005, e.getBlockPos(), 1);
             world.syncWorldEvent(9007, e.getBlockPos(), 1);

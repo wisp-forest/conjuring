@@ -9,14 +9,14 @@
     "s": {
       "item": "conjuring:soul_alloy"
     },
-	"l": {
+    "l": {
       "item": "conjuring:lesser_conjuration_essence"
     },
     "n": {
       "item": "minecraft:nether_brick"
     }
   },
-  "smeltTime" : 100,
+  "smeltTime": 100,
   "result": {
     "item": "conjuring:gem_socket",
     "count": 1
