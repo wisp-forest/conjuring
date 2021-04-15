@@ -3,6 +3,7 @@
   "block.conjuring.soulfire_forge": "Soulfire Forge",
   "block.conjuring.soul_funnel": "Soul Funnel",
   "block.conjuring.blackstone_pedestal": "Blackstone Pedestal",
+
   "itemGroup.conjuring.general": "Conjuring",
   "item.conjuring.conjuring_focus": "Conjuring Focus",
   "item.conjuring.conjuration_essence": "Conjuration Essence",
@@ -16,8 +17,10 @@
   "item.conjuring.soul_alloy": "Soul Alloy",
   "item.conjuring.lesser_conjuration_essence": "Lesser Conjuration Essence",
   "item.conjuring.gem_socket": "Gem Socket",
+
   "death.attack.soul_projectile": "%1$s had their soul violently extracted",
   "conjuring.gui.soulfire_forge": "Soulfire Forge",
+
   "advancement.conjuring.root.title": "Conjuring",
   "advancement.conjuring.root.description": "It\u0027s all about that soul",
   "advancement.conjuring.soulfire_forge.title": "Soul Forgery",
@@ -33,5 +36,11 @@
   "advancement.conjuring.conjuring_focus.title": "Focal Point",
   "advancement.conjuring.conjuring_focus.description": "Craft a Conjuring Focus",
   "advancement.conjuring.conjurer.title": "Spawner, but more",
-  "advancement.conjuring.conjurer.description": "Craft a Conjurer"
+  "advancement.conjuring.conjurer.description": "Craft a Conjurer",
+
+  "text.autoconfig.conjuring.option.plentifulness_multiplier": "Plentifulness Multiplier",
+  "text.autoconfig.conjuring.option.haste_multiplier": "Haste Multiplier",
+  "text.autoconfig.conjuring.option.scope_multiplier": "Scope Multiplier",
+  "text.autoconfig.conjuring.option.ignorance_multiplier": "Ignorance Multiplier",
+  "text.autoconfig.conjuring.title": "Conjuring Configuration"
 }

@@ -10,12 +10,15 @@ import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeBlock;
 import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeBlockEntity;
 import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeRecipe;
 import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeRecipeSerializer;
+import com.glisco.conjuring.compat.config.ConjuringConfig;
 import com.glisco.conjuring.entities.SoulProjectile;
 import com.glisco.conjuring.items.*;
 import com.glisco.conjuring.items.charms.HasteCharm;
 import com.glisco.conjuring.items.charms.IgnoranceCharm;
 import com.glisco.conjuring.items.charms.PlentifulnessCharm;
 import com.glisco.conjuring.items.charms.ScopeCharm;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
@@ -41,6 +44,8 @@ import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
 
 public class ConjuringCommon implements ModInitializer {
+
+    public static ConjuringConfig CONFIG;
 
     public static final ItemGroup CONJURING_GROUP = FabricItemGroupBuilder.build(
             new Identifier("conjuring", "general"),
@@ -116,6 +121,9 @@ public class ConjuringCommon implements ModInitializer {
         Registry.register(Registry.RECIPE_TYPE, SoulfireForgeRecipe.Type.ID, SoulfireForgeRecipe.Type.INSTANCE);
 
         Registry.register(Registry.ENTITY_TYPE, new Identifier("conjuring", "soul_projectile"), SOUL_PROJECTILE);
+
+        AutoConfig.register(ConjuringConfig.class, JanksonConfigSerializer::new);
+        CONFIG = AutoConfig.getConfigHolder(ConjuringConfig.class).getConfig();
 
         LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
             if (SPAWNER_LOOT_TABLE_ID.equals(id)) {
