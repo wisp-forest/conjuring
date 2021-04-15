@@ -48,6 +48,8 @@ public abstract class ModifiedMobSpawnerLogic {
     private int maxNearbyEntities = 6;
     private int requiredPlayerRange = 16;
     private int spawnRange = 4;
+    private boolean requiresPlayer = true;
+    private boolean active = false;
 
     public ModifiedMobSpawnerLogic() {
     }
@@ -71,11 +73,11 @@ public abstract class ModifiedMobSpawnerLogic {
 
     private boolean isPlayerInRange() {
         BlockPos blockPos = this.getPos();
-        return this.getWorld().isPlayerInRange((double) blockPos.getX() + 0.5D, (double) blockPos.getY() + 0.5D, (double) blockPos.getZ() + 0.5D, (double) this.requiredPlayerRange);
+        return !requiresPlayer || this.getWorld().isPlayerInRange((double) blockPos.getX() + 0.5D, (double) blockPos.getY() + 0.5D, (double) blockPos.getZ() + 0.5D, (double) this.requiredPlayerRange);
     }
 
     public void update() {
-        if (!this.isPlayerInRange()) {
+        if (!this.isPlayerInRange() || !active) {
             this.field_9159 = this.field_9161;
         } else {
             World world = this.getWorld();
@@ -230,6 +232,14 @@ public abstract class ModifiedMobSpawnerLogic {
             this.spawnRange = tag.getShort("SpawnRange");
         }
 
+        if (tag.contains("RequiresPlayer")) {
+            this.requiresPlayer = tag.getBoolean("RequiresPlayer");
+        }
+
+        if (tag.contains("Active")) {
+            this.active = tag.getBoolean("Active");
+        }
+
         if (this.getWorld() != null) {
             this.renderedEntity = null;
         }
@@ -249,6 +259,11 @@ public abstract class ModifiedMobSpawnerLogic {
             tag.putShort("RequiredPlayerRange", (short) this.requiredPlayerRange);
             tag.putShort("SpawnRange", (short) this.spawnRange);
             tag.put("SpawnData", this.spawnEntry.getEntityTag().copy());
+            tag.putBoolean("RequiresPlayer", requiresPlayer);
+            tag.putBoolean("Active", active);
+
+            System.out.println("Logic serializing: " + active);
+
             ListTag listTag = new ListTag();
             if (this.spawnPotentials.isEmpty()) {
                 listTag.add(this.spawnEntry.serialize());
@@ -332,5 +347,17 @@ public abstract class ModifiedMobSpawnerLogic {
     public void setSpawnPotentials(List<MobSpawnerEntry> spawnPotentials) {
         this.spawnPotentials.clear();
         this.spawnPotentials.addAll(spawnPotentials);
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public void setRequiresPlayer(boolean requiresPlayer) {
+        this.requiresPlayer = requiresPlayer;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 }

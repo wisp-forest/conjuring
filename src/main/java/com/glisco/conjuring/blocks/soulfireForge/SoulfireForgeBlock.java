@@ -2,8 +2,10 @@ package com.glisco.conjuring.blocks.soulfireForge;
 
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.Items;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
@@ -22,6 +24,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
+import java.util.function.Consumer;
 import java.util.function.ToIntFunction;
 
 public class SoulfireForgeBlock extends BlockWithEntity {
@@ -120,6 +123,17 @@ public class SoulfireForgeBlock extends BlockWithEntity {
     //Actual Logic
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+
+        if (player.getStackInHand(hand).getItem().equals(Items.FLINT_AND_STEEL) && !world.getBlockState(pos).get(BURNING)) {
+            if (!world.isClient()) {
+                world.setBlockState(pos, world.getBlockState(pos).with(SoulfireForgeBlock.BURNING, true));
+                player.getStackInHand(hand).damage(1, player, (Consumer<LivingEntity>) ((p) -> {
+                    p.sendToolBreakStatus(hand);
+                }));
+            }
+            return ActionResult.SUCCESS;
+        }
+
         if (!world.isClient) {
             NamedScreenHandlerFactory screenHandlerFactory = state.createScreenHandlerFactory(world, pos);
             if (screenHandlerFactory != null) {
@@ -140,6 +154,5 @@ public class SoulfireForgeBlock extends BlockWithEntity {
             super.onStateReplaced(state, world, pos, newState, moved);
         }
     }
-
 
 }

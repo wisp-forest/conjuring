@@ -26,7 +26,6 @@ import net.minecraft.world.World;
 
 public class ConjurerBlockEntity extends BlockEntity implements Tickable, ImplementedInventory, NamedScreenHandlerFactory, SidedInventory, BlockEntityClientSerializable {
 
-    private boolean active;
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(5, ItemStack.EMPTY);
 
     private final ModifiedMobSpawnerLogic logic = new ModifiedMobSpawnerLogic() {
@@ -54,8 +53,6 @@ public class ConjurerBlockEntity extends BlockEntity implements Tickable, Implem
 
     public ConjurerBlockEntity() {
         super(ConjuringCommon.CONJURER_BLOCK_ENTITY);
-        active = false;
-        this.logic.setRequiredPlayerRange(0);
     }
 
     //Conjurer Logic
@@ -78,18 +75,21 @@ public class ConjurerBlockEntity extends BlockEntity implements Tickable, Implem
     }
 
     public boolean isActive() {
-        return active;
+        return logic.isActive();
     }
 
     public void setActive(boolean active) {
-        this.active = active;
+        this.logic.setActive(active);
+    }
+
+    public void setRequiresPlayer(boolean requiresPlayer) {
+        this.logic.setRequiresPlayer(requiresPlayer);
     }
 
     //NBT Logic
     public void fromTag(BlockState state, CompoundTag tag) {
         super.fromTag(state, tag);
         this.logic.fromTag(tag);
-        active = tag.getBoolean("Active");
         Inventories.fromTag(tag, items);
     }
 
@@ -97,7 +97,6 @@ public class ConjurerBlockEntity extends BlockEntity implements Tickable, Implem
         super.toTag(tag);
         this.logic.toTag(tag);
         Inventories.toTag(tag, items);
-        tag.putBoolean("Active", active);
         return tag;
     }
 

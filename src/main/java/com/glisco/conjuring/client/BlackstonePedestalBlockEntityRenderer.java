@@ -36,7 +36,7 @@ public class BlackstonePedestalBlockEntityRenderer extends BlockEntityRenderer<B
             matrixStack.push();
             matrixStack.translate(0.5, 1.25, 0.5);
             matrixStack.scale(0.75f, 0.75f, 0.75f);
-            matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion((blockEntity.getWorld().getTime() % 24000.0F) * 3F));
+            matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion((float) (System.currentTimeMillis() / 20d % 360d)));
             MinecraftClient.getInstance().getItemRenderer().renderItem(item, ModelTransformation.Mode.GROUND, false, matrixStack, vertexConsumerProvider, lightAbove, OverlayTexture.DEFAULT_UV, itemModel);
             matrixStack.pop();
 

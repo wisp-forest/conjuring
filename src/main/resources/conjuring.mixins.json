@@ -4,7 +4,6 @@
   "package": "com.glisco.conjuring.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "FlintAndSteelMixin"
   ],
   "client": [
     "SpawnerParticleMixin",

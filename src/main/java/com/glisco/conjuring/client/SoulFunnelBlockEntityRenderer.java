@@ -32,7 +32,7 @@ public class SoulFunnelBlockEntityRenderer extends BlockEntityRenderer<SoulFunne
             int lightAbove = WorldRenderer.getLightmapCoordinates(Objects.requireNonNull(blockEntity.getWorld()), blockEntity.getPos().up());
 
             matrixStack.push();
-            matrixStack.translate(0.5, 0.45 + (float) 1.5 * Math.sin(Math.PI * ((blockEntity.getWorld().getTime() % 24000.0f) * 3f) / 100f) / 50f, 0.405);
+            matrixStack.translate(0.5, 0.45 + (float) 1.5 * Math.sin(Math.PI * ((float) (System.currentTimeMillis() / 20d % 200d)) / 100f) / 50f, 0.405);
             matrixStack.scale(0.75f, 0.75f, 0.75f);
             matrixStack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90f));
             MinecraftClient.getInstance().getItemRenderer().renderItem(item, ModelTransformation.Mode.GROUND, false, matrixStack, vertexConsumerProvider, lightAbove, OverlayTexture.DEFAULT_UV, itemModel);

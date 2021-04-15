@@ -1,5 +1,6 @@
 package com.glisco.conjuring.blocks.conjurer;
 
+import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.items.ConjuringFocus;
 import com.glisco.conjuring.items.charms.HasteCharm;
 import com.glisco.conjuring.items.charms.IgnoranceCharm;
@@ -33,9 +34,12 @@ public class ConjurerHelper {
             conjurer.getLogic().setSpawnPotentials(entries);
             conjurer.getLogic().setSpawnEntry(entry);
             conjurer.setActive(true);
+
+            conjurer.setRequiresPlayer(focus.getItem() != ConjuringCommon.STABILIZED_CONJURING_FOCUS);
+
         } else {
-            conjurer.getLogic().setRequiredPlayerRange(0);
             conjurer.setActive(false);
+            conjurer.setRequiresPlayer(true);
             return;
         }
 

@@ -50,10 +50,23 @@ public class ConjuringCommon implements ModInitializer {
     public static Item SUPERIOR_CONJURING_SCEPTER = new SuperiorConjuringScepter();
     public static Item CONJURATION_ESSENCE = new ConjurationEssence();
     public static Item LESSER_CONJURATION_ESSENCE = new LesserConjurationEssence();
+
     public static Item CONJURING_FOCUS = new ConjuringFocus();
+    public static Item STABILIZED_CONJURING_FOCUS = new ConjuringFocus() {
+        @Override
+        public boolean hasGlint(ItemStack stack) {
+            return true;
+        }
+    };
+
     public static Item SOUL_ROD = new SoulRod();
     public static Item SOUL_ALLOY = new SoulAlloy();
     public static Item GEM_SOCKET = new GemSocket();
+
+    public static Item SOUL_ALLOY_HATCHET = new SoulAlloyHatchet();
+    public static Item SOUL_ALLOY_SWORD = new SoulAlloySword();
+    public static Item SOUL_ALLOY_PICKAXE = new SoulAlloyPickaxe();
+    public static Item SOUL_ALLOY_SHOVEL = new SoulAlloyShovel();
 
     public static final Block CONJURER_BLOCK = new ConjurerBlock();
     public static BlockEntityType<ConjurerBlockEntity> CONJURER_BLOCK_ENTITY;
@@ -87,6 +100,7 @@ public class ConjuringCommon implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier("conjuring", "conjuration_essence"), CONJURATION_ESSENCE);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "lesser_conjuration_essence"), LESSER_CONJURATION_ESSENCE);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "conjuring_focus"), CONJURING_FOCUS);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "stabilized_conjuring_focus"), STABILIZED_CONJURING_FOCUS);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_rod"), SOUL_ROD);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy"), SOUL_ALLOY);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "gem_socket"), GEM_SOCKET);
@@ -95,6 +109,11 @@ public class ConjuringCommon implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier("conjuring", "ignorance_charm"), new IgnoranceCharm());
         Registry.register(Registry.ITEM, new Identifier("conjuring", "plentifulness_charm"), new PlentifulnessCharm());
         Registry.register(Registry.ITEM, new Identifier("conjuring", "scope_charm"), new ScopeCharm());
+
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy_hatchet"), SOUL_ALLOY_HATCHET);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy_sword"), SOUL_ALLOY_SWORD);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy_pickaxe"), SOUL_ALLOY_PICKAXE);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy_shovel"), SOUL_ALLOY_SHOVEL);
 
         CONJURER_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:conjurer", BlockEntityType.Builder.create(ConjurerBlockEntity::new, CONJURER_BLOCK).build(null));
         Registry.register(Registry.BLOCK, new Identifier("conjuring", "conjurer"), CONJURER_BLOCK);

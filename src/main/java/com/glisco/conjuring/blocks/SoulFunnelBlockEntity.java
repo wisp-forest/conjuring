@@ -225,7 +225,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
                         world.syncWorldEvent(9007, e.getBlockPos(), data);
                         world.setBlockState(pos, world.getBlockState(pos).with(SoulFunnelBlock.FILLED, false));
 
-                        ItemStack drop = data == 0 ? ConjuringFocus.create(e.getType()) : new ItemStack(ConjuringCommon.CONJURING_FOCUS);
+                        ItemStack drop = data == 0 ? ConjuringFocus.writeData(item, e.getType()) : item;
                         ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1.25, pos.getZ(), drop);
 
                         disablePedestals();
@@ -394,7 +394,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
 
     public void onBroken() {
         if (item != null)
-            ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1.25, pos.getZ(), new ItemStack(ConjuringCommon.CONJURING_FOCUS));
+            ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1.25, pos.getZ(), item);
 
         if (ritualRunning) {
             cancelRitual(false);
