@@ -5,6 +5,8 @@ import com.glisco.conjuring.WorldHelper;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -157,7 +159,7 @@ public class SoulFunnelBlock extends BlockWithEntity {
 
         if (world.getOtherEntities(null, new Box(pos, pos.add(1, 3, 1))).isEmpty()) return false;
         Entity e = world.getOtherEntities(null, new Box(pos, pos.add(1, 3, 1))).get(0);
-        if (!(e instanceof MobEntity)) return false;
+        if (!(e instanceof MobEntity) || e instanceof WitherEntity || e instanceof EnderDragonEntity) return false;
 
         if (!world.isClient()) {
             blockEntity.startRitual(e.getUuid());
