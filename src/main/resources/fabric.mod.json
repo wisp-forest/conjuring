@@ -3,9 +3,10 @@
   "id": "conjuring",
   "version": "${version}",
   "name": "Conjuring",
-  "description": "",
+  "description": "Customizable mob spawners with charm (pun intended)",
   "authors": [],
   "contact": {},
+  "icon": "assets/conjuring/icon.png",
   "environment": "*",
   "entrypoints": {
     "client": [
@@ -16,6 +17,9 @@
     ],
     "rei_plugins": [
       "com.glisco.conjuring.compat.rei.ConjuringPlugin"
+    ],
+    "modmenu": [
+      "com.glisco.conjuring.compat.config.ModMenuIntegration"
     ]
   },
   "mixins": [
