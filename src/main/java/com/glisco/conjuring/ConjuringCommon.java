@@ -87,6 +87,7 @@ public class ConjuringCommon implements ModInitializer {
 
     @Override
     public void onInitialize() {
+
         Registry.register(Registry.ITEM, new Identifier("conjuring", "conjuring_scepter"), CONJURING_SCEPTER);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "superior_conjuring_scepter"), SUPERIOR_CONJURING_SCEPTER);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "conjuration_essence"), CONJURATION_ESSENCE);
