@@ -35,7 +35,6 @@ public class SoulFellerEntity extends SoulEntity {
     protected void onBlockHit(BlockHitResult blockHitResult) {
         if (BlockTags.LOGS.contains(world.getBlockState(blockHitResult.getBlockPos()).getBlock())) {
             TreeCrawler.crawlTree(world, blockHitResult.getBlockPos());
-
         }
         this.remove();
     }

@@ -8,7 +8,6 @@ import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -22,22 +21,13 @@ public class TreeCrawler {
         Block logType = world.getBlockState(firstLog).getBlock();
 
         List<BlockPos> foundLogs = new ArrayList<>(Collections.singletonList(firstLog));
-
-
-
         ConcurrentLinkedQueue<BlockPos> scanLogs = new ConcurrentLinkedQueue<>(foundLogs);
-        List<BlockPos> nextScanLogs = new ArrayList<>();
 
-        boolean anyFound;
         int counter = 0;
-        int scanCounter = 0;
-
         do {
-            anyFound = false;
-
-            nextScanLogs.clear();
 
             //Scan current layer
+            outerLoop:
             for (BlockPos foundLog : scanLogs) {
 
                 scanLogs.remove(foundLog);
@@ -45,20 +35,17 @@ public class TreeCrawler {
                 //Scan neighbours
                 for (BlockPos pos : getNeighbors(foundLog)) {
 
-                    scanCounter++;
-                    System.out.println(scanCounter);
+                    if (foundLogs.size() >= 128) break outerLoop;
                     if (!world.getBlockState(pos).getBlock().equals(logType) || foundLogs.contains(pos)) continue;
 
-                    anyFound = true;
                     foundLogs.add(pos);
-                    nextScanLogs.add(pos);
+                    scanLogs.add(pos);
 
                 }
             }
 
-            scanLogs = new ConcurrentLinkedQueue<>(nextScanLogs);
             counter++;
-        } while (anyFound && counter < 10);
+        } while (!scanLogs.isEmpty() && counter < 25);
 
         treesToFell.add(new MutablePair<>(0, foundLogs));
 
@@ -91,7 +78,30 @@ public class TreeCrawler {
     }
 
     public static List<BlockPos> getNeighbors(BlockPos center) {
-        return Arrays.asList(center.up(), center.down(), center.east(), center.west(), center.south(), center.north());
+
+        ArrayList<BlockPos> list = new ArrayList<>();
+        BlockPos original = center;
+
+        center = center.up();
+
+        for (int i = 0; i < 3; i++) {
+            list.add(center);
+            list.add(center.east());
+            list.add(center.west());
+            list.add(center.north());
+            list.add(center.south());
+
+            list.add(center.south().west());
+            list.add(center.south().east());
+
+            list.add(center.north().west());
+            list.add(center.north().east());
+
+            center = center.down();
+        }
+
+        list.remove(original);
+        return list;
     }
 
 }
