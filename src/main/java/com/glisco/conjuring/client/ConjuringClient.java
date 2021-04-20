@@ -2,15 +2,15 @@ package com.glisco.conjuring.client;
 
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.entities.EntityCreatePacket;
-import com.glisco.conjuring.entities.SoulProjectileEntityRenderer;
+import com.glisco.conjuring.entities.SoulEntityRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
-import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
@@ -26,10 +26,11 @@ public class ConjuringClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(ConjuringCommon.CONJURER_BLOCK, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ConjuringCommon.SOULFIRE_FORGE_BLOCK, RenderLayer.getCutout());
 
-        EntityRendererRegistry.INSTANCE.register(ConjuringCommon.SOUL_PROJECTILE, (dispatcher, context) -> {
-            return new SoulProjectileEntityRenderer(dispatcher);
-        });
-        ClientSidePacketRegistry.INSTANCE.register(EntityCreatePacket.ID, EntityCreatePacket::onPacket);
+        EntityRendererRegistry.INSTANCE.register(ConjuringCommon.SOUL_PROJECTILE, (dispatcher, context) -> new SoulEntityRenderer(dispatcher));
+        EntityRendererRegistry.INSTANCE.register(ConjuringCommon.SOUL_DIGGER, (dispatcher, context) -> new SoulEntityRenderer(dispatcher));
+        EntityRendererRegistry.INSTANCE.register(ConjuringCommon.SOUL_FELLER, (dispatcher, context) -> new SoulEntityRenderer(dispatcher));
+
+        ClientPlayNetworking.registerGlobalReceiver(EntityCreatePacket.ID, EntityCreatePacket::onPacket);
 
         FabricModelPredicateProviderRegistry.register(ConjuringCommon.CONJURING_FOCUS, new Identifier("has_soul"), (stack, world, entity) -> stack.getOrCreateTag().contains("Entity") ? 1f : 0f);
         FabricModelPredicateProviderRegistry.register(ConjuringCommon.STABILIZED_CONJURING_FOCUS, new Identifier("has_soul"), (stack, world, entity) -> stack.getOrCreateTag().contains("Entity") ? 1f : 0f);

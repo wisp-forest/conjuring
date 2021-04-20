@@ -33,7 +33,7 @@ import java.util.function.Function;
  * Used to provide fine control over the logics properties,
  * to make it usable for a player modifiable spawner
  */
-public abstract class ModifiedMobSpawnerLogic {
+public abstract class ConjurerLogic {
     private static final Logger LOGGER = LogManager.getLogger();
     private int spawnDelay = 20;
     private final List<MobSpawnerEntry> spawnPotentials = Lists.newArrayList();
@@ -51,7 +51,7 @@ public abstract class ModifiedMobSpawnerLogic {
     private boolean requiresPlayer = true;
     private boolean active = false;
 
-    public ModifiedMobSpawnerLogic() {
+    public ConjurerLogic() {
     }
 
     @Nullable
@@ -261,8 +261,6 @@ public abstract class ModifiedMobSpawnerLogic {
             tag.put("SpawnData", this.spawnEntry.getEntityTag().copy());
             tag.putBoolean("RequiresPlayer", requiresPlayer);
             tag.putBoolean("Active", active);
-
-            System.out.println("Logic serializing: " + active);
 
             ListTag listTag = new ListTag();
             if (this.spawnPotentials.isEmpty()) {

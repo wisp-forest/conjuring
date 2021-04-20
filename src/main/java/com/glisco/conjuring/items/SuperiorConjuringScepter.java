@@ -3,7 +3,7 @@ package com.glisco.conjuring.items;
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.WorldHelper;
 import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeBlockEntity;
-import com.glisco.conjuring.entities.SoulProjectile;
+import com.glisco.conjuring.entities.SoulProjectileEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -59,9 +59,11 @@ public class SuperiorConjuringScepter extends ConjuringScepter {
         if (72000 - remainingUseTicks < 20) return;
 
         if (!world.isClient()) {
-            SoulProjectile projectile = new SoulProjectile(world, user.getX(), user.getEyeY(), user.getZ(), user);
+            SoulProjectileEntity projectile = new SoulProjectileEntity(world, user);
+            projectile.refreshPositionAndAngles(user.getX(), user.getEyeY(), user.getZ(), 0, 0);
             projectile.setProperties(user, user.pitch, user.yaw, 0f, 1.5f, 1);
             world.spawnEntity(projectile);
+
             WorldHelper.playSound(world, user.getBlockPos(), 15, SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.PLAYERS, 2, 1);
         }
 

@@ -4,6 +4,13 @@
   "package": "com.glisco.conjuring.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "ServerWorldMixin",
+    "angerables.BeeEntityMixin",
+    "angerables.EndermanEntityMixin",
+    "angerables.IronGolemEntityMixin",
+    "angerables.PolarBearEntityMixin",
+    "angerables.WolfEntityMixin",
+    "angerables.ZombifiedPiglinEntityMixin"
   ],
   "client": [
     "SpawnerParticleMixin",

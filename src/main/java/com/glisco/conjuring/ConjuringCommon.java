@@ -1,9 +1,6 @@
 package com.glisco.conjuring;
 
-import com.glisco.conjuring.blocks.BlackstonePedestalBlock;
-import com.glisco.conjuring.blocks.BlackstonePedestalBlockEntity;
-import com.glisco.conjuring.blocks.SoulFunnelBlock;
-import com.glisco.conjuring.blocks.SoulFunnelBlockEntity;
+import com.glisco.conjuring.blocks.*;
 import com.glisco.conjuring.blocks.conjurer.ConjurerBlock;
 import com.glisco.conjuring.blocks.conjurer.ConjurerBlockEntity;
 import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeBlock;
@@ -11,7 +8,10 @@ import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeBlockEntity;
 import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeRecipe;
 import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeRecipeSerializer;
 import com.glisco.conjuring.compat.config.ConjuringConfig;
-import com.glisco.conjuring.entities.SoulProjectile;
+import com.glisco.conjuring.entities.SoulDiggerEntity;
+import com.glisco.conjuring.entities.SoulEntity;
+import com.glisco.conjuring.entities.SoulFellerEntity;
+import com.glisco.conjuring.entities.SoulProjectileEntity;
 import com.glisco.conjuring.items.*;
 import com.glisco.conjuring.items.charms.HasteCharm;
 import com.glisco.conjuring.items.charms.IgnoranceCharm;
@@ -85,15 +85,22 @@ public class ConjuringCommon implements ModInitializer {
     public static final Block SOUL_FUNNEL = new SoulFunnelBlock();
     public static BlockEntityType<SoulFunnelBlockEntity> SOUL_FUNNEL_BLOCK_ENTITY;
 
+    public static final Block SOUL_WEAVER = new SoulWeaverBlock();
+    public static BlockEntityType<SoulWeaverBlockEntity> SOUL_WEAVER_BLOCK_ENTITY;
+
     public static final ScreenHandlerType<ConjurerScreenHandler> CONJURER_SCREEN_HANDLER_TYPE;
     public static final ScreenHandlerType<SoulfireForgeScreenHandler> SOULFIRE_FORGE_SCREEN_HANDLER_TYPE;
 
-    public static final EntityType<SoulProjectile> SOUL_PROJECTILE;
+    public static final EntityType<SoulProjectileEntity> SOUL_PROJECTILE;
+    public static final EntityType<SoulDiggerEntity> SOUL_DIGGER;
+    public static final EntityType<SoulFellerEntity> SOUL_FELLER;
 
     static {
         CONJURER_SCREEN_HANDLER_TYPE = ScreenHandlerRegistry.registerSimple(new Identifier("conjuring", "conjurer"), ConjurerScreenHandler::new);
         SOULFIRE_FORGE_SCREEN_HANDLER_TYPE = ScreenHandlerRegistry.registerSimple(new Identifier("conjuring", "soulfire_forge"), SoulfireForgeScreenHandler::new);
-        SOUL_PROJECTILE = FabricEntityTypeBuilder.<SoulProjectile>create(SpawnGroup.MISC, SoulProjectile::new).dimensions(EntityDimensions.fixed(0.25f, 0.25f)).build();
+        SOUL_PROJECTILE = FabricEntityTypeBuilder.<SoulProjectileEntity>create(SpawnGroup.MISC, SoulProjectileEntity::new).dimensions(EntityDimensions.fixed(0.25f, 0.25f)).build();
+        SOUL_DIGGER = FabricEntityTypeBuilder.<SoulDiggerEntity>create(SpawnGroup.MISC, SoulDiggerEntity::new).dimensions(EntityDimensions.fixed(0.25f, 0.25f)).build();
+        SOUL_FELLER = FabricEntityTypeBuilder.<SoulFellerEntity>create(SpawnGroup.MISC, SoulFellerEntity::new).dimensions(EntityDimensions.fixed(0.25f, 0.25f)).build();
     }
 
     private static final Identifier SPAWNER_LOOT_TABLE_ID = new Identifier("minecraft", "blocks/spawner");
@@ -137,10 +144,16 @@ public class ConjuringCommon implements ModInitializer {
         Registry.register(Registry.BLOCK, new Identifier("conjuring", "soul_funnel"), SOUL_FUNNEL);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_funnel"), new BlockItem(SOUL_FUNNEL, new Item.Settings().group(ConjuringCommon.CONJURING_GROUP)));
 
+        SOUL_WEAVER_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:soul_weaver", BlockEntityType.Builder.create(SoulWeaverBlockEntity::new, SOUL_WEAVER).build(null));
+        Registry.register(Registry.BLOCK, new Identifier("conjuring", "soul_weaver"), SOUL_WEAVER);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_weaver"), new BlockItem(SOUL_WEAVER, new Item.Settings().group(ConjuringCommon.CONJURING_GROUP)));
+
         Registry.register(Registry.RECIPE_SERIALIZER, SoulfireForgeRecipeSerializer.ID, SoulfireForgeRecipeSerializer.INSTANCE);
         Registry.register(Registry.RECIPE_TYPE, SoulfireForgeRecipe.Type.ID, SoulfireForgeRecipe.Type.INSTANCE);
 
         Registry.register(Registry.ENTITY_TYPE, new Identifier("conjuring", "soul_projectile"), SOUL_PROJECTILE);
+        Registry.register(Registry.ENTITY_TYPE, new Identifier("conjuring", "soul_feller"), SOUL_FELLER);
+        Registry.register(Registry.ENTITY_TYPE, new Identifier("conjuring", "soul_digger"), SOUL_DIGGER);
 
         AutoConfig.register(ConjuringConfig.class, JanksonConfigSerializer::new);
         CONFIG = AutoConfig.getConfigHolder(ConjuringConfig.class).getConfig();

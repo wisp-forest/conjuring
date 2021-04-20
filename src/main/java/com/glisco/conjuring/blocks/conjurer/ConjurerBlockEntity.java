@@ -28,7 +28,7 @@ public class ConjurerBlockEntity extends BlockEntity implements Tickable, Implem
 
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(5, ItemStack.EMPTY);
 
-    private final ModifiedMobSpawnerLogic logic = new ModifiedMobSpawnerLogic() {
+    private final ConjurerLogic logic = new ConjurerLogic() {
         public void sendStatus(int status) {
             ConjurerBlockEntity.this.world.addSyncedBlockEvent(ConjurerBlockEntity.this.pos, ConjuringCommon.CONJURER_BLOCK, status, 0);
         }
@@ -60,7 +60,7 @@ public class ConjurerBlockEntity extends BlockEntity implements Tickable, Implem
         this.logic.update();
     }
 
-    public ModifiedMobSpawnerLogic getLogic() {
+    public ConjurerLogic getLogic() {
         return logic;
     }
 

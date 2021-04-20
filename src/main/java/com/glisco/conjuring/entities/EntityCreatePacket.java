@@ -1,11 +1,10 @@
 package com.glisco.conjuring.entities;
 
 import io.netty.buffer.Unpooled;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.network.PacketContext;
-import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -31,11 +30,10 @@ public class EntityCreatePacket {
         buffer.writeDouble(e.getZ());
         buffer.writeByte(MathHelper.floor(e.pitch * 256f / 360f));
         buffer.writeByte(MathHelper.floor(e.yaw * 256f / 360f));
-        return ServerSidePacketRegistry.INSTANCE.toPacket(ID, buffer);
+        return ServerPlayNetworking.createS2CPacket(ID, buffer);
     }
 
-    @Environment(EnvType.CLIENT)
-    public static void onPacket(PacketContext context, PacketByteBuf buffer) {
+    public static void onPacket(MinecraftClient client, ClientPlayNetworkHandler clientPlayNetworkHandler, PacketByteBuf buffer, PacketSender sender) {
         EntityType<?> entityType = Registry.ENTITY_TYPE.get(buffer.readVarInt());
         int entityID = buffer.readVarInt();
         UUID uuid = buffer.readUuid();
@@ -48,7 +46,7 @@ public class EntityCreatePacket {
         ClientWorld world = MinecraftClient.getInstance().world;
         Entity e = entityType.create(world);
 
-        context.getTaskQueue().execute(() -> {
+        MinecraftClient.getInstance().execute(() -> {
             if (e != null) {
                 e.setEntityId(entityID);
                 e.setUuid(uuid);
@@ -58,9 +56,7 @@ public class EntityCreatePacket {
                 e.yaw = yaw;
 
                 world.addEntity(entityID, e);
-
             }
         });
     }
-
 }

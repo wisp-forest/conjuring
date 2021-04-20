@@ -1,7 +1,7 @@
 package com.glisco.conjuring.client;
 
 import com.glisco.conjuring.blocks.conjurer.ConjurerBlockEntity;
-import com.glisco.conjuring.blocks.conjurer.ModifiedMobSpawnerLogic;
+import com.glisco.conjuring.blocks.conjurer.ConjurerLogic;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
@@ -22,7 +22,7 @@ public class ConjurerBlockEntityRenderer extends BlockEntityRenderer<ConjurerBlo
 
         if (conjurerBlockEntity.isActive()) {
             matrixStack.translate(0.5D, 0.0D, 0.5D);
-            ModifiedMobSpawnerLogic mobSpawnerLogic = conjurerBlockEntity.getLogic();
+            ConjurerLogic mobSpawnerLogic = conjurerBlockEntity.getLogic();
             Entity entity = mobSpawnerLogic.getRenderedEntity();
             if (entity != null) {
                 float g = 0.53125F;

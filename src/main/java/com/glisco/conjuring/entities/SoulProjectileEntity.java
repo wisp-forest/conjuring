@@ -9,10 +9,7 @@ import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.ProjectileDamageSource;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
-import net.minecraft.item.Item;
-import net.minecraft.network.Packet;
-import net.minecraft.particle.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
@@ -20,48 +17,34 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class SoulProjectile extends ThrownItemEntity {
+public class SoulProjectileEntity extends SoulEntity {
 
-    public SoulProjectile(World world, double x, double y, double z, LivingEntity owner) {
-        super(ConjuringCommon.SOUL_PROJECTILE, x, y, z, world);
-        this.setNoGravity(true);
-        this.setOwner(owner);
-    }
+    private float damage = 1.5f;
 
-    public SoulProjectile(EntityType<SoulProjectile> entityType, World world) {
-        super(entityType, world);
-        this.setNoGravity(true);
-    }
-
-    //This is just here so Lint leaves me alone. It's probably not used. Probably
-    public SoulProjectile(World world) {
+    public SoulProjectileEntity(World world, LivingEntity owner) {
         super(ConjuringCommon.SOUL_PROJECTILE, world);
+        setOwner(owner);
+    }
+
+    public SoulProjectileEntity(EntityType<SoulProjectileEntity> entityType, World world) {
+        super(entityType, world);
     }
 
     @Override
-    protected Item getDefaultItem() {
-        return ConjuringCommon.SOUL_ROD;
+    protected void initDataTracker() {
+
     }
 
     @Override
-    public Packet<?> createSpawnPacket() {
-        return EntityCreatePacket.create(this);
+    protected void writeCustomDataToTag(CompoundTag tag) {
+        super.writeCustomDataToTag(tag);
+        tag.putFloat("Damage", damage);
     }
 
     @Override
-    public void tick() {
-        super.tick();
-        if (world.isClient()) {
-            for (int i = 0; i < 5; i++) {
-                double x = getX() + world.random.nextDouble() * 0.3 - 0.15;
-                double y = getY() + world.random.nextDouble() * 0.3 - 0.15;
-                double z = getZ() + world.random.nextDouble() * 0.3 - 0.15;
-                world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, x, y, z, 0, 0, 0);
-                world.addParticle(ParticleTypes.SOUL, getX(), getY(), getZ(), 0, 0, 0);
-            }
-        }
-        if (age > 60) this.remove();
-
+    protected void readCustomDataFromTag(CompoundTag tag) {
+        super.readCustomDataFromTag(tag);
+        damage = tag.getFloat("Damage");
     }
 
     @Override
@@ -74,7 +57,7 @@ public class SoulProjectile extends ThrownItemEntity {
 
         LivingEntity e = (LivingEntity) entityHitResult.getEntity();
 
-        if (e.getHealth() - 1.5f <= 0) {
+        if (e.getHealth() - damage <= 0) {
             e.dropItem(ConjuringCommon.CONJURATION_ESSENCE);
             e.world.syncWorldEvent(9005, entityHitResult.getEntity().getBlockPos(), 0);
 
@@ -86,7 +69,11 @@ public class SoulProjectile extends ThrownItemEntity {
             }
         }
 
-        e.damage(createDamageSource(), 1.5f);
+        e.damage(createDamageSource(), damage);
+    }
+
+    public void setDamage(float damage) {
+        this.damage = damage;
     }
 
     @Override
@@ -98,5 +85,5 @@ public class SoulProjectile extends ThrownItemEntity {
     public DamageSource createDamageSource() {
         return new ProjectileDamageSource("soul_projectile", this, getOwner()).setProjectile();
     }
-}
 
+}

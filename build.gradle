@@ -39,6 +39,10 @@ dependencies {
 
 }
 
+minecraft {
+    accessWidener = file("src/main/resources/conjuring.accesswidener")
+}
+
 processResources {
     inputs.property "version", project.version
 
