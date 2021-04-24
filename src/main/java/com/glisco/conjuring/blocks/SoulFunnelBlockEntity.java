@@ -46,7 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityClientSerializable, Tickable {
+public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityClientSerializable, Tickable, RitualCore {
 
     private ItemStack item;
     private float itemHeight = 0;
@@ -85,11 +85,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
             tag.put("Ritual", ritual);
         }
 
-        ListTag pedestals = new ListTag();
-        for (BlockPos p : pedestalPositions) {
-            pedestals.add(new IntArrayTag(new int[]{p.getX(), p.getY(), p.getZ()}));
-        }
-        tag.put("Pedestals", pedestals);
+        savePedestals(tag, pedestalPositions);
 
         return tag;
     }
@@ -104,12 +100,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
             this.item = ItemStack.fromTag(tag.getCompound("Item"));
         }
 
-        ListTag pedestals = tag.getList("Pedestals", 11);
-        pedestalPositions.clear();
-        for (Tag pedestal : pedestals) {
-            int[] intPos = ((IntArrayTag) pedestal).getIntArray();
-            pedestalPositions.add(new BlockPos(intPos[0], intPos[1], intPos[2]));
-        }
+        loadPedestals(tag, pedestalPositions);
 
         slownessCooldown = tag.getInt("Cooldown");
 
@@ -275,10 +266,21 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
         return item.copy();
     }
 
-    public void startRitual(UUID ritualEntity) {
-        this.ritualRunning = true;
-        this.ritualEntity = ritualEntity;
-        this.markDirty();
+    public boolean tryStartRitual() {
+
+        if (item == null) return false;
+
+        if (world.getOtherEntities(null, new Box(pos, pos.add(1, 3, 1))).isEmpty()) return false;
+        Entity e = world.getOtherEntities(null, new Box(pos, pos.add(1, 3, 1))).get(0);
+        if (!(e instanceof MobEntity) || e instanceof WitherEntity || e instanceof EnderDragonEntity) return false;
+
+        if (!world.isClient()) {
+            this.ritualRunning = true;
+            this.ritualEntity = e.getUuid();
+            this.markDirty();
+        }
+
+        return true;
     }
 
     public boolean isRitualRunning() {
@@ -303,7 +305,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
         }
     }
 
-    public boolean addPedestal(BlockPos pedestal) {
+    public boolean linkPedestal(BlockPos pedestal) {
         if (pedestalPositions.size() >= 4) return false;
 
         if (!pedestalPositions.contains(pedestal)) pedestalPositions.add(pedestal);
@@ -436,5 +438,4 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
 
         return true;
     }
-
 }

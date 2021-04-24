@@ -1,14 +1,10 @@
 package com.glisco.conjuring.blocks;
 
-import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.WorldHelper;
 import com.glisco.conjuring.items.ConjuringFocus;
+import com.glisco.conjuring.items.ConjuringScepter;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.boss.WitherEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -22,7 +18,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -49,7 +44,6 @@ public class SoulFunnelBlock extends BlockWithEntity {
     private static VoxelShape SHAPE = VoxelShapes.union(SOUL_SAND, PILLAR1, PILLAR2, PILLAR3, PILLAR4, WALL1, WALL2, WALL3, WALL4);
 
     public static BooleanProperty FILLED = BooleanProperty.of("filled");
-
 
     //Construction stuff
     public SoulFunnelBlock() {
@@ -122,8 +116,10 @@ public class SoulFunnelBlock extends BlockWithEntity {
         }
 
         //Ritual logic
-        if (player.getStackInHand(hand).getItem().equals(ConjuringCommon.CONJURING_SCEPTER) || player.getStackInHand(hand).getItem().equals(ConjuringCommon.SUPERIOR_CONJURING_SCEPTER)) {
-            if (runRitualChecks(world, pos)) return ActionResult.SUCCESS;
+        if (player.getStackInHand(hand).getItem() instanceof ConjuringScepter) {
+
+            RitualCore core = (RitualCore) world.getBlockEntity(pos);
+            if (core.tryStartRitual()) return ActionResult.SUCCESS;
         }
 
         //Focus placing logic
@@ -152,20 +148,6 @@ public class SoulFunnelBlock extends BlockWithEntity {
         }
 
         return ActionResult.SUCCESS;
-    }
-
-    private boolean runRitualChecks(World world, BlockPos pos) {
-        SoulFunnelBlockEntity blockEntity = (SoulFunnelBlockEntity) world.getBlockEntity(pos);
-        if (blockEntity.getItem() == null) return false;
-
-        if (world.getOtherEntities(null, new Box(pos, pos.add(1, 3, 1))).isEmpty()) return false;
-        Entity e = world.getOtherEntities(null, new Box(pos, pos.add(1, 3, 1))).get(0);
-        if (!(e instanceof MobEntity) || e instanceof WitherEntity || e instanceof EnderDragonEntity) return false;
-
-        if (!world.isClient()) {
-            blockEntity.startRitual(e.getUuid());
-        }
-        return true;
     }
 
     @Override

@@ -1,0 +1,75 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"column_you_are_making_false_statements_of_fact": "conjuring:block/gem_tinkerer",
+		"particle": "block/gilded_blackstone"
+	},
+	"elements": [
+		{
+			"from": [1.6, 4, 7.2],
+			"to": [3.6, 10, 9.2],
+			"faces": {
+				"north": {"uv": [0, 1, 1, 4], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"east": {"uv": [1, 1, 2, 4], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"south": {"uv": [2, 1, 3, 4], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"west": {"uv": [3, 1, 4, 4], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"up": {"uv": [1, 0, 2, 1], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"down": {"uv": [2, 0, 3, 1], "texture": "#column_you_are_making_false_statements_of_fact"}
+			}
+		},
+		{
+			"from": [12.8, 4, 7.2],
+			"to": [14.8, 10, 9.2],
+			"faces": {
+				"north": {"uv": [0, 1, 1, 4], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"east": {"uv": [1, 1, 2, 4], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"south": {"uv": [2, 1, 3, 4], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"west": {"uv": [3, 1, 4, 4], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"up": {"uv": [1, 0, 2, 1], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"down": {"uv": [2, 0, 3, 1], "texture": "#column_you_are_making_false_statements_of_fact"}
+			}
+		},
+		{
+			"from": [7.2, 6, 12.8],
+			"to": [9.2, 12, 14.8],
+			"faces": {
+				"north": {"uv": [0, 1, 1, 4], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"east": {"uv": [1, 1, 2, 4], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"south": {"uv": [2, 1, 3, 4], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"west": {"uv": [3, 1, 4, 4], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"up": {"uv": [1, 0, 2, 1], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"down": {"uv": [2, 0, 3, 1], "texture": "#column_you_are_making_false_statements_of_fact"}
+			}
+		},
+		{
+			"from": [7.2, 6, 1.6],
+			"to": [9.2, 12, 3.6],
+			"faces": {
+				"north": {"uv": [0, 1, 1, 4], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"east": {"uv": [1, 1, 2, 4], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"south": {"uv": [2, 1, 3, 4], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"west": {"uv": [3, 1, 4, 4], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"up": {"uv": [1, 0, 2, 1], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"down": {"uv": [2, 0, 3, 1], "texture": "#column_you_are_making_false_statements_of_fact"}
+			}
+		},
+		{
+			"from": [6, 2, 6],
+			"to": [10, 14, 10],
+			"faces": {
+				"north": {"uv": [4, 8, 6, 2], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"east": {"uv": [10, 8, 12, 2], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"south": {"uv": [6, 8, 8, 2], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"west": {"uv": [8, 8, 10, 2], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"up": {"uv": [8, 2, 10, 0], "texture": "#column_you_are_making_false_statements_of_fact"},
+				"down": {"uv": [6, 2, 8, 0], "texture": "#column_you_are_making_false_statements_of_fact"}
+			}
+		}
+	],
+	"display": {
+		"gui": {
+			"rotation": [45, 60, 0]
+		}
+	}
+}

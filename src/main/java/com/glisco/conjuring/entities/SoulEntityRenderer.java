@@ -16,7 +16,6 @@ public class SoulEntityRenderer extends EntityRenderer<SoulEntity> {
         super(dispatcher);
     }
 
-    //TODO make this no sus
     @Override
     public void render(SoulEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
 
@@ -34,10 +33,10 @@ public class SoulEntityRenderer extends EntityRenderer<SoulEntity> {
         Vec3d current = new Vec3d(targetX, targetY, targetZ);
 
         Vec3d direction = current.subtract(last);
-        Vec3d increment = direction.multiply(0.25f);
+        Vec3d increment = direction.multiply(1 / (float) Math.round(direction.length() * 4));
 
         Vec3d currentRenderPosition = last.add(increment);
-        for (int j = 0; j < 4; j++) {
+        for (int j = 0; j < Math.round(direction.length() * 4); j++) {
             world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, currentRenderPosition.x, currentRenderPosition.y, currentRenderPosition.z, 0, 0, 0);
             currentRenderPosition = currentRenderPosition.add(increment);
         }

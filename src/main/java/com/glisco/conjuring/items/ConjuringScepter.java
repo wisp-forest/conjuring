@@ -3,7 +3,7 @@ package com.glisco.conjuring.items;
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.WorldHelper;
 import com.glisco.conjuring.blocks.BlackstonePedestalBlockEntity;
-import com.glisco.conjuring.blocks.SoulFunnelBlockEntity;
+import com.glisco.conjuring.blocks.RitualCore;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -50,7 +50,7 @@ public class ConjuringScepter extends Item {
         scepter.setTag(stackTag);
     }
 
-    public static String finishLinking(World world, ItemStack scepter, BlockPos funnel) {
+    public static String finishLinking(World world, ItemStack scepter, BlockPos core) {
         CompoundTag stackTag = scepter.getOrCreateTag();
         if (!isLinking(scepter)) return "INVALID_SCEPTER";
         BlockPos pedestal = getLinkingFrom(scepter);
@@ -59,14 +59,14 @@ public class ConjuringScepter extends Item {
         scepter.setTag(stackTag);
 
         if (!(world.getBlockEntity(pedestal) instanceof BlackstonePedestalBlockEntity)) return "NO_PEDESTAL";
-        if (!(world.getBlockEntity(funnel) instanceof SoulFunnelBlockEntity)) return "NO_FUNNEL";
+        if (!(world.getBlockEntity(core) instanceof RitualCore)) return "NO_FUNNEL";
 
-        if (funnel.getManhattanDistance(pedestal) != 3 || funnel.getY() != pedestal.getY()) {
+        if (core.getManhattanDistance(pedestal) != 3 || core.getY() != pedestal.getY()) {
             return "INCORRECT_POSITION";
         }
 
-        if (((SoulFunnelBlockEntity) world.getBlockEntity(funnel)).addPedestal(pedestal)) {
-            ((BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal)).setLinkedFunnel(funnel);
+        if (((RitualCore) world.getBlockEntity(core)).linkPedestal(pedestal)) {
+            ((BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal)).setLinkedFunnel(core);
             return "SUCCESS";
         } else {
             return "PEDESTAL_LIMIT_REACHED";
@@ -83,7 +83,7 @@ public class ConjuringScepter extends Item {
         if (world.getBlockEntity(pos) instanceof BlackstonePedestalBlockEntity) {
             startLinking(scepter, pos);
             return ActionResult.SUCCESS;
-        } else if (world.getBlockEntity(pos) instanceof SoulFunnelBlockEntity) {
+        } else if (world.getBlockEntity(pos) instanceof RitualCore) {
             String result = finishLinking(world, scepter, pos);
             switch (result) {
                 case "SUCCESS":
@@ -138,7 +138,6 @@ public class ConjuringScepter extends Item {
 
         ParticleEffect particle = new DustParticleEffect(1, 1, 1, 1);
         WorldHelper.spawnParticle(particle, world, pedestal, 0.5f, 1.25f, 0.5f, 0.15f);
-
 
         LiteralText linkingFrom = new LiteralText("Linking from ");
 

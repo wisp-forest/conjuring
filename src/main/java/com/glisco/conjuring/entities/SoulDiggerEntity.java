@@ -1,6 +1,8 @@
 package com.glisco.conjuring.entities;
 
 import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.items.BlockCrawler;
+import net.minecraft.block.OreBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -31,6 +33,13 @@ public class SoulDiggerEntity extends SoulEntity {
 
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
+
+        if (world.getBlockState(blockHitResult.getBlockPos()).getBlock() instanceof OreBlock) {
+            BlockCrawler.crawl(world, blockHitResult.getBlockPos());
+            this.remove();
+            return;
+        }
+
         world.breakBlock(blockHitResult.getBlockPos(), true);
     }
 

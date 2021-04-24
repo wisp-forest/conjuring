@@ -12,55 +12,55 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class TreeCrawler {
+public class BlockCrawler {
 
-    public static ConcurrentLinkedQueue<MutablePair<Integer, List<BlockPos>>> treesToFell = new ConcurrentLinkedQueue<>();
+    public static ConcurrentLinkedQueue<MutablePair<Integer, List<BlockPos>>> blocksToCrawl = new ConcurrentLinkedQueue<>();
 
-    public static void crawlTree(World world, BlockPos firstLog) {
+    public static void crawl(World world, BlockPos firstBlock) {
 
-        Block logType = world.getBlockState(firstLog).getBlock();
+        Block blockType = world.getBlockState(firstBlock).getBlock();
 
-        List<BlockPos> foundLogs = new ArrayList<>(Collections.singletonList(firstLog));
-        ConcurrentLinkedQueue<BlockPos> scanLogs = new ConcurrentLinkedQueue<>(foundLogs);
+        List<BlockPos> foundBlocks = new ArrayList<>(Collections.singletonList(firstBlock));
+        ConcurrentLinkedQueue<BlockPos> scanBlocks = new ConcurrentLinkedQueue<>(foundBlocks);
 
         int counter = 0;
         do {
 
             //Scan current layer
             outerLoop:
-            for (BlockPos foundLog : scanLogs) {
+            for (BlockPos foundBlock : scanBlocks) {
 
-                scanLogs.remove(foundLog);
+                scanBlocks.remove(foundBlock);
 
                 //Scan neighbours
-                for (BlockPos pos : getNeighbors(foundLog)) {
+                for (BlockPos pos : getNeighbors(foundBlock)) {
 
-                    if (foundLogs.size() >= 128) break outerLoop;
-                    if (!world.getBlockState(pos).getBlock().equals(logType) || foundLogs.contains(pos)) continue;
+                    if (foundBlocks.size() >= 128) break outerLoop;
+                    if (!world.getBlockState(pos).getBlock().equals(blockType) || foundBlocks.contains(pos)) continue;
 
-                    foundLogs.add(pos);
-                    scanLogs.add(pos);
+                    foundBlocks.add(pos);
+                    scanBlocks.add(pos);
 
                 }
             }
 
             counter++;
-        } while (!scanLogs.isEmpty() && counter < 25);
+        } while (!scanBlocks.isEmpty() && counter < 25);
 
-        treesToFell.add(new MutablePair<>(0, foundLogs));
+        blocksToCrawl.add(new MutablePair<>(0, foundBlocks));
 
     }
 
     public static void tick(World world) {
 
-        for (MutablePair<Integer, List<BlockPos>> pair : treesToFell) {
+        for (MutablePair<Integer, List<BlockPos>> pair : blocksToCrawl) {
             if (pair.left > 0) {
                 pair.left--;
                 continue;
             }
 
             if (pair.getRight().isEmpty()) {
-                treesToFell.remove(pair);
+                blocksToCrawl.remove(pair);
                 continue;
             }
 

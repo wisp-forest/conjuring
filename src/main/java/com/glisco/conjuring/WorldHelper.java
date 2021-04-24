@@ -1,11 +1,17 @@
 package com.glisco.conjuring;
 
+import com.glisco.conjuring.mixin.ParticleManagerAccessor;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleFactory;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 import java.util.Random;
@@ -59,6 +65,15 @@ public class WorldHelper {
         double z = pos.getZ() + offsetZ + (r.nextDouble() - 0.5) * deviationZ;
 
         world.addParticle(particle, x, y, z, velocityX, velocityY, velocityZ);
+    }
+
+    public static <T extends ParticleEffect> void spawnParticle(T particleType, World world, BlockPos pos, float offsetX, float offsetY, float offsetZ, float velocityX, float velocityY, float velocityZ, int maxAge) {
+
+        ParticleFactory<T> particleFactory = (ParticleFactory<T>) ((ParticleManagerAccessor) MinecraftClient.getInstance().particleManager).getFactories().get(Registry.PARTICLE_TYPE.getRawId(particleType.getType()));
+
+        Particle particle = particleFactory.createParticle(particleType, (ClientWorld) world, pos.getX() + offsetX, pos.getY() + offsetY, pos.getZ() + offsetZ, velocityX, velocityY, velocityZ);
+        particle.setMaxAge(maxAge);
+        MinecraftClient.getInstance().particleManager.addParticle(particle);
     }
 
     public static void playSound(World world, BlockPos pos, double range, SoundEvent sound, SoundCategory category, float volume, float pitch) {

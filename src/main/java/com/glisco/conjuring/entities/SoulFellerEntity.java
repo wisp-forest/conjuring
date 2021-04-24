@@ -1,7 +1,7 @@
 package com.glisco.conjuring.entities;
 
 import com.glisco.conjuring.ConjuringCommon;
-import com.glisco.conjuring.items.TreeCrawler;
+import com.glisco.conjuring.items.BlockCrawler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -34,7 +34,7 @@ public class SoulFellerEntity extends SoulEntity {
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
         if (BlockTags.LOGS.contains(world.getBlockState(blockHitResult.getBlockPos()).getBlock())) {
-            TreeCrawler.crawlTree(world, blockHitResult.getBlockPos());
+            BlockCrawler.crawl(world, blockHitResult.getBlockPos());
         }
         this.remove();
     }

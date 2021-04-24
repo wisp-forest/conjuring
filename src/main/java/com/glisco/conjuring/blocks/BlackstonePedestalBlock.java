@@ -96,20 +96,19 @@ public class BlackstonePedestalBlock extends BlockWithEntity {
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock()) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof BlackstonePedestalBlockEntity) {
-                BlackstonePedestalBlockEntity pedestalEntity = (BlackstonePedestalBlockEntity) blockEntity;
 
-                if (pedestalEntity.getRenderedItem() != null) {
-                    ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), ((BlackstonePedestalBlockEntity) blockEntity).getRenderedItem());
-                }
+            BlackstonePedestalBlockEntity pedestalEntity = (BlackstonePedestalBlockEntity) world.getBlockEntity(pos);
 
-                if (pedestalEntity.isLinked()) {
-                    if (world.getBlockEntity(pedestalEntity.getLinkedFunnel()) instanceof SoulFunnelBlockEntity) {
-                        ((SoulFunnelBlockEntity) world.getBlockEntity(pedestalEntity.getLinkedFunnel())).removePedestal(pos, pedestalEntity.isActive());
-                    }
+            if (pedestalEntity.getRenderedItem() != null) {
+                ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), pedestalEntity.getRenderedItem());
+            }
+
+            if (pedestalEntity.isLinked()) {
+                if (world.getBlockEntity(pedestalEntity.getLinkedFunnel()) instanceof RitualCore) {
+                    ((RitualCore) world.getBlockEntity(pedestalEntity.getLinkedFunnel())).removePedestal(pos, pedestalEntity.isActive());
                 }
             }
+
             super.onStateReplaced(state, world, pos, newState, moved);
         }
     }

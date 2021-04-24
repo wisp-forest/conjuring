@@ -23,12 +23,15 @@ public class ConjuringClient implements ClientModInitializer {
         BlockEntityRendererRegistry.INSTANCE.register(ConjuringCommon.CONJURER_BLOCK_ENTITY, ConjurerBlockEntityRenderer::new);
         BlockEntityRendererRegistry.INSTANCE.register(ConjuringCommon.BLACKSTONE_PEDSTAL_BLOCK_ENTITY, BlackstonePedestalBlockEntityRenderer::new);
         BlockEntityRendererRegistry.INSTANCE.register(ConjuringCommon.SOUL_FUNNEL_BLOCK_ENTITY, SoulFunnelBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.INSTANCE.register(ConjuringCommon.SOUL_WEAVER_BLOCK_ENTITY, SoulWeaverBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.INSTANCE.register(ConjuringCommon.GEM_TINKERER_BLOCK_ENTITY, GemTinkererBlockEntityRenderer::new);
         BlockRenderLayerMap.INSTANCE.putBlock(ConjuringCommon.CONJURER_BLOCK, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ConjuringCommon.SOULFIRE_FORGE_BLOCK, RenderLayer.getCutout());
 
         EntityRendererRegistry.INSTANCE.register(ConjuringCommon.SOUL_PROJECTILE, (dispatcher, context) -> new SoulEntityRenderer(dispatcher));
         EntityRendererRegistry.INSTANCE.register(ConjuringCommon.SOUL_DIGGER, (dispatcher, context) -> new SoulEntityRenderer(dispatcher));
         EntityRendererRegistry.INSTANCE.register(ConjuringCommon.SOUL_FELLER, (dispatcher, context) -> new SoulEntityRenderer(dispatcher));
+        EntityRendererRegistry.INSTANCE.register(ConjuringCommon.SOUL_MAGNET, (dispatcher, context) -> new SoulEntityRenderer(dispatcher));
 
         ClientPlayNetworking.registerGlobalReceiver(EntityCreatePacket.ID, EntityCreatePacket::onPacket);
 

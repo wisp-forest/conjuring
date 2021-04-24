@@ -40,7 +40,10 @@ public class BlackstonePedestalBlockEntityRenderer extends BlockEntityRenderer<B
             MinecraftClient.getInstance().getItemRenderer().renderItem(item, ModelTransformation.Mode.GROUND, false, matrixStack, vertexConsumerProvider, lightAbove, OverlayTexture.DEFAULT_UV, itemModel);
             matrixStack.pop();
 
-            if (blockEntity.getWorld().random.nextDouble() > 0.975) {
+        }
+
+        if (blockEntity.getRenderedItem() != null || blockEntity.isActive()) {
+            if (blockEntity.getWorld().random.nextDouble() > (blockEntity.isActive() ? 0.85 : 0.95)) {
                 BlockPos pos = blockEntity.getPos();
                 ParticleEffect particle = blockEntity.isActive() ? ParticleTypes.SOUL_FIRE_FLAME : ParticleTypes.SMOKE;
 
