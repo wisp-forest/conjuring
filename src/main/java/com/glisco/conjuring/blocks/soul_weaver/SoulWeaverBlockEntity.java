@@ -86,7 +86,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
         this.markDirty();
         return true;
     }
-    
+
     public boolean removePedestal(BlockPos pedestal, boolean pedestalActive) {
         boolean returnValue = pedestals.remove(pedestal);
         this.markDirty();

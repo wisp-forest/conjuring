@@ -17,10 +17,6 @@ import com.glisco.conjuring.entities.SoulFellerEntity;
 import com.glisco.conjuring.entities.SoulMagnetEntity;
 import com.glisco.conjuring.entities.SoulProjectileEntity;
 import com.glisco.conjuring.items.*;
-import com.glisco.conjuring.items.charms.HasteCharm;
-import com.glisco.conjuring.items.charms.IgnoranceCharm;
-import com.glisco.conjuring.items.charms.PlentifulnessCharm;
-import com.glisco.conjuring.items.charms.ScopeCharm;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
@@ -29,30 +25,23 @@ import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
-import net.minecraft.block.*;
-import net.minecraft.block.dispenser.DispenserBehavior;
-import net.minecraft.block.dispenser.FallibleItemDispenserBehavior;
-import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.item.*;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.loot.ConstantLootTableRange;
 import net.minecraft.loot.condition.RandomChanceLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
-import net.minecraft.util.math.BlockPointer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
-
-import java.util.Random;
 
 public class ConjuringCommon implements ModInitializer {
 
@@ -120,8 +109,6 @@ public class ConjuringCommon implements ModInitializer {
         SOUL_MAGNET = FabricEntityTypeBuilder.<SoulMagnetEntity>create(SpawnGroup.MISC, SoulMagnetEntity::new).dimensions(EntityDimensions.fixed(0.25f, 0.25f)).build();
     }
 
-    private static final Identifier SPAWNER_LOOT_TABLE_ID = new Identifier("minecraft", "blocks/spawner");
-
     @Override
     public void onInitialize() {
 
@@ -136,10 +123,10 @@ public class ConjuringCommon implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_brick"), SOUL_BRICK);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "gem_socket"), GEM_SOCKET);
 
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "haste_charm"), new HasteCharm());
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "ignorance_charm"), new IgnoranceCharm());
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "plentifulness_charm"), new PlentifulnessCharm());
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "scope_charm"), new ScopeCharm());
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "haste_charm"), new CharmItem(SoulAlloyTool.SoulAlloyModifier.HASTE));
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "ignorance_charm"), new CharmItem(SoulAlloyTool.SoulAlloyModifier.IGNORANCE));
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "plentifulness_charm"), new CharmItem(SoulAlloyTool.SoulAlloyModifier.ABUNDANCE));
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "scope_charm"), new CharmItem(SoulAlloyTool.SoulAlloyModifier.SCOPE));
 
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy_sword"), SOUL_ALLOY_SWORD);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy_pickaxe"), SOUL_ALLOY_PICKAXE);
@@ -185,7 +172,7 @@ public class ConjuringCommon implements ModInitializer {
         CONFIG = AutoConfig.getConfigHolder(ConjuringConfig.class).getConfig();
 
         LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
-            if (SPAWNER_LOOT_TABLE_ID.equals(id)) {
+            if (new Identifier("minecraft", "blocks/spawner").equals(id)) {
                 FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootTableRange.create(1)).withEntry(ItemEntry.builder(CONJURATION_ESSENCE).build());
 
                 supplier.withPool(poolBuilder.build());
