@@ -1,10 +1,8 @@
 package com.glisco.conjuring;
 
+import com.glisco.conjuring.items.CharmItem;
 import com.glisco.conjuring.items.ConjuringFocus;
-import com.glisco.conjuring.items.charms.HasteCharm;
-import com.glisco.conjuring.items.charms.IgnoranceCharm;
-import com.glisco.conjuring.items.charms.PlentifulnessCharm;
-import com.glisco.conjuring.items.charms.ScopeCharm;
+import com.glisco.conjuring.items.SoulAlloyTool;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -35,31 +33,30 @@ public class ConjurerScreenHandler extends ScreenHandler {
         this.addSlot(new Slot(this.inventory, 1, 77, 2) {
             @Override
             public boolean canInsert(ItemStack stack) {
-                return stack.getItem() instanceof HasteCharm;
+                return ((CharmItem) stack.getItem()).modifier == SoulAlloyTool.SoulAlloyModifier.HASTE;
             }
         });
 
         this.addSlot(new Slot(this.inventory, 2, 117, 41) {
             @Override
             public boolean canInsert(ItemStack stack) {
-                return stack.getItem() instanceof PlentifulnessCharm;
+                return ((CharmItem) stack.getItem()).modifier == SoulAlloyTool.SoulAlloyModifier.ABUNDANCE;
             }
         });
 
         this.addSlot(new Slot(this.inventory, 3, 77, 80) {
             @Override
             public boolean canInsert(ItemStack stack) {
-                return stack.getItem() instanceof ScopeCharm;
+                return ((CharmItem) stack.getItem()).modifier == SoulAlloyTool.SoulAlloyModifier.SCOPE;
             }
         });
 
         this.addSlot(new Slot(this.inventory, 4, 38, 41) {
             @Override
             public boolean canInsert(ItemStack stack) {
-                return stack.getItem() instanceof IgnoranceCharm;
+                return ((CharmItem) stack.getItem()).modifier == SoulAlloyTool.SoulAlloyModifier.IGNORANCE;
             }
         });
-
 
         int m;
         int l;

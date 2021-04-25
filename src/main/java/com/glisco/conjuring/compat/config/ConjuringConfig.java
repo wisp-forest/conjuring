@@ -7,8 +7,8 @@ import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 @Config(name = "conjuring")
 public class ConjuringConfig implements ConfigData {
 
-    @Comment("How many extra mobs to spawn per plentifulness charm")
-    public int plentifulness_multiplier = 2;
+    @Comment("How many extra mobs to spawn per abundance charm")
+    public int abundance_multiplier = 2;
 
     @Comment("How many ticks of waiting to remove per haste charm")
     public float haste_multiplier = 93.75f;

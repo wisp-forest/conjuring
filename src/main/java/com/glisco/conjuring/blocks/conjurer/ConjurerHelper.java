@@ -20,7 +20,7 @@ public class ConjurerHelper {
 
         ItemStack focus = conjurer.getStack(0);
         ItemStack hasteCharms = conjurer.getStack(1);
-        ItemStack plentifulnessCharms = conjurer.getStack(2);
+        ItemStack abundanceCharms = conjurer.getStack(2);
         ItemStack scopeCharms = conjurer.getStack(3);
         ItemStack ignoranceCharms = conjurer.getStack(4);
 
@@ -47,7 +47,7 @@ public class ConjurerHelper {
         }
 
         if (((CharmItem)hasteCharms.getItem()).modifier == SoulAlloyTool.SoulAlloyModifier.ABUNDANCE) {
-            spawnCount = 4 + plentifulnessCharms.getCount() * ConjuringCommon.CONFIG.plentifulness_multiplier;
+            spawnCount = 4 + abundanceCharms.getCount() * ConjuringCommon.CONFIG.abundance_multiplier;
         }
 
         if (((CharmItem)hasteCharms.getItem()).modifier == SoulAlloyTool.SoulAlloyModifier.SCOPE) {
