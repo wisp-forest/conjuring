@@ -60,30 +60,27 @@ public class BlackstonePedestalBlock extends BlockWithEntity {
         BlackstonePedestalBlockEntity pedestal = (BlackstonePedestalBlockEntity) world.getBlockEntity(pos);
         if (pedestal.isActive()) return ActionResult.PASS;
 
+        final ItemStack playerStack = player.getStackInHand(hand);
         ItemStack pedestalItem = pedestal.getRenderedItem();
 
         if (pedestalItem == null) {
-            if (player.getStackInHand(hand).equals(ItemStack.EMPTY)) return ActionResult.PASS;
+            if (playerStack.isEmpty()) return ActionResult.PASS;
 
-            ItemStack playerItem = player.getStackInHand(hand).copy();
+            ItemStack playerItem = playerStack.copy();
             playerItem.setCount(1);
 
             pedestal.setRenderedItem(playerItem);
 
-            playerItem = player.getStackInHand(hand).copy();
-            playerItem.decrement(1);
-            if (playerItem.isEmpty()) playerItem = ItemStack.EMPTY;
-            player.setStackInHand(hand, playerItem);
+            playerStack.decrement(1);
+            if (playerStack.isEmpty()) player.setStackInHand(hand, ItemStack.EMPTY);
         } else {
-            ItemStack playerItemSingleton = player.getStackInHand(hand).copy();
+            ItemStack playerItemSingleton = playerStack.copy();
             playerItemSingleton.setCount(1);
 
-            if (player.getStackInHand(hand).equals(ItemStack.EMPTY)) {
+            if (playerStack.isEmpty()) {
                 player.setStackInHand(hand, pedestalItem);
-            } else if (ItemStack.areEqual(playerItemSingleton, pedestalItem) && player.getStackInHand(hand).getCount() + 1 <= player.getStackInHand(hand).getMaxCount()) {
-                ItemStack playerItem = player.getStackInHand(hand);
-                playerItem.setCount(playerItem.getCount() + 1);
-                player.setStackInHand(hand, playerItem);
+            } else if (ItemStack.areEqual(playerItemSingleton, pedestalItem) && playerStack.getCount() + 1 <= playerStack.getMaxCount()) {
+                playerStack.increment(1);
             } else {
                 ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1f, pos.getZ(), pedestalItem);
             }

@@ -29,23 +29,30 @@ import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.*;
+import net.minecraft.block.dispenser.DispenserBehavior;
+import net.minecraft.block.dispenser.FallibleItemDispenserBehavior;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.loot.ConstantLootTableRange;
 import net.minecraft.loot.condition.RandomChanceLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
+import net.minecraft.util.math.BlockPointer;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
+
+import java.util.Random;
 
 public class ConjuringCommon implements ModInitializer {
 
@@ -70,11 +77,12 @@ public class ConjuringCommon implements ModInitializer {
 
     public static Item SOUL_ROD = new SoulRod();
     public static Item SOUL_ALLOY = new SoulAlloy();
+    public static Item SOUL_BRICK = new SoulBrick();
     public static Item GEM_SOCKET = new GemSocket();
 
-    public static Item SOUL_ALLOY_HATCHET = new SoulAlloyHatchet();
     public static Item SOUL_ALLOY_SWORD = new SoulAlloySword();
     public static Item SOUL_ALLOY_PICKAXE = new SoulAlloyPickaxe();
+    public static Item SOUL_ALLOY_HATCHET = new SoulAlloyHatchet();
     public static Item SOUL_ALLOY_SHOVEL = new SoulAlloyShovel();
 
     public static final Block CONJURER_BLOCK = new ConjurerBlock();
@@ -125,6 +133,7 @@ public class ConjuringCommon implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier("conjuring", "stabilized_conjuring_focus"), STABILIZED_CONJURING_FOCUS);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_rod"), SOUL_ROD);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy"), SOUL_ALLOY);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_brick"), SOUL_BRICK);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "gem_socket"), GEM_SOCKET);
 
         Registry.register(Registry.ITEM, new Identifier("conjuring", "haste_charm"), new HasteCharm());
@@ -132,9 +141,9 @@ public class ConjuringCommon implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier("conjuring", "plentifulness_charm"), new PlentifulnessCharm());
         Registry.register(Registry.ITEM, new Identifier("conjuring", "scope_charm"), new ScopeCharm());
 
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy_hatchet"), SOUL_ALLOY_HATCHET);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy_sword"), SOUL_ALLOY_SWORD);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy_pickaxe"), SOUL_ALLOY_PICKAXE);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy_hatchet"), SOUL_ALLOY_HATCHET);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy_shovel"), SOUL_ALLOY_SHOVEL);
 
         CONJURER_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:conjurer", BlockEntityType.Builder.create(ConjurerBlockEntity::new, CONJURER_BLOCK).build(null));

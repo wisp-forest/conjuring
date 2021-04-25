@@ -1,12 +1,11 @@
 package com.glisco.conjuring.blocks.soul_weaver;
 
-import com.glisco.conjuring.WorldHelper;
+import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.items.ConjuringScepter;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
@@ -19,7 +18,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Random;
 import java.util.stream.Stream;
 
 public class SoulWeaverBlock extends BlockWithEntity {
@@ -60,17 +58,21 @@ public class SoulWeaverBlock extends BlockWithEntity {
     }
 
     @Override
-    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-        for (int i = 0; i < 2; i++) {
-            WorldHelper.spawnParticle(ParticleTypes.SOUL_FIRE_FLAME, world, pos, 0.5f, 0.35f, 0.5f, 0, 0, 0, 0.15f);
-        }
-    }
-
-    @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         SoulWeaverBlockEntity weaver = (SoulWeaverBlockEntity) world.getBlockEntity(pos);
 
-        if (player.getStackInHand(hand).getItem() instanceof ConjuringScepter) {
+        if (weaver.isRunning()) return ActionResult.PASS;
+
+        final ItemStack playerStack = player.getStackInHand(hand);
+
+        if (playerStack.getItem().equals(ConjuringCommon.CONJURATION_ESSENCE) && !weaver.isLit()) {
+            weaver.setLit(true);
+            playerStack.decrement(1);
+            if (playerStack.isEmpty()) player.setStackInHand(hand, ItemStack.EMPTY);
+            return ActionResult.SUCCESS;
+        }
+
+        if (playerStack.getItem() instanceof ConjuringScepter) {
             weaver.tryStartRitual();
             return ActionResult.SUCCESS;
         }
@@ -78,27 +80,23 @@ public class SoulWeaverBlock extends BlockWithEntity {
         ItemStack weaverItem = weaver.getItem();
 
         if (weaverItem == null) {
-            if (player.getStackInHand(hand).equals(ItemStack.EMPTY)) return ActionResult.PASS;
+            if (playerStack.isEmpty()) return ActionResult.PASS;
 
-            ItemStack playerItem = player.getStackInHand(hand).copy();
+            ItemStack playerItem = playerStack.copy();
             playerItem.setCount(1);
 
             weaver.setItem(playerItem);
 
-            playerItem = player.getStackInHand(hand).copy();
-            playerItem.decrement(1);
-            if (playerItem.isEmpty()) playerItem = ItemStack.EMPTY;
-            player.setStackInHand(hand, playerItem);
+            playerStack.decrement(1);
+            if (playerStack.isEmpty()) player.setStackInHand(hand, ItemStack.EMPTY);
         } else {
-            ItemStack playerItemSingleton = player.getStackInHand(hand).copy();
+            ItemStack playerItemSingleton = playerStack.copy();
             playerItemSingleton.setCount(1);
 
-            if (player.getStackInHand(hand).equals(ItemStack.EMPTY)) {
+            if (playerStack.isEmpty()) {
                 player.setStackInHand(hand, weaverItem);
-            } else if (ItemStack.areEqual(playerItemSingleton, weaverItem) && player.getStackInHand(hand).getCount() + 1 <= player.getStackInHand(hand).getMaxCount()) {
-                ItemStack playerItem = player.getStackInHand(hand);
-                playerItem.setCount(playerItem.getCount() + 1);
-                player.setStackInHand(hand, playerItem);
+            } else if (ItemStack.areEqual(playerItemSingleton, weaverItem) && playerStack.getCount() + 1 <= playerStack.getMaxCount()) {
+                playerStack.increment(1);
             } else {
                 ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1f, pos.getZ(), weaverItem);
             }

@@ -8,13 +8,20 @@ import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
+import net.minecraft.network.packet.s2c.play.StopSoundS2CPacket;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -28,6 +35,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
     List<BlockPos> pedestals = new ArrayList<>();
     private ItemStack item = null;
     private int ritualTick = 0;
+    private boolean lit = false;
 
     SoulWeaverRecipe cachedRecipe = null;
 
@@ -46,6 +54,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
             this.item = null;
         }
         ritualTick = tag.getInt("RitualTick");
+        lit = tag.getBoolean("Lit");
     }
 
     @Override
@@ -55,6 +64,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
         if (item != null) item.toTag(itemTag);
         tag.put("Item", itemTag);
         tag.putInt("RitualTick", ritualTick);
+        tag.putBoolean("Lit", lit);
         return super.toTag(tag);
     }
 
@@ -76,7 +86,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
         this.markDirty();
         return true;
     }
-
+    
     public boolean removePedestal(BlockPos pedestal, boolean pedestalActive) {
         boolean returnValue = pedestals.remove(pedestal);
         this.markDirty();
@@ -87,6 +97,8 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
         } else {
             world.syncWorldEvent(9011, pos, offset.getZ());
         }
+
+        cancelRitual();
 
         return returnValue;
     }
@@ -108,8 +120,9 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
     @Override
     public boolean tryStartRitual() {
 
-        if (!verifyRecipe()) return false;
+        if (!verifyRecipe() || !isLit()) return false;
 
+        world.playSound(null, pos, SoundEvents.ENTITY_EVOKER_CAST_SPELL, SoundCategory.BLOCKS, 1, 0);
         ritualTick = 1;
         markDirty();
         return true;
@@ -184,9 +197,19 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
                 } else {
                     ((BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal)).setActive(true);
                     ((BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal)).setRenderedItem(null);
+
                 }
             }
         } else if (ritualTick > 10 && ritualTick < 165) {
+
+            if (ritualTick == 15) {
+                world.playSound(null, pos, SoundEvents.BLOCK_BEACON_AMBIENT, SoundCategory.BLOCKS, 1.5f, 0.7f);
+            }
+
+            if (ritualTick == 127) {
+                world.playSound(null, pos, SoundEvents.BLOCK_PORTAL_TRIGGER, SoundCategory.BLOCKS, 0.15f, 2f);
+            }
+
             if (world.isClient && ritualTick % 2 == 0) {
                 if (ritualTick < 140) {
                     for (BlockPos pos : pedestals) {
@@ -211,26 +234,28 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
                 }
             }
         } else if (ritualTick > 165) {
-            for (BlockPos pedestal : pedestals) {
-                if (!world.isClient) {
-                    ((BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal)).setActive(false);
-                } else {
-
-                    ParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.GILDED_BLACKSTONE.getDefaultState());
-
-                    for (int i = 0; i < 30; i++) {
-                        WorldHelper.spawnParticle(particle, world, pos, 0.5f, 1.3f, 0.5f, 0.2f);
-                    }
-
-                    for (int i = 0; i < 5; i++) {
-                        WorldHelper.spawnParticle(ParticleTypes.LAVA, world, pos, 0.5f, 1.25f, 0.5f, 0.15f);
-                    }
-                }
-            }
-
             if (!world.isClient) {
+
+                world.playSound(null, pos, SoundEvents.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.BLOCKS, 1, 0);
+                MinecraftClient.getInstance().getSoundManager().stopSounds(new Identifier("minecraft", "block.beacon.ambient"), SoundCategory.BLOCKS);
+
+                for (BlockPos pedestal : pedestals) {
+                    ((BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal)).setActive(false);
+                }
+                verifyRecipe();
                 setItem(cachedRecipe.getOutput());
+                setLit(false);
                 cachedRecipe = null;
+            } else {
+                ParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.GILDED_BLACKSTONE.getDefaultState());
+
+                for (int i = 0; i < 30; i++) {
+                    WorldHelper.spawnParticle(particle, world, pos, 0.5f, 1.3f, 0.5f, 0.2f);
+                }
+
+                for (int i = 0; i < 40; i++) {
+                    WorldHelper.spawnParticle(ParticleTypes.LAVA, world, pos, 0.5f, 1.25f, 0.5f, 0.15f);
+                }
             }
             ritualTick = 0;
         }
@@ -238,7 +263,42 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
         if (ritualTick > 0) ritualTick++;
     }
 
+    public void cancelRitual() {
+
+        if (ritualTick == 0) return;
+
+        for (BlockPos pedestal : pedestals) {
+            ((BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal)).setActive(false);
+        }
+
+        ((ServerWorld) world).getServer().getPlayerManager().sendToAround(null, pos.getX(), pos.getY(), pos.getZ(), 25, world.getRegistryKey(),
+                new ParticleS2CPacket(ParticleTypes.LARGE_SMOKE, false, pos.getX() + 0.5, pos.getY() + 1.15, pos.getZ() + 0.5, 0.15f, 0.15f, 0.15f, 0.05f, 15));
+
+        ((ServerWorld) world).getServer().getPlayerManager().sendToAround(null, pos.getX(), pos.getY(), pos.getZ(), 25, world.getRegistryKey(),
+                new StopSoundS2CPacket(new Identifier("minecraft", "block.beacon.ambient"), SoundCategory.BLOCKS));
+
+        world.playSound(null, pos, SoundEvents.ENTITY_WITHER_HURT, SoundCategory.BLOCKS, 1f, 0f);
+
+        ritualTick = 0;
+        cachedRecipe = null;
+        setLit(false);
+        setItem(null);
+    }
+
     public double getShakeScaleFactor() {
         return ritualTick > 40 ? ritualTick * 0.001 : 0;
+    }
+
+    public boolean isLit() {
+        return lit;
+    }
+
+    public void setLit(boolean lit) {
+        this.lit = lit;
+        markDirty();
+    }
+
+    public boolean isRunning() {
+        return ritualTick > 0;
     }
 }

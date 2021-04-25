@@ -1,5 +1,6 @@
 package com.glisco.conjuring.client;
 
+import com.glisco.conjuring.WorldHelper;
 import com.glisco.conjuring.blocks.soul_weaver.SoulWeaverBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
@@ -12,6 +13,7 @@ import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.ParticleTypes;
 
 import java.util.Objects;
 
@@ -21,7 +23,7 @@ public class SoulWeaverBlockEntityRenderer extends BlockEntityRenderer<SoulWeave
         super(blockEntityRenderDispatcher);
     }
 
-    public void render(SoulWeaverBlockEntity blockEntity, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
+    public void render(SoulWeaverBlockEntity blockEntity, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light, int overlay) {
         if (blockEntity.getItem() != null) {
 
             ItemStack item = blockEntity.getItem();
@@ -43,6 +45,14 @@ public class SoulWeaverBlockEntityRenderer extends BlockEntityRenderer<SoulWeave
             matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion((float) Math.pow(scale * 100, 3)));
             MinecraftClient.getInstance().getItemRenderer().renderItem(item, ModelTransformation.Mode.GROUND, false, matrixStack, vertexConsumerProvider, lightAbove, OverlayTexture.DEFAULT_UV, itemModel);
             matrixStack.pop();
+        }
+
+        if (blockEntity.isLit()) {
+            if (blockEntity.getWorld().random.nextDouble() > 0.85f) {
+                for (int i = 0; i < 2; i++) {
+                    WorldHelper.spawnParticle(ParticleTypes.SOUL_FIRE_FLAME, blockEntity.getWorld(), blockEntity.getPos(), 0.5f, 0.35f, 0.5f, 0, 0, 0, 0.15f);
+                }
+            }
         }
 
     }

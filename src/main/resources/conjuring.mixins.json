@@ -4,6 +4,7 @@
   "package": "com.glisco.conjuring.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "DispenserBehaviorMixin",
     "ParticleManagerAccessor",
     "ServerWorldMixin",
     "angerables.BeeEntityMixin",
