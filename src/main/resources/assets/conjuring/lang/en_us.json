@@ -9,7 +9,7 @@
   "item.conjuring.conjuring_focus": "Conjuring Focus",
   "item.conjuring.conjuration_essence": "Conjuration Essence",
   "item.conjuring.haste_charm": "Haste Charm",
-  "item.conjuring.plentifulness_charm": "Plentifulness Charm",
+  "item.conjuring.plentifulness_charm": "Abundance Charm",
   "item.conjuring.ignorance_charm": "Ignorance Charm",
   "item.conjuring.scope_charm": "Scope Charm",
   "item.conjuring.conjuring_scepter": "Conjuring Scepter",
@@ -49,7 +49,7 @@
   "advancement.conjuring.conjurer.title": "Spawner, but more",
   "advancement.conjuring.conjurer.description": "Craft a Conjurer",
 
-  "text.autoconfig.conjuring.option.plentifulness_multiplier": "Plentifulness Multiplier",
+  "text.autoconfig.conjuring.option.abundance_multiplier": "Abundance Multiplier",
   "text.autoconfig.conjuring.option.haste_multiplier": "Haste Multiplier",
   "text.autoconfig.conjuring.option.scope_multiplier": "Scope Multiplier",
   "text.autoconfig.conjuring.option.ignorance_multiplier": "Ignorance Multiplier",
