@@ -65,10 +65,16 @@ public class ConjuringCommon implements ModInitializer {
                     itemStacks.add(6, ItemStack.EMPTY);
                 }
 
-                itemStacks.add(13, ItemStack.EMPTY);
+                for (int i = 0; i < 5; i++) {
+                    itemStacks.add(13, ItemStack.EMPTY);
+                }
+
+                for (int i = 0; i < 5; i++) {
+                    itemStacks.add(22, ItemStack.EMPTY);
+                }
 
                 for (int i = 0; i < 4; i++) {
-                    itemStacks.add(23, ItemStack.EMPTY);
+                    itemStacks.add(32, ItemStack.EMPTY);
                 }
             })
             .icon(() -> new ItemStack(Blocks.SPAWNER))
