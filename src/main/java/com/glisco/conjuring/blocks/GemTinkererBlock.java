@@ -37,10 +37,17 @@ public class GemTinkererBlock extends BlockWithEntity {
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 
         GemTinkererBlockEntity tinkerer = (GemTinkererBlockEntity) world.getBlockEntity(pos);
+
+        if (tinkerer.isRunning()) return ActionResult.PASS;
+
         ItemStack playerStack = player.getStackInHand(hand);
         DefaultedList<ItemStack> tinkererInventory = tinkerer.getInventory();
 
         if (playerStack.isEmpty()) {
+
+            if (player.isSneaking()) {
+                return tinkerer.onUse();
+            }
 
             int lastStackIndex = -1;
 
@@ -68,10 +75,14 @@ public class GemTinkererBlock extends BlockWithEntity {
 
             if (firstEmptyStackIndex == -1) return ActionResult.PASS;
 
-            tinkererInventory.set(firstEmptyStackIndex, playerStack);
+            ItemStack single = playerStack.copy();
+            single.setCount(1);
+
+            tinkererInventory.set(firstEmptyStackIndex, single);
             tinkerer.markDirty();
 
-            player.setStackInHand(hand, ItemStack.EMPTY);
+            playerStack.decrement(1);
+            if (playerStack.isEmpty()) player.setStackInHand(hand, ItemStack.EMPTY);
         }
 
         return ActionResult.SUCCESS;

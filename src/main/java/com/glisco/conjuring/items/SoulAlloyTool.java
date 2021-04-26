@@ -9,9 +9,23 @@ import java.util.List;
 
 public interface SoulAlloyTool {
 
-    boolean canAddModifiers(ItemStack stack);
+    static boolean canAddModifiers(ItemStack stack) {
+        final CompoundTag modifiersTag = stack.getOrCreateSubTag("Modifiers");
+        return modifiersTag.getKeys().size() < 2 && modifiersTag.getKeys().stream().allMatch(s -> modifiersTag.getInt(s) < 2);
+    }
 
-    void addModifier(ItemStack stack, SoulAlloyModifier modifier);
+    ;
+
+    static void addModifier(ItemStack stack, SoulAlloyModifier modifier) {
+        CompoundTag modifierTag = stack.getOrCreateSubTag("Modifiers");
+
+        int level = modifierTag.contains(modifier.name()) ? modifierTag.getInt(modifier.name()) : 0;
+        level++;
+
+        modifierTag.putInt(modifier.name(), level);
+    }
+
+    ;
 
     static List<Text> getTooltip(ItemStack stack) {
 
@@ -24,8 +38,9 @@ public interface SoulAlloyTool {
             tooltip.add(new TranslatableText(modifier.translation_key).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(modifier.textColor))).append(": §7" + modifiers.getInt(key)));
         }
 
-        if (!tooltip.isEmpty()) {
-            tooltip.add(0, new LiteralText("§7Modifiers"));
+        if (!tooltip.isEmpty() && stack.hasEnchantments()) {
+//            tooltip.add(0, new LiteralText("§7Modifiers"));
+            tooltip.add(new LiteralText(""));
         }
 
         return tooltip;

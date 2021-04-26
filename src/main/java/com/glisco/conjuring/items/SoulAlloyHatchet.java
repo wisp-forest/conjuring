@@ -41,19 +41,4 @@ public class SoulAlloyHatchet extends AxeItem implements SoulAlloyTool {
         tooltip.addAll(SoulAlloyTool.getTooltip(stack));
     }
 
-    @Override
-    public boolean canAddModifiers(ItemStack stack) {
-        return stack.getOrCreateSubTag("Modifiers").getKeys().size() < 2;
-    }
-
-    @Override
-    public void addModifier(ItemStack stack, SoulAlloyModifier modifier) {
-
-        CompoundTag modifierTag = stack.getOrCreateSubTag("Modifiers");
-
-        int level = modifierTag.contains(modifier.name()) ? modifierTag.getInt(modifier.name()) : 0;
-        level++;
-
-        modifierTag.putInt(modifier.name(), level);
-    }
 }

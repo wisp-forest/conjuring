@@ -26,6 +26,7 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
     ModelPart mainModel = new ModelPart(32, 32, 8, 0);
 
     private static final double twoPi = Math.PI * 2;
+    private double scalar = 800;
 
     public GemTinkererBlockEntityRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher) {
         super(blockEntityRenderDispatcher);
@@ -36,12 +37,15 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
 
     public void render(GemTinkererBlockEntity blockEntity, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
 
+        scalar = blockEntity.getScalar();
+
         int lightAbove = WorldRenderer.getLightmapCoordinates(Objects.requireNonNull(blockEntity.getWorld()), blockEntity.getPos().up());
         VertexConsumer vertexConsumer = MODEL_TEXTURE.getVertexConsumer(vertexConsumerProvider, RenderLayer::getEntitySolid);
 
         DefaultedList<ItemStack> items = blockEntity.getInventory();
         ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
         float itemRotation = (float) (System.currentTimeMillis() / 30d % 360);
+        final float scaledRotation = (float) (itemRotation + Math.pow(scalar * 2, 1.2));
 
         // ---
 
@@ -66,7 +70,7 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
 
         matrixStack.translate(0.0625, 0.425, 0.0625);
         matrixStack.scale(0.25f, 0.25f, 0.25f);
-        matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(itemRotation));
+        matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(scaledRotation));
         itemRenderer.renderItem(items.get(1), ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
 
         matrixStack.pop();
@@ -80,7 +84,7 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
 
         matrixStack.translate(0.0625, 0.425, 0.0625);
         matrixStack.scale(0.25f, 0.25f, 0.25f);
-        matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(itemRotation));
+        matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(scaledRotation));
         itemRenderer.renderItem(items.get(2), ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
 
         matrixStack.pop();
@@ -94,7 +98,7 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
 
         matrixStack.translate(0.0625, 0.425, 0.0625);
         matrixStack.scale(0.25f, 0.25f, 0.25f);
-        matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(itemRotation));
+        matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(scaledRotation));
         itemRenderer.renderItem(items.get(3), ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
 
         matrixStack.pop();
@@ -108,7 +112,7 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
 
         matrixStack.translate(0.0625, 0.425, 0.0625);
         matrixStack.scale(0.25f, 0.25f, 0.25f);
-        matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(itemRotation));
+        matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(scaledRotation));
         itemRenderer.renderItem(items.get(4), ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
 
         matrixStack.pop();
@@ -116,6 +120,6 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
     }
 
     private double getHeight(double offset) {
-        return Math.sin((System.currentTimeMillis() / 800d + offset * twoPi) % (twoPi)) * 0.1;
+        return Math.sin((System.currentTimeMillis() / 800d + offset * twoPi) % (twoPi)) * 0.01 * scalar;
     }
 }
