@@ -17,7 +17,7 @@ public class BlackstonePedestalBlockEntity extends BlockEntity implements BlockE
     private BlockPos linkedFunnel = null;
 
     public BlackstonePedestalBlockEntity() {
-        super(ConjuringCommon.BLACKSTONE_PEDSTAL_BLOCK_ENTITY);
+        super(ConjuringCommon.BLACKSTONE_PEDESTAL_BLOCK_ENTITY);
     }
 
     //Data Logic

@@ -3,18 +3,13 @@ package com.glisco.conjuring.items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.text.*;
+import net.minecraft.util.ActionResult;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public interface SoulAlloyTool {
-
-    static boolean canAddModifiers(ItemStack stack) {
-        final CompoundTag modifiersTag = stack.getOrCreateSubTag("Modifiers");
-        return modifiersTag.getKeys().size() < 2 && modifiersTag.getKeys().stream().allMatch(s -> modifiersTag.getInt(s) < 2);
-    }
-
-    ;
 
     static void addModifier(ItemStack stack, SoulAlloyModifier modifier) {
         CompoundTag modifierTag = stack.getOrCreateSubTag("Modifiers");
@@ -25,7 +20,40 @@ public interface SoulAlloyTool {
         modifierTag.putInt(modifier.name(), level);
     }
 
-    ;
+    static boolean canAddModifier(ItemStack stack, SoulAlloyModifier modifier) {
+        CompoundTag modifierTag = stack.getOrCreateSubTag("Modifiers");
+
+        return modifierTag.getKeys().size() < 2 || (modifierTag.contains(modifier.name()) ? modifierTag.getInt(modifier.name()) : 0) == 1;
+    }
+
+    static boolean canAddModifiers(ItemStack stack, List<SoulAlloyModifier> modifiers) {
+
+        HashMap<SoulAlloyModifier, Integer> modifierMap = new HashMap<>();
+        CompoundTag modifierTag = stack.getOrCreateSubTag("Modifiers");
+
+        modifierTag.getKeys().forEach(s -> modifierMap.put(SoulAlloyModifier.valueOf(s), modifierTag.getInt(s)));
+
+        for (SoulAlloyModifier modifier : modifiers) {
+
+            if (SoulAlloyTool.canAddModifier(stack, modifier)) {
+                if (!modifierMap.containsKey(modifier)) {
+                    modifierMap.put(modifier, 1);
+                } else {
+                    modifierMap.put(modifier, modifierMap.get(modifier) + 1);
+                }
+            } else {
+                return false;
+            }
+        }
+
+        modifierMap.forEach((modifier, integer) -> System.out.println(modifier + ":" + integer));
+
+        System.out.println(modifierMap.keySet().stream().allMatch(modifier -> modifierMap.get(modifier) < 2));
+        System.out.println(modifierMap.size() <= 2);
+
+        return modifierMap.keySet().stream().allMatch(modifier -> modifierMap.get(modifier) <= 2) && modifierMap.size() <= 2;
+
+    }
 
     static List<Text> getTooltip(ItemStack stack) {
 
@@ -35,11 +63,16 @@ public interface SoulAlloyTool {
 
         for (String key : modifiers.getKeys()) {
             final SoulAlloyModifier modifier = SoulAlloyModifier.valueOf(key);
-            tooltip.add(new TranslatableText(modifier.translation_key).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(modifier.textColor))).append(": §7" + modifiers.getInt(key)));
+
+            StringBuilder level = new StringBuilder();
+            for (int i = 0; i < modifiers.getInt(key); i++) {
+                level.append("●");
+            }
+
+            tooltip.add(new TranslatableText(modifier.translation_key).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(modifier.textColor))).append(": §7" + level));
         }
 
         if (!tooltip.isEmpty() && stack.hasEnchantments()) {
-//            tooltip.add(0, new LiteralText("§7Modifiers"));
             tooltip.add(new LiteralText(""));
         }
 

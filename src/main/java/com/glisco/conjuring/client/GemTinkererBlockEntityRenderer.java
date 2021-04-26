@@ -1,5 +1,6 @@
 package com.glisco.conjuring.client;
 
+import com.glisco.conjuring.WorldHelper;
 import com.glisco.conjuring.blocks.GemTinkererBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.ModelPart;
@@ -13,8 +14,11 @@ import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import java.util.Objects;
 
@@ -39,13 +43,16 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
 
         scalar = blockEntity.getScalar();
 
-        int lightAbove = WorldRenderer.getLightmapCoordinates(Objects.requireNonNull(blockEntity.getWorld()), blockEntity.getPos().up());
+        final World world = blockEntity.getWorld();
+        final BlockPos pos = blockEntity.getPos();
+        int lightAbove = WorldRenderer.getLightmapCoordinates(Objects.requireNonNull(world), pos.up());
         VertexConsumer vertexConsumer = MODEL_TEXTURE.getVertexConsumer(vertexConsumerProvider, RenderLayer::getEntitySolid);
 
         DefaultedList<ItemStack> items = blockEntity.getInventory();
         ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
         float itemRotation = (float) (System.currentTimeMillis() / 30d % 360);
-        final float scaledRotation = (float) (itemRotation + Math.pow(scalar * 2, 1.2));
+        final float scaledRotation = (float) (itemRotation + Math.pow(scalar * 2, 1.5));
+        final boolean particles = blockEntity.particles();
 
         // ---
 
@@ -58,6 +65,12 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
         matrixStack.scale(0.5f, 0.5f, 0.5f);
         matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(itemRotation));
         itemRenderer.renderItem(items.get(0), ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
+
+        if (particles) {
+            for (int k = 0; k < 20; k++) {
+                WorldHelper.spawnParticle(ParticleTypes.LAVA, world, pos, 0.5f, (float) (1.05 + getHeight(0)), 0.5f, 0.15f);
+            }
+        }
 
         matrixStack.pop();
 
@@ -73,6 +86,8 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
         matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(scaledRotation));
         itemRenderer.renderItem(items.get(1), ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
 
+        if (particles && !items.get(1).isEmpty()) spawnItemParticles(world, pos, 0.1, 0.45, 0.5 * twoPi);
+
         matrixStack.pop();
 
         // ---
@@ -86,6 +101,8 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
         matrixStack.scale(0.25f, 0.25f, 0.25f);
         matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(scaledRotation));
         itemRenderer.renderItem(items.get(2), ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
+
+        if (particles && !items.get(2).isEmpty()) spawnItemParticles(world, pos, 0.45, 0.1, 1.5 * twoPi);
 
         matrixStack.pop();
 
@@ -101,6 +118,8 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
         matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(scaledRotation));
         itemRenderer.renderItem(items.get(3), ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
 
+        if (particles && !items.get(3).isEmpty()) spawnItemParticles(world, pos, 0.45, 0.8, twoPi);
+
         matrixStack.pop();
 
         // ---
@@ -115,11 +134,19 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
         matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(scaledRotation));
         itemRenderer.renderItem(items.get(4), ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
 
+        if (particles && !items.get(4).isEmpty()) spawnItemParticles(world, pos, 0.8, 0.45, 0);
+
         matrixStack.pop();
 
     }
 
     private double getHeight(double offset) {
         return Math.sin((System.currentTimeMillis() / 800d + offset * twoPi) % (twoPi)) * 0.01 * scalar;
+    }
+
+    private void spawnItemParticles(World world, BlockPos pos, double x, double z, double offset) {
+        for (int k = 0; k < 5; k++) {
+            WorldHelper.spawnParticle(ParticleTypes.SOUL_FIRE_FLAME, world, pos, (float) (x + 0.0625), (float) (1f + getHeight(offset)), (float) (z + 0.0625), 0.1f);
+        }
     }
 }

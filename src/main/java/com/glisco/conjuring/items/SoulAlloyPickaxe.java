@@ -10,7 +10,7 @@ import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-public class SoulAlloyPickaxe extends PickaxeItem {
+public class SoulAlloyPickaxe extends PickaxeItem implements SoulAlloyTool {
 
     public SoulAlloyPickaxe() {
         super(SoulAlloyToolMaterial.INSTANCE, 1, -2.8f, new Settings().group(ConjuringCommon.CONJURING_GROUP).rarity(Rarity.UNCOMMON));

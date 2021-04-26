@@ -11,7 +11,7 @@ import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-public class SoulAlloyShovel extends ShovelItem {
+public class SoulAlloyShovel extends ShovelItem implements SoulAlloyTool{
 
     public SoulAlloyShovel() {
         super(SoulAlloyToolMaterial.INSTANCE, 1.5f, -3.0f, new Settings().group(ConjuringCommon.CONJURING_GROUP).rarity(Rarity.UNCOMMON));

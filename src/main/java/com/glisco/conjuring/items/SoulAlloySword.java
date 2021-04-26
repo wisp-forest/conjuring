@@ -10,7 +10,7 @@ import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-public class SoulAlloySword extends SwordItem {
+public class SoulAlloySword extends SwordItem implements SoulAlloyTool{
 
     public SoulAlloySword() {
         super(SoulAlloyToolMaterial.INSTANCE, 3, -2.4f, new Settings().group(ConjuringCommon.CONJURING_GROUP).rarity(Rarity.UNCOMMON));

@@ -47,9 +47,28 @@ public class ConjuringCommon implements ModInitializer {
 
     public static ConjuringConfig CONFIG;
 
-    public static final ItemGroup CONJURING_GROUP = FabricItemGroupBuilder.build(
-            new Identifier("conjuring", "general"),
-            () -> new ItemStack(Blocks.SPAWNER));
+    public static final ItemGroup CONJURING_GROUP = FabricItemGroupBuilder.create(new Identifier("conjuring", "general"))
+            .appendItems(itemStacks -> {
+
+                for (Item item : Registry.ITEM) {
+                    if (item.getGroup() == null) continue;
+                    if (item.getGroup().getName().equals("conjuring.general")) {
+                        itemStacks.add(new ItemStack(item));
+                    }
+                }
+
+                for (int i = 0; i < 3; i++) {
+                    itemStacks.add(6, ItemStack.EMPTY);
+                }
+
+                itemStacks.add(13, ItemStack.EMPTY);
+
+                for (int i = 0; i < 4; i++) {
+                    itemStacks.add(23, ItemStack.EMPTY);
+                }
+            })
+            .icon(() -> new ItemStack(Blocks.SPAWNER))
+            .build();
 
     public static Item CONJURING_SCEPTER = new ConjuringScepter();
     public static Item SUPERIOR_CONJURING_SCEPTER = new SuperiorConjuringScepter();
@@ -69,6 +88,11 @@ public class ConjuringCommon implements ModInitializer {
     public static Item SOUL_BRICK = new SoulBrick();
     public static Item GEM_SOCKET = new GemSocket();
 
+    public static Item SCOPE_CHARM = new CharmItem();
+    public static Item ABUNDANCE_CHARM = new CharmItem();
+    public static Item HASTE_CHARM = new CharmItem();
+    public static Item IGNORANCE_CHARM = new CharmItem();
+
     public static Item SOUL_ALLOY_SWORD = new SoulAlloySword();
     public static Item SOUL_ALLOY_PICKAXE = new SoulAlloyPickaxe();
     public static Item SOUL_ALLOY_HATCHET = new SoulAlloyHatchet();
@@ -81,7 +105,7 @@ public class ConjuringCommon implements ModInitializer {
     public static BlockEntityType<SoulfireForgeBlockEntity> SOULFIRE_FORGE_BLOCK_ENTITY;
 
     public static final Block BLACKSTONE_PEDESTAL_BLOCK = new BlackstonePedestalBlock();
-    public static BlockEntityType<BlackstonePedestalBlockEntity> BLACKSTONE_PEDSTAL_BLOCK_ENTITY;
+    public static BlockEntityType<BlackstonePedestalBlockEntity> BLACKSTONE_PEDESTAL_BLOCK_ENTITY;
 
     public static final Block SOUL_FUNNEL_BLOCK = new SoulFunnelBlock();
     public static BlockEntityType<SoulFunnelBlockEntity> SOUL_FUNNEL_BLOCK_ENTITY;
@@ -103,6 +127,7 @@ public class ConjuringCommon implements ModInitializer {
     static {
         CONJURER_SCREEN_HANDLER_TYPE = ScreenHandlerRegistry.registerSimple(new Identifier("conjuring", "conjurer"), ConjurerScreenHandler::new);
         SOULFIRE_FORGE_SCREEN_HANDLER_TYPE = ScreenHandlerRegistry.registerSimple(new Identifier("conjuring", "soulfire_forge"), SoulfireForgeScreenHandler::new);
+
         SOUL_PROJECTILE = FabricEntityTypeBuilder.<SoulProjectileEntity>create(SpawnGroup.MISC, SoulProjectileEntity::new).dimensions(EntityDimensions.fixed(0.25f, 0.25f)).build();
         SOUL_DIGGER = FabricEntityTypeBuilder.<SoulDiggerEntity>create(SpawnGroup.MISC, SoulDiggerEntity::new).dimensions(EntityDimensions.fixed(0.25f, 0.25f)).build();
         SOUL_FELLER = FabricEntityTypeBuilder.<SoulFellerEntity>create(SpawnGroup.MISC, SoulFellerEntity::new).dimensions(EntityDimensions.fixed(0.25f, 0.25f)).build();
@@ -112,27 +137,6 @@ public class ConjuringCommon implements ModInitializer {
     @Override
     public void onInitialize() {
 
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "conjuring_scepter"), CONJURING_SCEPTER);
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "superior_conjuring_scepter"), SUPERIOR_CONJURING_SCEPTER);
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "conjuration_essence"), CONJURATION_ESSENCE);
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "lesser_conjuration_essence"), LESSER_CONJURATION_ESSENCE);
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "conjuring_focus"), CONJURING_FOCUS);
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "stabilized_conjuring_focus"), STABILIZED_CONJURING_FOCUS);
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_rod"), SOUL_ROD);
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy"), SOUL_ALLOY);
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_brick"), SOUL_BRICK);
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "gem_socket"), GEM_SOCKET);
-
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "haste_charm"), new CharmItem(SoulAlloyTool.SoulAlloyModifier.HASTE));
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "ignorance_charm"), new CharmItem(SoulAlloyTool.SoulAlloyModifier.IGNORANCE));
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "plentifulness_charm"), new CharmItem(SoulAlloyTool.SoulAlloyModifier.ABUNDANCE));
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "scope_charm"), new CharmItem(SoulAlloyTool.SoulAlloyModifier.SCOPE));
-
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy_sword"), SOUL_ALLOY_SWORD);
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy_pickaxe"), SOUL_ALLOY_PICKAXE);
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy_hatchet"), SOUL_ALLOY_HATCHET);
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy_shovel"), SOUL_ALLOY_SHOVEL);
-
         CONJURER_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:conjurer", BlockEntityType.Builder.create(ConjurerBlockEntity::new, CONJURER_BLOCK).build(null));
         Registry.register(Registry.BLOCK, new Identifier("conjuring", "conjurer"), CONJURER_BLOCK);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "conjurer"), new BlockItem(CONJURER_BLOCK, new Item.Settings().group(ConjuringCommon.CONJURING_GROUP).rarity(Rarity.UNCOMMON)));
@@ -141,7 +145,7 @@ public class ConjuringCommon implements ModInitializer {
         Registry.register(Registry.BLOCK, new Identifier("conjuring", "soulfire_forge"), SOULFIRE_FORGE_BLOCK);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soulfire_forge"), new BlockItem(SOULFIRE_FORGE_BLOCK, new Item.Settings().group(ConjuringCommon.CONJURING_GROUP)));
 
-        BLACKSTONE_PEDSTAL_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:blackstone_pedestal", BlockEntityType.Builder.create(BlackstonePedestalBlockEntity::new, BLACKSTONE_PEDESTAL_BLOCK).build(null));
+        BLACKSTONE_PEDESTAL_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:blackstone_pedestal", BlockEntityType.Builder.create(BlackstonePedestalBlockEntity::new, BLACKSTONE_PEDESTAL_BLOCK).build(null));
         Registry.register(Registry.BLOCK, new Identifier("conjuring", "blackstone_pedestal"), BLACKSTONE_PEDESTAL_BLOCK);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "blackstone_pedestal"), new BlockItem(BLACKSTONE_PEDESTAL_BLOCK, new Item.Settings().group(ConjuringCommon.CONJURING_GROUP)));
 
@@ -156,6 +160,34 @@ public class ConjuringCommon implements ModInitializer {
         GEM_TINKERER_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:gem_tinkerer", BlockEntityType.Builder.create(GemTinkererBlockEntity::new, GEM_TINKERER_BLOCK).build(null));
         Registry.register(Registry.BLOCK, new Identifier("conjuring", "gem_tinkerer"), GEM_TINKERER_BLOCK);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "gem_tinkerer"), new BlockItem(GEM_TINKERER_BLOCK, new Item.Settings().group(ConjuringCommon.CONJURING_GROUP)));
+
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "conjuring_scepter"), CONJURING_SCEPTER);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "superior_conjuring_scepter"), SUPERIOR_CONJURING_SCEPTER);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "conjuring_focus"), CONJURING_FOCUS);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "stabilized_conjuring_focus"), STABILIZED_CONJURING_FOCUS);
+
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy_sword"), SOUL_ALLOY_SWORD);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy_pickaxe"), SOUL_ALLOY_PICKAXE);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy_hatchet"), SOUL_ALLOY_HATCHET);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy_shovel"), SOUL_ALLOY_SHOVEL);
+
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy"), SOUL_ALLOY);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_brick"), SOUL_BRICK);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_rod"), SOUL_ROD);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "conjuration_essence"), CONJURATION_ESSENCE);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "lesser_conjuration_essence"), LESSER_CONJURATION_ESSENCE);
+
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "gem_socket"), GEM_SOCKET);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "haste_charm"), HASTE_CHARM);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "ignorance_charm"), IGNORANCE_CHARM);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "plentifulness_charm"), ABUNDANCE_CHARM);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "scope_charm"), SCOPE_CHARM);
+
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "haste_gem"), new GemItem(SoulAlloyTool.SoulAlloyModifier.HASTE));
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "ignorance_gem"), new GemItem(SoulAlloyTool.SoulAlloyModifier.IGNORANCE));
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "abundance_gem"), new GemItem(SoulAlloyTool.SoulAlloyModifier.ABUNDANCE));
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "scope_gem"), new GemItem(SoulAlloyTool.SoulAlloyModifier.SCOPE));
+
 
         Registry.register(Registry.RECIPE_SERIALIZER, SoulfireForgeRecipeSerializer.ID, SoulfireForgeRecipeSerializer.INSTANCE);
         Registry.register(Registry.RECIPE_TYPE, SoulfireForgeRecipe.Type.ID, SoulfireForgeRecipe.Type.INSTANCE);
