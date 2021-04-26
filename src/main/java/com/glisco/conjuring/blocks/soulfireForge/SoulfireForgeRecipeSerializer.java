@@ -1,5 +1,6 @@
 package com.glisco.conjuring.blocks.soulfireForge;
 
+import com.glisco.conjuring.blocks.soul_weaver.SoulWeaverRecipeSerializer;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -22,7 +23,7 @@ public class SoulfireForgeRecipeSerializer implements RecipeSerializer<SoulfireF
     }
 
     public static final SoulfireForgeRecipeSerializer INSTANCE = new SoulfireForgeRecipeSerializer();
-    public static final Identifier ID = new Identifier("conjuring:soulfire_forge");
+    public static final Identifier ID = SoulfireForgeRecipe.Type.ID;
 
 
     @Override

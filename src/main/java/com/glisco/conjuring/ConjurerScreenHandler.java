@@ -1,8 +1,6 @@
 package com.glisco.conjuring;
 
 import com.glisco.conjuring.items.ConjuringFocus;
-import com.glisco.conjuring.items.GemItem;
-import com.glisco.conjuring.items.SoulAlloyTool;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -33,28 +31,28 @@ public class ConjurerScreenHandler extends ScreenHandler {
         this.addSlot(new Slot(this.inventory, 1, 77, 2) {
             @Override
             public boolean canInsert(ItemStack stack) {
-                return ((GemItem) stack.getItem()).modifier == SoulAlloyTool.SoulAlloyModifier.HASTE;
+                return stack.getItem() == ConjuringCommon.HASTE_CHARM;
             }
         });
 
         this.addSlot(new Slot(this.inventory, 2, 117, 41) {
             @Override
             public boolean canInsert(ItemStack stack) {
-                return ((GemItem) stack.getItem()).modifier == SoulAlloyTool.SoulAlloyModifier.ABUNDANCE;
+                return stack.getItem() == ConjuringCommon.ABUNDANCE_CHARM;
             }
         });
 
         this.addSlot(new Slot(this.inventory, 3, 77, 80) {
             @Override
             public boolean canInsert(ItemStack stack) {
-                return ((GemItem) stack.getItem()).modifier == SoulAlloyTool.SoulAlloyModifier.SCOPE;
+                return stack.getItem() == ConjuringCommon.SCOPE_CHARM;
             }
         });
 
         this.addSlot(new Slot(this.inventory, 4, 38, 41) {
             @Override
             public boolean canInsert(ItemStack stack) {
-                return ((GemItem) stack.getItem()).modifier == SoulAlloyTool.SoulAlloyModifier.IGNORANCE;
+                return stack.getItem() == ConjuringCommon.IGNORANCE_CHARM;
             }
         });
 

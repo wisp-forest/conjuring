@@ -1,4 +1,4 @@
-package com.glisco.conjuring.blocks.soul_weaver;
+package com.glisco.conjuring.blocks.gem_tinkerer;
 
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeRecipeSerializer;
@@ -17,18 +17,16 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SoulWeaverRecipe implements Recipe<Inventory> {
+public class GemTinkererRecipe implements Recipe<Inventory> {
 
     private final DefaultedList<Ingredient> inputs;
     private final ItemStack result;
     private final Identifier id;
-    public final boolean transferTag;
 
-    public SoulWeaverRecipe(Identifier id, ItemStack result, DefaultedList<Ingredient> inputs, boolean transferTag) {
+    public GemTinkererRecipe(Identifier id, ItemStack result, DefaultedList<Ingredient> inputs) {
         this.id = id;
         this.result = result;
         this.inputs = inputs;
-        this.transferTag = transferTag;
     }
 
     @Override
@@ -77,7 +75,7 @@ public class SoulWeaverRecipe implements Recipe<Inventory> {
 
     @Environment(EnvType.CLIENT)
     public ItemStack getRecipeKindIcon() {
-        return new ItemStack(ConjuringCommon.SOUL_WEAVER_BLOCK);
+        return new ItemStack(ConjuringCommon.GEM_TINKERER_BLOCK);
     }
 
     @Override
@@ -90,12 +88,12 @@ public class SoulWeaverRecipe implements Recipe<Inventory> {
         return Type.INSTANCE;
     }
 
-    public static class Type implements RecipeType<SoulWeaverRecipe> {
+    public static class Type implements RecipeType<GemTinkererRecipe> {
         private Type() {
         }
 
         public static final Type INSTANCE = new Type();
 
-        public static final Identifier ID = new Identifier("conjuring", "soul_weaving");
+        public static final Identifier ID = new Identifier("conjuring", "gem_tinkering");
     }
 }

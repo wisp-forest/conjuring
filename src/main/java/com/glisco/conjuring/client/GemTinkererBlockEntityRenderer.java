@@ -1,7 +1,7 @@
 package com.glisco.conjuring.client;
 
 import com.glisco.conjuring.WorldHelper;
-import com.glisco.conjuring.blocks.GemTinkererBlockEntity;
+import com.glisco.conjuring.blocks.gem_tinkerer.GemTinkererBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.*;

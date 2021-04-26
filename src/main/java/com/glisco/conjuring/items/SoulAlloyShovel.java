@@ -2,14 +2,19 @@ package com.glisco.conjuring.items;
 
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.entities.SoulMagnetEntity;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class SoulAlloyShovel extends ShovelItem implements SoulAlloyTool{
 
@@ -38,5 +43,10 @@ public class SoulAlloyShovel extends ShovelItem implements SoulAlloyTool{
         }
 
         return TypedActionResult.success(user.getStackInHand(hand));
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        tooltip.addAll(SoulAlloyTool.getTooltip(stack));
     }
 }

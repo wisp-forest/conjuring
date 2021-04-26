@@ -1,4 +1,4 @@
-package com.glisco.conjuring.blocks.soul_weaver;
+package com.glisco.conjuring.blocks.gem_tinkerer;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -13,18 +13,18 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
 
-public class SoulWeaverRecipeSerializer implements RecipeSerializer<SoulWeaverRecipe> {
+public class GemTinkererRecipeSerializer implements RecipeSerializer<GemTinkererRecipe> {
 
-    private SoulWeaverRecipeSerializer() {
+    private GemTinkererRecipeSerializer() {
     }
 
-    public static final SoulWeaverRecipeSerializer INSTANCE = new SoulWeaverRecipeSerializer();
-    public static final Identifier ID = SoulWeaverRecipe.Type.ID;
+    public static final GemTinkererRecipeSerializer INSTANCE = new GemTinkererRecipeSerializer();
+    public static final Identifier ID = GemTinkererRecipe.Type.ID;
 
 
     @Override
-    public SoulWeaverRecipe read(Identifier id, JsonObject json) {
-        SoulWeaverRecipeJson recipe = new Gson().fromJson(json, SoulWeaverRecipeJson.class);
+    public GemTinkererRecipe read(Identifier id, JsonObject json) {
+        GemTinkererRecipeJson recipe = new Gson().fromJson(json, GemTinkererRecipeJson.class);
 
         if (recipe.inputs == null || recipe.result == null) {
             throw new JsonSyntaxException("Missing recipe attributes");
@@ -42,13 +42,12 @@ public class SoulWeaverRecipeSerializer implements RecipeSerializer<SoulWeaverRe
         Item resultItem = Registry.ITEM.getOrEmpty(Identifier.tryParse(recipe.result.get("item").getAsString())).orElseThrow(() -> new JsonSyntaxException("No such item \'" + recipe.result.get("item").getAsString() + "\'"));
         ItemStack result = new ItemStack(resultItem, recipe.result.get("count").getAsInt());
 
-        return new SoulWeaverRecipe(id, result, inputs, recipe.transferTag);
+        return new GemTinkererRecipe(id, result, inputs);
     }
 
     @Override
-    public SoulWeaverRecipe read(Identifier id, PacketByteBuf buf) {
+    public GemTinkererRecipe read(Identifier id, PacketByteBuf buf) {
         ItemStack result = buf.readItemStack();
-        boolean transferTag = buf.readBoolean();
 
         DefaultedList<Ingredient> inputs = DefaultedList.ofSize(5, Ingredient.EMPTY);
 
@@ -56,13 +55,12 @@ public class SoulWeaverRecipeSerializer implements RecipeSerializer<SoulWeaverRe
             inputs.set(i, Ingredient.fromPacket(buf));
         }
 
-        return new SoulWeaverRecipe(id, result, inputs, transferTag);
+        return new GemTinkererRecipe(id, result, inputs);
     }
 
     @Override
-    public void write(PacketByteBuf buf, SoulWeaverRecipe recipe) {
+    public void write(PacketByteBuf buf, GemTinkererRecipe recipe) {
         buf.writeItemStack(recipe.getOutput());
-        buf.writeBoolean(recipe.transferTag);
 
         for (Ingredient ingredient : recipe.getInputs()) {
             ingredient.write(buf);

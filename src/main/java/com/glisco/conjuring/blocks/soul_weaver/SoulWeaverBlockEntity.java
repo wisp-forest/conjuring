@@ -242,8 +242,18 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
                 for (BlockPos pedestal : pedestals) {
                     ((BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal)).setActive(false);
                 }
+
                 verifyRecipe();
-                setItem(cachedRecipe.getOutput());
+
+                if (cachedRecipe.transferTag) {
+                    ItemStack output = cachedRecipe.getOutput();
+                    output.setTag(getItem().getOrCreateTag());
+                    setItem(output);
+                } else {
+                    setItem(cachedRecipe.getOutput());
+                }
+
+
                 setLit(false);
                 cachedRecipe = null;
             } else {

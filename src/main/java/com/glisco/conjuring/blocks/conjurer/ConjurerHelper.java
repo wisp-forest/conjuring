@@ -2,8 +2,6 @@ package com.glisco.conjuring.blocks.conjurer;
 
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.items.ConjuringFocus;
-import com.glisco.conjuring.items.GemItem;
-import com.glisco.conjuring.items.SoulAlloyTool;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.MobSpawnerEntry;
 
@@ -41,20 +39,19 @@ public class ConjurerHelper {
             return;
         }
 
-        //TODO replace this with item checks
-        if (((GemItem)hasteCharms.getItem()).modifier == SoulAlloyTool.SoulAlloyModifier.HASTE) {
+        if (hasteCharms.getItem() == ConjuringCommon.HASTE_CHARM) {
             maxSpawnDelay = Math.max(10, Math.round(800 - hasteCharms.getCount() * ConjuringCommon.CONFIG.haste_multiplier));
         }
 
-        if (((GemItem)hasteCharms.getItem()).modifier == SoulAlloyTool.SoulAlloyModifier.ABUNDANCE) {
+        if (abundanceCharms.getItem() == ConjuringCommon.ABUNDANCE_CHARM) {
             spawnCount = 4 + abundanceCharms.getCount() * ConjuringCommon.CONFIG.abundance_multiplier;
         }
 
-        if (((GemItem)hasteCharms.getItem()).modifier == SoulAlloyTool.SoulAlloyModifier.SCOPE) {
+        if (scopeCharms.getItem() == ConjuringCommon.SCOPE_CHARM) {
             requiredPlayerRange = 16 + scopeCharms.getCount() * ConjuringCommon.CONFIG.scope_multiplier;
         }
 
-        if (((GemItem)hasteCharms.getItem()).modifier == SoulAlloyTool.SoulAlloyModifier.IGNORANCE) {
+        if (ignoranceCharms.getItem() == ConjuringCommon.IGNORANCE_CHARM) {
             maxNearbyEntities = 6 + ignoranceCharms.getCount() * ConjuringCommon.CONFIG.ignorance_multiplier;
         }
 

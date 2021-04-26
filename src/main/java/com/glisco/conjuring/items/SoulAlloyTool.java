@@ -3,7 +3,6 @@ package com.glisco.conjuring.items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.text.*;
-import net.minecraft.util.ActionResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,11 +44,6 @@ public interface SoulAlloyTool {
                 return false;
             }
         }
-
-        modifierMap.forEach((modifier, integer) -> System.out.println(modifier + ":" + integer));
-
-        System.out.println(modifierMap.keySet().stream().allMatch(modifier -> modifierMap.get(modifier) < 2));
-        System.out.println(modifierMap.size() <= 2);
 
         return modifierMap.keySet().stream().allMatch(modifier -> modifierMap.get(modifier) <= 2) && modifierMap.size() <= 2;
 

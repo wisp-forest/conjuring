@@ -3,6 +3,10 @@ package com.glisco.conjuring;
 import com.glisco.conjuring.blocks.*;
 import com.glisco.conjuring.blocks.conjurer.ConjurerBlock;
 import com.glisco.conjuring.blocks.conjurer.ConjurerBlockEntity;
+import com.glisco.conjuring.blocks.gem_tinkerer.GemTinkererBlock;
+import com.glisco.conjuring.blocks.gem_tinkerer.GemTinkererBlockEntity;
+import com.glisco.conjuring.blocks.gem_tinkerer.GemTinkererRecipe;
+import com.glisco.conjuring.blocks.gem_tinkerer.GemTinkererRecipeSerializer;
 import com.glisco.conjuring.blocks.soul_weaver.SoulWeaverBlock;
 import com.glisco.conjuring.blocks.soul_weaver.SoulWeaverBlockEntity;
 import com.glisco.conjuring.blocks.soul_weaver.SoulWeaverRecipe;
@@ -188,12 +192,14 @@ public class ConjuringCommon implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier("conjuring", "abundance_gem"), new GemItem(SoulAlloyTool.SoulAlloyModifier.ABUNDANCE));
         Registry.register(Registry.ITEM, new Identifier("conjuring", "scope_gem"), new GemItem(SoulAlloyTool.SoulAlloyModifier.SCOPE));
 
-
         Registry.register(Registry.RECIPE_SERIALIZER, SoulfireForgeRecipeSerializer.ID, SoulfireForgeRecipeSerializer.INSTANCE);
         Registry.register(Registry.RECIPE_TYPE, SoulfireForgeRecipe.Type.ID, SoulfireForgeRecipe.Type.INSTANCE);
 
         Registry.register(Registry.RECIPE_SERIALIZER, SoulWeaverRecipeSerializer.ID, SoulWeaverRecipeSerializer.INSTANCE);
         Registry.register(Registry.RECIPE_TYPE, SoulWeaverRecipe.Type.ID, SoulWeaverRecipe.Type.INSTANCE);
+
+        Registry.register(Registry.RECIPE_SERIALIZER, GemTinkererRecipeSerializer.ID, GemTinkererRecipeSerializer.INSTANCE);
+        Registry.register(Registry.RECIPE_TYPE, GemTinkererRecipe.Type.ID, GemTinkererRecipe.Type.INSTANCE);
 
         Registry.register(Registry.ENTITY_TYPE, new Identifier("conjuring", "soul_projectile"), SOUL_PROJECTILE);
         Registry.register(Registry.ENTITY_TYPE, new Identifier("conjuring", "soul_feller"), SOUL_FELLER);

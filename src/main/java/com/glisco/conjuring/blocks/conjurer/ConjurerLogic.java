@@ -73,7 +73,7 @@ public abstract class ConjurerLogic {
 
     private boolean isPlayerInRange() {
         BlockPos blockPos = this.getPos();
-        return !requiresPlayer || this.getWorld().isPlayerInRange((double) blockPos.getX() + 0.5D, (double) blockPos.getY() + 0.5D, (double) blockPos.getZ() + 0.5D, (double) this.requiredPlayerRange);
+        return getWorld().getReceivedRedstonePower(blockPos) == 0 && (!requiresPlayer || this.getWorld().isPlayerInRange((double) blockPos.getX() + 0.5D, (double) blockPos.getY() + 0.5D, (double) blockPos.getZ() + 0.5D, (double) this.requiredPlayerRange));
     }
 
     public void update() {

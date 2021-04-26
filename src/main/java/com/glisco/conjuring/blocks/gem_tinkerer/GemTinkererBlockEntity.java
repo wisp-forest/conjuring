@@ -1,4 +1,4 @@
-package com.glisco.conjuring.blocks;
+package com.glisco.conjuring.blocks.gem_tinkerer;
 
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.items.GemItem;
@@ -7,6 +7,8 @@ import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
@@ -17,11 +19,13 @@ import net.minecraft.util.collection.DefaultedList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class GemTinkererBlockEntity extends BlockEntity implements BlockEntityClientSerializable, Tickable {
 
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(5, ItemStack.EMPTY);
     private int processTick = 0;
+    private GemTinkererRecipe cachedRecipe;
 
     boolean particlesShown = false;
 
@@ -49,7 +53,32 @@ public class GemTinkererBlockEntity extends BlockEntity implements BlockEntityCl
         fromTag(this.getCachedState(), compoundTag);
     }
 
+    public boolean verifyRecipe() {
+
+        Inventory testInventory = new SimpleInventory(5);
+        for (int i = 0; i < inventory.size(); i++) {
+            testInventory.setStack(i, inventory.get(i));
+        }
+
+        Optional<GemTinkererRecipe> recipeOptional = world.getRecipeManager().getFirstMatch(GemTinkererRecipe.Type.INSTANCE, testInventory, world);
+
+        if (!recipeOptional.isPresent()) return false;
+
+        cachedRecipe = recipeOptional.get();
+        return true;
+    }
+
     public ActionResult onUse() {
+
+        if (verifyRecipe()) {
+            if (!world.isClient()) {
+                processTick = 1;
+                markDirty();
+            }
+
+            return ActionResult.SUCCESS;
+        }
+
         if (!(inventory.get(0).getItem() instanceof SoulAlloyTool)) return ActionResult.PASS;
 
         List<SoulAlloyTool.SoulAlloyModifier> presentModifiers = new ArrayList<>();
@@ -87,13 +116,19 @@ public class GemTinkererBlockEntity extends BlockEntity implements BlockEntityCl
 
                     world.playSound(null, pos, SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.BLOCKS, 1, 0);
 
-                    for (int i = 1; i < inventory.size(); i++) {
+                    if (cachedRecipe == null) {
+                        for (int i = 1; i < inventory.size(); i++) {
+                            if (!inventory.get(i).isEmpty() && SoulAlloyTool.canAddModifier(inventory.get(0), ((GemItem) inventory.get(i).getItem()).getModifier())) {
+                                SoulAlloyTool.addModifier(inventory.get(0), ((GemItem) inventory.get(i).getItem()).getModifier());
+                                inventory.set(i, ItemStack.EMPTY);
+                            }
 
-                        if (!inventory.get(i).isEmpty() && SoulAlloyTool.canAddModifier(inventory.get(0), ((GemItem) inventory.get(i).getItem()).getModifier())) {
-                            SoulAlloyTool.addModifier(inventory.get(0), ((GemItem) inventory.get(i).getItem()).getModifier());
+                        }
+                    } else {
+                        for (int i = 1; i < inventory.size(); i++) {
                             inventory.set(i, ItemStack.EMPTY);
                         }
-
+                        inventory.set(0, cachedRecipe.getOutput());
                     }
 
                     markDirty();
@@ -103,6 +138,7 @@ public class GemTinkererBlockEntity extends BlockEntity implements BlockEntityCl
             if (processTick > 200) {
                 processTick = 0;
                 particlesShown = false;
+                cachedRecipe = null;
                 return;
             }
 

@@ -1,14 +1,12 @@
-package com.glisco.conjuring.blocks.soul_weaver;
+package com.glisco.conjuring.blocks.gem_tinkerer;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-public class SoulWeaverRecipeJson {
+public class GemTinkererRecipeJson {
 
     public JsonArray inputs;
 
     public JsonObject result;
-
-    public boolean transferTag;
 
 }
