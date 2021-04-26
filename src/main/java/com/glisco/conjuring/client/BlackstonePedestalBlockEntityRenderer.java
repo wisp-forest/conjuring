@@ -26,9 +26,9 @@ public class BlackstonePedestalBlockEntityRenderer extends BlockEntityRenderer<B
     }
 
     public void render(BlackstonePedestalBlockEntity blockEntity, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
-        if (blockEntity.getRenderedItem() != null) {
+        if (!blockEntity.getItem().isEmpty()) {
 
-            ItemStack item = blockEntity.getRenderedItem();
+            ItemStack item = blockEntity.getItem();
             BakedModel itemModel = MinecraftClient.getInstance().getItemRenderer().getHeldItemModel(item, null, null);
 
             int lightAbove = WorldRenderer.getLightmapCoordinates(Objects.requireNonNull(blockEntity.getWorld()), blockEntity.getPos().up());
@@ -42,7 +42,7 @@ public class BlackstonePedestalBlockEntityRenderer extends BlockEntityRenderer<B
 
         }
 
-        if (blockEntity.getRenderedItem() != null || blockEntity.isActive()) {
+        if (!blockEntity.getItem().isEmpty() || blockEntity.isActive()) {
             if (blockEntity.getWorld().random.nextDouble() > (blockEntity.isActive() ? 0.85 : 0.95)) {
                 BlockPos pos = blockEntity.getPos();
                 ParticleEffect particle = blockEntity.isActive() ? ParticleTypes.SOUL_FIRE_FLAME : ParticleTypes.SMOKE;

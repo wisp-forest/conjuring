@@ -61,30 +61,30 @@ public class BlackstonePedestalBlock extends BlockWithEntity {
         if (pedestal.isActive()) return ActionResult.PASS;
 
         final ItemStack playerStack = player.getStackInHand(hand);
-        ItemStack pedestalItem = pedestal.getRenderedItem();
+        ItemStack pedestalItem = pedestal.getItem();
 
-        if (pedestalItem == null) {
+        if (pedestalItem.isEmpty()) {
             if (playerStack.isEmpty()) return ActionResult.PASS;
 
-            ItemStack playerItem = playerStack.copy();
-            playerItem.setCount(1);
+            ItemStack singleItem = playerStack.copy();
+            singleItem.setCount(1);
 
-            pedestal.setRenderedItem(playerItem);
+            pedestal.setItem(singleItem);
 
             playerStack.decrement(1);
             if (playerStack.isEmpty()) player.setStackInHand(hand, ItemStack.EMPTY);
         } else {
-            ItemStack playerItemSingleton = playerStack.copy();
-            playerItemSingleton.setCount(1);
+            ItemStack singleItem = playerStack.copy();
+            singleItem.setCount(1);
 
             if (playerStack.isEmpty()) {
                 player.setStackInHand(hand, pedestalItem);
-            } else if (ItemStack.areEqual(playerItemSingleton, pedestalItem) && playerStack.getCount() + 1 <= playerStack.getMaxCount()) {
+            } else if (ItemStack.areEqual(singleItem, pedestalItem) && playerStack.getCount() + 1 <= playerStack.getMaxCount()) {
                 playerStack.increment(1);
             } else {
                 ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1f, pos.getZ(), pedestalItem);
             }
-            pedestal.setRenderedItem(null);
+            pedestal.setItem(ItemStack.EMPTY);
         }
 
         return ActionResult.SUCCESS;
@@ -96,8 +96,8 @@ public class BlackstonePedestalBlock extends BlockWithEntity {
 
             BlackstonePedestalBlockEntity pedestalEntity = (BlackstonePedestalBlockEntity) world.getBlockEntity(pos);
 
-            if (pedestalEntity.getRenderedItem() != null) {
-                ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), pedestalEntity.getRenderedItem());
+            if (!pedestalEntity.getItem().isEmpty()) {
+                ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), pedestalEntity.getItem());
             }
 
             if (pedestalEntity.isLinked()) {

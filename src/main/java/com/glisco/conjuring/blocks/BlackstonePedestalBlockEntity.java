@@ -8,11 +8,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BlackstonePedestalBlockEntity extends BlockEntity implements BlockEntityClientSerializable {
 
-    private ItemStack renderedItem;
+    @NotNull
+    private ItemStack renderedItem = ItemStack.EMPTY;
     private boolean active = false;
     private BlockPos linkedFunnel = null;
 
@@ -25,7 +27,7 @@ public class BlackstonePedestalBlockEntity extends BlockEntity implements BlockE
     public CompoundTag toTag(CompoundTag tag) {
         super.toTag(tag);
         CompoundTag item = new CompoundTag();
-        if (renderedItem != null) renderedItem.toTag(item);
+        renderedItem.toTag(item);
         tag.put("Item", item);
         if (linkedFunnel == null) {
             tag.putIntArray("LinkedFunnel", new int[]{});
@@ -39,12 +41,7 @@ public class BlackstonePedestalBlockEntity extends BlockEntity implements BlockE
     @Override
     public void fromTag(BlockState state, CompoundTag tag) {
         super.fromTag(state, tag);
-        CompoundTag item = tag.getCompound("Item");
-        if (!item.isEmpty()) {
-            this.renderedItem = ItemStack.fromTag(tag.getCompound("Item"));
-        } else {
-            this.renderedItem = null;
-        }
+        this.renderedItem = ItemStack.fromTag(tag.getCompound("Item"));
         int[] funnelPos = tag.getIntArray("LinkedFunnel");
         if (funnelPos.length > 0) {
             this.linkedFunnel = new BlockPos(funnelPos[0], funnelPos[1], funnelPos[2]);
@@ -93,16 +90,15 @@ public class BlackstonePedestalBlockEntity extends BlockEntity implements BlockE
         return linkedFunnel != null;
     }
 
-    public void setRenderedItem(@Nullable ItemStack renderedItem) {
-        this.renderedItem = renderedItem == null ? null : renderedItem.copy();
+    public void setItem(@NotNull ItemStack item) {
+        System.out.println("item : " + item);
+        this.renderedItem = item;
         this.markDirty();
     }
 
-    @Nullable
-    public ItemStack getRenderedItem() {
-        if (renderedItem == null) {
-            return null;
-        }
-        return renderedItem.copy();
+    @NotNull
+    public ItemStack getItem() {
+        return renderedItem;
     }
+
 }

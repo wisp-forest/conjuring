@@ -79,7 +79,7 @@ public class SoulWeaverBlock extends BlockWithEntity {
 
         ItemStack weaverItem = weaver.getItem();
 
-        if (weaverItem == null) {
+        if (weaverItem.isEmpty()) {
             if (playerStack.isEmpty()) return ActionResult.PASS;
 
             ItemStack playerItem = playerStack.copy();
@@ -100,7 +100,7 @@ public class SoulWeaverBlock extends BlockWithEntity {
             } else {
                 ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1f, pos.getZ(), weaverItem);
             }
-            weaver.setItem(null);
+            weaver.setItem(ItemStack.EMPTY);
         }
 
         return ActionResult.SUCCESS;
@@ -113,7 +113,7 @@ public class SoulWeaverBlock extends BlockWithEntity {
             if (blockEntity instanceof SoulWeaverBlockEntity) {
                 SoulWeaverBlockEntity weaverEntity = (SoulWeaverBlockEntity) blockEntity;
 
-                if (weaverEntity.getItem() != null) {
+                if (!weaverEntity.getItem().isEmpty()) {
                     ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), weaverEntity.getItem());
                 }
 

@@ -24,7 +24,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,8 @@ import java.util.Optional;
 public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, BlockEntityClientSerializable, Tickable {
 
     List<BlockPos> pedestals = new ArrayList<>();
-    private ItemStack item = null;
+    @NotNull
+    private ItemStack item = ItemStack.EMPTY;
     private int ritualTick = 0;
     private boolean lit = false;
 
@@ -51,7 +52,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
         if (!item.isEmpty()) {
             this.item = ItemStack.fromTag(tag.getCompound("Item"));
         } else {
-            this.item = null;
+            this.item = ItemStack.EMPTY;
         }
         ritualTick = tag.getInt("RitualTick");
         lit = tag.getBoolean("Lit");
@@ -61,7 +62,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
     public CompoundTag toTag(CompoundTag tag) {
         savePedestals(tag, pedestals);
         CompoundTag itemTag = new CompoundTag();
-        if (item != null) item.toTag(itemTag);
+        if (!item.isEmpty()) item.toTag(itemTag);
         tag.put("Item", itemTag);
         tag.putInt("RitualTick", ritualTick);
         tag.putBoolean("Lit", lit);
@@ -103,11 +104,12 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
         return returnValue;
     }
 
+    @NotNull
     public ItemStack getItem() {
         return item;
     }
 
-    public void setItem(ItemStack stack) {
+    public void setItem(@NotNull ItemStack stack) {
         item = stack;
         markDirty();
     }
@@ -149,7 +151,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
 
     public boolean verifyRecipe() {
 
-        if (item == null) return false;
+        if (item.isEmpty()) return false;
 
         Inventory testInventory = new SimpleInventory(5);
         testInventory.setStack(0, item);
@@ -157,8 +159,8 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
         int index = 1;
         for (BlockPos pedestal : pedestals) {
             BlackstonePedestalBlockEntity entity = (BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal);
-            if (entity.getRenderedItem() == null) return false;
-            testInventory.setStack(index, entity.getRenderedItem());
+            if (entity.getItem().isEmpty()) return false;
+            testInventory.setStack(index, entity.getItem());
             index++;
         }
 
@@ -196,7 +198,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
                     }
                 } else {
                     ((BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal)).setActive(true);
-                    ((BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal)).setRenderedItem(null);
+                    ((BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal)).setItem(ItemStack.EMPTY);
 
                 }
             }
@@ -292,7 +294,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
         ritualTick = 0;
         cachedRecipe = null;
         setLit(false);
-        setItem(null);
+        setItem(ItemStack.EMPTY);
     }
 
     public double getShakeScaleFactor() {

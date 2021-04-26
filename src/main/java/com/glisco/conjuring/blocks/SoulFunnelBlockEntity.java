@@ -24,9 +24,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootGsons;
 import net.minecraft.loot.LootTable;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.IntArrayTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -39,7 +36,6 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.registry.Registry;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -296,12 +292,12 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
     }
 
     private void disablePedestals() {
-        for (BlockPos p : pedestalPositions) {
-            BlockEntity blockEntity = world.getBlockEntity(p);
+        for (BlockPos pos : pedestalPositions) {
+            BlockEntity blockEntity = world.getBlockEntity(pos);
             if (!(blockEntity instanceof BlackstonePedestalBlockEntity)) continue;
 
             ((BlackstonePedestalBlockEntity) blockEntity).setActive(false);
-            ((BlackstonePedestalBlockEntity) blockEntity).setRenderedItem(null);
+            ((BlackstonePedestalBlockEntity) blockEntity).setItem(ItemStack.EMPTY);
         }
     }
 
@@ -384,8 +380,8 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
             if (!(world.getBlockEntity(p) instanceof BlackstonePedestalBlockEntity)) continue;
             BlackstonePedestalBlockEntity pedestal = (BlackstonePedestalBlockEntity) world.getBlockEntity(p);
 
-            if (pedestal.getRenderedItem() == null) continue;
-            Item pedestalItem = pedestal.getRenderedItem().getItem();
+            if (pedestal.getItem().isEmpty()) continue;
+            Item pedestalItem = pedestal.getItem().getItem();
             if (!drops.contains(pedestalItem)) continue;
 
             ritualStability += 0.2f;
