@@ -3,6 +3,7 @@ package com.glisco.conjuring.blocks.soulfireForge;
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.SoulfireForgeScreenHandler;
 import com.glisco.conjuring.blocks.ImplementedInventory;
+import com.glisco.owo.VectorRandomUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,6 +22,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.Optional;
 
@@ -61,6 +63,7 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
     @Override
     public void tick() {
         if (!this.world.isClient()) {
+
             Optional<SoulfireForgeRecipe> currentRecipe = world.getRecipeManager().getFirstMatch(SoulfireForgeRecipe.Type.INSTANCE, this, world);
 
             if (currentRecipe.isPresent() && world.getBlockState(pos).get(SoulfireForgeBlock.BURNING)) {

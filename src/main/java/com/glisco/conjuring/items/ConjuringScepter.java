@@ -1,9 +1,9 @@
 package com.glisco.conjuring.items;
 
 import com.glisco.conjuring.ConjuringCommon;
-import com.glisco.conjuring.WorldHelper;
 import com.glisco.conjuring.blocks.BlackstonePedestalBlockEntity;
 import com.glisco.conjuring.blocks.RitualCore;
+import com.glisco.owo.client.ClientParticles;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,6 +23,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class ConjuringScepter extends Item {
@@ -137,7 +138,7 @@ public class ConjuringScepter extends Item {
         ClientPlayerEntity player = (ClientPlayerEntity) entity;
 
         ParticleEffect particle = new DustParticleEffect(1, 1, 1, 1);
-        WorldHelper.spawnParticle(particle, world, pedestal, 0.5f, 1.25f, 0.5f, 0.15f);
+        ClientParticles.spawnWithOffsetFromBlock(particle, world, pedestal, new Vec3d(0.5, 1.25, 0.5), 0.15);
 
         LiteralText linkingFrom = new LiteralText("Linking from ");
 

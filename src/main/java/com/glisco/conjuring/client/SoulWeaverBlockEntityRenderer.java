@@ -1,7 +1,7 @@
 package com.glisco.conjuring.client;
 
-import com.glisco.conjuring.WorldHelper;
 import com.glisco.conjuring.blocks.soul_weaver.SoulWeaverBlockEntity;
+import com.glisco.owo.client.ClientParticles;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -14,6 +14,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.Objects;
 
@@ -49,9 +50,9 @@ public class SoulWeaverBlockEntityRenderer extends BlockEntityRenderer<SoulWeave
 
         if (blockEntity.isLit()) {
             if (blockEntity.getWorld().random.nextDouble() > 0.85f) {
-                for (int i = 0; i < 2; i++) {
-                    WorldHelper.spawnParticle(ParticleTypes.SOUL_FIRE_FLAME, blockEntity.getWorld(), blockEntity.getPos(), 0.5f, 0.35f, 0.5f, 0, 0, 0, 0.15f);
-                }
+
+                ClientParticles.setParticleCount(2);
+                ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.SOUL_FIRE_FLAME, blockEntity.getWorld(), blockEntity.getPos(), new Vec3d(0.5, 0.35, 0.5), 0.15);
             }
         }
 

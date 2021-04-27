@@ -1,7 +1,7 @@
 package com.glisco.conjuring.client;
 
-import com.glisco.conjuring.WorldHelper;
 import com.glisco.conjuring.blocks.gem_tinkerer.GemTinkererBlockEntity;
+import com.glisco.owo.client.ClientParticles;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.*;
@@ -18,6 +18,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.Objects;
@@ -67,10 +68,12 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
         itemRenderer.renderItem(items.get(0), ModelTransformation.Mode.GROUND, lightAbove, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
 
         if (particles) {
-            for (int k = 0; k < 20; k++) {
-                WorldHelper.spawnParticle(ParticleTypes.LAVA, world, pos, 0.5f, (float) (1.05 + getHeight(0)), 0.5f, 0.15f);
-            }
+            ClientParticles.setParticleCount(20);
+            ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.LAVA, world, pos, new Vec3d(0.5, 1.05 + getHeight(0), 0.5), 0.15);
         }
+
+        ClientParticles.setParticleCount(5);
+        ClientParticles.persist();
 
         matrixStack.pop();
 
@@ -138,6 +141,8 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
 
         matrixStack.pop();
 
+        ClientParticles.reset();
+
     }
 
     private double getHeight(double offset) {
@@ -145,8 +150,7 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
     }
 
     private void spawnItemParticles(World world, BlockPos pos, double x, double z, double offset) {
-        for (int k = 0; k < 5; k++) {
-            WorldHelper.spawnParticle(ParticleTypes.SOUL_FIRE_FLAME, world, pos, (float) (x + 0.0625), (float) (1f + getHeight(offset)), (float) (z + 0.0625), 0.1f);
-        }
+        ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.SOUL_FIRE_FLAME, world, pos, new Vec3d(x + 0.0625, 1 + getHeight(offset), z + 0.0625), 0.1);
     }
 }
+

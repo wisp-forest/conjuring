@@ -1,7 +1,6 @@
 package com.glisco.conjuring.entities;
 
 import com.glisco.conjuring.ConjuringCommon;
-import com.glisco.conjuring.WorldHelper;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.WitherEntity;
@@ -65,7 +64,7 @@ public class SoulProjectileEntity extends SoulEntity {
                 BlockPos pos = e.getBlockPos();
                 World world = e.world;
 
-                WorldHelper.playSound(world, pos, 40, SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, SoundCategory.PLAYERS, 2, 0);
+                world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, SoundCategory.PLAYERS, 2, 0);
             }
         }
 

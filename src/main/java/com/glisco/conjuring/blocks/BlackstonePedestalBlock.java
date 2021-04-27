@@ -1,5 +1,6 @@
 package com.glisco.conjuring.blocks;
 
+import com.glisco.owo.ItemOps;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -61,25 +62,18 @@ public class BlackstonePedestalBlock extends BlockWithEntity {
         if (pedestal.isActive()) return ActionResult.PASS;
 
         final ItemStack playerStack = player.getStackInHand(hand);
-        ItemStack pedestalItem = pedestal.getItem();
+        final ItemStack pedestalItem = pedestal.getItem();
 
         if (pedestalItem.isEmpty()) {
             if (playerStack.isEmpty()) return ActionResult.PASS;
 
-            ItemStack singleItem = playerStack.copy();
-            singleItem.setCount(1);
+            pedestal.setItem(ItemOps.singleCopy(playerStack));
 
-            pedestal.setItem(singleItem);
-
-            playerStack.decrement(1);
-            if (playerStack.isEmpty()) player.setStackInHand(hand, ItemStack.EMPTY);
+            if (!ItemOps.emptyAwareDecrement(playerStack)) player.setStackInHand(hand, ItemStack.EMPTY);
         } else {
-            ItemStack singleItem = playerStack.copy();
-            singleItem.setCount(1);
-
             if (playerStack.isEmpty()) {
                 player.setStackInHand(hand, pedestalItem);
-            } else if (ItemStack.areEqual(singleItem, pedestalItem) && playerStack.getCount() + 1 <= playerStack.getMaxCount()) {
+            } else if (ItemOps.canStack(playerStack, pedestalItem)) {
                 playerStack.increment(1);
             } else {
                 ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1f, pos.getZ(), pedestalItem);

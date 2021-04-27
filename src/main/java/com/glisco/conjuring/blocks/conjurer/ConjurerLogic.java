@@ -246,6 +246,7 @@ public abstract class ConjurerLogic {
 
     }
 
+    @SuppressWarnings("IfStatementWithIdenticalBranches")
     public CompoundTag toTag(CompoundTag tag) {
         Identifier identifier = this.getEntityId();
         if (identifier == null) {

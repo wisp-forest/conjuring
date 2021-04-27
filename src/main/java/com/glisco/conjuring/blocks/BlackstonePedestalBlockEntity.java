@@ -9,7 +9,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class BlackstonePedestalBlockEntity extends BlockEntity implements BlockEntityClientSerializable {
 
@@ -91,7 +90,6 @@ public class BlackstonePedestalBlockEntity extends BlockEntity implements BlockE
     }
 
     public void setItem(@NotNull ItemStack item) {
-        System.out.println("item : " + item);
         this.renderedItem = item;
         this.markDirty();
     }

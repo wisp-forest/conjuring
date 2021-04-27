@@ -1,9 +1,10 @@
 package com.glisco.conjuring.blocks.soul_weaver;
 
 import com.glisco.conjuring.ConjuringCommon;
-import com.glisco.conjuring.WorldHelper;
 import com.glisco.conjuring.blocks.BlackstonePedestalBlockEntity;
 import com.glisco.conjuring.blocks.RitualCore;
+import com.glisco.owo.VectorRandomUtils;
+import com.glisco.owo.client.ClientParticles;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -24,6 +25,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -69,6 +71,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
         return super.toTag(tag);
     }
 
+    //TODO make this good
     public boolean linkPedestal(BlockPos pedestal) {
         if (pedestals.size() >= 4) return false;
 
@@ -80,9 +83,8 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
             float offsetY = 0.35f;
             float offsetZ = 0.5f + offset.getZ() / 8f;
 
-            for (int i = 0; i < 20; i++) {
-                WorldHelper.spawnParticle(ParticleTypes.WITCH, world, pos, offsetX, offsetY, offsetZ, 0, 0, 0, offset.getZ() / 12f, 0.1f, offset.getX() / 12f);
-            }
+            ClientParticles.setParticleCount(20);
+            ClientParticles.spawnPrecise(ParticleTypes.WITCH, world, new Vec3d(offsetX, offsetY, offsetZ).add(Vec3d.of(pos)), offset.getZ() / 12d, 0.1f, offset.getX() / 12d);
         }
         this.markDirty();
         return true;
@@ -184,24 +186,28 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
                 for (BlockPos pos : pedestals) {
                     if (!(world.getBlockEntity(pos) instanceof BlackstonePedestalBlockEntity)) continue;
                     BlockPos pVector = pos.subtract(this.pos);
-                    WorldHelper.spawnParticle(ParticleTypes.SOUL_FIRE_FLAME, world, this.pos, 0.5f, 0.4f, 0.5f, pVector.getX() * 0.115f, 0, pVector.getZ() * 0.115f, 10);
+
+                    ClientParticles.setVelocity(new Vec3d(pVector.getX() * 0.115, 0, pVector.getZ() * 0.115));
+                    ClientParticles.spawnWithMaxAge(ParticleTypes.SOUL_FIRE_FLAME, world, Vec3d.of(this.pos).add(0.5, 0.4, 0.5), 10);
                 }
 
             }
 
         } else if (ritualTick == 10) {
 
+            ClientParticles.setParticleCount(8);
+            ClientParticles.persist();
+
             for (BlockPos pedestal : pedestals) {
                 if (world.isClient) {
-                    for (int i = 0; i < 8; i++) {
-                        WorldHelper.spawnParticle(ParticleTypes.LAVA, world, pedestal, 0.5f, 1.25f, 0.5f, 0.1f);
-                    }
+                    ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.LAVA, world, pedestal, new Vec3d(0.5, 1.25, 0.5), 0.1);
                 } else {
                     ((BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal)).setActive(true);
                     ((BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal)).setItem(ItemStack.EMPTY);
-
                 }
             }
+
+            ClientParticles.reset();
         } else if (ritualTick > 10 && ritualTick < 165) {
 
             if (ritualTick == 15) {
@@ -220,19 +226,29 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
 
                         BlockPos p = pos.add(0, 1, 0);
                         BlockPos pVector = pos.subtract(this.pos);
+                        Vec3d particleOrigin = VectorRandomUtils.getRandomOffset(world, new Vec3d(0.5, 0.3, 0.5).add(Vec3d.of(p)), 0.1);
 
-                        WorldHelper.spawnParticle(ParticleTypes.SOUL, world, p, 0.5f, 0.3f, 0.5f, pVector.getX() * -0.055f, -0.05f, pVector.getZ() * -0.05f, 30);
+                        ClientParticles.setVelocity(new Vec3d(pVector.getX() * -0.055f, -0.05f, pVector.getZ() * -0.05f));
+                        ClientParticles.spawnWithMaxAge(ParticleTypes.SOUL, world, particleOrigin, 30);
                     }
                 }
 
                 if (ritualTick > 33) {
-                    WorldHelper.spawnParticle(ParticleTypes.SOUL_FIRE_FLAME, world, pos, 0.5f, 1.35f, 0.5f, 0.5f);
-                    WorldHelper.spawnParticle(ParticleTypes.SOUL_FIRE_FLAME, world, pos, 0.5f, 1.35f, 0.5f, 0.5f);
 
-                    WorldHelper.spawnParticle(ParticleTypes.SOUL_FIRE_FLAME, world, pos, 0.5f, 0.3f, 0.5f, 0.05f, 0.03f, 0, 0.1f);
-                    WorldHelper.spawnParticle(ParticleTypes.SOUL_FIRE_FLAME, world, pos, 0.5f, 0.3f, 0.5f, -0.05f, 0.03f, 0, 0.1f);
-                    WorldHelper.spawnParticle(ParticleTypes.SOUL_FIRE_FLAME, world, pos, 0.5f, 0.3f, 0.5f, 0f, 0.03f, 0.05f, 0.1f);
-                    WorldHelper.spawnParticle(ParticleTypes.SOUL_FIRE_FLAME, world, pos, 0.5f, 0.3f, 0.5f, 0f, 0.03f, -0.05f, 0.1f);
+                    ClientParticles.setParticleCount(2);
+                    ClientParticles.spawnCenteredOnBlock(ParticleTypes.SOUL_FIRE_FLAME, world, pos.add(0, 1, 0), 0.45f);
+
+                    ClientParticles.setVelocity(new Vec3d(0.05, 0.03, 0));
+                    ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.SOUL_FIRE_FLAME, world, pos, new Vec3d(0.5, 0.3, 0.5), 0.1);
+
+                    ClientParticles.setVelocity(new Vec3d(-0.05, 0.03, 0));
+                    ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.SOUL_FIRE_FLAME, world, pos, new Vec3d(0.5, 0.3, 0.5), 0.1);
+
+                    ClientParticles.setVelocity(new Vec3d(0, 0.03, 0.05));
+                    ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.SOUL_FIRE_FLAME, world, pos, new Vec3d(0.5, 0.3, 0.5), 0.1);
+
+                    ClientParticles.setVelocity(new Vec3d(0, 0.03, -0.05));
+                    ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.SOUL_FIRE_FLAME, world, pos, new Vec3d(0.5, 0.3, 0.5), 0.1);
                 }
             }
         } else if (ritualTick > 165) {
@@ -245,29 +261,26 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
                     ((BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal)).setActive(false);
                 }
 
-                verifyRecipe();
-
-                if (cachedRecipe.transferTag) {
-                    ItemStack output = cachedRecipe.getOutput();
-                    output.setTag(getItem().getOrCreateTag());
-                    setItem(output);
-                } else {
-                    setItem(cachedRecipe.getOutput());
+                if (cachedRecipe != null) {
+                    if (cachedRecipe.transferTag) {
+                        ItemStack output = cachedRecipe.getOutput();
+                        output.setTag(getItem().getOrCreateTag());
+                        setItem(output);
+                    } else {
+                        setItem(cachedRecipe.getOutput());
+                    }
                 }
-
 
                 setLit(false);
                 cachedRecipe = null;
             } else {
                 ParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.GILDED_BLACKSTONE.getDefaultState());
 
-                for (int i = 0; i < 30; i++) {
-                    WorldHelper.spawnParticle(particle, world, pos, 0.5f, 1.3f, 0.5f, 0.2f);
-                }
+                ClientParticles.setParticleCount(30);
+                ClientParticles.spawnWithOffsetFromBlock(particle, world, pos, new Vec3d(0.5, 1.3, 0.5), 0.2);
 
-                for (int i = 0; i < 40; i++) {
-                    WorldHelper.spawnParticle(ParticleTypes.LAVA, world, pos, 0.5f, 1.25f, 0.5f, 0.15f);
-                }
+                ClientParticles.setParticleCount(40);
+                ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.LAVA, world, pos, new Vec3d(0.5, 1.25, 0.5), 0.15);
             }
             ritualTick = 0;
         }

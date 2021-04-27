@@ -1,12 +1,13 @@
 package com.glisco.conjuring.blocks;
 
 import com.glisco.conjuring.ConjuringCommon;
-import com.glisco.conjuring.WorldHelper;
 import com.glisco.conjuring.items.ConjuringFocus;
+import com.glisco.owo.client.ClientParticles;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.sun.security.ntlm.Client;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -35,6 +36,7 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.Nullable;
 
@@ -183,14 +185,17 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
                         BlockPos pVector = pos.subtract(this.pos);
 
                         ParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, world.getBlockState(pos));
-                        for (int i = 0; i < 4; i++) {
-                            WorldHelper.spawnParticle(particle, world, p, 0.5f, 0.25f, 0.5f, 0.1f);
-                        }
+                        ClientParticles.setParticleCount(4);
+                        ClientParticles.spawnWithOffsetFromBlock(particle, world, p, new Vec3d(0.5, 0.25, 0.5), 0.1);
 
-                        WorldHelper.spawnParticle(ParticleTypes.SOUL, world, p, 0.5f, 0.3f, 0.5f, pVector.getX() * -0.05f, 0.075f * particleOffset, pVector.getZ() * -0.05f, 0.1f);
+                        ClientParticles.setVelocity(new Vec3d(pVector.getX() * -0.05, particleOffset * 0.075, pVector.getZ() * -0.05));
+                        ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.SOUL, world, p, new Vec3d(0.5, 0.3, 0.5), 0.1);
                     }
-                    for (int i = 0; i < 5; i++)
-                        WorldHelper.spawnParticle(ParticleTypes.SOUL_FIRE_FLAME, world, pos, 0.5f, 1.75f + particleOffset, 0.5f, 0, -0.5f, 0f, 0.25f);
+
+                    ClientParticles.setParticleCount(5);
+                    ClientParticles.setVelocity(new Vec3d(0, -0.5, 0));
+                    ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.SOUL_FIRE_FLAME, world, pos, new Vec3d(0.5, 1.75 + particleOffset, 0.5), 0.1);
+
                 } else {
                     if (ritualTick % 10 == 0) {
                         if (verifyRitualEntity()) {
@@ -312,9 +317,8 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
             float offsetY = 0.35f;
             float offsetZ = 0.5f + offset.getZ() / 8f;
 
-            for (int i = 0; i < 20; i++) {
-                WorldHelper.spawnParticle(ParticleTypes.WITCH, world, pos, offsetX, offsetY, offsetZ, 0, 0, 0, offset.getZ() / 12f, 0.1f, offset.getX() / 12f);
-            }
+            ClientParticles.setParticleCount(20);
+            ClientParticles.spawnPrecise(ParticleTypes.WITCH, world, new Vec3d(offsetX, offsetY, offsetZ).add(Vec3d.of(pos)), offset.getZ() / 12d, 0.1f, offset.getX() / 12d);
         }
         this.markDirty();
         return true;

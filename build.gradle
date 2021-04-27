@@ -21,6 +21,10 @@ repositories {
         }
     }
 
+    flatDir {
+        dirs 'libs'
+    }
+
 }
 
 dependencies {
@@ -36,6 +40,9 @@ dependencies {
     modRuntime "me.shedaniel:RoughlyEnoughItems:5.11.202"
 
     modImplementation "curse.maven:modmenu-308702:3268909"
+
+    modImplementation "com.glisco:owo-0.1-dev"
+    include "com.glisco:owo-0.1"
 
 }
 

@@ -1,7 +1,7 @@
 package com.glisco.conjuring.client;
 
-import com.glisco.conjuring.WorldHelper;
 import com.glisco.conjuring.blocks.BlackstonePedestalBlockEntity;
+import com.glisco.owo.client.ClientParticles;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.Objects;
 
@@ -47,7 +48,7 @@ public class BlackstonePedestalBlockEntityRenderer extends BlockEntityRenderer<B
                 BlockPos pos = blockEntity.getPos();
                 ParticleEffect particle = blockEntity.isActive() ? ParticleTypes.SOUL_FIRE_FLAME : ParticleTypes.SMOKE;
 
-                WorldHelper.spawnParticle(particle, blockEntity.getWorld(), pos, 0.5f, 1.35f, 0.5f, 0.25f);
+                ClientParticles.spawnWithOffsetFromBlock(particle, blockEntity.getWorld(), pos, new Vec3d(0.5, 1.35, 0.5), 0.25);
             }
         }
 

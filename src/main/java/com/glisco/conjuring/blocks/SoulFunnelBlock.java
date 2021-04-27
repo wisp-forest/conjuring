@@ -1,8 +1,9 @@
 package com.glisco.conjuring.blocks;
 
-import com.glisco.conjuring.WorldHelper;
 import com.glisco.conjuring.items.ConjuringFocus;
 import com.glisco.conjuring.items.ConjuringScepter;
+import com.glisco.owo.client.ClientParticles;
+import com.sun.security.ntlm.Client;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,6 +19,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -90,12 +92,16 @@ public class SoulFunnelBlock extends BlockWithEntity {
                 possiblePedestals.add(pos.add(0, 0, 3));
                 possiblePedestals.add(pos.add(0, 0, -3));
 
+                ClientParticles.setParticleCount(50);
+                ClientParticles.persist();
+
                 for (BlockPos pedestal : possiblePedestals) {
                     if (world.getBlockEntity(pedestal) instanceof BlackstonePedestalBlockEntity) continue;
-                    for (int i = 0; i < 50; i++) {
-                        WorldHelper.spawnParticle(ParticleTypes.DRIPPING_OBSIDIAN_TEAR, world, pedestal, 0.5f, 0.75f, 0.5f, 0, 0, 0, 0.5f, 0.75f, 0.5f);
-                    }
+
+                    ClientParticles.spawnPrecise(ParticleTypes.DRIPPING_OBSIDIAN_TEAR, world, new Vec3d(pedestal.getX() + 0.5, pedestal.getY() + 0.75, pedestal.getZ() + 0.5), 0.5, 0.75, 0.5);
                 }
+
+                ClientParticles.reset();
             }
             return ActionResult.SUCCESS;
         }
@@ -108,7 +114,7 @@ public class SoulFunnelBlock extends BlockWithEntity {
             if (playerStack.getCount() == 0) player.setStackInHand(hand, ItemStack.EMPTY);
 
             if (!world.isClient()) {
-                WorldHelper.playSound(world, pos, 20, SoundEvents.BLOCK_SOUL_SAND_PLACE, SoundCategory.BLOCKS, 1, 1);
+                world.playSound(null, pos, SoundEvents.BLOCK_SOUL_SAND_PLACE, SoundCategory.BLOCKS, 1, 1);
             }
             return ActionResult.SUCCESS;
         }
@@ -175,7 +181,7 @@ public class SoulFunnelBlock extends BlockWithEntity {
             if (pedestal.getLinkedFunnel() == null) continue;
             if (pedestal.getLinkedFunnel().compareTo(pos) != 0) return;
 
-            WorldHelper.spawnEnchantParticle(world, p, pos.add(0, 1, 0), 0, 0.75f, 0, 0.35f);
+            ClientParticles.spawnEnchantParticles(world, Vec3d.of(p).add(0.5, 0.5, 0.5), Vec3d.of(pos).add(0.5, 1, 0.5), 0);
         }
     }
 }

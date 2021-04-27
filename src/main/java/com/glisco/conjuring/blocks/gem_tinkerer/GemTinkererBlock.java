@@ -1,5 +1,6 @@
 package com.glisco.conjuring.blocks.gem_tinkerer;
 
+import com.glisco.owo.ItemOps;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -90,15 +91,11 @@ public class GemTinkererBlock extends BlockWithEntity {
 
             if (hit.getSide() == Direction.UP && !tinkererInventory.get(sideIndex).isEmpty() && !ItemStack.areItemsEqual(sideStack, playerStack)) {
 
-                ItemStack single = playerStack.copy();
-                single.setCount(1);
-
                 for (int i = 1; i < 5; i++) {
                     if (!tinkererInventory.get(i).isEmpty()) continue;
-                    tinkererInventory.set(i, single.copy());
+                    tinkererInventory.set(i, ItemOps.singleCopy(playerStack));
 
-                    playerStack.decrement(1);
-                    if (playerStack.isEmpty()) {
+                    if (!ItemOps.emptyAwareDecrement(playerStack)) {
                         player.setStackInHand(hand, ItemStack.EMPTY);
                         break;
                     }
@@ -107,17 +104,12 @@ public class GemTinkererBlock extends BlockWithEntity {
                 tinkerer.markDirty();
             } else {
                 if (sideStack.isEmpty()) {
-                    ItemStack single = playerStack.copy();
-                    single.setCount(1);
-
-                    tinkererInventory.set(sideIndex, single);
+                    tinkererInventory.set(sideIndex, ItemOps.singleCopy(playerStack));
                     tinkerer.markDirty();
 
-                    playerStack.decrement(1);
-                    if (playerStack.isEmpty()) player.setStackInHand(hand, ItemStack.EMPTY);
+                    if (!ItemOps.emptyAwareDecrement(playerStack)) player.setStackInHand(hand, ItemStack.EMPTY);
                 } else {
-                    if (!ItemStack.areItemsEqual(sideStack, playerStack) || !ItemStack.areTagsEqual(sideStack, playerStack) || playerStack.getCount() >= playerStack.getMaxCount())
-                        return ActionResult.PASS;
+                    if (!ItemOps.canStack(playerStack, sideStack)) return ActionResult.PASS;
 
                     tinkererInventory.set(sideIndex, ItemStack.EMPTY);
                     tinkerer.markDirty();

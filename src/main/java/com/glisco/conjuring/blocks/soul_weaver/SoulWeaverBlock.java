@@ -2,6 +2,7 @@ package com.glisco.conjuring.blocks.soul_weaver;
 
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.items.ConjuringScepter;
+import com.glisco.owo.ItemOps;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -64,11 +65,11 @@ public class SoulWeaverBlock extends BlockWithEntity {
         if (weaver.isRunning()) return ActionResult.PASS;
 
         final ItemStack playerStack = player.getStackInHand(hand);
+        final ItemStack weaverItem = weaver.getItem();
 
         if (playerStack.getItem().equals(ConjuringCommon.CONJURATION_ESSENCE) && !weaver.isLit()) {
             weaver.setLit(true);
-            playerStack.decrement(1);
-            if (playerStack.isEmpty()) player.setStackInHand(hand, ItemStack.EMPTY);
+            if (!ItemOps.emptyAwareDecrement(playerStack)) player.setStackInHand(hand, ItemStack.EMPTY);
             return ActionResult.SUCCESS;
         }
 
@@ -77,25 +78,17 @@ public class SoulWeaverBlock extends BlockWithEntity {
             return ActionResult.SUCCESS;
         }
 
-        ItemStack weaverItem = weaver.getItem();
 
         if (weaverItem.isEmpty()) {
             if (playerStack.isEmpty()) return ActionResult.PASS;
 
-            ItemStack playerItem = playerStack.copy();
-            playerItem.setCount(1);
+            weaver.setItem(ItemOps.singleCopy(playerStack));
 
-            weaver.setItem(playerItem);
-
-            playerStack.decrement(1);
-            if (playerStack.isEmpty()) player.setStackInHand(hand, ItemStack.EMPTY);
+            if (!ItemOps.emptyAwareDecrement(playerStack)) player.setStackInHand(hand, ItemStack.EMPTY);
         } else {
-            ItemStack playerItemSingleton = playerStack.copy();
-            playerItemSingleton.setCount(1);
-
             if (playerStack.isEmpty()) {
                 player.setStackInHand(hand, weaverItem);
-            } else if (ItemStack.areEqual(playerItemSingleton, weaverItem) && playerStack.getCount() + 1 <= playerStack.getMaxCount()) {
+            } else if (ItemOps.canStack(playerStack, weaverItem)) {
                 playerStack.increment(1);
             } else {
                 ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1f, pos.getZ(), weaverItem);
