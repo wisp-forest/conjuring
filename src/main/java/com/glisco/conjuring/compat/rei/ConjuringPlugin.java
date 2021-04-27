@@ -2,6 +2,7 @@ package com.glisco.conjuring.compat.rei;
 
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeRecipe;
+import me.shedaniel.rei.api.EntryRegistry;
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeHelper;
 import me.shedaniel.rei.api.plugins.REIPluginV0;
@@ -24,6 +25,12 @@ public class ConjuringPlugin implements REIPluginV0 {
     @Override
     public void registerRecipeDisplays(RecipeHelper recipeHelper) {
         recipeHelper.registerRecipes(SOULFIRE_FORGE, SoulfireForgeRecipe.class, SoulfireForgeDisplay::new);
+    }
+
+    //TODO pizza
+    @Override
+    public void registerEntries(EntryRegistry entryRegistry) {
+        //entryRegistry.removeEntryIf(entryStack -> entryStack.getItem() == ConjuringCommon.SOUL_ALLOY);
     }
 
     @Override

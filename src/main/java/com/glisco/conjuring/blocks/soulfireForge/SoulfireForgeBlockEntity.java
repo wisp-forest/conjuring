@@ -28,6 +28,9 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
 
     private DefaultedList<ItemStack> items = DefaultedList.ofSize(10, ItemStack.EMPTY);
 
+    private final int[] SIDE_AND_TOP_SLOTS = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8};
+    private final int[] BOTTOM_SLOT = new int[]{9};
+
     private int progress;
     private int smeltTime;
     private int targetSmeltTime;
@@ -147,17 +150,17 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
 
     @Override
     public int[] getAvailableSlots(Direction side) {
-        return new int[0];
+        return side == Direction.DOWN ? BOTTOM_SLOT : SIDE_AND_TOP_SLOTS;
     }
 
     @Override
     public boolean canInsert(int slot, ItemStack stack, Direction dir) {
-        return false;
+        return slot != 9 && items.get(slot).isEmpty();
     }
 
     @Override
     public boolean canExtract(int slot, ItemStack stack, Direction dir) {
-        return false;
+        return slot == 9;
     }
 
     private void decrementCraftingItems() {

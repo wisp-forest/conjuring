@@ -421,6 +421,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
     }
 
     private boolean verifyRitualEntity() {
+
         MobEntity e = (MobEntity) ((ServerWorld) world).getEntity(ritualEntity);
         if (e == null) {
             cancelRitual(true);

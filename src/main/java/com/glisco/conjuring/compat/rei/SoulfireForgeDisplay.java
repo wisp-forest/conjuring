@@ -22,7 +22,7 @@ public class SoulfireForgeDisplay implements RecipeDisplay {
         this.display = recipe;
 
         this.input = recipe.getInputs().stream().map((i) -> {
-            List<EntryStack> entries = new ArrayList();
+            List<EntryStack> entries = new ArrayList<>();
             ItemStack[] var2 = i.getMatchingStacksClient();
 
             for (ItemStack stack : var2)
