@@ -5,7 +5,9 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "DispenserBehaviorMixin",
+    "OverlaySearchFieldSyntaxHighlighterMixin",
     "ServerWorldMixin",
+    "WorldRendererMixin",
     "angerables.BeeEntityMixin",
     "angerables.EndermanEntityMixin",
     "angerables.IronGolemEntityMixin",

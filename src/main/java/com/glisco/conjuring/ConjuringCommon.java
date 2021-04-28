@@ -1,6 +1,9 @@
 package com.glisco.conjuring;
 
-import com.glisco.conjuring.blocks.*;
+import com.glisco.conjuring.blocks.BlackstonePedestalBlock;
+import com.glisco.conjuring.blocks.BlackstonePedestalBlockEntity;
+import com.glisco.conjuring.blocks.SoulFunnelBlock;
+import com.glisco.conjuring.blocks.SoulFunnelBlockEntity;
 import com.glisco.conjuring.blocks.conjurer.ConjurerBlock;
 import com.glisco.conjuring.blocks.conjurer.ConjurerBlockEntity;
 import com.glisco.conjuring.blocks.gem_tinkerer.GemTinkererBlock;
@@ -35,10 +38,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.loot.ConstantLootTableRange;
 import net.minecraft.loot.condition.RandomChanceLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
@@ -56,6 +56,7 @@ public class ConjuringCommon implements ModInitializer {
 
                 for (Item item : Registry.ITEM) {
                     if (item.getGroup() == null) continue;
+                    if (item.isFood()) continue;
                     if (item.getGroup().getName().equals("conjuring.general")) {
                         itemStacks.add(new ItemStack(item));
                     }
@@ -92,6 +93,8 @@ public class ConjuringCommon implements ModInitializer {
             return true;
         }
     };
+
+    public static Item PIZZA = new Item(new Item.Settings().food(new FoodComponent.Builder().hunger(8).saturationModifier(0.75f).build()));
 
     public static Item SOUL_ROD = new SoulRod();
     public static Item SOUL_ALLOY = new SoulAlloy();
@@ -175,6 +178,8 @@ public class ConjuringCommon implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier("conjuring", "superior_conjuring_scepter"), SUPERIOR_CONJURING_SCEPTER);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "conjuring_focus"), CONJURING_FOCUS);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "stabilized_conjuring_focus"), STABILIZED_CONJURING_FOCUS);
+
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "pizza"), PIZZA);
 
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy_sword"), SOUL_ALLOY_SWORD);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy_pickaxe"), SOUL_ALLOY_PICKAXE);

@@ -1,6 +1,6 @@
 package com.glisco.conjuring.compat.rei;
 
-import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeRecipe;
+import com.glisco.conjuring.blocks.gem_tinkerer.GemTinkererRecipe;
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeDisplay;
 import net.minecraft.item.ItemStack;
@@ -12,25 +12,27 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SoulfireForgeDisplay implements RecipeDisplay {
+public class GemTinkeringDisplay implements RecipeDisplay {
 
-    protected SoulfireForgeRecipe display;
+    protected GemTinkererRecipe display;
     protected List<List<EntryStack>> input;
     protected List<EntryStack> output;
 
-    public SoulfireForgeDisplay(SoulfireForgeRecipe recipe) {
-
+    public GemTinkeringDisplay(GemTinkererRecipe recipe) {
         this.display = recipe;
 
         this.input = recipe.getInputs().stream().map((i) -> {
             List<EntryStack> entries = new ArrayList<>();
-            ItemStack[] var2 = i.getMatchingStacksClient();
 
-            for (ItemStack stack : var2)
+            for (ItemStack stack : i.getMatchingStacksClient())
                 entries.add(EntryStack.create(stack));
 
             return entries;
         }).collect(Collectors.toList());
+
+        /*List<EntryStack> stacks = input.get(2);
+        input.set(2, input.get(0));
+        input.set(0, stacks);*/
 
         this.output = Collections.singletonList(EntryStack.create(recipe.getOutput()));
     }
@@ -42,15 +44,11 @@ public class SoulfireForgeDisplay implements RecipeDisplay {
 
     @Override
     public @NotNull Identifier getRecipeCategory() {
-        return ConjuringPlugin.SOULFIRE_FORGE;
+        return ConjuringPlugin.GEM_TINKERING;
     }
 
     @Override
     public @NotNull List<EntryStack> getOutputEntries() {
         return output;
-    }
-
-    public int getSmeltTime() {
-        return display.getSmeltTime();
     }
 }

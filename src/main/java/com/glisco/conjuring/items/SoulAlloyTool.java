@@ -27,10 +27,7 @@ public interface SoulAlloyTool {
 
     static boolean canAddModifiers(ItemStack stack, List<SoulAlloyModifier> modifiers) {
 
-        HashMap<SoulAlloyModifier, Integer> modifierMap = new HashMap<>();
-        CompoundTag modifierTag = stack.getOrCreateSubTag("Modifiers");
-
-        modifierTag.getKeys().forEach(s -> modifierMap.put(SoulAlloyModifier.valueOf(s), modifierTag.getInt(s)));
+        HashMap<SoulAlloyModifier, Integer> modifierMap = getModifiers(stack);
 
         for (SoulAlloyModifier modifier : modifiers) {
 
@@ -71,6 +68,13 @@ public interface SoulAlloyTool {
         }
 
         return tooltip;
+    }
+
+    static HashMap<SoulAlloyModifier, Integer> getModifiers(ItemStack stack) {
+        HashMap<SoulAlloyModifier, Integer> modifierMap = new HashMap<>();
+        CompoundTag modifierTag = stack.getOrCreateSubTag("Modifiers");
+        modifierTag.getKeys().forEach(s -> modifierMap.put(SoulAlloyModifier.valueOf(s), modifierTag.getInt(s)));
+        return modifierMap;
     }
 
     enum SoulAlloyModifier {

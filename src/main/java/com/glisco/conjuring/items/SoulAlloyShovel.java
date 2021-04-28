@@ -2,6 +2,7 @@ package com.glisco.conjuring.items;
 
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.entities.SoulMagnetEntity;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -11,12 +12,13 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class SoulAlloyShovel extends ShovelItem implements SoulAlloyTool{
+public class SoulAlloyShovel extends ShovelItem implements SoulAlloyTool {
 
     public SoulAlloyShovel() {
         super(SoulAlloyToolMaterial.INSTANCE, 1.5f, -3.0f, new Settings().group(ConjuringCommon.CONJURING_GROUP).rarity(Rarity.UNCOMMON));
@@ -24,6 +26,8 @@ public class SoulAlloyShovel extends ShovelItem implements SoulAlloyTool{
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+
+        SoulAlloyToolAbilities.getBlocksToDig(user);
 
         if (!world.isClient()) {
 
@@ -49,4 +53,5 @@ public class SoulAlloyShovel extends ShovelItem implements SoulAlloyTool{
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         tooltip.addAll(SoulAlloyTool.getTooltip(stack));
     }
+
 }

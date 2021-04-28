@@ -115,6 +115,7 @@ public class GemTinkererBlockEntity extends BlockEntity implements BlockEntityCl
                 if (!world.isClient) {
 
                     world.playSound(null, pos, SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.BLOCKS, 1, 0);
+                    verifyRecipe();
 
                     if (cachedRecipe == null) {
                         for (int i = 1; i < inventory.size(); i++) {

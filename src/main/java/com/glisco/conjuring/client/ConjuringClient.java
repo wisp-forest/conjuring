@@ -13,10 +13,14 @@ import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 @Environment(EnvType.CLIENT)
 public class ConjuringClient implements ClientModInitializer {
+
+    public static final SoundEvent FROGE_SOUND = new SoundEvent(new Identifier("conjuring", "gui.gem_tinkerer.froge"));
 
     @Override
     public void onInitializeClient() {
@@ -40,6 +44,8 @@ public class ConjuringClient implements ClientModInitializer {
 
         ScreenRegistry.register(ConjuringCommon.CONJURER_SCREEN_HANDLER_TYPE, ConjurerScreen::new);
         ScreenRegistry.register(ConjuringCommon.SOULFIRE_FORGE_SCREEN_HANDLER_TYPE, SoulfireForgeScreen::new);
+
+        Registry.register(Registry.SOUND_EVENT, new Identifier("conjuring", "gui.gem_tinkerer.froge"), FROGE_SOUND);
     }
 
 }

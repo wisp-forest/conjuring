@@ -8,8 +8,10 @@
 
   "itemGroup.conjuring.general": "Conjuring",
   "item.conjuring.conjuring_focus": "Conjuring Focus",
+  "item.conjuring.stabilized_conjuring_focus": "Stabilized Conjuring Focus",
   "item.conjuring.conjuring_scepter": "Conjuring Scepter",
   "item.conjuring.superior_conjuring_scepter": "Superior Conjuring Scepter",
+  "item.conjuring.pizza": "Pizza",
 
   "item.conjuring.conjuration_essence": "Conjuration Essence",
   "item.conjuring.lesser_conjuration_essence": "Lesser Conjuration Essence",
@@ -39,6 +41,9 @@
 
   "death.attack.soul_projectile": "%1$s had their soul violently extracted",
   "conjuring.gui.soulfire_forge": "Soulfire Forge",
+  "conjuring.gui.gem_tinkerer": "Gem Tinkering",
+  "conjuring.gui.soul_weaver": "Soul Weaving",
+
   "advancement.conjuring.root.title": "Conjuring",
   "advancement.conjuring.root.description": "It\u0027s all about that soul",
   "advancement.conjuring.soulfire_forge.title": "Soul Forgery",

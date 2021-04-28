@@ -255,7 +255,10 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
             if (!world.isClient) {
 
                 world.playSound(null, pos, SoundEvents.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.BLOCKS, 1, 0);
-                MinecraftClient.getInstance().getSoundManager().stopSounds(new Identifier("minecraft", "block.beacon.ambient"), SoundCategory.BLOCKS);
+                try {
+                    MinecraftClient.getInstance().getSoundManager().stopSounds(new Identifier("minecraft", "block.beacon.ambient"), SoundCategory.BLOCKS);
+                } catch (Exception ignored) {
+                }
 
                 for (BlockPos pedestal : pedestals) {
                     ((BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal)).setActive(false);
