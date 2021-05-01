@@ -24,6 +24,11 @@ public class SoulWeaverRecipe implements Recipe<Inventory> {
     private final Identifier id;
     public final boolean transferTag;
 
+    @Override
+    public boolean isIgnoredInRecipeBook() {
+        return true;
+    }
+
     public SoulWeaverRecipe(Identifier id, ItemStack result, DefaultedList<Ingredient> inputs, boolean transferTag) {
         this.id = id;
         this.result = result;

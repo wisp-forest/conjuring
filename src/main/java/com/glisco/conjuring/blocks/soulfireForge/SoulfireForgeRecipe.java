@@ -20,6 +20,11 @@ public class SoulfireForgeRecipe implements Recipe<Inventory> {
     private final Identifier id;
     private final int smeltTime;
 
+    @Override
+    public boolean isIgnoredInRecipeBook() {
+        return true;
+    }
+
     public SoulfireForgeRecipe(Identifier id, ItemStack result, int smeltTime, DefaultedList<Ingredient> inputs) {
         this.id = id;
         this.result = result;

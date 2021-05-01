@@ -24,12 +24,15 @@ import com.glisco.conjuring.entities.SoulFellerEntity;
 import com.glisco.conjuring.entities.SoulMagnetEntity;
 import com.glisco.conjuring.entities.SoulProjectileEntity;
 import com.glisco.conjuring.items.*;
+import com.glisco.conjuring.items.soul_alloy_tools.*;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.block.Block;
@@ -219,6 +222,10 @@ public class ConjuringCommon implements ModInitializer {
 
         AutoConfig.register(ConjuringConfig.class, JanksonConfigSerializer::new);
         CONFIG = AutoConfig.getConfigHolder(ConjuringConfig.class).getConfig();
+
+        ServerTickEvents.END_WORLD_TICK.register(BlockCrawler::tick);
+
+        ServerPlayNetworking.registerGlobalReceiver(ChangeToolModePacket.ID, ChangeToolModePacket::onPacket);
 
         LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
             if (new Identifier("minecraft", "blocks/spawner").equals(id)) {

@@ -1,4 +1,4 @@
-package com.glisco.conjuring.items;
+package com.glisco.conjuring.items.soul_alloy_tools;
 
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.entities.SoulDiggerEntity;
@@ -24,10 +24,14 @@ public class SoulAlloyPickaxe extends PickaxeItem implements SoulAlloyTool {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 
+        if (!SoulAlloyTool.isSecondaryEnabled(user.getStackInHand(hand))) return TypedActionResult.pass(user.getStackInHand(hand));
+
         if (!world.isClient()) {
             SoulDiggerEntity digger = new SoulDiggerEntity(world, user);
             digger.refreshPositionAndAngles(user.getX(), user.getEyeY(), user.getZ(), 0, 0);
             digger.setProperties(user, user.pitch, user.yaw, 0f, 1.5f, 1);
+
+            digger.setItem(user.getStackInHand(hand));
 
             world.spawnEntity(digger);
         }

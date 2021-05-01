@@ -27,17 +27,19 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
 
     public static final SpriteIdentifier MODEL_TEXTURE = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("conjuring", "block/gem_tinkerer"));
 
-    ModelPart columnModel = new ModelPart(32, 32, 0, 0);
-    ModelPart mainModel = new ModelPart(32, 32, 8, 0);
+    private static final ModelPart columnModel = new ModelPart(32, 32, 0, 0);
+    private static final ModelPart mainModel = new ModelPart(32, 32, 8, 0);
+
+    static {
+        columnModel.addCuboid(0, 0, 0, 2, 6, 2);
+        mainModel.addCuboid(0, 0, 0, 4, 12, 4);
+    }
 
     private static final double twoPi = Math.PI * 2;
     private double scalar = 800;
 
     public GemTinkererBlockEntityRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher) {
         super(blockEntityRenderDispatcher);
-
-        columnModel.addCuboid(0, 0, 0, 2, 6, 2);
-        mainModel.addCuboid(0, 0, 0, 4, 12, 4);
     }
 
     public void render(GemTinkererBlockEntity blockEntity, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {

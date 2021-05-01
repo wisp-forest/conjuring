@@ -1,0 +1,24 @@
+{
+  "type": "conjuring:soulfire_forge",
+  "pattern": [
+    "gng",
+    "nIn",
+    "gng"
+  ],
+  "key": {
+    "g": {
+      "item": "conjuring:soul_brick"
+    },
+    "n": {
+      "item": "conjuring:soul_alloy"
+    },
+    "I": {
+      "item": "minecraft:nether_star"
+    }
+  },
+  "smeltTime": 1200,
+  "result": {
+    "item": "conjuring:stabilized_conjuring_focus",
+    "count": 1
+  }
+}

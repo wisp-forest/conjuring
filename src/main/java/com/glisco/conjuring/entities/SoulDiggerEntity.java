@@ -1,15 +1,28 @@
 package com.glisco.conjuring.entities;
 
 import com.glisco.conjuring.ConjuringCommon;
-import com.glisco.conjuring.items.BlockCrawler;
+import com.glisco.conjuring.items.soul_alloy_tools.BlockCrawler;
+import com.glisco.owo.WorldOps;
 import net.minecraft.block.OreBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class SoulDiggerEntity extends SoulEntity {
+
+    private static final TrackedData<ItemStack> STACK;
+
+    static {
+        STACK = DataTracker.registerData(SoulDiggerEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
+    }
 
     public SoulDiggerEntity(World world, LivingEntity owner) {
         super(ConjuringCommon.SOUL_DIGGER, world);
@@ -22,7 +35,24 @@ public class SoulDiggerEntity extends SoulEntity {
 
     @Override
     protected void initDataTracker() {
+        this.getDataTracker().startTracking(STACK, ItemStack.EMPTY);
+    }
 
+    @Override
+    protected void writeCustomDataToTag(CompoundTag tag) {
+        super.writeCustomDataToTag(tag);
+        tag.put("Item", getDataTracker().get(STACK).toTag(new CompoundTag()));
+    }
+
+    @Override
+    protected void readCustomDataFromTag(CompoundTag tag) {
+        super.readCustomDataFromTag(tag);
+        ItemStack stack = ItemStack.fromTag(tag.getCompound("Item"));
+        this.setItem(stack.copy());
+    }
+
+    public void setItem(ItemStack stack) {
+        this.getDataTracker().set(STACK, stack);
     }
 
     @Override
@@ -34,13 +64,17 @@ public class SoulDiggerEntity extends SoulEntity {
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
 
-        if (world.getBlockState(blockHitResult.getBlockPos()).getBlock() instanceof OreBlock) {
-            BlockCrawler.crawl(world, blockHitResult.getBlockPos());
+        if (getOwner() == null) return;
+
+        BlockPos pos = blockHitResult.getBlockPos();
+
+        if (world.getBlockState(pos).getBlock() instanceof OreBlock) {
+            BlockCrawler.crawl(world, pos, getDataTracker().get(STACK), 32);
             this.remove();
             return;
         }
 
-        world.breakBlock(blockHitResult.getBlockPos(), true);
+        WorldOps.breakBlockWithItem(world, pos, getDataTracker().get(STACK));
     }
 
 }

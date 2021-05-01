@@ -1,6 +1,5 @@
 package com.glisco.conjuring.blocks.soulfireForge;
 
-import com.glisco.conjuring.blocks.soul_weaver.SoulWeaverRecipeSerializer;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -36,9 +35,9 @@ public class SoulfireForgeRecipeSerializer implements RecipeSerializer<SoulfireF
 
         HashMap<Character, Ingredient> keys = new HashMap<>();
         for (Map.Entry<String, JsonElement> key : recipe.key.entrySet()) {
-            if (key.getKey().length() != 1) throw new JsonSyntaxException("Invalid key \'" + key.getKey() + " \', must be 1 char in length");
+            if (key.getKey().length() != 1) throw new JsonSyntaxException("Invalid key '" + key.getKey() + " ', must be 1 char in length");
             Ingredient ingredient = Ingredient.fromJson(key.getValue());
-            if (ingredient.isEmpty()) throw new JsonSyntaxException("Invalid key \'" + key.getKey() + " \', no item found");
+            if (ingredient.isEmpty()) throw new JsonSyntaxException("Invalid key '" + key.getKey() + " ', no item found");
             keys.put(key.getKey().charAt(0), ingredient);
         }
 

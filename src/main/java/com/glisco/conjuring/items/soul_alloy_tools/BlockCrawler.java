@@ -1,11 +1,13 @@
-package com.glisco.conjuring.items;
+package com.glisco.conjuring.items.soul_alloy_tools;
 
+import com.glisco.owo.WorldOps;
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
-import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,9 +16,15 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class BlockCrawler {
 
-    public static ConcurrentLinkedQueue<MutablePair<Integer, List<BlockPos>>> blocksToCrawl = new ConcurrentLinkedQueue<>();
+    //TODO link to dimensions
 
-    public static void crawl(World world, BlockPos firstBlock) {
+    public static ConcurrentLinkedQueue<CrawlData> blocksToCrawl = new ConcurrentLinkedQueue<>();
+
+    public static void crawl(World world, BlockPos firstBlock, ItemStack breakStack, int maxBlocks) {
+
+        if (world.isClient()) return;
+
+        System.out.println("crawler called");
 
         Block blockType = world.getBlockState(firstBlock).getBlock();
 
@@ -35,7 +43,7 @@ public class BlockCrawler {
                 //Scan neighbours
                 for (BlockPos pos : getNeighbors(foundBlock)) {
 
-                    if (foundBlocks.size() >= 128) break outerLoop;
+                    if (foundBlocks.size() >= maxBlocks) break outerLoop;
                     if (!world.getBlockState(pos).getBlock().equals(blockType) || foundBlocks.contains(pos)) continue;
 
                     foundBlocks.add(pos);
@@ -47,33 +55,39 @@ public class BlockCrawler {
             counter++;
         } while (!scanBlocks.isEmpty() && counter < 25);
 
-        blocksToCrawl.add(new MutablePair<>(0, foundBlocks));
+        blocksToCrawl.add(new CrawlData(world.getRegistryKey(), breakStack, foundBlocks));
 
     }
 
     public static void tick(World world) {
 
-        for (MutablePair<Integer, List<BlockPos>> pair : blocksToCrawl) {
-            if (pair.left > 0) {
-                pair.left--;
+        if (world.getTime() % 2 != 0) return;
+        //System.out.println(blocksToCrawl.size());
+
+        for (CrawlData data : blocksToCrawl) {
+
+            if (!data.world.getValue().equals(world.getRegistryKey().getValue())) continue;
+
+            //System.out.println();
+            //System.out.println("Loop");
+
+            if (data.isEmpty()) {
+                blocksToCrawl.remove(data);
                 continue;
             }
 
-            if (pair.getRight().isEmpty()) {
-                blocksToCrawl.remove(pair);
-                continue;
-            }
+            BlockPos pos = data.getFirstAndRemove();
 
-            world.breakBlock(pair.getRight().get(0), true);
+            //System.out.println(pair.getRight().toArray().length + ":" + pos.hashCode() + ":" + world.getTime() + ":" + blocksToCrawl.size());
 
-            BlockPos pos = pair.getRight().get(0);
+            WorldOps.breakBlockWithItem(world, pos, data.mineItem);
+            //world.setBlockState(pos, Blocks.POLISHED_BLACKSTONE.getDefaultState());
 
             world.getServer().getPlayerManager().sendToAround(null, pos.getX(), pos.getY(), pos.getZ(), 50, world.getRegistryKey(),
                     new ParticleS2CPacket(ParticleTypes.SOUL_FIRE_FLAME, false, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0.2f, 0.2f, 0.2f, 0.01f, 5));
 
-            pair.getRight().remove(0);
-            pair.left = 2;
-
+            //System.out.println("Loop end");
+            //System.out.println();
         }
     }
 
@@ -102,6 +116,30 @@ public class BlockCrawler {
 
         list.remove(original);
         return list;
+    }
+
+    private static class CrawlData {
+
+        public final RegistryKey<World> world;
+        public final ItemStack mineItem;
+        private final List<BlockPos> blocksToMine;
+
+        public CrawlData(RegistryKey<World> world, ItemStack mineItem, List<BlockPos> blocksToMine) {
+            this.world = world;
+            this.mineItem = mineItem;
+            this.blocksToMine = blocksToMine;
+        }
+
+        public boolean isEmpty() {
+            return blocksToMine.isEmpty();
+        }
+
+        public BlockPos getFirstAndRemove() {
+            BlockPos pos = blocksToMine.get(0);
+            blocksToMine.remove(0);
+            return pos;
+        }
+
     }
 
 }

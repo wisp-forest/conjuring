@@ -30,10 +30,6 @@ public class GemTinkeringDisplay implements RecipeDisplay {
             return entries;
         }).collect(Collectors.toList());
 
-        /*List<EntryStack> stacks = input.get(2);
-        input.set(2, input.get(0));
-        input.set(0, stacks);*/
-
         this.output = Collections.singletonList(EntryStack.create(recipe.getOutput()));
     }
 

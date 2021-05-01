@@ -2,7 +2,7 @@ package com.glisco.conjuring.blocks.gem_tinkerer;
 
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.items.GemItem;
-import com.glisco.conjuring.items.SoulAlloyTool;
+import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyTool;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;

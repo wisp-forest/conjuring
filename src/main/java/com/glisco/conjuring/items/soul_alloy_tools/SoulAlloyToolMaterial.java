@@ -1,4 +1,4 @@
-package com.glisco.conjuring.items;
+package com.glisco.conjuring.items.soul_alloy_tools;
 
 import com.glisco.conjuring.ConjuringCommon;
 import net.minecraft.item.ItemStack;

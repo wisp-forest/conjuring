@@ -23,6 +23,11 @@ public class GemTinkererRecipe implements Recipe<Inventory> {
     private final ItemStack result;
     private final Identifier id;
 
+    @Override
+    public boolean isIgnoredInRecipeBook() {
+        return true;
+    }
+
     public GemTinkererRecipe(Identifier id, ItemStack result, DefaultedList<Ingredient> inputs) {
         this.id = id;
         this.result = result;

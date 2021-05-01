@@ -1,8 +1,7 @@
-package com.glisco.conjuring.items;
+package com.glisco.conjuring.items.soul_alloy_tools;
 
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.entities.SoulMagnetEntity;
-import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -12,7 +11,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,8 +24,6 @@ public class SoulAlloyShovel extends ShovelItem implements SoulAlloyTool {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-
-        SoulAlloyToolAbilities.getBlocksToDig(user);
 
         if (!world.isClient()) {
 

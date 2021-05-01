@@ -1,6 +1,7 @@
 package com.glisco.conjuring.items;
 
 import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyTool;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

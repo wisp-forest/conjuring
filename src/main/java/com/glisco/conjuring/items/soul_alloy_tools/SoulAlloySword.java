@@ -1,8 +1,9 @@
-package com.glisco.conjuring.items;
+package com.glisco.conjuring.items.soul_alloy_tools;
 
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.entities.SoulProjectileEntity;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
@@ -15,14 +16,22 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class SoulAlloySword extends SwordItem implements SoulAlloyTool{
+public class SoulAlloySword extends SwordItem implements SoulAlloyTool {
 
     public SoulAlloySword() {
         super(SoulAlloyToolMaterial.INSTANCE, 3, -2.4f, new Settings().group(ConjuringCommon.CONJURING_GROUP).rarity(Rarity.UNCOMMON));
     }
 
+    //TODO remove this
+    @Override
+    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        return super.postHit(stack, target, attacker);
+    }
+
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+
+        if (!SoulAlloyTool.isSecondaryEnabled(user.getStackInHand(hand))) return TypedActionResult.pass(user.getStackInHand(hand));
 
         if (!world.isClient()) {
             SoulProjectileEntity projectile = new SoulProjectileEntity(world, user);

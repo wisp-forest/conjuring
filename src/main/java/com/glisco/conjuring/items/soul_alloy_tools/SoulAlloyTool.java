@@ -1,4 +1,4 @@
-package com.glisco.conjuring.items;
+package com.glisco.conjuring.items.soul_alloy_tools;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -7,8 +7,19 @@ import net.minecraft.text.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface SoulAlloyTool {
+
+    static void toggleEnabledState(ItemStack stack) {
+        boolean currentState = stack.getOrCreateTag().contains("SecondaryEnabled") && stack.getOrCreateTag().getBoolean("SecondaryEnabled");
+        currentState = !currentState;
+        stack.getOrCreateTag().putBoolean("SecondaryEnabled", currentState);
+    }
+
+    static boolean isSecondaryEnabled(ItemStack stack) {
+        return stack.getOrCreateTag().contains("SecondaryEnabled") && stack.getOrCreateTag().getBoolean("SecondaryEnabled");
+    }
 
     static void addModifier(ItemStack stack, SoulAlloyModifier modifier) {
         CompoundTag modifierTag = stack.getOrCreateSubTag("Modifiers");
@@ -22,7 +33,11 @@ public interface SoulAlloyTool {
     static boolean canAddModifier(ItemStack stack, SoulAlloyModifier modifier) {
         CompoundTag modifierTag = stack.getOrCreateSubTag("Modifiers");
 
-        return modifierTag.getKeys().size() < 2 || (modifierTag.contains(modifier.name()) ? modifierTag.getInt(modifier.name()) : 0) == 1;
+        if (modifierTag.getKeys().size() >= 2 && getModifierLevel(stack, modifier) == 0) return false;
+
+        if (getModifierLevel(stack, modifier) >= 3) return false;
+
+        return modifierTag.getKeys().stream().mapToInt(modifierTag::getInt).sum() < 5;
     }
 
     static boolean canAddModifiers(ItemStack stack, List<SoulAlloyModifier> modifiers) {
@@ -30,26 +45,26 @@ public interface SoulAlloyTool {
         HashMap<SoulAlloyModifier, Integer> modifierMap = getModifiers(stack);
 
         for (SoulAlloyModifier modifier : modifiers) {
-
-            if (SoulAlloyTool.canAddModifier(stack, modifier)) {
-                if (!modifierMap.containsKey(modifier)) {
-                    modifierMap.put(modifier, 1);
-                } else {
-                    modifierMap.put(modifier, modifierMap.get(modifier) + 1);
-                }
+            if (!modifierMap.containsKey(modifier)) {
+                modifierMap.put(modifier, 1);
             } else {
-                return false;
+                modifierMap.put(modifier, modifierMap.get(modifier) + 1);
             }
         }
 
-        return modifierMap.keySet().stream().allMatch(modifier -> modifierMap.get(modifier) <= 2) && modifierMap.size() <= 2;
+        for (Map.Entry<SoulAlloyModifier, Integer> entry : modifierMap.entrySet()) {
+            if (entry.getValue() < 3) continue;
+            if (entry.getValue() > 3) return false;
+            if (modifierMap.entrySet().stream().anyMatch(currentEntry -> currentEntry != entry && currentEntry.getValue() > 2)) return false;
+        }
+
+        return modifierMap.size() <= 2;
 
     }
 
     static List<Text> getTooltip(ItemStack stack) {
 
         List<Text> tooltip = new ArrayList<>();
-
         CompoundTag modifiers = stack.getOrCreateSubTag("Modifiers");
 
         for (String key : modifiers.getKeys()) {
@@ -68,6 +83,10 @@ public interface SoulAlloyTool {
         }
 
         return tooltip;
+    }
+
+    static int getModifierLevel(ItemStack stack, SoulAlloyModifier modifier) {
+        return stack.getOrCreateSubTag("Modifiers").contains(modifier.name()) ? stack.getOrCreateSubTag("Modifiers").getInt(modifier.name()) : 0;
     }
 
     static HashMap<SoulAlloyModifier, Integer> getModifiers(ItemStack stack) {

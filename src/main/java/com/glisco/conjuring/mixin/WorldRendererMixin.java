@@ -1,6 +1,6 @@
 package com.glisco.conjuring.mixin;
 
-import com.glisco.conjuring.items.SoulAlloyToolAbilities;
+import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyToolAbilities;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.client.MinecraftClient;
