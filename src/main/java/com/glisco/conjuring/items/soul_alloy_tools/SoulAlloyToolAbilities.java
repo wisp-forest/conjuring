@@ -37,7 +37,7 @@ public class SoulAlloyToolAbilities {
     }
 
     public static boolean canAoeHit(PlayerEntity player) {
-        return player.getMainHandStack().getItem() == ConjuringCommon.SOUL_ALLOY_SWORD && SoulAlloyTool.getModifierLevel(player.getMainHandStack(), SoulAlloyTool.SoulAlloyModifier.SCOPE) > 0;
+        return player.getMainHandStack().getItem() == ConjuringCommon.SOUL_ALLOY_SWORD && SoulAlloyTool.isSecondaryEnabled(player.getMainHandStack()) && SoulAlloyTool.getModifierLevel(player.getMainHandStack(), SoulAlloyTool.SoulAlloyModifier.SCOPE) > 0;
     }
 
     public static List<BlockPos> getBlocksToDig(PlayerEntity player) {
