@@ -57,40 +57,37 @@ public class SoulAlloyToolAbilities {
 
         if (player.getMainHandStack().getItem().getMiningSpeedMultiplier(player.getMainHandStack(), player.world.getBlockState(hit)) == 1) return blocksToDig;
 
-
+        final int z = -1 * scopeLevel;
+        final int start = 1 + 2 * scopeLevel;
         switch (side.getAxis()) {
             case X:
-
-                hit = hit.add(0, -1 * scopeLevel, -1 * scopeLevel);
-
-                for (int i = 0; i < 1 + 2 * scopeLevel; i++) {
-                    for (int j = 0; j < 1 + 2 * scopeLevel; j++) {
-                        blocksToDig.add(hit.add(0, i, j));
+                hit = hit.add(0, z, z);
+                for (int i = start; i >= 0; i--) {
+                    for (int j = start; j >= 0; j--) {
+                        blocksToDig.add(hit.add(0, j, i));
                     }
                 }
-
                 break;
             case Y:
-                hit = hit.add(-1 * scopeLevel, 0, -1 * scopeLevel);
-
-                for (int i = 0; i < 1 + 2 * scopeLevel; i++) {
-                    for (int j = 0; j < 1 + 2 * scopeLevel; j++) {
-                        blocksToDig.add(hit.add(j, 0, i));
+                hit = hit.add(z, 0, z);
+                for (int i = start; i >= 0; i--) {
+                    for (int j = start; j >= 0; j--) {
+                        blocksToDig.add(hit.add(i, 0, j));
                     }
                 }
                 break;
             case Z:
-                hit = hit.add(-1 * scopeLevel, -1 * scopeLevel, 0);
-
-                for (int i = 0; i < 1 + 2 * scopeLevel; i++) {
-                    for (int j = 0; j < 1 + 2 * scopeLevel; j++) {
+                hit = hit.add(z, z, 0);
+                for (int i = start; i >= 0; i--) {
+                    for (int j = start; j >= 0; j--) {
                         blocksToDig.add(hit.add(j, i, 0));
                     }
                 }
                 break;
         }
 
-        blocksToDig.removeIf(blockPos -> player.getMainHandStack().getItem().getMiningSpeedMultiplier(player.getMainHandStack(), player.world.getBlockState(blockPos)) == 1);
+
+        blocksToDig.removeIf(blockPos -> player.world.getBlockState(blockPos).getHardness(player.world, blockPos) <= 0 || player.getMainHandStack().getItem().getMiningSpeedMultiplier(player.getMainHandStack(), player.world.getBlockState(blockPos)) <= 1);
         blocksToDig.remove(origin);
 
         return blocksToDig;

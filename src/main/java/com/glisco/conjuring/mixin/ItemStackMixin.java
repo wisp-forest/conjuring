@@ -34,8 +34,7 @@ public class ItemStackMixin {
         return i + SoulAlloyTool.getModifierLevel((ItemStack) (Object) this, SoulAlloyTool.SoulAlloyModifier.IGNORANCE);
     }
 
-    @Inject(method = "getAttributeModifiers",
-            at = @At("TAIL"), cancellable = true)
+    @Inject(method = "getAttributeModifiers", at = @At("TAIL"), cancellable = true)
     public void applyHasteSword(EquipmentSlot equipmentSlot, CallbackInfoReturnable<Multimap<EntityAttribute, EntityAttributeModifier>> cir) {
         if (equipmentSlot != EquipmentSlot.MAINHAND) return;
         if (item != ConjuringCommon.SOUL_ALLOY_SWORD) return;

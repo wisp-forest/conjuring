@@ -1,0 +1,32 @@
+{
+  "name": "Ritual of Extraction",
+  "icon": "conjuring:soul_funnel",
+  "category": "conjuring:rituals",
+  "pages": [
+    {
+      "type": "text",
+      "text": "ritual text go brr"
+    },
+    {
+      "type": "multiblock",
+      "name": "Ritual of Extraction",
+      "multiblock": {
+        "mapping": {
+          "0": "conjuring:soul_funnel",
+          "P": "conjuring:blackstone_pedestal"
+        },
+        "pattern": [
+          [
+            "___P___",
+            "___ ___",
+            "___ ___",
+            "P  0  P",
+            "___ ___",
+            "___ ___",
+            "___P___"
+          ]
+        ]
+      }
+    }
+  ]
+}

@@ -1,6 +1,8 @@
 package com.glisco.conjuring.entities;
 
 import io.netty.buffer.Unpooled;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.MinecraftClient;
@@ -33,7 +35,9 @@ public class EntityCreatePacket {
         return ServerPlayNetworking.createS2CPacket(ID, buffer);
     }
 
+    @Environment(EnvType.CLIENT)
     public static void onPacket(MinecraftClient client, ClientPlayNetworkHandler clientPlayNetworkHandler, PacketByteBuf buffer, PacketSender sender) {
+
         EntityType<?> entityType = Registry.ENTITY_TYPE.get(buffer.readVarInt());
         int entityID = buffer.readVarInt();
         UUID uuid = buffer.readUuid();
@@ -58,5 +62,6 @@ public class EntityCreatePacket {
                 world.addEntity(entityID, e);
             }
         });
+
     }
 }

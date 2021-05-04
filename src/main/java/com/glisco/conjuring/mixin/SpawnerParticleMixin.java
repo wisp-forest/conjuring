@@ -21,6 +21,7 @@ import java.util.Random;
 @Mixin(WorldRenderer.class)
 public class SpawnerParticleMixin {
 
+    //TODO migrate to owo
     @Inject(method = "processWorldEvent", at = @At("TAIL"))
     public void processCustomWorldEvent(PlayerEntity source, int eventId, BlockPos pos, int data, CallbackInfo ci) {
         Random random = MinecraftClient.getInstance().world.random;

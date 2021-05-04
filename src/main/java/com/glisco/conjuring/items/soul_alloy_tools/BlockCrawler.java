@@ -16,15 +16,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class BlockCrawler {
 
-    //TODO link to dimensions
-
     public static ConcurrentLinkedQueue<CrawlData> blocksToCrawl = new ConcurrentLinkedQueue<>();
 
     public static void crawl(World world, BlockPos firstBlock, ItemStack breakStack, int maxBlocks) {
 
         if (world.isClient()) return;
-
-        System.out.println("crawler called");
 
         Block blockType = world.getBlockState(firstBlock).getBlock();
 
@@ -62,14 +58,10 @@ public class BlockCrawler {
     public static void tick(World world) {
 
         if (world.getTime() % 2 != 0) return;
-        //System.out.println(blocksToCrawl.size());
 
         for (CrawlData data : blocksToCrawl) {
 
             if (!data.world.getValue().equals(world.getRegistryKey().getValue())) continue;
-
-            //System.out.println();
-            //System.out.println("Loop");
 
             if (data.isEmpty()) {
                 blocksToCrawl.remove(data);
@@ -78,16 +70,10 @@ public class BlockCrawler {
 
             BlockPos pos = data.getFirstAndRemove();
 
-            //System.out.println(pair.getRight().toArray().length + ":" + pos.hashCode() + ":" + world.getTime() + ":" + blocksToCrawl.size());
-
             WorldOps.breakBlockWithItem(world, pos, data.mineItem);
-            //world.setBlockState(pos, Blocks.POLISHED_BLACKSTONE.getDefaultState());
 
             world.getServer().getPlayerManager().sendToAround(null, pos.getX(), pos.getY(), pos.getZ(), 50, world.getRegistryKey(),
                     new ParticleS2CPacket(ParticleTypes.SOUL_FIRE_FLAME, false, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0.2f, 0.2f, 0.2f, 0.01f, 5));
-
-            //System.out.println("Loop end");
-            //System.out.println();
         }
     }
 
@@ -120,9 +106,9 @@ public class BlockCrawler {
 
     private static class CrawlData {
 
-        public final RegistryKey<World> world;
-        public final ItemStack mineItem;
-        private final List<BlockPos> blocksToMine;
+        public final  RegistryKey<World> world;
+        public final  ItemStack          mineItem;
+        private final List<BlockPos>     blocksToMine;
 
         public CrawlData(RegistryKey<World> world, ItemStack mineItem, List<BlockPos> blocksToMine) {
             this.world = world;

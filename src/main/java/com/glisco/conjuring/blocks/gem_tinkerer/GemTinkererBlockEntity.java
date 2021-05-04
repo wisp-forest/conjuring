@@ -84,7 +84,10 @@ public class GemTinkererBlockEntity extends BlockEntity implements BlockEntityCl
         List<SoulAlloyTool.SoulAlloyModifier> presentModifiers = new ArrayList<>();
 
         for (int i = 1; i < inventory.size(); i++) {
-            if (!inventory.get(i).isEmpty() && inventory.get(i).getItem() instanceof GemItem) {
+            if (!inventory.get(i).isEmpty()) {
+
+                if (!(inventory.get(i).getItem() instanceof GemItem)) return ActionResult.PASS;
+
                 final SoulAlloyTool.SoulAlloyModifier modifier = ((GemItem) inventory.get(i).getItem()).getModifier();
                 presentModifiers.add(modifier);
             }

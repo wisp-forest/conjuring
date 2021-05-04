@@ -1,0 +1,32 @@
+{
+  "name": "Ritual of Weaving",
+  "icon": "conjuring:soul_weaver",
+  "category": "conjuring:rituals",
+  "pages": [
+    {
+      "type": "text",
+      "text": "ritual text go yeet"
+    },
+    {
+      "type": "multiblock",
+      "name": "Ritual of Weaving",
+      "multiblock": {
+        "mapping": {
+          "0": "conjuring:soul_weaver",
+          "P": "conjuring:blackstone_pedestal"
+        },
+        "pattern": [
+          [
+            "___P___",
+            "___ ___",
+            "___ ___",
+            "P  0  P",
+            "___ ___",
+            "___ ___",
+            "___P___"
+          ]
+        ]
+      }
+    }
+  ]
+}

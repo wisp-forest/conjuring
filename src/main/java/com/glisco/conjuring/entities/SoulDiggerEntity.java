@@ -2,7 +2,6 @@ package com.glisco.conjuring.entities;
 
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.items.soul_alloy_tools.BlockCrawler;
-import com.glisco.owo.WorldOps;
 import net.minecraft.block.OreBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -70,11 +69,9 @@ public class SoulDiggerEntity extends SoulEntity {
 
         if (world.getBlockState(pos).getBlock() instanceof OreBlock) {
             BlockCrawler.crawl(world, pos, getDataTracker().get(STACK), 32);
-            this.remove();
-            return;
         }
 
-        WorldOps.breakBlockWithItem(world, pos, getDataTracker().get(STACK));
+        this.remove();
     }
 
 }

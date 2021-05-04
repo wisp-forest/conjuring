@@ -39,8 +39,11 @@ public class SoulAlloyHatchet extends AxeItem implements SoulAlloyTool {
             }
 
             world.spawnEntity(feller);
-        }
 
+            user.getItemCooldownManager().set(ConjuringCommon.SOUL_ALLOY_HATCHET, 15);
+            user.getStackInHand(hand).damage(10 + 5 * scopeGems, user, player -> player.sendToolBreakStatus(hand));
+
+        }
         return TypedActionResult.success(user.getStackInHand(hand));
     }
 

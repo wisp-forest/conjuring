@@ -21,7 +21,6 @@ public class SoulWeaverRecipeSerializer implements RecipeSerializer<SoulWeaverRe
     public static final SoulWeaverRecipeSerializer INSTANCE = new SoulWeaverRecipeSerializer();
     public static final Identifier ID = SoulWeaverRecipe.Type.ID;
 
-
     @Override
     public SoulWeaverRecipe read(Identifier id, JsonObject json) {
         SoulWeaverRecipeJson recipe = new Gson().fromJson(json, SoulWeaverRecipeJson.class);

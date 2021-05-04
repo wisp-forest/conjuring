@@ -22,7 +22,6 @@ public abstract class SoulEntity extends ProjectileEntity {
         return EntityCreatePacket.create(this);
     }
 
-
     @Override
     public void setProperties(Entity user, float pitch, float yaw, float roll, float modifierZ, float modifierXYZ) {
         super.setProperties(user, pitch, yaw, roll, modifierZ, modifierXYZ);

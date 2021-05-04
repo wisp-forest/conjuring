@@ -3,7 +3,9 @@ package com.glisco.conjuring.items.soul_alloy_tools;
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.entities.SoulProjectileEntity;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityGroup;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
@@ -22,24 +24,26 @@ public class SoulAlloySword extends SwordItem implements SoulAlloyTool {
         super(SoulAlloyToolMaterial.INSTANCE, 3, -2.4f, new Settings().group(ConjuringCommon.CONJURING_GROUP).rarity(Rarity.UNCOMMON));
     }
 
-    //TODO remove this
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        return super.postHit(stack, target, attacker);
-    }
-
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 
         if (!SoulAlloyTool.isSecondaryEnabled(user.getStackInHand(hand))) return TypedActionResult.pass(user.getStackInHand(hand));
 
         if (!world.isClient()) {
-            SoulProjectileEntity projectile = new SoulProjectileEntity(world, user);
-            projectile.refreshPositionAndAngles(user.getX(), user.getEyeY(), user.getZ(), 0, 0);
-            projectile.setProperties(user, user.pitch, user.yaw, 0f, 1.5f, 1);
-            projectile.setDamage(25f);
 
-            world.spawnEntity(projectile);
+            float damage = (float) ((user.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE) + EnchantmentHelper.getAttackDamage(user.getMainHandStack(), EntityGroup.DEFAULT)) / 5);
+
+            for (int i = 0; i < 5; i++) {
+                SoulProjectileEntity projectile = new SoulProjectileEntity(world, user);
+                projectile.refreshPositionAndAngles(user.getX(), user.getEyeY(), user.getZ(), 0, 0);
+                projectile.setProperties(user, user.pitch, user.yaw - 20 + 10 * i, 0f, 1.5f, 1);
+                projectile.setDamage(damage);
+
+                world.spawnEntity(projectile);
+            }
+
+            user.getItemCooldownManager().set(ConjuringCommon.SOUL_ALLOY_SWORD, 30);
+            user.getStackInHand(hand).damage(20, user, player -> player.sendToolBreakStatus(hand));
         }
 
         return TypedActionResult.success(user.getStackInHand(hand));

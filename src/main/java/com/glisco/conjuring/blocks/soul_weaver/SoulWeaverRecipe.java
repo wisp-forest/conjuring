@@ -1,7 +1,6 @@
 package com.glisco.conjuring.blocks.soul_weaver;
 
 import com.glisco.conjuring.ConjuringCommon;
-import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeRecipeSerializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.inventory.Inventory;
@@ -87,7 +86,7 @@ public class SoulWeaverRecipe implements Recipe<Inventory> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return SoulfireForgeRecipeSerializer.INSTANCE;
+        return SoulWeaverRecipeSerializer.INSTANCE;
     }
 
     @Override

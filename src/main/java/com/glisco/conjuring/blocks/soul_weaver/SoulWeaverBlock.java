@@ -1,8 +1,10 @@
 package com.glisco.conjuring.blocks.soul_weaver;
 
 import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.blocks.BlackstonePedestalBlockEntity;
 import com.glisco.conjuring.items.ConjuringScepter;
 import com.glisco.owo.ItemOps;
+import com.glisco.owo.client.ClientParticles;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,12 +15,14 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Random;
 import java.util.stream.Stream;
 
 public class SoulWeaverBlock extends BlockWithEntity {
@@ -112,6 +116,21 @@ public class SoulWeaverBlock extends BlockWithEntity {
 
             }
             super.onStateReplaced(state, world, pos, newState, moved);
+        }
+    }
+
+    @Override
+    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+        SoulWeaverBlockEntity weaver = (SoulWeaverBlockEntity) world.getBlockEntity(pos);
+
+        for (BlockPos p : weaver.getPedestalPositions()) {
+            if (random.nextDouble() > 0.5f) continue;
+            BlackstonePedestalBlockEntity pedestal = (BlackstonePedestalBlockEntity) world.getBlockEntity(p);
+            if (pedestal == null) continue;
+            if (pedestal.getLinkedFunnel() == null) continue;
+            if (pedestal.getLinkedFunnel().compareTo(pos) != 0) return;
+
+            ClientParticles.spawnEnchantParticles(world, Vec3d.of(p).add(0.5, 0.5, 0.5), Vec3d.of(pos).add(0.5, 1.5, 0.5), 0);
         }
     }
 }

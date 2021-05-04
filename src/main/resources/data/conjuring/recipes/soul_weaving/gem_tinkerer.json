@@ -1,0 +1,25 @@
+{
+  "type": "conjuring:soul_weaving",
+  "inputs": [
+    {
+      "item": "minecraft:gilded_blackstone"
+    },
+    {
+      "item": "minecraft:blackstone"
+    },
+    {
+      "item": "minecraft:blackstone"
+    },
+    {
+      "item": "minecraft:blackstone"
+    },
+    {
+      "item": "minecraft:blackstone"
+    }
+  ],
+  "result": {
+    "item": "conjuring:gem_tinkerer",
+    "count": 1
+  },
+  "transferTag": false
+}

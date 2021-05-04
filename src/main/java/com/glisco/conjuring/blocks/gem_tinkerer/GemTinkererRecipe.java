@@ -1,7 +1,6 @@
 package com.glisco.conjuring.blocks.gem_tinkerer;
 
 import com.glisco.conjuring.ConjuringCommon;
-import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeRecipeSerializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.inventory.Inventory;
@@ -20,8 +19,8 @@ import java.util.List;
 public class GemTinkererRecipe implements Recipe<Inventory> {
 
     private final DefaultedList<Ingredient> inputs;
-    private final ItemStack result;
-    private final Identifier id;
+    private final ItemStack                 result;
+    private final Identifier                id;
 
     @Override
     public boolean isIgnoredInRecipeBook() {
@@ -85,7 +84,7 @@ public class GemTinkererRecipe implements Recipe<Inventory> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return SoulfireForgeRecipeSerializer.INSTANCE;
+        return GemTinkererRecipeSerializer.INSTANCE;
     }
 
     @Override

@@ -8,6 +8,8 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 
 public class ChangeToolModePacket {
@@ -19,6 +21,7 @@ public class ChangeToolModePacket {
             if (!player.isSneaking()) return;
             if (!(player.getMainHandStack().getItem() instanceof SoulAlloyTool)) return;
             SoulAlloyTool.toggleEnabledState(player.getMainHandStack());
+            player.playSound(SoulAlloyTool.isSecondaryEnabled(player.getMainHandStack()) ? SoundEvents.BLOCK_RESPAWN_ANCHOR_SET_SPAWN : SoundEvents.BLOCK_RESPAWN_ANCHOR_DEPLETE, SoundCategory.PLAYERS, 1,  1.5f + player.world.random.nextFloat() * 0.5f);
         });
     }
 

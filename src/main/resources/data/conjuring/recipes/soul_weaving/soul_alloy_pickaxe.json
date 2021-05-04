@@ -2,7 +2,7 @@
   "type": "conjuring:soul_weaving",
   "inputs": [
     {
-      "item": "minecraft:netherite_sword"
+      "item": "minecraft:netherite_pickaxe"
     },
     {
       "item": "conjuring:soul_slice"
@@ -18,7 +18,7 @@
     }
   ],
   "result": {
-    "item": "conjuring:soul_alloy_sword",
+    "item": "conjuring:soul_alloy_pickaxe",
     "count": 1
   },
   "transferTag": true

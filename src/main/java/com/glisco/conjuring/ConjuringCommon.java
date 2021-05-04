@@ -101,7 +101,7 @@ public class ConjuringCommon implements ModInitializer {
 
     public static Item SOUL_ROD = new SoulRod();
     public static Item SOUL_ALLOY = new SoulAlloy();
-    public static Item SOUL_BRICK = new SoulBrick();
+    public static Item SOUL_SLICE = new SoulSlice();
     public static Item GEM_SOCKET = new GemSocket();
 
     public static Item SCOPE_CHARM = new CharmItem();
@@ -161,9 +161,9 @@ public class ConjuringCommon implements ModInitializer {
         Registry.register(Registry.BLOCK, new Identifier("conjuring", "soulfire_forge"), SOULFIRE_FORGE_BLOCK);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soulfire_forge"), new BlockItem(SOULFIRE_FORGE_BLOCK, new Item.Settings().group(ConjuringCommon.CONJURING_GROUP)));
 
-        BLACKSTONE_PEDESTAL_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:blackstone_pedestal", BlockEntityType.Builder.create(BlackstonePedestalBlockEntity::new, BLACKSTONE_PEDESTAL_BLOCK).build(null));
-        Registry.register(Registry.BLOCK, new Identifier("conjuring", "blackstone_pedestal"), BLACKSTONE_PEDESTAL_BLOCK);
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "blackstone_pedestal"), new BlockItem(BLACKSTONE_PEDESTAL_BLOCK, new Item.Settings().group(ConjuringCommon.CONJURING_GROUP)));
+        BLACKSTONE_PEDESTAL_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:blackstone_pedestal.json", BlockEntityType.Builder.create(BlackstonePedestalBlockEntity::new, BLACKSTONE_PEDESTAL_BLOCK).build(null));
+        Registry.register(Registry.BLOCK, new Identifier("conjuring", "blackstone_pedestal.json"), BLACKSTONE_PEDESTAL_BLOCK);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "blackstone_pedestal.json"), new BlockItem(BLACKSTONE_PEDESTAL_BLOCK, new Item.Settings().group(ConjuringCommon.CONJURING_GROUP)));
 
         SOUL_FUNNEL_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:soul_funnel", BlockEntityType.Builder.create(SoulFunnelBlockEntity::new, SOUL_FUNNEL_BLOCK).build(null));
         Registry.register(Registry.BLOCK, new Identifier("conjuring", "soul_funnel"), SOUL_FUNNEL_BLOCK);
@@ -190,7 +190,7 @@ public class ConjuringCommon implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy_shovel"), SOUL_ALLOY_SHOVEL);
 
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_alloy"), SOUL_ALLOY);
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_brick"), SOUL_BRICK);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_slice"), SOUL_SLICE);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_rod"), SOUL_ROD);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "conjuration_essence"), CONJURATION_ESSENCE);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "lesser_conjuration_essence"), LESSER_CONJURATION_ESSENCE);

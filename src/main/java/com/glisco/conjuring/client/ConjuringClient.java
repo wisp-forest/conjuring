@@ -4,6 +4,8 @@ import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.entities.EntityCreatePacket;
 import com.glisco.conjuring.entities.SoulEntityRenderer;
 import com.glisco.conjuring.items.soul_alloy_tools.ChangeToolModePacket;
+import com.glisco.owo.ServerParticles;
+import com.glisco.owo.client.ClientParticles;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -18,8 +20,11 @@ import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredica
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import org.lwjgl.glfw.GLFW;
 
@@ -61,6 +66,19 @@ public class ConjuringClient implements ClientModInitializer {
             while (TOGGLE_TOOL_MODE.wasPressed()) {
                 client.getNetworkHandler().sendPacket(ChangeToolModePacket.create());
             }
+        });
+
+        ServerParticles.registerClientSideHandler(new Identifier("conjuring", "unlink_weaver"), (client, pos, buffer) -> {
+
+            BlockPos pedestal = buffer.readBlockPos();
+
+            client.execute(() -> {
+                ClientParticles.setParticleCount(20);
+                ClientParticles.spawnLine(ParticleTypes.SMOKE, client.world, Vec3d.of(pos).add(0.5, 0.4, 0.5), Vec3d.of(pedestal).add(0.5, 0.5, 0.5), 0);
+
+                ClientParticles.setParticleCount(30);
+                ClientParticles.spawnWithinBlock(ParticleTypes.SMOKE, client.world, pedestal);
+            });
         });
 
     }

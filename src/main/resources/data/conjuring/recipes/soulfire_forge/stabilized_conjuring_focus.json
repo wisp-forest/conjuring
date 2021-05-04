@@ -2,18 +2,15 @@
   "type": "conjuring:soulfire_forge",
   "pattern": [
     "gng",
-    "nIn",
+    "n n",
     "gng"
   ],
   "key": {
     "g": {
-      "item": "conjuring:soul_brick"
+      "item": "conjuring:soul_slice"
     },
     "n": {
       "item": "conjuring:soul_alloy"
-    },
-    "I": {
-      "item": "minecraft:nether_star"
     }
   },
   "smeltTime": 1200,

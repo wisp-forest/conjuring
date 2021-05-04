@@ -56,7 +56,9 @@ public class SoulProjectileEntity extends SoulEntity {
 
         LivingEntity e = (LivingEntity) entityHitResult.getEntity();
 
-        if (e.getHealth() - damage <= 0) {
+        e.damage(createDamageSource(), damage);
+
+        if (!e.isAlive() && damage == 1.5f) {
             e.dropItem(ConjuringCommon.CONJURATION_ESSENCE);
             e.world.syncWorldEvent(9005, entityHitResult.getEntity().getBlockPos(), 0);
 
@@ -64,11 +66,9 @@ public class SoulProjectileEntity extends SoulEntity {
                 BlockPos pos = e.getBlockPos();
                 World world = e.world;
 
-                world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, SoundCategory.PLAYERS, 2, 0);
+                world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, SoundCategory.PLAYERS, 0.5f, 0);
             }
         }
-
-        e.damage(createDamageSource(), damage);
     }
 
     public void setDamage(float damage) {

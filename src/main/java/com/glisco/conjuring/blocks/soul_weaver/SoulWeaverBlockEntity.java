@@ -3,6 +3,7 @@ package com.glisco.conjuring.blocks.soul_weaver;
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.blocks.BlackstonePedestalBlockEntity;
 import com.glisco.conjuring.blocks.RitualCore;
+import com.glisco.owo.ServerParticles;
 import com.glisco.owo.VectorRandomUtils;
 import com.glisco.owo.client.ClientParticles;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
@@ -36,9 +37,9 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
 
     List<BlockPos> pedestals = new ArrayList<>();
     @NotNull
-    private ItemStack item = ItemStack.EMPTY;
-    private int ritualTick = 0;
-    private boolean lit = false;
+    private ItemStack item       = ItemStack.EMPTY;
+    private int       ritualTick = 0;
+    private boolean   lit        = false;
 
     SoulWeaverRecipe cachedRecipe = null;
 
@@ -71,20 +72,13 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
         return super.toTag(tag);
     }
 
-    //TODO make this good
     public boolean linkPedestal(BlockPos pedestal) {
         if (pedestals.size() >= 4) return false;
 
         if (!pedestals.contains(pedestal)) pedestals.add(pedestal);
         if (world.isClient) {
-            BlockPos offset = pedestal.subtract(pos);
-
-            float offsetX = 0.5f + offset.getX() / 8f;
-            float offsetY = 0.35f;
-            float offsetZ = 0.5f + offset.getZ() / 8f;
-
-            ClientParticles.setParticleCount(20);
-            ClientParticles.spawnPrecise(ParticleTypes.WITCH, world, new Vec3d(offsetX, offsetY, offsetZ).add(Vec3d.of(pos)), offset.getZ() / 12d, 0.1f, offset.getX() / 12d);
+            ClientParticles.setParticleCount(25);
+            ClientParticles.spawnLine(ParticleTypes.WITCH, world, Vec3d.of(pos).add(0.5, 0.4, 0.5), Vec3d.of(pedestal).add(0.5, 0.75, 0.5), 0);
         }
         this.markDirty();
         return true;
@@ -94,11 +88,10 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
         boolean returnValue = pedestals.remove(pedestal);
         this.markDirty();
 
-        BlockPos offset = pedestal.subtract(pos);
-        if (offset.getX() != 0) {
-            world.syncWorldEvent(9010, pos, offset.getX());
-        } else {
-            world.syncWorldEvent(9011, pos, offset.getZ());
+        if (!world.isClient()) {
+            ServerParticles.issueEvent((ServerWorld) world, pos, new Identifier("conjuring", "unlink_weaver"), buffer -> {
+                buffer.writeBlockPos(pedestal);
+            });
         }
 
         cancelRitual();
@@ -195,8 +188,10 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
 
         } else if (ritualTick == 10) {
 
-            ClientParticles.setParticleCount(8);
-            ClientParticles.persist();
+            if (world.isClient) {
+                ClientParticles.setParticleCount(8);
+                ClientParticles.persist();
+            }
 
             for (BlockPos pedestal : pedestals) {
                 if (world.isClient) {
@@ -207,7 +202,9 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
                 }
             }
 
-            ClientParticles.reset();
+            if (world.isClient) {
+                ClientParticles.reset();
+            }
         } else if (ritualTick > 10 && ritualTick < 165) {
 
             if (ritualTick == 15) {
@@ -255,10 +252,6 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
             if (!world.isClient) {
 
                 world.playSound(null, pos, SoundEvents.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.BLOCKS, 1, 0);
-                try {
-                    MinecraftClient.getInstance().getSoundManager().stopSounds(new Identifier("minecraft", "block.beacon.ambient"), SoundCategory.BLOCKS);
-                } catch (Exception ignored) {
-                }
 
                 for (BlockPos pedestal : pedestals) {
                     ((BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal)).setActive(false);
@@ -277,6 +270,11 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
                 setLit(false);
                 cachedRecipe = null;
             } else {
+                try {
+                    MinecraftClient.getInstance().getSoundManager().stopSounds(new Identifier("minecraft", "block.beacon.ambient"), SoundCategory.BLOCKS);
+                } catch (Exception ignored) {
+                }
+
                 ParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.GILDED_BLACKSTONE.getDefaultState());
 
                 ClientParticles.setParticleCount(30);

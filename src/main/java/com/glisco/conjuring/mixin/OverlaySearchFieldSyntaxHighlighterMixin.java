@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(targets = {"me.shedaniel.rei.impl.OverlaySearchFieldSyntaxHighlighter"})
 public class OverlaySearchFieldSyntaxHighlighterMixin {
 
-    @Inject(method = "accept", at = @At("HEAD"))
+    @Inject(method = "accept", at = @At("HEAD"), remap = false)
     public void froge(String text, CallbackInfo ci) {
         GemTinkeringCategory.FROGE_MODE = text.contains("froge");
     }

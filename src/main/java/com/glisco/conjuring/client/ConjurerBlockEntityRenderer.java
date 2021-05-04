@@ -18,9 +18,9 @@ public class ConjurerBlockEntityRenderer extends BlockEntityRenderer<ConjurerBlo
     }
 
     public void render(ConjurerBlockEntity conjurerBlockEntity, float f, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
-        matrixStack.push();
-
         if (conjurerBlockEntity.isActive()) {
+            matrixStack.push();
+
             matrixStack.translate(0.5D, 0.0D, 0.5D);
             ConjurerLogic mobSpawnerLogic = conjurerBlockEntity.getLogic();
             Entity entity = mobSpawnerLogic.getRenderedEntity();
@@ -39,8 +39,9 @@ public class ConjurerBlockEntityRenderer extends BlockEntityRenderer<ConjurerBlo
                 MinecraftClient.getInstance().getEntityRenderDispatcher().render(entity, 0.0D, 0.0D, 0.0D, 0.0F, f, matrixStack, vertexConsumerProvider, i);
 
             }
+
+            matrixStack.pop();
         }
 
-        matrixStack.pop();
     }
 }

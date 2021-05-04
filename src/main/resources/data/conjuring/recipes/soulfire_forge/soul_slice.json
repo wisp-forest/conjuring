@@ -2,26 +2,23 @@
   "type": "conjuring:soulfire_forge",
   "pattern": [
     "sgs",
-    "ini",
+    "gng",
     "sgs"
   ],
   "key": {
     "s": {
-      "item": "minecraft:soul_soil"
+      "item": "conjuring:conjuration_essence"
     },
     "g": {
-      "item": "minecraft:gold_ingot"
-    },
-    "i": {
       "item": "minecraft:iron_ingot"
     },
     "n": {
-      "item": "minecraft:netherite_scrap"
+      "item": "minecraft:nether_star"
     }
   },
-  "smeltTime": 600,
+  "smeltTime": 1200,
   "result": {
-    "item": "conjuring:soul_alloy",
+    "item": "conjuring:soul_slice",
     "count": 2
   }
 }

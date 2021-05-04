@@ -1,5 +1,6 @@
 package com.glisco.conjuring.entities;
 
+import com.glisco.owo.client.ClientParticles;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
@@ -37,7 +38,7 @@ public class SoulEntityRenderer extends EntityRenderer<SoulEntity> {
 
         Vec3d currentRenderPosition = last.add(increment);
         for (int j = 0; j < Math.round(direction.length() * 4); j++) {
-            world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, currentRenderPosition.x, currentRenderPosition.y, currentRenderPosition.z, 0, 0, 0);
+            ClientParticles.spawnWithMaxAge(ParticleTypes.SOUL_FIRE_FLAME, world, currentRenderPosition, world.random.nextInt((10 + entity.age)));
             currentRenderPosition = currentRenderPosition.add(increment);
         }
 

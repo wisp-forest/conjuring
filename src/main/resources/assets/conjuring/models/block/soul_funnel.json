@@ -28,42 +28,6 @@
         ]
       },
       "faces": {
-        "north": {
-          "uv": [
-            4,
-            11,
-            12,
-            16
-          ],
-          "texture": "#missing"
-        },
-        "east": {
-          "uv": [
-            4,
-            11,
-            12,
-            16
-          ],
-          "texture": "#missing"
-        },
-        "south": {
-          "uv": [
-            4,
-            11,
-            12,
-            16
-          ],
-          "texture": "#missing"
-        },
-        "west": {
-          "uv": [
-            4,
-            11,
-            12,
-            16
-          ],
-          "texture": "#missing"
-        },
         "up": {
           "uv": [
             4,

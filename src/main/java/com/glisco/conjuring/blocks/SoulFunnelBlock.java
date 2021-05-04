@@ -3,7 +3,6 @@ package com.glisco.conjuring.blocks;
 import com.glisco.conjuring.items.ConjuringFocus;
 import com.glisco.conjuring.items.ConjuringScepter;
 import com.glisco.owo.client.ClientParticles;
-import com.sun.security.ntlm.Client;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
