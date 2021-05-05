@@ -37,9 +37,9 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
 
     List<BlockPos> pedestals = new ArrayList<>();
     @NotNull
-    private ItemStack item       = ItemStack.EMPTY;
-    private int       ritualTick = 0;
-    private boolean   lit        = false;
+    private ItemStack item = ItemStack.EMPTY;
+    private int ritualTick = 0;
+    private boolean lit = false;
 
     SoulWeaverRecipe cachedRecipe = null;
 
@@ -119,7 +119,11 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
 
         if (!verifyRecipe() || !isLit()) return false;
 
-        world.playSound(null, pos, SoundEvents.ENTITY_EVOKER_CAST_SPELL, SoundCategory.BLOCKS, 1, 0);
+        if (world.random.nextDouble() < 0.014) {
+            world.playSound(null, pos, ConjuringCommon.WEEE, SoundCategory.BLOCKS, 1, 1);
+        } else {
+            world.playSound(null, pos, SoundEvents.ENTITY_EVOKER_CAST_SPELL, SoundCategory.BLOCKS, 1, 0);
+        }
         ritualTick = 1;
         markDirty();
         return true;

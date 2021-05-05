@@ -46,6 +46,7 @@ import net.minecraft.loot.ConstantLootTableRange;
 import net.minecraft.loot.condition.RandomChanceLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
@@ -140,6 +141,8 @@ public class ConjuringCommon implements ModInitializer {
     public static final EntityType<SoulFellerEntity> SOUL_FELLER;
     public static final EntityType<SoulMagnetEntity> SOUL_MAGNET;
 
+    public static final SoundEvent WEEE = new SoundEvent(new Identifier("conjuring", "block.soul_weaver.weee"));
+
     static {
         CONJURER_SCREEN_HANDLER_TYPE = ScreenHandlerRegistry.registerSimple(new Identifier("conjuring", "conjurer"), ConjurerScreenHandler::new);
         SOULFIRE_FORGE_SCREEN_HANDLER_TYPE = ScreenHandlerRegistry.registerSimple(new Identifier("conjuring", "soulfire_forge"), SoulfireForgeScreenHandler::new);
@@ -161,9 +164,9 @@ public class ConjuringCommon implements ModInitializer {
         Registry.register(Registry.BLOCK, new Identifier("conjuring", "soulfire_forge"), SOULFIRE_FORGE_BLOCK);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soulfire_forge"), new BlockItem(SOULFIRE_FORGE_BLOCK, new Item.Settings().group(ConjuringCommon.CONJURING_GROUP)));
 
-        BLACKSTONE_PEDESTAL_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:blackstone_pedestal.json", BlockEntityType.Builder.create(BlackstonePedestalBlockEntity::new, BLACKSTONE_PEDESTAL_BLOCK).build(null));
-        Registry.register(Registry.BLOCK, new Identifier("conjuring", "blackstone_pedestal.json"), BLACKSTONE_PEDESTAL_BLOCK);
-        Registry.register(Registry.ITEM, new Identifier("conjuring", "blackstone_pedestal.json"), new BlockItem(BLACKSTONE_PEDESTAL_BLOCK, new Item.Settings().group(ConjuringCommon.CONJURING_GROUP)));
+        BLACKSTONE_PEDESTAL_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:blackstone_pedestal", BlockEntityType.Builder.create(BlackstonePedestalBlockEntity::new, BLACKSTONE_PEDESTAL_BLOCK).build(null));
+        Registry.register(Registry.BLOCK, new Identifier("conjuring", "blackstone_pedestal"), BLACKSTONE_PEDESTAL_BLOCK);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "blackstone_pedestal"), new BlockItem(BLACKSTONE_PEDESTAL_BLOCK, new Item.Settings().group(ConjuringCommon.CONJURING_GROUP)));
 
         SOUL_FUNNEL_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:soul_funnel", BlockEntityType.Builder.create(SoulFunnelBlockEntity::new, SOUL_FUNNEL_BLOCK).build(null));
         Registry.register(Registry.BLOCK, new Identifier("conjuring", "soul_funnel"), SOUL_FUNNEL_BLOCK);
@@ -226,6 +229,8 @@ public class ConjuringCommon implements ModInitializer {
         ServerTickEvents.END_WORLD_TICK.register(BlockCrawler::tick);
 
         ServerPlayNetworking.registerGlobalReceiver(ChangeToolModePacket.ID, ChangeToolModePacket::onPacket);
+
+        Registry.register(Registry.SOUND_EVENT, new Identifier("conjuring", "block.soul_weaver.weee"), WEEE);
 
         LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
             if (new Identifier("minecraft", "blocks/spawner").equals(id)) {
