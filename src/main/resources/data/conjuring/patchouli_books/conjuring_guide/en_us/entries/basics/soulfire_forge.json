@@ -10,17 +10,11 @@
     {
       "type": "crafting",
       "recipe": "conjuring:crafting/soulfire_forge",
-      "text": "By utilizing $(thing)Soul Fire$(), it can burn off dangerous or unwanted components and create a clean composite.$(p)This consume the $(thing)Soul Fire$() however, meaning that re-lighting it for every crafting process is required."
+      "text": "By utilizing $(thing)Soul Fire$(), it can burn off dangerous or unwanted components and create a clean composite.$(p)This consumes the $(thing)Soul Fire$() however, meaning that re-lighting it for every crafting process is required."
     },
     {
       "type": "text",
-      "text": "This would seem a menial task, yet, some well-known basic dispensing machinery can be used to handle it.$(p)Taking all these precaution for safety also incurs a time penalty that increases with recipe complexity, something only advanced equipment may mitigate."
-    },
-    {
-      "type": "soulfire_forge_recipe",
-      "recipe": "conjuring:soulfire_forge/soul_alloy",
-      "text": "$(item)Soul Alloy$() is vitally important in any and all endeavours involving summoning.$(p)Being composed mostly of basic metals it is quite sturdy too, and could prove handy in the creating of tools as well.",
-      "anchor": "soul_alloy"
+      "text": "This would seem a menial task, yet, some well-known basic dispensing machinery can be used to handle it.$(p)Taking all these precautions for safety also incurs a time penalty that increases with recipe complexity, something only advanced equipment may mitigate."
     }
   ]
 }

@@ -14,7 +14,8 @@
     {
       "type": "crafting",
       "recipe": "conjuring:crafting/conjuration_essence",
-      "text": "$(o)~a fine predicament$()"
+      "text": "$(o)~a fine predicament$()",
+      "anchor": "lesser_essence"
     }
   ]
 }
