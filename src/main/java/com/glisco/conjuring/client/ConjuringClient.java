@@ -81,6 +81,13 @@ public class ConjuringClient implements ClientModInitializer {
             });
         });
 
+        ServerParticles.registerClientSideHandler(new Identifier("conjuring", "break_block"), (client, pos, data) -> {
+            client.execute(() -> {
+                ClientParticles.setParticleCount(3);
+                ClientParticles.spawnCubeOutline(ParticleTypes.SOUL_FIRE_FLAME, client.world, Vec3d.of(pos).add(0.175, 0.175, 0.175), 0.65f, 0f);
+            });
+        });
+
     }
 
 }

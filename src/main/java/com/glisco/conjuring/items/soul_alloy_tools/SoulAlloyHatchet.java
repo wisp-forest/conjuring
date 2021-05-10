@@ -6,7 +6,9 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
@@ -19,6 +21,15 @@ public class SoulAlloyHatchet extends AxeItem implements SoulAlloyTool {
 
     public SoulAlloyHatchet() {
         super(SoulAlloyToolMaterial.INSTANCE, 5.0f, -3.0f, new Settings().group(ConjuringCommon.CONJURING_GROUP).rarity(Rarity.UNCOMMON));
+    }
+
+    @Override
+    public ActionResult useOnBlock(ItemUsageContext context) {
+        if (SoulAlloyTool.isSecondaryEnabled(context.getStack())) {
+            return ActionResult.PASS;
+        } else {
+            return super.useOnBlock(context);
+        }
     }
 
     @Override

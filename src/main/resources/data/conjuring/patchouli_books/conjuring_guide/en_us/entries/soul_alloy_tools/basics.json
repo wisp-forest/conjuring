@@ -1,0 +1,11 @@
+{
+  "name": "Basics",
+  "icon": "conjuring:ignorance_gem",
+  "category": "conjuring:soul_alloy_tools",
+  "pages": [
+    {
+      "type": "text",
+      "text": ""
+    }
+  ]
+}

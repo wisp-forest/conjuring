@@ -25,14 +25,15 @@ public class EnchantmentHelperMixin {
 
     @Inject(method = "getLooting", at = @At("RETURN"), cancellable = true)
     private static void applyAbundanceLooting(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
-        if (entity.getMainHandStack().getItem() != ConjuringCommon.SOUL_ALLOY_SWORD) return;
+        if (!(entity.getMainHandStack().getItem() == ConjuringCommon.SOUL_ALLOY_SWORD || entity.getMainHandStack().getItem() == ConjuringCommon.SOUL_ALLOY_HATCHET))
+            return;
         cir.setReturnValue(cir.getReturnValue() + SoulAlloyTool.getModifierLevel(entity.getMainHandStack(), SoulAlloyTool.SoulAlloyModifier.ABUNDANCE));
     }
 
     @Inject(method = "getLevel", at = @At(value = "RETURN"), cancellable = true)
     private static void applyAbundanceFortune(Enchantment enchantment, ItemStack stack, CallbackInfoReturnable<Integer> cir) {
         if (enchantment != Enchantments.FORTUNE) return;
-        if (stack.getItem() != ConjuringCommon.SOUL_ALLOY_PICKAXE) return;
+        if (!(stack.getItem() == ConjuringCommon.SOUL_ALLOY_PICKAXE || stack.getItem() == ConjuringCommon.SOUL_ALLOY_SHOVEL)) return;
 
         cir.setReturnValue(cir.getReturnValue() + SoulAlloyTool.getModifierLevel(stack, SoulAlloyTool.SoulAlloyModifier.ABUNDANCE));
     }

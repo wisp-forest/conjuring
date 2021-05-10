@@ -36,7 +36,7 @@ public class SoulAlloySword extends SwordItem implements SoulAlloyTool {
             for (int i = 0; i < 5; i++) {
                 SoulProjectileEntity projectile = new SoulProjectileEntity(world, user);
                 projectile.refreshPositionAndAngles(user.getX(), user.getEyeY(), user.getZ(), 0, 0);
-                projectile.setProperties(user, user.pitch, user.yaw - 20 + 10 * i, 0f, 1.5f, 1);
+                projectile.setProperties(user, user.pitch, user.yaw - 10 + 5 * i, 0f, 1.5f, 1);
                 projectile.setDamage(damage);
 
                 world.spawnEntity(projectile);

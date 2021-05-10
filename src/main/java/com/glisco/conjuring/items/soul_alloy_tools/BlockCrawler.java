@@ -1,10 +1,11 @@
 package com.glisco.conjuring.items.soul_alloy_tools;
 
+import com.glisco.owo.ServerParticles;
 import com.glisco.owo.WorldOps;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
-import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
@@ -72,8 +73,7 @@ public class BlockCrawler {
 
             WorldOps.breakBlockWithItem(world, pos, data.mineItem);
 
-            world.getServer().getPlayerManager().sendToAround(null, pos.getX(), pos.getY(), pos.getZ(), 50, world.getRegistryKey(),
-                    new ParticleS2CPacket(ParticleTypes.SOUL_FIRE_FLAME, false, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0.2f, 0.2f, 0.2f, 0.01f, 5));
+            ServerParticles.issueEvent((ServerWorld) world, pos, new Identifier("conjuring", "break_block"), packetByteBuf -> {});
         }
     }
 
@@ -106,9 +106,9 @@ public class BlockCrawler {
 
     private static class CrawlData {
 
-        public final  RegistryKey<World> world;
-        public final  ItemStack          mineItem;
-        private final List<BlockPos>     blocksToMine;
+        public final RegistryKey<World> world;
+        public final ItemStack mineItem;
+        private final List<BlockPos> blocksToMine;
 
         public CrawlData(RegistryKey<World> world, ItemStack mineItem, List<BlockPos> blocksToMine) {
             this.world = world;

@@ -3,6 +3,7 @@ package com.glisco.conjuring.entities;
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.items.soul_alloy_tools.BlockCrawler;
 import net.minecraft.block.OreBlock;
+import net.minecraft.block.RedstoneOreBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -67,7 +68,7 @@ public class SoulDiggerEntity extends SoulEntity {
 
         BlockPos pos = blockHitResult.getBlockPos();
 
-        if (world.getBlockState(pos).getBlock() instanceof OreBlock) {
+        if (world.getBlockState(pos).getBlock() instanceof OreBlock || world.getBlockState(pos).getBlock() instanceof RedstoneOreBlock) {
             BlockCrawler.crawl(world, pos, getDataTracker().get(STACK), 32);
         }
 

@@ -5,9 +5,11 @@ import com.glisco.conjuring.entities.SoulMagnetEntity;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
@@ -20,6 +22,15 @@ public class SoulAlloyShovel extends ShovelItem implements SoulAlloyTool {
 
     public SoulAlloyShovel() {
         super(SoulAlloyToolMaterial.INSTANCE, 1.5f, -3.0f, new Settings().group(ConjuringCommon.CONJURING_GROUP).rarity(Rarity.UNCOMMON));
+    }
+
+    @Override
+    public ActionResult useOnBlock(ItemUsageContext context) {
+        if(context.getPlayer().isSneaking()){
+            return super.useOnBlock(context);
+        } else {
+            return ActionResult.PASS;
+        }
     }
 
     @Override

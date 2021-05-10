@@ -15,13 +15,10 @@ import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
-import net.minecraft.text.Style;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Rarity;
-import net.minecraft.util.TypedActionResult;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -88,13 +85,13 @@ public class ConjuringScepter extends Item {
             String result = finishLinking(world, scepter, pos);
             switch (result) {
                 case "SUCCESS":
-                    context.getPlayer().sendMessage(new LiteralText("The pedestal has been entangled").setStyle(Style.EMPTY.withColor(TextColor.parse("green"))), true);
+                    context.getPlayer().sendMessage(new TranslatableText("item.conjuring.conjuring_scepter.linking_success").formatted(Formatting.GREEN), true);
                     return ActionResult.SUCCESS;
                 case "PEDESTAL_LIMIT_REACHED":
-                    context.getPlayer().sendMessage(new LiteralText("This soul funnel is already entangled to 4 pedestals").setStyle(Style.EMPTY.withColor(TextColor.parse("red"))), true);
+                    context.getPlayer().sendMessage(new TranslatableText("item.conjuring.conjuring_scepter.max_pedestals").formatted(Formatting.RED), true);
                     return ActionResult.PASS;
                 case "INCORRECT_POSITION":
-                    context.getPlayer().sendMessage(new LiteralText("The pedestal is incorrectly positioned").setStyle(Style.EMPTY.withColor(TextColor.parse("red"))), true);
+                    context.getPlayer().sendMessage(new TranslatableText("item.conjuring.conjuring_scepter.incorrect_position").formatted(Formatting.RED), true);
                     return ActionResult.PASS;
                 default:
                     return ActionResult.PASS;
@@ -140,18 +137,11 @@ public class ConjuringScepter extends Item {
         ParticleEffect particle = new DustParticleEffect(1, 1, 1, 1);
         ClientParticles.spawnWithOffsetFromBlock(particle, world, pedestal, new Vec3d(0.5, 1.25, 0.5), 0.15);
 
-        LiteralText linkingFrom = new LiteralText("Linking from ");
+        MutableText linkingFrom = new TranslatableText("item.conjuring.conjuring_scepter.linking");
 
-        LiteralText openBracket = new LiteralText("[");
-        openBracket.setStyle(Style.EMPTY.withColor(TextColor.parse("gray")));
+        MutableText text = new LiteralText("§7[§3" + pedestal.getZ() + " " + pedestal.getY() + " " + pedestal.getX() + "§7]");
 
-        LiteralText coordinates = new LiteralText(pedestal.getZ() + " " + pedestal.getY() + " " + pedestal.getX());
-        coordinates.setStyle(Style.EMPTY.withColor(TextColor.parse("dark_aqua")));
-
-        LiteralText closeBracket = new LiteralText("]");
-        closeBracket.setStyle(Style.EMPTY.withColor(TextColor.parse("gray")));
-
-        Text message = linkingFrom.append(openBracket).append(coordinates).append(closeBracket);
+        Text message = linkingFrom.append(text);
         player.sendMessage(message, true);
     }
 }
