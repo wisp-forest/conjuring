@@ -31,7 +31,7 @@ public class SoulAlloySword extends SwordItem implements SoulAlloyTool {
 
         if (!world.isClient()) {
 
-            float damage = (float) ((user.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE) + EnchantmentHelper.getAttackDamage(user.getMainHandStack(), EntityGroup.DEFAULT)) / 5);
+            float damage = (float) ((user.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE) + EnchantmentHelper.getAttackDamage(user.getMainHandStack(), EntityGroup.DEFAULT)) * ConjuringCommon.CONFIG.tools_config.sword_projectile_damage_multiplier);
 
             for (int i = 0; i < 5; i++) {
                 SoulProjectileEntity projectile = new SoulProjectileEntity(world, user);
@@ -42,8 +42,8 @@ public class SoulAlloySword extends SwordItem implements SoulAlloyTool {
                 world.spawnEntity(projectile);
             }
 
-            user.getItemCooldownManager().set(ConjuringCommon.SOUL_ALLOY_SWORD, 30);
-            user.getStackInHand(hand).damage(20, user, player -> player.sendToolBreakStatus(hand));
+            user.getItemCooldownManager().set(ConjuringCommon.SOUL_ALLOY_SWORD, ConjuringCommon.CONFIG.tools_config.sword_secondary_cooldown);
+            user.getStackInHand(hand).damage(ConjuringCommon.CONFIG.tools_config.sword_secondary_durability_cost, user, player -> player.sendToolBreakStatus(hand));
         }
 
         return TypedActionResult.success(user.getStackInHand(hand));

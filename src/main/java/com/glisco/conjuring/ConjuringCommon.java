@@ -50,6 +50,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
+import vazkii.patchouli.api.PatchouliAPI;
 
 public class ConjuringCommon implements ModInitializer {
 
@@ -66,12 +67,15 @@ public class ConjuringCommon implements ModInitializer {
                     }
                 }
 
+
                 for (int i = 0; i < 3; i++) {
                     itemStacks.add(6, ItemStack.EMPTY);
                 }
 
-                for (int i = 0; i < 5; i++) {
-                    itemStacks.add(13, ItemStack.EMPTY);
+                itemStacks.add(13, PatchouliAPI.get().getBookStack(new Identifier("conjuring", "conjuring_guide")));
+
+                for (int i = 0; i < 4; i++) {
+                    itemStacks.add(14, ItemStack.EMPTY);
                 }
 
                 for (int i = 0; i < 5; i++) {

@@ -40,19 +40,19 @@ public class ConjurerHelper {
         }
 
         if (hasteCharms.getItem() == ConjuringCommon.HASTE_CHARM) {
-            maxSpawnDelay = Math.max(10, Math.round(800 - hasteCharms.getCount() * ConjuringCommon.CONFIG.haste_multiplier));
+            maxSpawnDelay = Math.max(10, Math.round(800 - hasteCharms.getCount() * ConjuringCommon.CONFIG.conjurer_config.haste_multiplier));
         }
 
         if (abundanceCharms.getItem() == ConjuringCommon.ABUNDANCE_CHARM) {
-            spawnCount = 4 + abundanceCharms.getCount() * ConjuringCommon.CONFIG.abundance_multiplier;
+            spawnCount = 4 + abundanceCharms.getCount() * ConjuringCommon.CONFIG.conjurer_config.abundance_multiplier;
         }
 
         if (scopeCharms.getItem() == ConjuringCommon.SCOPE_CHARM) {
-            requiredPlayerRange = 16 + scopeCharms.getCount() * ConjuringCommon.CONFIG.scope_multiplier;
+            requiredPlayerRange = 16 + scopeCharms.getCount() * ConjuringCommon.CONFIG.conjurer_config.scope_multiplier;
         }
 
         if (ignoranceCharms.getItem() == ConjuringCommon.IGNORANCE_CHARM) {
-            maxNearbyEntities = 6 + ignoranceCharms.getCount() * ConjuringCommon.CONFIG.ignorance_multiplier;
+            maxNearbyEntities = 6 + ignoranceCharms.getCount() * ConjuringCommon.CONFIG.conjurer_config.ignorance_multiplier;
         }
 
         conjurer.getLogic().setRequiredPlayerRange(requiredPlayerRange);

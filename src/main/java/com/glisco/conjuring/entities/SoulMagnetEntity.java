@@ -46,7 +46,8 @@ public class SoulMagnetEntity extends SoulEntity {
             ticksInBlock = 0;
         }
 
-        Box box = new Box(getPos().subtract(4, 4, 4), getPos().add(4, 4, 4));
+        int range = ConjuringCommon.CONFIG.tools_config.shovel_magnet_range;
+        Box box = new Box(getPos().subtract(range, range, range), getPos().add(range, range, range));
 
         for (ItemEntity item : world.getEntitiesByType(EntityType.ITEM, box, ItemEntity::isAlive)) {
             Vec3d difference = getPos().subtract(item.getPos()).multiply(0.25d);

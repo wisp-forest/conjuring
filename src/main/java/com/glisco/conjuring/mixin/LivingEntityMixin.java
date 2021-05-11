@@ -1,5 +1,6 @@
 package com.glisco.conjuring.mixin;
 
+import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.items.soul_alloy_tools.CopycatPlayerDamageSource;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyTool;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyToolAbilities;
@@ -58,8 +59,8 @@ public abstract class LivingEntityMixin extends Entity {
 
         entities.remove(player);
 
-        for (int i = 0; i < 15 && i < entities.size(); i++) {
-            entities.get(i).damage(new CopycatPlayerDamageSource(player), amount * 0.3f * scopeLevel);
+        for (int i = 0; i < ConjuringCommon.CONFIG.tools_config.sword_scope_max_entities && i < entities.size(); i++) {
+            entities.get(i).damage(new CopycatPlayerDamageSource(player), amount * ConjuringCommon.CONFIG.tools_config.sword_scope_damage_multiplier * scopeLevel);
             player.getMainHandStack().damage(4 * scopeLevel, player, playerEntity -> player.sendToolBreakStatus(Hand.MAIN_HAND));
         }
 
@@ -81,7 +82,7 @@ public abstract class LivingEntityMixin extends Entity {
 
         if (!SoulAlloyToolAbilities.canArmorPierce(player)) return;
 
-        float pierceDamage = SoulAlloyTool.getModifierLevel(player.getMainHandStack(), SoulAlloyTool.SoulAlloyModifier.IGNORANCE) * 0.1f * amount;
+        float pierceDamage = SoulAlloyTool.getModifierLevel(player.getMainHandStack(), SoulAlloyTool.SoulAlloyModifier.IGNORANCE) * ConjuringCommon.CONFIG.tools_config.sword_ignorance_multiplier * amount;
         applyDamage(new CopycatPlayerDamageSource(player).pierceArmor(), pierceDamage);
         damageReduction = pierceDamage;
     }

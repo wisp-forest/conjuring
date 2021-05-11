@@ -93,6 +93,7 @@ public class GemTinkererBlockEntity extends BlockEntity implements BlockEntityCl
             }
         }
 
+        if (presentModifiers.size() < 1) return ActionResult.PASS;
         if (!SoulAlloyTool.canAddModifiers(inventory.get(0), presentModifiers)) return ActionResult.PASS;
 
         if (!world.isClient()) {
@@ -174,6 +175,10 @@ public class GemTinkererBlockEntity extends BlockEntity implements BlockEntityCl
         }
 
         return false;
+    }
+
+    public boolean isCraftingComplete(){
+        return processTick > 100;
     }
 
     @Override

@@ -46,13 +46,13 @@ public class SoulAlloyHatchet extends AxeItem implements SoulAlloyTool {
 
             int scopeGems = SoulAlloyTool.getModifierLevel(user.getStackInHand(hand), SoulAlloyModifier.SCOPE);
             if (scopeGems > 0) {
-                feller.setMaxBlocks((int) (8 + Math.pow(scopeGems, 3) * 8));
+                feller.setMaxBlocks((int) (8 + Math.pow(scopeGems, ConjuringCommon.CONFIG.tools_config.axe_scope_exponent) * 8));
             }
 
             world.spawnEntity(feller);
 
-            user.getItemCooldownManager().set(ConjuringCommon.SOUL_ALLOY_HATCHET, 15);
-            user.getStackInHand(hand).damage(10 + 5 * scopeGems, user, player -> player.sendToolBreakStatus(hand));
+            user.getItemCooldownManager().set(ConjuringCommon.SOUL_ALLOY_HATCHET, ConjuringCommon.CONFIG.tools_config.axe_secondary_cooldown);
+            user.getStackInHand(hand).damage(ConjuringCommon.CONFIG.tools_config.axe_secondary_base_durability_cost + ConjuringCommon.CONFIG.tools_config.axe_secondary_per_scope_durability_cost * scopeGems, user, player -> player.sendToolBreakStatus(hand));
 
         }
         return TypedActionResult.success(user.getStackInHand(hand));

@@ -69,7 +69,7 @@ public class SoulDiggerEntity extends SoulEntity {
         BlockPos pos = blockHitResult.getBlockPos();
 
         if (world.getBlockState(pos).getBlock() instanceof OreBlock || world.getBlockState(pos).getBlock() instanceof RedstoneOreBlock) {
-            BlockCrawler.crawl(world, pos, getDataTracker().get(STACK), 32);
+            BlockCrawler.crawl(world, pos, getDataTracker().get(STACK), ConjuringCommon.CONFIG.tools_config.pickaxe_veinmine_max_blocks);
         }
 
         this.remove();
