@@ -75,6 +75,7 @@
   "text.autoconfig.conjuring.option.conjurer_config.haste_multiplier": "Haste Multiplier",
   "text.autoconfig.conjuring.option.conjurer_config.scope_multiplier": "Scope Multiplier",
   "text.autoconfig.conjuring.option.conjurer_config.ignorance_multiplier": "Ignorance Multiplier",
+  "text.autoconfig.conjuring.option.conjurer_config.conjurer_blacklist": "Conjurer Blacklist",
 
 
   "text.autoconfig.conjuring.option.tools_config": "Soul Alloy Tools",

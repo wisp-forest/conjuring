@@ -5,8 +5,16 @@ import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Config(name = "conjuring")
 public class ConjuringConfig implements ConfigData {
+
+    public ConjuringConfig(){
+        conjurer_config.conjurer_blacklist.add("minecraft:wither");
+        conjurer_config.conjurer_blacklist.add("minecraft:ender_dragon");
+    }
 
     @ConfigEntry.Gui.CollapsibleObject
     public ConjurerConfig conjurer_config = new ConjurerConfig();
@@ -26,6 +34,9 @@ public class ConjuringConfig implements ConfigData {
 
         @Comment("How many extra mobs are allowed close to the conjurer per ignorance charm")
         public int ignorance_multiplier = 2;
+
+        @Comment("Which mob types you shouldn't be able to create a conjuring focus for")
+        public List<String> conjurer_blacklist = new ArrayList<>();
     }
 
     public static class ToolsConfig {
