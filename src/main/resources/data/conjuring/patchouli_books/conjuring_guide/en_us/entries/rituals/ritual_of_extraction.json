@@ -2,6 +2,9 @@
   "name": "Ritual of Extraction",
   "icon": "conjuring:soul_funnel",
   "category": "conjuring:rituals",
+  "extra_recipe_mappings": {
+    "conjuring:soul_funnel": 0
+  },
   "pages": [
     {
       "type": "text",

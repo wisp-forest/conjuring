@@ -1,0 +1,17 @@
+{
+  "name": "Stabilized Focuses",
+  "icon": "conjuring:stabilized_conjuring_focus",
+  "category": "conjuring:basics",
+  "pages": [
+    {
+      "type": "text",
+      "title": "testing",
+      "text": "A $(l:conjuring:basics/conjuring_focus)Conjuring Focus$() does a good job, but sometimes it is not enough. If you want it to work overtime you require a stronger lens. A $(item)Stabilized Conjuring Focus$(), which is reinforced with $(l:conjuring:basics/soul_composite_materials#soul_slice)Soul Slices$(), is exponentially more powerful. Once you insert a stablizied focus there is no telling how far you have to go to stop the souls from spawning."
+    },
+    {
+      "type": "soulfire_forge_recipe",
+      "recipe": "conjuring:soulfire_forge/stabilized_conjuring_focus",
+      "text": ""
+    }
+  ]
+}

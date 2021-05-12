@@ -4,7 +4,7 @@
   "components": [
     {
       "type": "image",
-      "image": "conjuring:textures/gui/soulfire_forge_patchouli.png",
+      "image": "conjuring:textures/gui/patchouli/soulfire_forge_patchouli.png",
       "width": 120,
       "height": 64,
       "texture_width": 128,

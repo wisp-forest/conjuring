@@ -1,0 +1,22 @@
+{
+  "name": "Advanced Gem Tinkering",
+  "icon": "conjuring:ignorance_gem",
+  "category": "conjuring:soul_alloy_tools",
+  "pages": [
+    {
+      "type": "text",
+      "text": "After priming yourself on $(l:conjuring:basics/basic_gem_tinkering)Basic Gem Tinkering$() you might be able to realize the gem tinkerers $(o)full potential$().$(br)Once you have aquired some $(item)Soul Tools$() you can infuse them with the aspect gems.$(br)There is a limit to this power however. You are only able to put two different types on a single tool, and there is only enough space for 5 gems to fit on it."
+    },
+    {
+      "type": "image",
+      "images": [
+        "conjuring:textures/gui/patchouli/gem_tinkerer_patchouli_1.png",
+        "conjuring:textures/gui/patchouli/gem_tinkerer_patchouli_2.png",
+        "conjuring:textures/gui/patchouli/gem_tinkerer_patchouli_3.png"
+      ],
+      "border": true,
+      "title": "Adjusting Gems"
+
+    }
+  ]
+}

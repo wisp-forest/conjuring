@@ -1,0 +1,15 @@
+{
+  "name": "Soul Alloy Hatchet",
+  "icon": "conjuring:soul_alloy_hatchet",
+  "category": "conjuring:soul_alloy_tools",
+  "pages": [
+    {
+      "type": "text",
+      "text": "The $(item)Soul Alloy Hatchet$() is a powerful tool, both in damage and its $(thing)Soul Feller Ability$(). When right-clicking a destructive beam will obliterate any logs on contact. $(br)Using a Gem Tinkerer lets you put $(l:conjuring:basics/basic_gem_tinkering#aspect_gems)Aspect Gems$() on your $(item)Soul Alloy Hatchet$():$(br) $(li)$(#007a18)≈ Haste: Improves the efficiency of felling trees with the hatchet.$(br)"
+    },
+    {
+      "type": "text",
+      "text": "$(li)$(#a80f01)ღ Abundance: Rewards you with larger spoils when killing an enemy.$()$(br) $(li)$(#4d8184)λ Scope: Increases the reach of the Soul Felling ability.$()$(br) $(li)$(#123f89)ʊ Ignorance: Ignores a small amount of durability when using the tool. Stacks with unbreaking."
+    }
+  ]
+}

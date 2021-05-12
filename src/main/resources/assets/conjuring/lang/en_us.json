@@ -66,6 +66,8 @@
   "advancement.conjuring.conjurer.title": "Spawner, but more",
   "advancement.conjuring.conjurer.description": "Craft a Conjurer",
 
+  "category.conjuring": "Conjuring",
+  "key.conjuring.toggle_tool_mode": "Toggle Tool Mode",
 
 
   "text.autoconfig.conjuring.title": "Conjuring Configuration",
@@ -76,7 +78,6 @@
   "text.autoconfig.conjuring.option.conjurer_config.scope_multiplier": "Scope Multiplier",
   "text.autoconfig.conjuring.option.conjurer_config.ignorance_multiplier": "Ignorance Multiplier",
   "text.autoconfig.conjuring.option.conjurer_config.conjurer_blacklist": "Conjurer Blacklist",
-
 
   "text.autoconfig.conjuring.option.tools_config": "Soul Alloy Tools",
 
