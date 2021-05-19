@@ -2,5 +2,13 @@
   "parent": "item/generated",
   "textures": {
     "layer0": "conjuring:item/enchiridion"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "is_sandwich": 1
+      },
+      "model": "conjuring:item/ice_cream_sandwich"
+    }
+  ]
 }

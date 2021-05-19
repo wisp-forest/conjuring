@@ -1,4 +1,4 @@
-package com.glisco.conjuring.blocks.soulfireForge;
+package com.glisco.conjuring.blocks.soulfire_forge;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

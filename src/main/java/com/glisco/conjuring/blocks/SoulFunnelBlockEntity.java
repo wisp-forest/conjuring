@@ -170,6 +170,8 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
                     if (verifyRitualEntity()) {
                         e.setVelocity(0, 0, 0);
                         e.setAiDisabled(true);
+                        final Vec3d entityPos = Vec3d.of(pos).add(0.5, 1.85, 0.5);
+                        e.setPos(entityPos.x, entityPos.y, entityPos.z);
                     }
                 }
 

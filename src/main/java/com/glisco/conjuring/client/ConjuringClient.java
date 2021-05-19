@@ -54,6 +54,7 @@ public class ConjuringClient implements ClientModInitializer {
 
         FabricModelPredicateProviderRegistry.register(ConjuringCommon.CONJURING_FOCUS, new Identifier("has_soul"), (stack, world, entity) -> stack.getOrCreateTag().contains("Entity") ? 1f : 0f);
         FabricModelPredicateProviderRegistry.register(ConjuringCommon.STABILIZED_CONJURING_FOCUS, new Identifier("has_soul"), (stack, world, entity) -> stack.getOrCreateTag().contains("Entity") ? 1f : 0f);
+        FabricModelPredicateProviderRegistry.register(ConjuringCommon.ENCHIRIDION, new Identifier("is_sandwich"), (stack, world, entity) -> stack.getOrCreateTag().getBoolean("Sandwich") ? 1f : 0f);
 
         ScreenRegistry.register(ConjuringCommon.CONJURER_SCREEN_HANDLER_TYPE, ConjurerScreen::new);
         ScreenRegistry.register(ConjuringCommon.SOULFIRE_FORGE_SCREEN_HANDLER_TYPE, SoulfireForgeScreen::new);

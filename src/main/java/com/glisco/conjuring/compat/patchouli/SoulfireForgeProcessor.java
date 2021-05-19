@@ -1,6 +1,6 @@
 package com.glisco.conjuring.compat.patchouli;
 
-import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeRecipe;
+import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeRecipe;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;

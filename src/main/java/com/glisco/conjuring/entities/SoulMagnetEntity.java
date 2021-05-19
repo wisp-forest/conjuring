@@ -60,7 +60,7 @@ public class SoulMagnetEntity extends SoulEntity {
         }
 
 
-        if (ticksInBlock > 8) {
+        if (ticksInBlock > (recalled ? 30 : 8)) {
             if (recalled || age > 40) {
                 this.remove();
             } else {

@@ -1,9 +1,9 @@
-package com.glisco.conjuring.blocks.soulfireForge;
+package com.glisco.conjuring.blocks.soulfire_forge;
 
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.SoulfireForgeScreenHandler;
 import com.glisco.conjuring.blocks.ImplementedInventory;
-import com.glisco.owo.VectorRandomUtils;
+import com.glisco.owo.ItemOps;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,7 +11,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.screen.NamedScreenHandlerFactory;
@@ -22,7 +21,6 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
 
 import java.util.Optional;
 
@@ -62,12 +60,13 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
     //Tick Logic
     @Override
     public void tick() {
+
         if (!this.world.isClient()) {
 
             Optional<SoulfireForgeRecipe> currentRecipe = world.getRecipeManager().getFirstMatch(SoulfireForgeRecipe.Type.INSTANCE, this, world);
 
             if (currentRecipe.isPresent() && world.getBlockState(pos).get(SoulfireForgeBlock.BURNING)) {
-                if (checkOutput(currentRecipe.get().getOutput())) {
+                if (items.get(9).isEmpty() || ItemOps.canStack(items.get(9), currentRecipe.get().getOutput())) {
                     targetSmeltTime = currentRecipe.get().getSmeltTime();
 
                     if (smeltTime == targetSmeltTime) {
@@ -85,6 +84,9 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
                         smeltTime++;
                         progress = Math.round(((float) smeltTime / (float) targetSmeltTime) * 32);
                     }
+
+                    world.updateComparators(pos, ConjuringCommon.SOULFIRE_FORGE_BLOCK);
+
                 } else {
                     smeltTime = 0;
                     progress = 0;
@@ -102,7 +104,6 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
             }
         }
     }
-
 
     //Data Logic
     @Override
@@ -169,23 +170,20 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
     private void decrementCraftingItems() {
         for (int i = 0; i < 9; i++) {
             ItemStack stack = items.get(i);
-            stack.setCount(stack.getCount() - 1);
-            if (stack.getCount() == 0) {
-                items.set(i, ItemStack.EMPTY);
-            }
+            if (!ItemOps.emptyAwareDecrement(stack)) items.set(i, ItemStack.EMPTY);
         }
     }
 
     private void incrementOutput(ItemStack craftingResult) {
-        if (items.get(9).getItem() == Items.AIR) {
+        if (items.get(9).isEmpty()) {
             items.set(9, craftingResult);
         } else {
-            items.get(9).setCount(items.get(9).getCount() + craftingResult.getCount());
+            items.get(9).increment(craftingResult.getCount());
         }
     }
 
-    private boolean checkOutput(ItemStack toCompare) {
-        return (items.get(9).getItem() == toCompare.getItem() && (items.get(9).getCount() + toCompare.getCount() <= items.get(9).getMaxCount())) || items.get(9) == ItemStack.EMPTY;
+    public int getProgress() {
+        return progress;
     }
 
     @Override

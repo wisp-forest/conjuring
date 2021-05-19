@@ -1,7 +1,7 @@
 package com.glisco.conjuring.items;
 
 import com.glisco.conjuring.ConjuringCommon;
-import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeBlockEntity;
+import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeBlockEntity;
 import com.glisco.conjuring.entities.SoulProjectileEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;

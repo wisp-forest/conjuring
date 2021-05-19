@@ -1,4 +1,4 @@
-package com.glisco.conjuring.blocks.soulfireForge;
+package com.glisco.conjuring.blocks.soulfire_forge;
 
 import com.glisco.conjuring.ConjuringCommon;
 import net.fabricmc.api.EnvType;

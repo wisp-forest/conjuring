@@ -1,7 +1,7 @@
 package com.glisco.conjuring.mixin;
 
 import com.glisco.conjuring.ConjuringCommon;
-import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeBlock;
+import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.item.ItemStack;

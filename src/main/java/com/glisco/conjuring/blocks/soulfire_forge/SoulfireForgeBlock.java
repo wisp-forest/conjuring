@@ -1,4 +1,4 @@
-package com.glisco.conjuring.blocks.soulfireForge;
+package com.glisco.conjuring.blocks.soulfire_forge;
 
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -164,6 +164,17 @@ public class SoulfireForgeBlock extends BlockWithEntity {
 
         }
         return ActionResult.SUCCESS;
+    }
+
+    @Override
+    public boolean hasComparatorOutput(BlockState state) {
+        return true;
+    }
+
+    @Override
+    public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
+        if (!(world.getBlockEntity(pos) instanceof SoulfireForgeBlockEntity)) return 0;
+        return Math.round(((SoulfireForgeBlockEntity) world.getBlockEntity(pos)).getProgress() * 0.46875f);
     }
 
     @Override

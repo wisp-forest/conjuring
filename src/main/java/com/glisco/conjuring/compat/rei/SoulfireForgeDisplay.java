@@ -1,6 +1,6 @@
 package com.glisco.conjuring.compat.rei;
 
-import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeRecipe;
+import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeRecipe;
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeDisplay;
 import net.minecraft.item.ItemStack;

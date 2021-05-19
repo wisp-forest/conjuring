@@ -3,7 +3,7 @@ package com.glisco.conjuring.compat.rei;
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.blocks.gem_tinkerer.GemTinkererRecipe;
 import com.glisco.conjuring.blocks.soul_weaver.SoulWeaverRecipe;
-import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeRecipe;
+import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeRecipe;
 import me.shedaniel.rei.api.*;
 import me.shedaniel.rei.api.plugins.REIPluginV0;
 import net.minecraft.util.Identifier;

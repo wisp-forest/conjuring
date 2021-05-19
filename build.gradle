@@ -43,8 +43,7 @@ dependencies {
 
     modImplementation "curse.maven:modmenu-308702:3268909"
 
-    modRuntime "vazkii.patchouli:Patchouli:${project.patchouli_version}"
-    modCompile "vazkii.patchouli:Patchouli:${project.patchouli_version}:api"
+    modImplementation "vazkii.patchouli:Patchouli:${project.patchouli_version}"
 
     modImplementation "com.glisco:owo-0.1-dev"
     include "com.glisco:owo-0.1"

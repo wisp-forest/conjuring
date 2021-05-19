@@ -14,10 +14,10 @@ import com.glisco.conjuring.blocks.soul_weaver.SoulWeaverBlock;
 import com.glisco.conjuring.blocks.soul_weaver.SoulWeaverBlockEntity;
 import com.glisco.conjuring.blocks.soul_weaver.SoulWeaverRecipe;
 import com.glisco.conjuring.blocks.soul_weaver.SoulWeaverRecipeSerializer;
-import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeBlock;
-import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeBlockEntity;
-import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeRecipe;
-import com.glisco.conjuring.blocks.soulfireForge.SoulfireForgeRecipeSerializer;
+import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeBlock;
+import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeBlockEntity;
+import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeRecipe;
+import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeRecipeSerializer;
 import com.glisco.conjuring.compat.config.ConjuringConfig;
 import com.glisco.conjuring.entities.SoulDiggerEntity;
 import com.glisco.conjuring.entities.SoulFellerEntity;
@@ -50,7 +50,6 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
-import vazkii.patchouli.api.PatchouliAPI;
 
 public class ConjuringCommon implements ModInitializer {
 
@@ -71,8 +70,6 @@ public class ConjuringCommon implements ModInitializer {
                 for (int i = 0; i < 3; i++) {
                     itemStacks.add(6, ItemStack.EMPTY);
                 }
-
-                itemStacks.add(13, PatchouliAPI.get().getBookStack(new Identifier("conjuring", "conjuring_guide")));
 
                 for (int i = 0; i < 4; i++) {
                     itemStacks.add(14, ItemStack.EMPTY);
@@ -108,6 +105,8 @@ public class ConjuringCommon implements ModInitializer {
     public static Item SOUL_ALLOY = new SoulAlloy();
     public static Item SOUL_SLICE = new SoulSlice();
     public static Item GEM_SOCKET = new GemSocket();
+
+    public static Item ENCHIRIDION = new EnchiridionItem();
 
     public static Item SCOPE_CHARM = new CharmItem();
     public static Item ABUNDANCE_CHARM = new CharmItem();
@@ -188,6 +187,7 @@ public class ConjuringCommon implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier("conjuring", "superior_conjuring_scepter"), SUPERIOR_CONJURING_SCEPTER);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "conjuring_focus"), CONJURING_FOCUS);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "stabilized_conjuring_focus"), STABILIZED_CONJURING_FOCUS);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "enchiridion"), ENCHIRIDION);
 
         Registry.register(Registry.ITEM, new Identifier("conjuring", "pizza"), PIZZA);
 

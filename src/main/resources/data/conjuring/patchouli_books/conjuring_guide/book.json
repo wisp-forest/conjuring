@@ -3,6 +3,6 @@
   "landing_text": "amoung text Noඞඞඞn",
   "version": 1,
   "show_progress": false,
-  "model": "conjuring:enchiridion",
-  "creative_tab": "conjuring.general"
+  "dont_generate_book": "true",
+  "custom_book_item": "conjuring:enchiridion"
 }
