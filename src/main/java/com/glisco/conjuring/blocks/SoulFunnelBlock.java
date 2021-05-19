@@ -171,10 +171,12 @@ public class SoulFunnelBlock extends BlockWithEntity {
 
     @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+        if (!(world.getBlockEntity(pos) instanceof SoulFunnelBlockEntity)) return;
         SoulFunnelBlockEntity funnel = (SoulFunnelBlockEntity) world.getBlockEntity(pos);
 
         for (BlockPos p : funnel.getPedestalPositions()) {
             if (random.nextDouble() > 0.5f) continue;
+            if (!(world.getBlockEntity(p) instanceof BlackstonePedestalBlockEntity)) continue;
             BlackstonePedestalBlockEntity pedestal = (BlackstonePedestalBlockEntity) world.getBlockEntity(p);
             if (pedestal == null) continue;
             if (pedestal.getLinkedFunnel() == null) continue;
