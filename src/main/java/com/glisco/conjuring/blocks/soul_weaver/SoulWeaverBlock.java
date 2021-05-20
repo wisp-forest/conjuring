@@ -78,7 +78,7 @@ public class SoulWeaverBlock extends BlockWithEntity {
         }
 
         if (playerStack.getItem() instanceof ConjuringScepter) {
-            weaver.tryStartRitual();
+            weaver.tryStartRitual(player);
             return ActionResult.SUCCESS;
         }
 

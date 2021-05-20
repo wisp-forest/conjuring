@@ -33,6 +33,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.object.builder.v1.advancement.CriterionRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.block.Block;
@@ -145,6 +146,9 @@ public class ConjuringCommon implements ModInitializer {
     public static final EntityType<SoulMagnetEntity> SOUL_MAGNET;
 
     public static final SoundEvent WEEE = new SoundEvent(new Identifier("conjuring", "block.soul_weaver.weee"));
+
+    public static final ExtractionRitualCriterion EXTRACTION_RITUAL_CRITERION = new ExtractionRitualCriterion();
+    public static final GemTinkeringCriterion GEM_TINKERING_CRITERION = new GemTinkeringCriterion();
 
     static {
         CONJURER_SCREEN_HANDLER_TYPE = ScreenHandlerRegistry.registerSimple(new Identifier("conjuring", "conjurer"), ConjurerScreenHandler::new);
@@ -263,5 +267,8 @@ public class ConjuringCommon implements ModInitializer {
                 supplier.withPool(poolBuilder.build());
             }
         });
+
+        CriterionRegistry.register(EXTRACTION_RITUAL_CRITERION);
+        CriterionRegistry.register(GEM_TINKERING_CRITERION);
     }
 }

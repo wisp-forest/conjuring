@@ -1,0 +1,28 @@
+{
+  "parent": "conjuring:conjuring_scepter",
+  "display": {
+    "icon": {
+      "item": "conjuring:soul_funnel"
+    },
+    "title": {
+      "translate": "advancement.conjuring.soul_funnel.title"
+    },
+    "description": {
+      "translate": "advancement.conjuring.soul_funnel.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "soul_funnel": {
+      "trigger": "conjuring:extraction_ritual"
+    }
+  },
+  "requirements": [
+    [
+      "soul_funnel"
+    ]
+  ]
+}

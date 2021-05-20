@@ -1,7 +1,10 @@
 package com.glisco.conjuring.entities;
 
 import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.owo.client.ClientParticles;
 import net.minecraft.entity.*;
+import net.minecraft.particle.DustParticleEffect;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -52,6 +55,12 @@ public class SoulMagnetEntity extends SoulEntity {
         for (ItemEntity item : world.getEntitiesByType(EntityType.ITEM, box, ItemEntity::isAlive)) {
             Vec3d difference = getPos().subtract(item.getPos()).multiply(0.25d);
             item.setVelocity(difference);
+
+            if (world.isClient && difference.length() > 0.5) {
+                ParticleEffect dust = new DustParticleEffect(0.5f, 1f, 1f, 0.5f);
+                ClientParticles.setParticleCount(45);
+                ClientParticles.spawnLine(dust, world, getPos(), item.getPos(), 0);
+            }
         }
 
         for (ExperienceOrbEntity orb : world.getEntitiesByType(EntityType.EXPERIENCE_ORB, box, ExperienceOrbEntity::isAlive)) {

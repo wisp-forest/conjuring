@@ -1,5 +1,6 @@
 package com.glisco.conjuring.blocks;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;
@@ -16,7 +17,7 @@ public interface RitualCore {
 
     List<BlockPos> getPedestalPositions();
 
-    boolean tryStartRitual();
+    boolean tryStartRitual(PlayerEntity player);
 
     default CompoundTag savePedestals(CompoundTag tag, List<BlockPos> pedestals) {
         ListTag pedestalsTag = new ListTag();

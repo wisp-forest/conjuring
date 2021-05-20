@@ -1,0 +1,68 @@
+{
+  "parent": "conjuring:soul_weaver",
+  "display": {
+    "icon": {
+      "item": "conjuring:soul_alloy_sword"
+    },
+    "title": {
+      "translate": "advancement.conjuring.soul_alloy_sword.title"
+    },
+    "description": {
+      "translate": "advancement.conjuring.soul_alloy_sword.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "soul_alloy_sword": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "conjuring:soul_alloy_sword"
+          }
+        ]
+      }
+    },
+    "soul_alloy_shovel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "conjuring:soul_alloy_shovel"
+          }
+        ]
+      }
+    },
+    "soul_alloy_hatchet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "conjuring:soul_alloy_hatchet"
+          }
+        ]
+      }
+    },
+    "soul_alloy_pickaxe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "conjuring:soul_alloy_pickaxe"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "soul_alloy_pickaxe",
+      "soul_alloy_shovel",
+      "soul_alloy_hatchet",
+      "soul_alloy_sword"
+    ]
+  ]
+}

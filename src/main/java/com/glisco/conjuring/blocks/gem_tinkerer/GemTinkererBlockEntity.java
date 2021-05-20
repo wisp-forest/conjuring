@@ -6,11 +6,13 @@ import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyTool;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
@@ -68,7 +70,7 @@ public class GemTinkererBlockEntity extends BlockEntity implements BlockEntityCl
         return true;
     }
 
-    public ActionResult onUse() {
+    public ActionResult onUse(PlayerEntity player) {
 
         if (verifyRecipe()) {
             if (!world.isClient()) {
@@ -99,6 +101,7 @@ public class GemTinkererBlockEntity extends BlockEntity implements BlockEntityCl
         if (!world.isClient()) {
             processTick = 1;
             markDirty();
+            ConjuringCommon.GEM_TINKERING_CRITERION.trigger((ServerPlayerEntity) player);
         }
 
         return ActionResult.SUCCESS;

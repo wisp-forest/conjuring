@@ -27,6 +27,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -268,7 +269,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
         return item.copy();
     }
 
-    public boolean tryStartRitual() {
+    public boolean tryStartRitual(PlayerEntity player) {
 
         if (item == null) return false;
 
@@ -281,6 +282,8 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
             this.ritualRunning = true;
             this.ritualEntity = e.getUuid();
             this.markDirty();
+
+            ConjuringCommon.EXTRACTION_RITUAL_CRITERION.trigger((ServerPlayerEntity) player);
         }
 
         return true;

@@ -83,7 +83,7 @@ public class GemTinkererBlock extends BlockWithEntity {
                     return ActionResult.SUCCESS;
                 }
 
-                return tinkerer.onUse();
+                return tinkerer.onUse(player);
             }
 
             ItemStack sideStack = tinkererInventory.get(sideIndex);

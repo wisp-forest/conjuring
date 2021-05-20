@@ -1,0 +1,35 @@
+{
+  "parent": "conjuring:soul_alloy",
+  "display": {
+    "icon": {
+      "item": "conjuring:soul_weaver"
+    },
+    "title": {
+      "translate": "advancement.conjuring.soul_weaver.title"
+    },
+    "description": {
+      "translate": "advancement.conjuring.soul_weaver.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "soul_weaver": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "conjuring:soul_weaver"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "soul_weaver"
+    ]
+  ]
+}

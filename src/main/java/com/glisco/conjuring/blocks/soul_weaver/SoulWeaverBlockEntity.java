@@ -11,6 +11,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
@@ -115,7 +116,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
     }
 
     @Override
-    public boolean tryStartRitual() {
+    public boolean tryStartRitual(PlayerEntity player) {
 
         if (!verifyRecipe() || !isLit()) return false;
 
@@ -193,7 +194,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
         } else if (ritualTick == 10) {
 
             if (world.isClient) {
-                ClientParticles.setParticleCount(8);
+                ClientParticles.setParticleCount(16);
                 ClientParticles.persist();
             }
 
