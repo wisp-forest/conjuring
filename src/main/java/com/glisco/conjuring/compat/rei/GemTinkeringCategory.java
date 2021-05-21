@@ -21,52 +21,12 @@ import net.minecraft.util.Util;
 import net.minecraft.util.math.Matrix4f;
 import org.jetbrains.annotations.NotNull;
 
-import javax.sound.midi.*;
-import java.io.BufferedInputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GemTinkeringCategory implements RecipeCategory<GemTinkeringDisplay> {
 
     public static boolean FROGE_MODE = false;
-    private final long[] startTick = {-1};
-
-    private static final Runnable playerRunnable = () -> {
-
-        Sequencer sequencer = null;
-
-        try {
-
-            sequencer = MidiSystem.getSequencer();
-            sequencer.open();
-
-            Sequence sequence = MidiSystem.getSequence(new BufferedInputStream(new URL("https://www.midiworld.com/download/5023").openStream()));
-
-            Track[] tracks = sequence.getTracks();
-
-            for (Track track : tracks) {
-                for (int i = 0; i < 16; i++) {
-                    track.add(new MidiEvent(new ShortMessage(ShortMessage.CONTROL_CHANGE, 7, 1), 300));
-                }
-            }
-
-            sequencer.setSequence(sequence);
-            sequencer.start();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (sequencer == null) return;
-
-        try {
-            Thread.sleep(10000/*250000*/);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        sequencer.close();
-    };
 
     private static final TranslatableText NAME = new TranslatableText("conjuring.gui.gem_tinkerer");
 
@@ -110,17 +70,6 @@ public class GemTinkeringCategory implements RecipeCategory<GemTinkeringDisplay>
         widgets.add(Widgets.createDrawableWidget((drawableHelper, matrixStack, i, i1, v) -> {
 
             if (FROGE_MODE) {
-
-                if (startTick[0] == -1 || MinecraftClient.getInstance().world.getTime() - startTick[0] > 100) {
-                    try {
-                        new Thread(playerRunnable).start();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        System.out.println("No memes for ya :sadcat:");
-                    }
-                    startTick[0] = MinecraftClient.getInstance().world.getTime();
-                }
-
                 MinecraftClient.getInstance().getTextureManager().bindTexture(new Identifier("conjuring", "textures/gui/froge.png"));
                 DrawableHelper.drawTexture(matrixStack, origin.x, origin.y, 0, 0, 0, 128, 128, 128, 128);
 

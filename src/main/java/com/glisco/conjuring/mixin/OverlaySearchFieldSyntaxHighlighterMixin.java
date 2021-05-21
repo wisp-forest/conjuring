@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Pseudo
-@Mixin(targets = {"me.shedaniel.rei.impl.OverlaySearchFieldSyntaxHighlighter"})
+@Mixin(targets = "me.shedaniel.rei.impl.OverlaySearchFieldSyntaxHighlighter")
 public class OverlaySearchFieldSyntaxHighlighterMixin {
 
     @Inject(method = "accept", at = @At("HEAD"), remap = false)

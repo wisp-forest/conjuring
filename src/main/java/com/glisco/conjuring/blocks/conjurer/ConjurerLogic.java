@@ -31,7 +31,7 @@ import java.util.function.Function;
  * Modified version of Minecraft's MobSpawnerLogic
  * <p>
  * Used to provide fine control over the logics properties,
- * to make it usable for a player modifiable spawner
+ * to make it usable for a player-modifiable spawner
  */
 public abstract class ConjurerLogic {
     private static final Logger LOGGER = LogManager.getLogger();

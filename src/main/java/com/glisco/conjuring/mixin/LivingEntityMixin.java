@@ -4,13 +4,19 @@ import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.items.soul_alloy_tools.CopycatPlayerDamageSource;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyTool;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyToolAbilities;
+import com.glisco.owo.ServerParticles;
+import com.glisco.owo.VectorSerializer;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -62,6 +68,16 @@ public abstract class LivingEntityMixin extends Entity {
         for (int i = 0; i < ConjuringCommon.CONFIG.tools_config.sword_scope_max_entities && i < entities.size(); i++) {
             entities.get(i).damage(new CopycatPlayerDamageSource(player), amount * ConjuringCommon.CONFIG.tools_config.sword_scope_damage_multiplier * scopeLevel);
             player.getMainHandStack().damage(4 * scopeLevel, player, playerEntity -> player.sendToolBreakStatus(Hand.MAIN_HAND));
+
+            JsonObject object = new JsonObject();
+            VectorSerializer.toJson(getPos().add(0, 0.25 + random.nextDouble(), 0), object, "start");
+            VectorSerializer.toJson(entities.get(i).getPos().add(0, 0.25 + random.nextDouble(), 0), object, "end");
+
+            if (!world.isClient()) {
+                ServerParticles.issueEvent((ServerWorld) world, getBlockPos(), new Identifier("conjuring", "line"), packetByteBuf -> {
+                    packetByteBuf.writeString(new Gson().toJson(object));
+                });
+            }
         }
 
     }

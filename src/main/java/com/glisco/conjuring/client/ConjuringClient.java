@@ -5,7 +5,10 @@ import com.glisco.conjuring.entities.EntityCreatePacket;
 import com.glisco.conjuring.entities.SoulEntityRenderer;
 import com.glisco.conjuring.items.soul_alloy_tools.ChangeToolModePacket;
 import com.glisco.owo.ServerParticles;
+import com.glisco.owo.VectorSerializer;
 import com.glisco.owo.client.ClientParticles;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -87,6 +90,19 @@ public class ConjuringClient implements ClientModInitializer {
                 ClientParticles.setParticleCount(3);
                 ClientParticles.spawnCubeOutline(ParticleTypes.SOUL_FIRE_FLAME, client.world, Vec3d.of(pos).add(0.175, 0.175, 0.175), 0.65f, 0f);
             });
+        });
+
+        ServerParticles.registerClientSideHandler(new Identifier("conjuring", "line"), (client, pos, data) -> {
+
+            JsonObject object = new Gson().fromJson(data.readString(), JsonObject.class);
+            Vec3d start = VectorSerializer.fromJson(object, "start");
+            Vec3d end = VectorSerializer.fromJson(object, "end");
+
+            client.execute(() -> {
+                ClientParticles.setParticleCount(15);
+                ClientParticles.spawnLine(ParticleTypes.ENCHANTED_HIT, client.world, start, end, 0.1f);
+            });
+
         });
 
     }

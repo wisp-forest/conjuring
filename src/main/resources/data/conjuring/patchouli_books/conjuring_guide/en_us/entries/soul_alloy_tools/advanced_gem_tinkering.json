@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "text",
-      "text": "After priming yourself on $(l:conjuring:basics/basic_gem_tinkering)Basic Gem Tinkering$() you might be able to realize the gem tinkerers $(o)full potential$().$(br)Once you have aquired some $(item)Soul Tools$() you can infuse them with the aspect gems.$(br)There is a limit to this power however. You are only able to put two different types on a single tool, and there is only enough space for 5 gems to fit on it."
+      "text": "After priming on $(l:conjuring:basics/basic_gem_tinkering)Basic Gem Tinkering$(), one might realize the $(item)Gem Tinkerer$()'s $(o)full potential$(). Upon acquiring some $(item)Soul Alloy Tools$(), it can infuse them with $(l:conjuring:basics/basic_gem_tinkering)Aspect Gems$(). This procedure is remarkably similar to normal operation, as one must simply substitute the $(item)Lesser Conjuration Essence$() with the tool and the items on the columns with the desired gems. There is a limit to this power however."
     },
     {
       "type": "image",
@@ -15,8 +15,8 @@
         "conjuring:textures/gui/patchouli/gem_tinkerer_patchouli_3.png"
       ],
       "border": true,
-      "title": "Adjusting Gems"
-
+      "title": "Adjusting Gems",
+      "text": "A single tool may only carry two gem types, and never more than 5 gems."
     }
   ]
 }

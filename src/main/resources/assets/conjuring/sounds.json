@@ -1,9 +1,4 @@
 {
-  "gui.gem_tinkerer.froge": {
-    "sounds": [
-      "conjuring:froge"
-    ]
-  },
   "block.soul_weaver.weee": {
     "sounds": [
       "conjuring:weee"

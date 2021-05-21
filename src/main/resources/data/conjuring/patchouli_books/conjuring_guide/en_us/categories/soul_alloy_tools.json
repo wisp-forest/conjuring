@@ -1,5 +1,5 @@
 {
   "name": "Soul Alloy Tools",
-  "description": "Descriptive description",
+  "description": "It turns out that $(l:conjuring:basics/soul_composite_materials#soul_alloy)Soul Alloy$() makes for formidable tools when applied on top of $(item)Netherite$() using a $(l:conjuring:rituals/ritual_of_weaving)Soul Weaver$(). What these implements can accomplish and how they may be refined is outlined in these pages.",
   "icon": "conjuring:soul_alloy_sword"
 }
