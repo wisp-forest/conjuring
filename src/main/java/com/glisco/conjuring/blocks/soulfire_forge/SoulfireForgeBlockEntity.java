@@ -65,7 +65,7 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
 
             Optional<SoulfireForgeRecipe> currentRecipe = world.getRecipeManager().getFirstMatch(SoulfireForgeRecipe.Type.INSTANCE, this, world);
 
-            if (currentRecipe.isPresent() && world.getBlockState(pos).get(SoulfireForgeBlock.BURNING)) {
+            if (currentRecipe.isPresent() && getCachedState().get(SoulfireForgeBlock.BURNING)) {
                 if (items.get(9).isEmpty() || ItemOps.canStack(items.get(9), currentRecipe.get().getOutput())) {
                     targetSmeltTime = currentRecipe.get().getSmeltTime();
 
@@ -95,7 +95,7 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
                 smeltTime = 0;
                 progress = 0;
             }
-        } else if (world.getBlockState(pos).get(SoulfireForgeBlock.BURNING)) {
+        } else if (getCachedState().get(SoulfireForgeBlock.BURNING)) {
             for (int i = 0; i < 4; i++) {
                 double x = (double) pos.getX() + 0.5D + (world.random.nextDouble() - 0.5D) * 0.3;
                 double y = (double) pos.getY() + 0.6D;

@@ -17,7 +17,7 @@ public class ConjurerBlockEntityRenderer extends BlockEntityRenderer<ConjurerBlo
         super(blockEntityRenderDispatcher);
     }
 
-    public void render(ConjurerBlockEntity conjurerBlockEntity, float f, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
+    public void render(ConjurerBlockEntity conjurerBlockEntity, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
         if (conjurerBlockEntity.isActive()) {
             matrixStack.push();
 
@@ -31,12 +31,14 @@ public class ConjurerBlockEntityRenderer extends BlockEntityRenderer<ConjurerBlo
                     g /= h;
                 }
 
+                if (!conjurerBlockEntity.getLogic().isPlayerInRange()) tickDelta = 0;
+
                 matrixStack.translate(0.0D, 0.4000000059604645D, 0.0D);
-                matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion((float) MathHelper.lerp((double) f, mobSpawnerLogic.method_8279(), mobSpawnerLogic.method_8278()) * 10.0F));
+                matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion((float) MathHelper.lerp((double) tickDelta, mobSpawnerLogic.method_8279(), mobSpawnerLogic.method_8278()) * 10.0F));
                 matrixStack.translate(0.0D, -0.20000000298023224D, 0.0D);
                 matrixStack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-30.0F));
                 matrixStack.scale(g, g, g);
-                MinecraftClient.getInstance().getEntityRenderDispatcher().render(entity, 0.0D, 0.0D, 0.0D, 0.0F, f, matrixStack, vertexConsumerProvider, i);
+                MinecraftClient.getInstance().getEntityRenderDispatcher().render(entity, 0.0D, 0.0D, 0.0D, 0.0F, tickDelta, matrixStack, vertexConsumerProvider, i);
 
             }
 

@@ -24,17 +24,13 @@ import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.registry.Registry;
 import org.lwjgl.glfw.GLFW;
 
 @Environment(EnvType.CLIENT)
 public class ConjuringClient implements ClientModInitializer {
-
-    public static final SoundEvent FROGE_SOUND = new SoundEvent(new Identifier("conjuring", "gui.gem_tinkerer.froge"));
 
     public static KeyBinding TOGGLE_TOOL_MODE;
 
@@ -62,8 +58,6 @@ public class ConjuringClient implements ClientModInitializer {
 
         ScreenRegistry.register(ConjuringCommon.CONJURER_SCREEN_HANDLER_TYPE, ConjurerScreen::new);
         ScreenRegistry.register(ConjuringCommon.SOULFIRE_FORGE_SCREEN_HANDLER_TYPE, SoulfireForgeScreen::new);
-
-        Registry.register(Registry.SOUND_EVENT, new Identifier("conjuring", "gui.gem_tinkerer.froge"), FROGE_SOUND);
 
         TOGGLE_TOOL_MODE = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.conjuring.toggle_tool_mode", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_ALT, "category.conjuring"));
 

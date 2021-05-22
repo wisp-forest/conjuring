@@ -71,7 +71,7 @@ public abstract class ConjurerLogic {
         this.spawnEntry.getEntityTag().putString("id", Registry.ENTITY_TYPE.getId(type).toString());
     }
 
-    private boolean isPlayerInRange() {
+    public boolean isPlayerInRange() {
         BlockPos blockPos = this.getPos();
         return getWorld().getReceivedRedstonePower(blockPos) == 0 && (!requiresPlayer || this.getWorld().isPlayerInRange((double) blockPos.getX() + 0.5D, (double) blockPos.getY() + 0.5D, (double) blockPos.getZ() + 0.5D, (double) this.requiredPlayerRange));
     }

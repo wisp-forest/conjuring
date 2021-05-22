@@ -9,6 +9,7 @@ import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeCategory;
 import me.shedaniel.rei.api.RecipeHelper;
 import me.shedaniel.rei.api.plugins.REIPluginV0;
+import net.minecraft.item.Items;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 
@@ -52,5 +53,6 @@ public class ConjuringPlugin implements REIPluginV0 {
         recipeHelper.registerWorkingStations(SOUL_WEAVING, EntryStack.create(ConjuringCommon.BLACKSTONE_PEDESTAL_BLOCK));
 
         recipeHelper.registerRecipeVisibilityHandler((category, display) -> (category.getIdentifier() == SOULFIRE_FORGE && (display.getResultingEntries().get(0).stream().map(EntryStack::getItem).anyMatch(item -> item == ConjuringCommon.PIZZA)) ? ActionResult.FAIL : ActionResult.PASS));
+        recipeHelper.registerRecipeVisibilityHandler((category, display) -> (category.getIdentifier() == GEM_TINKERING && (display.getResultingEntries().get(0).stream().map(EntryStack::getItem).anyMatch(item -> item == Items.COOKIE)) ? ActionResult.FAIL : ActionResult.PASS));
     }
 }
