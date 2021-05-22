@@ -2,6 +2,9 @@
   "name": "Soul Alloy Hatchet",
   "icon": "conjuring:soul_alloy_hatchet",
   "category": "conjuring:soul_alloy_tools",
+  "extra_recipe_mappings": {
+    "conjuring:soul_alloy_hatchet": 0
+  },
   "pages": [
     {
       "type": "text",

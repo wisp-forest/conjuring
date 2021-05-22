@@ -1,12 +1,15 @@
 package com.glisco.conjuring.entities;
 
 import com.glisco.conjuring.ConjuringCommon;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.ProjectileDamageSource;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
@@ -14,19 +17,26 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import java.util.HashMap;
 
 public class SoulProjectileEntity extends SoulEntity {
 
     private float damage = 1.5f;
+    private static final HashMap<SoulProjectileEntity, Entity> TARGET_ENTITIES = new HashMap<>();
+    private final TargetPredicate UNIQUE_CLOSEST;
 
     public SoulProjectileEntity(World world, LivingEntity owner) {
         super(ConjuringCommon.SOUL_PROJECTILE, world);
         setOwner(owner);
+        UNIQUE_CLOSEST = new TargetPredicate().setBaseMaxDistance(8).setPredicate(livingEntity -> livingEntity.isAlive() && (!TARGET_ENTITIES.containsValue(livingEntity) || TARGET_ENTITIES.get(this) == livingEntity));
     }
 
     public SoulProjectileEntity(EntityType<SoulProjectileEntity> entityType, World world) {
         super(entityType, world);
+        UNIQUE_CLOSEST = new TargetPredicate().setBaseMaxDistance(8).setPredicate(livingEntity -> livingEntity.isAlive() && (!TARGET_ENTITIES.containsValue(livingEntity) || TARGET_ENTITIES.get(this) == livingEntity));
     }
 
     @Override
@@ -58,6 +68,7 @@ public class SoulProjectileEntity extends SoulEntity {
 
         e.damage(createDamageSource(), damage);
 
+
         if (!e.isAlive() && damage == 1.5f) {
             e.dropItem(ConjuringCommon.CONJURATION_ESSENCE);
             e.world.syncWorldEvent(9005, entityHitResult.getEntity().getBlockPos(), 0);
@@ -69,6 +80,24 @@ public class SoulProjectileEntity extends SoulEntity {
                 world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, SoundCategory.PLAYERS, 0.5f, 0);
             }
         }
+    }
+
+    @Override
+    public void remove() {
+        super.remove();
+        TARGET_ENTITIES.remove(this);
+    }
+
+    @Override
+    public void tick() {
+        Entity closest = world.getClosestEntity(MobEntity.class, UNIQUE_CLOSEST, null, getX(), getY(), getZ(), getBoundingBox().expand(3, 2, 3));
+        if (closest != null) {
+            Vec3d targetVector = closest.getPos().subtract(getPos());
+            setVelocity(targetVector.multiply(0.25f));
+            TARGET_ENTITIES.put(this, closest);
+        }
+
+        super.tick();
     }
 
     public void setDamage(float damage) {

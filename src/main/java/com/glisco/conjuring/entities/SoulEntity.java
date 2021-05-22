@@ -25,6 +25,7 @@ public abstract class SoulEntity extends ProjectileEntity {
     @Override
     public void setProperties(Entity user, float pitch, float yaw, float roll, float modifierZ, float modifierXYZ) {
         super.setProperties(user, pitch, yaw, roll, modifierZ, modifierXYZ);
+        this.setVelocity(this.getVelocity().subtract(0, user.isOnGround() ? 0.0D : user.getVelocity().y, 0));
 
         //Offset so its not in your face
         Vec3d newPos = this.getPos().add(this.getVelocity().multiply(0.5));

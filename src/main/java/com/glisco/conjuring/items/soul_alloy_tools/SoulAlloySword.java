@@ -31,7 +31,7 @@ public class SoulAlloySword extends SwordItem implements SoulAlloyTool {
 
         if (!world.isClient()) {
 
-            float damage = (float) ((user.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE) + EnchantmentHelper.getAttackDamage(user.getMainHandStack(), EntityGroup.DEFAULT)) * ConjuringCommon.CONFIG.tools_config.sword_projectile_damage_multiplier);
+            float damage = (float) ((user.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE) + EnchantmentHelper.getAttackDamage(user.getMainHandStack(), EntityGroup.DEFAULT)) * 1.5f *  ConjuringCommon.CONFIG.tools_config.sword_projectile_damage_multiplier);
 
             for (int i = 0; i < 5; i++) {
                 SoulProjectileEntity projectile = new SoulProjectileEntity(world, user);
