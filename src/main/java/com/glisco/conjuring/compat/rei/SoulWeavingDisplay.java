@@ -24,8 +24,9 @@ public class SoulWeavingDisplay implements RecipeDisplay {
         this.input = recipe.getInputs().stream().map((i) -> {
             List<EntryStack> entries = new ArrayList<>();
 
-            for (ItemStack stack : i.getMatchingStacksClient())
+            for (ItemStack stack : i.getMatchingStacksClient()) {
                 entries.add(EntryStack.create(stack));
+            }
 
             return entries;
         }).collect(Collectors.toList());
@@ -44,7 +45,7 @@ public class SoulWeavingDisplay implements RecipeDisplay {
     }
 
     @Override
-    public @NotNull List<EntryStack> getOutputEntries() {
-        return output;
+    public @NotNull List<List<EntryStack>> getResultingEntries() {
+        return Collections.singletonList(output);
     }
 }

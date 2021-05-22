@@ -2,6 +2,9 @@
   "name": "Conjuration Essence",
   "icon": "conjuring:conjuration_essence",
   "category": "conjuring:basics",
+  "extra_recipe_mappings": {
+    "conjuring:lesser_conjuration_essence": 1
+  },
   "pages": [
     {
       "type": "text",

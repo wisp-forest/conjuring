@@ -60,7 +60,7 @@ public class SoulfireForgeCategory implements RecipeCategory<SoulfireForgeDispla
 
         widgets.addAll(slots);
         widgets.add(Widgets.createResultSlotBackground(new Point(origin.x + 95, origin.y + 19)));
-        widgets.add(Widgets.createSlot(new Point(origin.x + 95, origin.y + 19)).entries(recipeDisplay.getOutputEntries()).disableBackground().markOutput());
+        widgets.add(Widgets.createSlot(new Point(origin.x + 95, origin.y + 19)).entries(recipeDisplay.getResultingEntries().get(0)).disableBackground().markOutput());
 
         widgets.add(Widgets.createTexturedWidget(new Identifier("conjuring", "textures/gui/soulfire_forge.png"), origin.x + 57, origin.y + 11, 176, 0, 32, 32));
 

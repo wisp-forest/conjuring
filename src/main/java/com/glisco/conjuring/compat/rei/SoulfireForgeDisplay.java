@@ -46,8 +46,8 @@ public class SoulfireForgeDisplay implements RecipeDisplay {
     }
 
     @Override
-    public @NotNull List<EntryStack> getOutputEntries() {
-        return output;
+    public @NotNull List<List<EntryStack>> getResultingEntries() {
+        return Collections.singletonList(output);
     }
 
     public int getSmeltTime() {

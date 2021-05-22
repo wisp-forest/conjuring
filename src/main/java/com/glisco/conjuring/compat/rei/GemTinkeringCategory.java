@@ -18,6 +18,7 @@ import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Matrix4f;
 import org.jetbrains.annotations.NotNull;
 
@@ -65,7 +66,7 @@ public class GemTinkeringCategory implements RecipeCategory<GemTinkeringDisplay>
         tinkerer.getInventory().set(2, recipeDisplay.getInputEntries().get(2).get(0).getItemStack());
         tinkerer.getInventory().set(3, recipeDisplay.getInputEntries().get(3).get(0).getItemStack());
         tinkerer.getInventory().set(4, recipeDisplay.getInputEntries().get(4).get(0).getItemStack());
-        tinkerer.setLocation(MinecraftClient.getInstance().world, MinecraftClient.getInstance().player.getBlockPos());
+        tinkerer.setLocation(MinecraftClient.getInstance().world, BlockPos.ORIGIN);
 
         widgets.add(Widgets.createDrawableWidget((drawableHelper, matrixStack, i, i1, v) -> {
 
@@ -105,7 +106,7 @@ public class GemTinkeringCategory implements RecipeCategory<GemTinkeringDisplay>
         }
 
         widgets.add(Widgets.createResultSlotBackground(new Point(origin.getX() + 47, origin.getY() + 85)));
-        widgets.add(Widgets.createSlot(new Point(origin.getX() + 47, origin.getY() + 85)).entries(recipeDisplay.getOutputEntries()).disableBackground());
+        widgets.add(Widgets.createSlot(new Point(origin.getX() + 47, origin.getY() + 85)).entries(recipeDisplay.getResultingEntries().get(0)).disableBackground());
 
         widgets.add(Widgets.createTexturedWidget(new Identifier("conjuring", "textures/gui/gem_tinkerer.png"), origin.getX() + 9, origin.getY() + 75, 0, 0, 25, 25));
         widgets.add(Widgets.createTexturedWidget(new Identifier("conjuring", "textures/gui/gem_tinkerer.png"), origin.getX() + 75, origin.getY() + 75, 25, 0, 25, 25));

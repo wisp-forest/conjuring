@@ -60,7 +60,7 @@ public class SoulWeavingCategory implements RecipeCategory<SoulWeavingDisplay> {
         widgets.add(Widgets.createSlot(new Point(bounds.getX() + 146, bounds.getY() + 52)).entries(recipeDisplay.getInputEntries().get(4)));
 
         widgets.add(Widgets.createResultSlotBackground(new Point(bounds.getX() + 77, bounds.getY() + 88)));
-        widgets.add(Widgets.createSlot(new Point(bounds.getX() + 77, bounds.getY() + 88)).entries(recipeDisplay.getOutputEntries()).disableBackground());
+        widgets.add(Widgets.createSlot(new Point(bounds.getX() + 77, bounds.getY() + 88)).entries(recipeDisplay.getResultingEntries().get(0)).disableBackground());
 
         widgets.add(Widgets.createTexturedWidget(new Identifier("conjuring", "textures/gui/soul_weaver.png"), bounds.getX() + 8, bounds.getY() + 10, 0, 0, 154, 96));
         widgets.add(Widgets.createSlot(new Point(bounds.getX() + 24, bounds.getY() + 88)).entries(Collections.singletonList(EntryStack.create(ConjuringCommon.CONJURATION_ESSENCE))));

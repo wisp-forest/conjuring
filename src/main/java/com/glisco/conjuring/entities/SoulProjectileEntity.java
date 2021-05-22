@@ -91,8 +91,9 @@ public class SoulProjectileEntity extends SoulEntity {
     @Override
     public void tick() {
         Entity closest = world.getClosestEntity(MobEntity.class, UNIQUE_CLOSEST, null, getX(), getY(), getZ(), getBoundingBox().expand(3, 2, 3));
+        if(closest == null && TARGET_ENTITIES.containsKey(this)) closest = TARGET_ENTITIES.get(this);
         if (closest != null) {
-            Vec3d targetVector = closest.getPos().subtract(getPos());
+            Vec3d targetVector = closest.getPos().add(0, closest.getHeight() * 0.5, 0).subtract(getPos());
             setVelocity(targetVector.multiply(0.25f));
             TARGET_ENTITIES.put(this, closest);
         }

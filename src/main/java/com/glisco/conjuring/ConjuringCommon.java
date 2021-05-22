@@ -100,7 +100,7 @@ public class ConjuringCommon implements ModInitializer {
         }
     };
 
-    public static Item PIZZA = new Item(new Item.Settings().food(new FoodComponent.Builder().hunger(8).saturationModifier(0.75f).build()));
+    public static Item PIZZA = new PizzaItem();
 
     public static Item SOUL_ROD = new SoulRod();
     public static Item SOUL_ALLOY = new SoulAlloy();
