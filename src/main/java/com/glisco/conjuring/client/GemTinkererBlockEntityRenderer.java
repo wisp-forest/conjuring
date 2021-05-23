@@ -4,10 +4,7 @@ import com.glisco.conjuring.blocks.gem_tinkerer.GemTinkererBlockEntity;
 import com.glisco.owo.client.ClientParticles;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.ModelPart;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.item.ItemRenderer;
@@ -49,7 +46,7 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
 
         final World world = blockEntity.getWorld();
         final BlockPos pos = blockEntity.getPos();
-        VertexConsumer vertexConsumer = MODEL_TEXTURE.getVertexConsumer(vertexConsumerProvider, RenderLayer::getEntityCutout);
+        VertexConsumer vertexConsumer = MODEL_TEXTURE.getVertexConsumer(vertexConsumerProvider, RenderLayer::getEntitySolid);
 
         DefaultedList<ItemStack> items = blockEntity.getInventory();
         ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();

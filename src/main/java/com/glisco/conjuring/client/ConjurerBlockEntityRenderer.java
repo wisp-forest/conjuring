@@ -19,6 +19,7 @@ public class ConjurerBlockEntityRenderer extends BlockEntityRenderer<ConjurerBlo
 
     public void render(ConjurerBlockEntity conjurerBlockEntity, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
         if (conjurerBlockEntity.isActive()) {
+
             matrixStack.push();
 
             matrixStack.translate(0.5D, 0.0D, 0.5D);
