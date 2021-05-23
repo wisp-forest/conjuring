@@ -49,7 +49,7 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
 
         final World world = blockEntity.getWorld();
         final BlockPos pos = blockEntity.getPos();
-        VertexConsumer vertexConsumer = MODEL_TEXTURE.getVertexConsumer(vertexConsumerProvider, RenderLayer::getEntitySolid);
+        VertexConsumer vertexConsumer = MODEL_TEXTURE.getVertexConsumer(vertexConsumerProvider, RenderLayer::getEntityCutout);
 
         DefaultedList<ItemStack> items = blockEntity.getInventory();
         ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
