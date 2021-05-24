@@ -109,11 +109,7 @@ public class SoulWeaverBlock extends BlockWithEntity {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof SoulWeaverBlockEntity) {
                 SoulWeaverBlockEntity weaverEntity = (SoulWeaverBlockEntity) blockEntity;
-
-                if (!weaverEntity.getItem().isEmpty()) {
-                    ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), weaverEntity.getItem());
-                }
-
+                weaverEntity.onBroken();
             }
             super.onStateReplaced(state, world, pos, newState, moved);
         }

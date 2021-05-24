@@ -25,6 +25,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -292,6 +293,13 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
         }
 
         if (ritualTick > 0) ritualTick++;
+    }
+
+    public void onBroken() {
+        if (!item.isEmpty()){
+            ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1.25, pos.getZ(), item);
+        }
+        cancelRitual();
     }
 
     public void cancelRitual() {

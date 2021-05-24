@@ -4,8 +4,17 @@
   "version": "${version}",
   "name": "Conjuring",
   "description": "Customizable mob spawners with charm (pun intended)",
-  "authors": [],
-  "contact": {},
+  "authors": [
+    "glisco"
+  ],
+  "contact": {
+    "issues": "https://github.com/glisco03/conjuring/issues",
+    "sources": "https://github.com/glisco03/conjuring"
+  },
+  "contributors": [
+    "Pois1x",
+    "Noaaan"
+  ],
   "icon": "assets/conjuring/icon.png",
   "accessWidener": "conjuring.accesswidener",
   "environment": "*",

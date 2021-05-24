@@ -78,7 +78,7 @@ public class ConjuringScepter extends Item {
         World world = context.getWorld();
         ItemStack scepter = context.getStack();
 
-        if (world.getBlockEntity(pos) instanceof BlackstonePedestalBlockEntity) {
+        if (world.getBlockEntity(pos) instanceof BlackstonePedestalBlockEntity && !((BlackstonePedestalBlockEntity) world.getBlockEntity(pos)).isActive()) {
             startLinking(scepter, pos);
             return ActionResult.SUCCESS;
         } else if (world.getBlockEntity(pos) instanceof RitualCore) {
