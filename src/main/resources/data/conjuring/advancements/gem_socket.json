@@ -1,0 +1,35 @@
+{
+  "parent": "conjuring:soul_alloy",
+  "display": {
+    "icon": {
+      "item": "conjuring:gem_socket"
+    },
+    "title": {
+      "translate": "advancement.conjuring.gem_socket.title"
+    },
+    "description": {
+      "translate": "advancement.conjuring.gem_socket.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "gem_socket": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "conjuring:gem_socket"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "gem_socket"
+    ]
+  ]
+}

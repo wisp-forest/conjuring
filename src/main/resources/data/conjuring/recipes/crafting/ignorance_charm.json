@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "l",
+    "s"
+  ],
+  "key": {
+    "l": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "s": {
+      "item": "conjuring:gem_socket"
+    }
+  },
+  "result": {
+    "item": "conjuring:ignorance_charm",
+    "count": 1
+  }
+}

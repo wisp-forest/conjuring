@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "com.glisco.conjuringforgery.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "conjuring.refmap.json",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8",
+  "mixins": [
+    "RecipeManagerAccessor",
+    "SpawnerParticleMixin"
+  ]
+}

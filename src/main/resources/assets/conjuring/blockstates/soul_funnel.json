@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "filled=false": {
+      "model": "conjuring:block/soul_funnel"
+    },
+    "filled=true": {
+      "model": "conjuring:block/soul_funnel_with_soul_sand"
+    }
+  }
+}

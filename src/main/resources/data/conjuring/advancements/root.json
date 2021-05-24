@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "conjuring:conjuration_essence"
+    },
+    "title": {
+      "translate": "advancement.conjuring.root.title"
+    },
+    "description": {
+      "translate": "advancement.conjuring.root.description"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+  },
+  "criteria": {
+    "conjuration_essence": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "conjuring:conjuration_essence"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "conjuration_essence"
+    ]
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "parent": "conjuring:soul_alloy",
+  "display": {
+    "icon": {
+      "item": "conjuring:conjurer"
+    },
+    "title": {
+      "translate": "advancement.conjuring.conjurer.title"
+    },
+    "description": {
+      "translate": "advancement.conjuring.conjurer.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "conjurer": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "conjuring:conjurer"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "conjurer"
+    ]
+  ]
+}

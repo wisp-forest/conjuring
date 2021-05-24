@@ -1,0 +1,35 @@
+{
+  "parent": "conjuring:conjuring_scepter",
+  "display": {
+    "icon": {
+      "item": "conjuring:conjuring_focus"
+    },
+    "title": {
+      "translate": "advancement.conjuring.conjuring_focus.title"
+    },
+    "description": {
+      "translate": "advancement.conjuring.conjuring_focus.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "conjuring_focus": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "conjuring:conjuring_focus"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "conjuring_focus"
+    ]
+  ]
+}

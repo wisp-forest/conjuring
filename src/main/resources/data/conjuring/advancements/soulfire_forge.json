@@ -1,0 +1,35 @@
+{
+  "parent": "conjuring:root",
+  "display": {
+    "icon": {
+      "item": "conjuring:soulfire_forge"
+    },
+    "title": {
+      "translate": "advancement.conjuring.soulfire_forge.title"
+    },
+    "description": {
+      "translate": "advancement.conjuring.soulfire_forge.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "soulfire_forge": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "conjuring:soulfire_forge"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "soulfire_forge"
+    ]
+  ]
+}
