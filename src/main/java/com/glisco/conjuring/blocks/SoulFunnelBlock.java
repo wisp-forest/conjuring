@@ -121,6 +121,8 @@ public class SoulFunnelBlock extends BlockWithEntity {
         //Ritual logic
         if (playerStack.getItem() instanceof ConjuringScepter) {
 
+            System.out.println("try start");
+
             RitualCore core = (RitualCore) world.getBlockEntity(pos);
             if (core.tryStartRitual(player)) return ActionResult.SUCCESS;
         }

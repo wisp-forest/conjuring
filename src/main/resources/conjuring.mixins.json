@@ -13,7 +13,7 @@
     "LivingEntityMixin",
     "OverlaySearchFieldSyntaxHighlighterMixin",
     "PlayerEntityMixin",
-    "WorldRendererMixin",
+    "WorldRendererInvoker",
     "angerables.BeeEntityMixin",
     "angerables.EndermanEntityMixin",
     "angerables.IronGolemEntityMixin",

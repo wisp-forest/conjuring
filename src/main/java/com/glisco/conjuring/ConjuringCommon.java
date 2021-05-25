@@ -270,5 +270,7 @@ public class ConjuringCommon implements ModInitializer {
 
         CriterionRegistry.register(EXTRACTION_RITUAL_CRITERION);
         CriterionRegistry.register(GEM_TINKERING_CRITERION);
+
+        SoulAlloyToolAbilities.registerEvents();
     }
 }
