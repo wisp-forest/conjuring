@@ -10,7 +10,7 @@
     {
       "type": "soulfire_forge_recipe",
       "recipe": "conjuring:soulfire_forge/conjurer",
-      "text": "When one of these gizmos is inserted, the $(item)Conjurer$() will begin the summoning process. While this is of course a very useful setup even in it's basic state, many improvements can be made using $(l:conjuring:basics/charms)Charms$()."
+      "text": "When one of these gizmos is inserted, the $(item)Conjurer$() will begin the summoning process. While this is of course a very useful setup even in it's basic state, many improvements can be made using $(l:conjuring:basics/basic_gem_tinkering)Charms$()."
     },
     {
       "type": "text",

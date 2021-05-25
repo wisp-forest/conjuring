@@ -18,7 +18,7 @@
     {
       "type": "soulfire_forge_recipe",
       "recipe": "conjuring:soulfire_forge/superior_conjuring_scepter",
-      "text": "Additionally, the scepter is capable of instantly finishing any process in the $(l:conjuring:basics/soulfire_forge)Soulfire Forge$() by $(thing)shift-right-clinking$()."
+      "text": "Additionally, the scepter is capable of instantly finishing any process in the $(l:conjuring:basics/soulfire_forge)Soulfire Forge$() by $(thing)shift-right-clicking$()."
     }
   ]
 }
