@@ -9,7 +9,6 @@ import com.glisco.conjuring.mixin.WorldRendererInvoker;
 import com.glisco.owo.ServerParticles;
 import com.glisco.owo.VectorSerializer;
 import com.glisco.owo.client.ClientParticles;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -95,7 +94,7 @@ public class ConjuringClient implements ClientModInitializer {
 
         ServerParticles.registerClientSideHandler(new Identifier("conjuring", "line"), (client, pos, data) -> {
 
-            JsonObject object = new Gson().fromJson(data.readString(), JsonObject.class);
+            JsonObject object = ServerParticles.NETWORK_GSON.fromJson(data.readString(), JsonObject.class);
             Vec3d start = VectorSerializer.fromJson(object, "start");
             Vec3d end = VectorSerializer.fromJson(object, "end");
 

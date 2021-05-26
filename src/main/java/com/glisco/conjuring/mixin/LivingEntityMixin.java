@@ -6,7 +6,6 @@ import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyTool;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyToolAbilities;
 import com.glisco.owo.ServerParticles;
 import com.glisco.owo.VectorSerializer;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -75,7 +74,7 @@ public abstract class LivingEntityMixin extends Entity {
 
             if (!world.isClient()) {
                 ServerParticles.issueEvent((ServerWorld) world, getBlockPos(), new Identifier("conjuring", "line"), packetByteBuf -> {
-                    packetByteBuf.writeString(new Gson().toJson(object));
+                    packetByteBuf.writeString(ServerParticles.NETWORK_GSON.toJson(object));
                 });
             }
         }
