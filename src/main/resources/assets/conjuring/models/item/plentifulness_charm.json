@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "conjuring:item/plentifulness_charm"
+    "layer0": "conjuring:item/abundance_charm"
   }
 }

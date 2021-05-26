@@ -2,10 +2,6 @@ package com.glisco.conjuringforgery;
 
 import com.glisco.conjuringforgery.blocks.conjurer.ConjurerTileEntity;
 import com.glisco.conjuringforgery.items.ConjuringFocus;
-import com.glisco.conjuringforgery.items.charms.HasteCharm;
-import com.glisco.conjuringforgery.items.charms.IgnoranceCharm;
-import com.glisco.conjuringforgery.items.charms.PlentifulnessCharm;
-import com.glisco.conjuringforgery.items.charms.ScopeCharm;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -38,28 +34,28 @@ public class ConjurerContainer extends Container {
         this.addSlot(new SlotItemHandler(this.inventory, 1, 77, 2) {
             @Override
             public boolean isItemValid(ItemStack stack) {
-                return stack.getItem() instanceof HasteCharm;
+                return stack.getItem() == ConjuringForgery.HASTE_CHARM.get();
             }
         });
 
         this.addSlot(new SlotItemHandler(this.inventory, 2, 117, 41) {
             @Override
             public boolean isItemValid(ItemStack stack) {
-                return stack.getItem() instanceof PlentifulnessCharm;
+                return stack.getItem() == ConjuringForgery.PLENTIFULNESS_CHARM.get();
             }
         });
 
         this.addSlot(new SlotItemHandler(this.inventory, 3, 77, 80) {
             @Override
             public boolean isItemValid(ItemStack stack) {
-                return stack.getItem() instanceof ScopeCharm;
+                return stack.getItem() == ConjuringForgery.SCOPE_CHARM.get();
             }
         });
 
         this.addSlot(new SlotItemHandler(this.inventory, 4, 38, 41) {
             @Override
             public boolean isItemValid(ItemStack stack) {
-                return stack.getItem() instanceof IgnoranceCharm;
+                return stack.getItem() == ConjuringForgery.IGNORANCE_CHARM.get();
             }
         });
 

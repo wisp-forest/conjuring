@@ -25,6 +25,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -37,42 +38,75 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
 import java.util.function.ToIntFunction;
+import java.util.stream.Stream;
 
 public class SoulfireForgeBlock extends Block {
 
-    public static final EnumProperty<Direction.Axis> AXIS;
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty BURNING = BooleanProperty.create("burning");
 
-    private static VoxelShape BASE = Block.makeCuboidShape(0, 0, 0, 16, 1, 16);
-    private static VoxelShape PLATE = Block.makeCuboidShape(2, 10, 2, 14, 11, 14);
-    private static VoxelShape SOUL_SOIL = Block.makeCuboidShape(2, 1, 2, 14, 3, 14);
+    private static final VoxelShape BASE = Stream.of(
+            Block.makeCuboidShape(0, 0, 0, 16, 3, 16),
+            Block.makeCuboidShape(3, 3, 3, 13, 6, 13),
+            Block.makeCuboidShape(2, 6, 2, 14, 9, 14)
+    ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).get();
 
-    private static VoxelShape PILLAR_1_X = Block.makeCuboidShape(2, 1, 0, 5, 13, 2);
-    private static VoxelShape PILLAR_2_X = Block.makeCuboidShape(11, 1, 0, 14, 13, 2);
-    private static VoxelShape PILLAR_3_X = Block.makeCuboidShape(2, 1, 14, 5, 13, 16);
-    private static VoxelShape PILLAR_4_X = Block.makeCuboidShape(11, 1, 14, 14, 13, 16);
-    private static VoxelShape PILLAR_1_Z = Block.makeCuboidShape(14, 1, 2, 16, 13, 5);
-    private static VoxelShape PILLAR_2_Z = Block.makeCuboidShape(14, 1, 11, 16, 13, 14);
-    private static VoxelShape PILLAR_3_Z = Block.makeCuboidShape(0, 1, 2, 2, 13, 5);
-    private static VoxelShape PILLAR_4_Z = Block.makeCuboidShape(0, 1, 11, 2, 13, 14);
+    private static final VoxelShape N = Stream.of(
+            Block.makeCuboidShape(3, 9, 1, 13, 11, 3),
+            Block.makeCuboidShape(3, 9, 3, 13, 10, 13),
+            Block.makeCuboidShape(12, 10, 7, 13, 16, 9),
+            Block.makeCuboidShape(13, 9, 1, 15, 16, 13),
+            Block.makeCuboidShape(7, 10, 12, 9, 16, 13),
+            Block.makeCuboidShape(3, 10, 7, 4, 16, 9),
+            Block.makeCuboidShape(1, 9, 13, 15, 16, 15),
+            Block.makeCuboidShape(1, 9, 1, 3, 16, 13),
+            Block.makeCuboidShape(2, 16, 4, 14, 19, 14),
+            Block.makeCuboidShape(4, 19, 5, 12, 20, 11)
+    ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).get();
 
-    private static VoxelShape SUPPORT_1_X = Block.makeCuboidShape(2, 9, 2, 5, 10, 4);
-    private static VoxelShape SUPPORT_2_X = Block.makeCuboidShape(11, 9, 2, 14, 10, 4);
-    private static VoxelShape SUPPORT_3_X = Block.makeCuboidShape(2, 9, 12, 5, 10, 14);
-    private static VoxelShape SUPPORT_4_X = Block.makeCuboidShape(11, 9, 12, 14, 10, 14);
-    private static VoxelShape SUPPORT_1_Z = Block.makeCuboidShape(12, 9, 2, 14, 10, 5);
-    private static VoxelShape SUPPORT_2_Z = Block.makeCuboidShape(12, 9, 11, 14, 10, 14);
-    private static VoxelShape SUPPORT_3_Z = Block.makeCuboidShape(2, 9, 2, 4, 10, 5);
-    private static VoxelShape SUPPORT_4_Z = Block.makeCuboidShape(2, 9, 11, 4, 10, 14);
+    private static final VoxelShape S = Stream.of(
+            Block.makeCuboidShape(3, 9, 13, 13, 11, 15),
+            Block.makeCuboidShape(3, 9, 3, 13, 10, 13),
+            Block.makeCuboidShape(3, 10, 7, 4, 16, 9),
+            Block.makeCuboidShape(1, 9, 3, 3, 16, 15),
+            Block.makeCuboidShape(7, 10, 3, 9, 16, 4),
+            Block.makeCuboidShape(12, 10, 7, 13, 16, 9),
+            Block.makeCuboidShape(1, 9, 1, 15, 16, 3),
+            Block.makeCuboidShape(13, 9, 3, 15, 16, 15),
+            Block.makeCuboidShape(2, 16, 2, 14, 19, 12),
+            Block.makeCuboidShape(4, 19, 5, 12, 20, 11)
+    ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).get();
 
-    private static VoxelShape SHAPE_X;
-    private static VoxelShape SHAPE_Z;
+    private static final VoxelShape W = Stream.of(
+            Block.makeCuboidShape(1, 9, 3, 3, 11, 13),
+            Block.makeCuboidShape(3, 9, 3, 13, 10, 13),
+            Block.makeCuboidShape(7, 10, 3, 9, 16, 4),
+            Block.makeCuboidShape(1, 9, 1, 13, 16, 3),
+            Block.makeCuboidShape(12, 10, 7, 13, 16, 9),
+            Block.makeCuboidShape(7, 10, 12, 9, 16, 13),
+            Block.makeCuboidShape(13, 9, 1, 15, 16, 15),
+            Block.makeCuboidShape(1, 9, 13, 13, 16, 15),
+            Block.makeCuboidShape(4, 16, 2, 14, 19, 14),
+            Block.makeCuboidShape(5, 19, 4, 11, 20, 12)
+    ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).get();
 
-    static {
-        AXIS = BlockStateProperties.HORIZONTAL_AXIS;
-        SHAPE_X = VoxelShapes.or(BASE, SOUL_SOIL, PLATE, PILLAR_1_X, PILLAR_2_X, PILLAR_3_X, PILLAR_4_X, SUPPORT_1_X, SUPPORT_2_X, SUPPORT_3_X, SUPPORT_4_X);
-        SHAPE_Z = VoxelShapes.or(BASE, SOUL_SOIL, PLATE, PILLAR_1_Z, PILLAR_2_Z, PILLAR_3_Z, PILLAR_4_Z, SUPPORT_1_Z, SUPPORT_2_Z, SUPPORT_3_Z, SUPPORT_4_Z);
-    }
+    private static final VoxelShape E = Stream.of(
+            Block.makeCuboidShape(13, 9, 3, 15, 11, 13),
+            Block.makeCuboidShape(3, 9, 3, 13, 10, 13),
+            Block.makeCuboidShape(7, 10, 12, 9, 16, 13),
+            Block.makeCuboidShape(3, 9, 13, 15, 16, 15),
+            Block.makeCuboidShape(3, 10, 7, 4, 16, 9),
+            Block.makeCuboidShape(7, 10, 3, 9, 16, 4),
+            Block.makeCuboidShape(1, 9, 1, 3, 16, 15),
+            Block.makeCuboidShape(3, 9, 1, 15, 16, 3),
+            Block.makeCuboidShape(2, 16, 2, 12, 19, 14),
+            Block.makeCuboidShape(5, 19, 4, 11, 20, 12)
+    ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).get();
+
+    private static final VoxelShape SHAPE_N = VoxelShapes.or(BASE, N);
+    private static final VoxelShape SHAPE_S = VoxelShapes.or(BASE, S);
+    private static final VoxelShape SHAPE_W = VoxelShapes.or(BASE, W);
+    private static final VoxelShape SHAPE_E = VoxelShapes.or(BASE, E);
 
     //Construction stuff
     public SoulfireForgeBlock() {
@@ -98,13 +132,17 @@ public class SoulfireForgeBlock extends Block {
 
     //BlockState shit
 
-
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        if (state.get(AXIS).getString().equals("x")) {
-            return SHAPE_X;
-        } else {
-            return SHAPE_Z;
+        switch (state.get(FACING)) {
+            case EAST:
+                return SHAPE_E;
+            case WEST:
+                return SHAPE_W;
+            case SOUTH:
+                return SHAPE_S;
+            default:
+                return SHAPE_N;
         }
     }
 
@@ -112,28 +150,10 @@ public class SoulfireForgeBlock extends Block {
         return (blockState) -> blockState.get(BURNING) ? 13 : 0;
     }
 
-    @Override
-    public BlockState rotate(BlockState state, Rotation rot) {
-        switch (rot) {
-            case COUNTERCLOCKWISE_90:
-            case CLOCKWISE_90:
-                switch (state.get(AXIS)) {
-                    case X:
-                        return state.with(AXIS, Direction.Axis.Z);
-                    case Z:
-                        return state.with(AXIS, Direction.Axis.X);
-                    default:
-                        return state;
-                }
-            default:
-                return state;
-        }
-    }
-
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return this.getDefaultState().with(AXIS, context.getPlacementHorizontalFacing().getAxis()).with(BURNING, false);
+        return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite()).with(BURNING, false);
     }
 
 
@@ -171,6 +191,17 @@ public class SoulfireForgeBlock extends Block {
     }
 
     @Override
+    public boolean hasComparatorInputOverride(BlockState state) {
+        return true;
+    }
+
+    @Override
+    public int getComparatorInputOverride(BlockState state, World world, BlockPos pos) {
+        if (!(world.getTileEntity(pos) instanceof SoulfireForgeTileEntity)) return 0;
+        return Math.round(((SoulfireForgeTileEntity) world.getTileEntity(pos)).getProgress() * 0.46875f);
+    }
+
+    @Override
     public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock()) {
             TileEntity blockEntity = world.getTileEntity(pos);
@@ -184,6 +215,6 @@ public class SoulfireForgeBlock extends Block {
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(BURNING);
-        builder.add(AXIS);
+        builder.add(FACING);
     }
 }

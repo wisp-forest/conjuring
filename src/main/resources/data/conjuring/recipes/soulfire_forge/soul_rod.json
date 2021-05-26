@@ -13,7 +13,7 @@
       "item": "conjuring:conjuration_essence"
     }
   },
-  "smeltTime" : 300,
+  "smeltTime": 300,
   "result": {
     "item": "conjuring:soul_rod",
     "count": 1

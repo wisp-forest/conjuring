@@ -1,6 +1,7 @@
 package com.glisco.conjuringforgery.blocks.soulfireForge;
 
 import com.glisco.conjuringforgery.ConjuringForgery;
+import com.glisco.owo.ItemOps;
 import com.google.common.base.Preconditions;
 import net.minecraft.block.BlockState;
 import net.minecraft.inventory.IInventory;
@@ -18,9 +19,13 @@ import net.minecraft.util.NonNullList;
 
 import java.util.Optional;
 
+//TODO itemhandler capability
 public class SoulfireForgeTileEntity extends TileEntity implements ITickableTileEntity {
 
     private final Inventory inventory = new Inventory(10);
+
+    private final int[] SIDE_AND_TOP_SLOTS = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8};
+    private final int[] BOTTOM_SLOT = new int[]{9};
 
     private int progress;
     private int smeltTime;
@@ -53,7 +58,7 @@ public class SoulfireForgeTileEntity extends TileEntity implements ITickableTile
             Optional<SoulfireForgeRecipe> currentRecipe = world.getRecipeManager().getRecipe(SoulfireForgeRecipe.Type.INSTANCE, inventory, world);
 
             if (currentRecipe.isPresent() && world.getBlockState(pos).get(SoulfireForgeBlock.BURNING)) {
-                if (checkOutput(currentRecipe.get().getRecipeOutput())) {
+                if (inventory.getStackInSlot(0).isEmpty() || ItemOps.canStack(inventory.getStackInSlot(9), currentRecipe.get().getRecipeOutput())) {
                     targetSmeltTime = currentRecipe.get().getSmeltTime();
 
                     if (smeltTime == targetSmeltTime) {
@@ -71,6 +76,9 @@ public class SoulfireForgeTileEntity extends TileEntity implements ITickableTile
                         smeltTime++;
                         progress = Math.round(((float) smeltTime / (float) targetSmeltTime) * 32);
                     }
+
+                    world.updateComparatorOutputLevel(pos, ConjuringForgery.SOULFIRE_FORGE.get());
+
                 } else {
                     smeltTime = 0;
                     progress = 0;
@@ -169,8 +177,8 @@ public class SoulfireForgeTileEntity extends TileEntity implements ITickableTile
         }
     }
 
-    private boolean checkOutput(ItemStack toCompare) {
-        return (inventory.getStackInSlot(9).getItem() == toCompare.getItem() && (inventory.getStackInSlot(9).getCount() + toCompare.getCount() <= inventory.getStackInSlot(9).getMaxStackSize())) || inventory.getStackInSlot(9) == ItemStack.EMPTY;
+    public int getProgress() {
+        return progress;
     }
 
 }

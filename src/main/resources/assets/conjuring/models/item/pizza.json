@@ -1,0 +1,14 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "conjuring:item/grandiosa"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "is_brinsa": 1
+      },
+      "model": "conjuring:item/brinsa"
+    }
+  ]
+}

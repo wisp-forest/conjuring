@@ -9,14 +9,14 @@
     "s": {
       "item": "conjuring:soul_rod"
     },
-	"q": {
+    "q": {
       "item": "minecraft:quartz"
     },
     "n": {
       "item": "minecraft:nether_star"
     }
   },
-  "smeltTime" : 12000,
+  "smeltTime": 12000,
   "result": {
     "item": "conjuring:superior_conjuring_scepter",
     "count": 1

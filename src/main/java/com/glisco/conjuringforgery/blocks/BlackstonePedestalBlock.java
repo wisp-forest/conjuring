@@ -1,7 +1,7 @@
 package com.glisco.conjuringforgery.blocks;
 
+import com.glisco.owo.ItemOps;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
@@ -58,46 +58,30 @@ public class BlackstonePedestalBlock extends Block {
         return SHAPE;
     }
 
-    @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.MODEL;
-    }
-
-
     //Actual Logic
     @Override
     public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
         BlackstonePedestalTileEntity pedestal = (BlackstonePedestalTileEntity) world.getTileEntity(pos);
         if (pedestal.isActive()) return ActionResultType.PASS;
 
-        ItemStack pedestalItem = pedestal.getRenderedItem();
+        final ItemStack playerStack = player.getHeldItem(hand);
+        final ItemStack pedestalItem = pedestal.getItem();
 
-        if (pedestalItem == null) {
-            if (player.getHeldItem(hand).equals(ItemStack.EMPTY)) return ActionResultType.PASS;
+        if (pedestalItem.isEmpty()) {
+            if (playerStack.isEmpty()) return ActionResultType.PASS;
 
-            ItemStack playerItem = player.getHeldItem(hand).copy();
-            playerItem.setCount(1);
+            pedestal.setItem(ItemOps.singleCopy(playerStack));
 
-            pedestal.setRenderedItem(playerItem);
-
-            playerItem = player.getHeldItem(hand).copy();
-            playerItem.shrink(1);
-            if (playerItem.isEmpty()) playerItem = ItemStack.EMPTY;
-            player.setHeldItem(hand, playerItem);
+            if (!ItemOps.emptyAwareDecrement(playerStack)) player.setHeldItem(hand, ItemStack.EMPTY);
         } else {
-            ItemStack playerItemSingleton = player.getHeldItem(hand).copy();
-            playerItemSingleton.setCount(1);
-
-            if (player.getHeldItem(hand).equals(ItemStack.EMPTY)) {
+            if (playerStack.isEmpty()) {
                 player.setHeldItem(hand, pedestalItem);
-            } else if (ItemStack.areItemStacksEqual(playerItemSingleton, pedestalItem) && player.getHeldItem(hand).getCount() + 1 <= player.getHeldItem(hand).getMaxStackSize()) {
-                ItemStack playerItem = player.getHeldItem(hand);
-                playerItem.setCount(playerItem.getCount() + 1);
-                player.setHeldItem(hand, playerItem);
+            } else if (ItemOps.canStack(playerStack, pedestalItem)) {
+                playerStack.grow(1);
             } else {
                 InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY() + 1f, pos.getZ(), pedestalItem);
             }
-            pedestal.setRenderedItem(null);
+            pedestal.setItem(ItemStack.EMPTY);
         }
 
         return ActionResultType.SUCCESS;
@@ -106,20 +90,19 @@ public class BlackstonePedestalBlock extends Block {
     @Override
     public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock()) {
-            TileEntity blockEntity = world.getTileEntity(pos);
-            if (blockEntity instanceof BlackstonePedestalTileEntity) {
-                BlackstonePedestalTileEntity pedestalEntity = (BlackstonePedestalTileEntity) blockEntity;
 
-                if (pedestalEntity.getRenderedItem() != null) {
-                    InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), pedestalEntity.getRenderedItem());
-                }
+            BlackstonePedestalTileEntity pedestalEntity = (BlackstonePedestalTileEntity) world.getTileEntity(pos);
 
-                if (pedestalEntity.isLinked()) {
-                    if (world.getTileEntity(pedestalEntity.getLinkedFunnel()) instanceof SoulFunnelTileEntity) {
-                        ((SoulFunnelTileEntity) world.getTileEntity(pedestalEntity.getLinkedFunnel())).removePedestal(pos, pedestalEntity.isActive());
-                    }
+            if (!pedestalEntity.getItem().isEmpty()) {
+                InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), pedestalEntity.getItem());
+            }
+
+            if (pedestalEntity.isLinked()) {
+                if (world.getTileEntity(pedestalEntity.getLinkedFunnel()) instanceof RitualCore) {
+                    ((RitualCore) world.getTileEntity(pedestalEntity.getLinkedFunnel())).removePedestal(pos, pedestalEntity.isActive());
                 }
             }
+
             super.onReplaced(state, world, pos, newState, moved);
         }
     }

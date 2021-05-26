@@ -1,0 +1,8 @@
+{
+  "name": "Conjuring Enchiridion",
+  "landing_text": "Welcome to Conjuring!$(br)To begin, check out $(l:conjuring:basics/getting_started)Getting Started$().$(p)Should you have problems or discover a bug, feel free to join my $(l:https://discord.com/invite/xrwHKktV2d)Discord$() or report them on $(l:https://github.com/glisco03/conjuring/issues)GitHub$().",
+  "version": 1,
+  "show_progress": false,
+  "dont_generate_book": "true",
+  "custom_book_item": "conjuring:enchiridion"
+}

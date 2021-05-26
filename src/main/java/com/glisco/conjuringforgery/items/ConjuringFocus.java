@@ -31,8 +31,7 @@ public class ConjuringFocus extends Item {
         tooltip.add(new TranslationTextComponent(entityName).mergeStyle(TextFormatting.GRAY));
     }
 
-    public static ItemStack create(EntityType<?> entityType) {
-        ItemStack focus = new ItemStack(ConjuringForgery.CONJURING_FOCUS.get());
+    public static ItemStack writeData(ItemStack focus, EntityType<?> entityType) {
         CompoundNBT stackTag = focus.getOrCreateTag();
 
         CompoundNBT entityTag = new CompoundNBT();

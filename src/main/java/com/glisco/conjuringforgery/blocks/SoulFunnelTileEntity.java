@@ -1,8 +1,8 @@
 package com.glisco.conjuringforgery.blocks;
 
 import com.glisco.conjuringforgery.ConjuringForgery;
-import com.glisco.conjuringforgery.WorldHelper;
 import com.glisco.conjuringforgery.items.ConjuringFocus;
+import com.glisco.owo.client.ClientParticles;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -20,9 +20,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootSerializers;
 import net.minecraft.loot.LootTable;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.IntArrayNBT;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.particles.BlockParticleData;
@@ -38,6 +35,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -47,7 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class SoulFunnelTileEntity extends TileEntity implements ITickableTileEntity {
+public class SoulFunnelTileEntity extends TileEntity implements ITickableTileEntity, RitualCore {
 
     private ItemStack item;
     private float itemHeight = 0;
@@ -70,11 +68,11 @@ public class SoulFunnelTileEntity extends TileEntity implements ITickableTileEnt
     @Override
     public CompoundNBT write(CompoundNBT tag) {
         super.write(tag);
-        CompoundNBT item;
+        CompoundNBT item = new CompoundNBT();
         if (this.item != null) {
             item = this.item.serializeNBT();
-            tag.put("Item", item);
         }
+        tag.put("Item", item);
         tag.putInt("Cooldown", slownessCooldown);
 
         if (ritualRunning) {
@@ -86,11 +84,7 @@ public class SoulFunnelTileEntity extends TileEntity implements ITickableTileEnt
             tag.put("Ritual", ritual);
         }
 
-        ListNBT pedestals = new ListNBT();
-        for (BlockPos p : pedestalPositions) {
-            pedestals.add(new IntArrayNBT(new int[]{p.getX(), p.getY(), p.getZ()}));
-        }
-        tag.put("Pedestals", pedestals);
+        savePedestals(tag, pedestalPositions);
 
         return tag;
     }
@@ -105,12 +99,7 @@ public class SoulFunnelTileEntity extends TileEntity implements ITickableTileEnt
             this.item = ItemStack.read(tag.getCompound("Item"));
         }
 
-        ListNBT pedestals = tag.getList("Pedestals", 11);
-        pedestalPositions.clear();
-        for (INBT pedestal : pedestals) {
-            int[] intPos = ((IntArrayNBT) pedestal).getIntArray();
-            pedestalPositions.add(new BlockPos(intPos[0], intPos[1], intPos[2]));
-        }
+        loadPedestals(tag, pedestalPositions);
 
         slownessCooldown = tag.getInt("Cooldown");
 
@@ -183,7 +172,8 @@ public class SoulFunnelTileEntity extends TileEntity implements ITickableTileEnt
                     if (verifyRitualEntity()) {
                         e.setMotion(0, 0, 0);
                         e.setNoAI(true);
-                    }
+                        final Vector3d entityPos = Vector3d.copy(pos).add(0.5, 1.85, 0.5);
+                        e.setPosition(entityPos.x, entityPos.y, entityPos.z); }
                 }
 
             } else if (ritualTick > 20 && ritualTick <= 80) {
@@ -197,14 +187,16 @@ public class SoulFunnelTileEntity extends TileEntity implements ITickableTileEnt
                         BlockPos pVector = pos.subtract(this.pos);
 
                         IParticleData particle = new BlockParticleData(ParticleTypes.BLOCK, world.getBlockState(pos));
-                        for (int i = 0; i < 4; i++) {
-                            WorldHelper.spawnParticle(particle, world, p, 0.5f, 0.25f, 0.5f, 0.1f);
-                        }
+                        ClientParticles.setParticleCount(4);
+                        ClientParticles.spawnWithOffsetFromBlock(particle, world, p, new Vector3d(0.5, 0.25, 0.5), 0.1);
 
-                        WorldHelper.spawnParticle(ParticleTypes.SOUL, world, p, 0.5f, 0.3f, 0.5f, pVector.getX() * -0.05f, 0.075f * particleOffset, pVector.getZ() * -0.05f, 0.1f);
+                        ClientParticles.setVelocity(new Vector3d(pVector.getX() * -0.05, particleOffset * 0.075, pVector.getZ() * -0.05));
+                        ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.SOUL, world, p, new Vector3d(0.5, 0.3, 0.5), 0.1);
                     }
-                    for (int i = 0; i < 5; i++)
-                        WorldHelper.spawnParticle(ParticleTypes.SOUL_FIRE_FLAME, world, pos, 0.5f, 1.75f + particleOffset, 0.5f, 0, -0.5f, 0f, 0.25f);
+
+                    ClientParticles.setParticleCount(5);
+                    ClientParticles.setVelocity(new Vector3d(0, -0.5, 0));
+                    ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.SOUL_FIRE_FLAME, world, pos, new Vector3d(0.5, 1.75 + particleOffset, 0.5), 0.1);
                 } else {
                     if (ritualTick % 10 == 0) {
                         if (verifyRitualEntity()) {
@@ -226,7 +218,7 @@ public class SoulFunnelTileEntity extends TileEntity implements ITickableTileEnt
                         world.playEvent(9007, e.getPosition(), data);
                         world.setBlockState(pos, world.getBlockState(pos).with(SoulFunnelBlock.FILLED, false));
 
-                        ItemStack drop = data == 0 ? ConjuringFocus.create(e.getType()) : new ItemStack(ConjuringForgery.CONJURING_FOCUS.get());
+                        ItemStack drop = data == 0 ? ConjuringFocus.writeData(item, e.getType()) : new ItemStack(ConjuringForgery.CONJURING_FOCUS.get());
                         InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY() + 1.25, pos.getZ(), drop);
 
                         disablePedestals();
@@ -277,10 +269,25 @@ public class SoulFunnelTileEntity extends TileEntity implements ITickableTileEnt
         return item.copy();
     }
 
-    public void startRitual(UUID ritualEntity) {
-        this.ritualRunning = true;
-        this.ritualEntity = ritualEntity;
-        this.markDirty();
+    public boolean tryStartRitual(PlayerEntity player) {
+
+        if (item == null) return false;
+
+        if (world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos, pos.add(1, 3, 1))).isEmpty()) return false;
+        Entity e = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos, pos.add(1, 3, 1))).get(0);
+        if (!(e instanceof MobEntity) || ConjuringForgery.CONFIG.conjurer_config.conjurer_blacklist.contains(ForgeRegistries.ENTITIES.getKey(e.getType()).toString()))
+            return false;
+
+        if (!world.isRemote()) {
+            this.ritualRunning = true;
+            this.ritualEntity = e.getUniqueID();
+            this.markDirty();
+
+            //TODO criterion
+            //ConjuringForgery.EXTRACTION_RITUAL_CRITERION.trigger((ServerPlayerEntity) player);
+        }
+
+        return true;
     }
 
     public boolean isRitualRunning() {
@@ -301,11 +308,11 @@ public class SoulFunnelTileEntity extends TileEntity implements ITickableTileEnt
             if (!(blockEntity instanceof BlackstonePedestalTileEntity)) continue;
 
             ((BlackstonePedestalTileEntity) blockEntity).setActive(false);
-            ((BlackstonePedestalTileEntity) blockEntity).setRenderedItem(null);
+            ((BlackstonePedestalTileEntity) blockEntity).setItem(ItemStack.EMPTY);
         }
     }
 
-    public boolean addPedestal(BlockPos pedestal) {
+    public boolean linkPedestal(BlockPos pedestal) {
         if (pedestalPositions.size() >= 4) return false;
 
         if (!pedestalPositions.contains(pedestal)) pedestalPositions.add(pedestal);
@@ -316,9 +323,8 @@ public class SoulFunnelTileEntity extends TileEntity implements ITickableTileEnt
             float offsetY = 0.35f;
             float offsetZ = 0.5f + offset.getZ() / 8f;
 
-            for (int i = 0; i < 20; i++) {
-                WorldHelper.spawnParticle(ParticleTypes.WITCH, world, pos, offsetX, offsetY, offsetZ, 0, 0, 0, offset.getZ() / 12f, 0.1f, offset.getX() / 12f);
-            }
+            ClientParticles.setParticleCount(20);
+            ClientParticles.spawnPrecise(ParticleTypes.WITCH, world, new Vector3d(offsetX, offsetY, offsetZ).add(Vector3d.copy(pos)), offset.getZ() / 12d, 0.1f, offset.getX() / 12d);
         }
         this.markDirty();
         return true;
@@ -384,8 +390,8 @@ public class SoulFunnelTileEntity extends TileEntity implements ITickableTileEnt
             if (!(world.getTileEntity(p) instanceof BlackstonePedestalTileEntity)) continue;
             BlackstonePedestalTileEntity pedestal = (BlackstonePedestalTileEntity) world.getTileEntity(p);
 
-            if (pedestal.getRenderedItem() == null) continue;
-            Item pedestalItem = pedestal.getRenderedItem().getItem();
+            if (pedestal.getItem().isEmpty()) continue;
+            Item pedestalItem = pedestal.getItem().getItem();
             if (!drops.contains(pedestalItem)) continue;
 
             ritualStability += 0.2f;
@@ -400,18 +406,7 @@ public class SoulFunnelTileEntity extends TileEntity implements ITickableTileEnt
             InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY() + 1.25, pos.getZ(), new ItemStack(ConjuringForgery.CONJURING_FOCUS.get()));
 
         if (ritualRunning) {
-            MobEntity e = (MobEntity) ((ServerWorld) world).getEntityByUuid(ritualEntity);
-
-            world.playEvent(9005, e.getPosition(), 1);
-            world.playEvent(9007, e.getPosition(), 1);
-
-            disablePedestals();
-            for (BlockPos pos : pedestalPositions) {
-                if (!(world.getTileEntity(pos) instanceof BlackstonePedestalTileEntity)) continue;
-                ((BlackstonePedestalTileEntity) world.getTileEntity(pos)).setLinkedFunnel(null);
-            }
-
-            e.onKillCommand();
+            cancelRitual(false);
         }
     }
 

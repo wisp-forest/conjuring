@@ -55,11 +55,6 @@ public class ConjurerBlock extends Block {
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.MODEL;
-    }
-
-    @Override
     public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 
         if (!(player.getHeldItemMainhand().getItem() instanceof ConjuringScepter) && !(player.getHeldItemMainhand().getItem() instanceof SuperiorConjuringScepter))

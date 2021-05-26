@@ -17,7 +17,7 @@ public class ConjurerTileEntityRenderer extends TileEntityRenderer<ConjurerTileE
         super(blockEntityRenderDispatcher);
     }
 
-    public void render(ConjurerTileEntity conjurerBlockEntity, float f, MatrixStack matrixStack, IRenderTypeBuffer vertexConsumerProvider, int i, int j) {
+    public void render(ConjurerTileEntity conjurerBlockEntity, float tickDelta, MatrixStack matrixStack, IRenderTypeBuffer vertexConsumerProvider, int i, int j) {
         matrixStack.push();
 
         if (conjurerBlockEntity.isActive()) {
@@ -31,12 +31,14 @@ public class ConjurerTileEntityRenderer extends TileEntityRenderer<ConjurerTileE
                     g /= h;
                 }
 
+                if (!conjurerBlockEntity.getLogic().isPlayerInRange()) tickDelta = 0;
+
                 matrixStack.translate(0.0D, 0.4000000059604645D, 0.0D);
-                matrixStack.rotate(Vector3f.YP.rotationDegrees((float) MathHelper.lerp((double) f, mobSpawnerLogic.getPrevMobRotation(), mobSpawnerLogic.getMobRotation()) * 10.0F));
+                matrixStack.rotate(Vector3f.YP.rotationDegrees((float) MathHelper.lerp((double) tickDelta, mobSpawnerLogic.getPrevMobRotation(), mobSpawnerLogic.getMobRotation()) * 10.0F));
                 matrixStack.translate(0.0D, -0.20000000298023224D, 0.0D);
                 matrixStack.rotate(Vector3f.XP.rotationDegrees(-30.0F));
                 matrixStack.scale(g, g, g);
-                Minecraft.getInstance().getRenderManager().renderEntityStatic(entity, 0.0D, 0.0D, 0.0D, 0.0F, f, matrixStack, vertexConsumerProvider, i);
+                Minecraft.getInstance().getRenderManager().renderEntityStatic(entity, 0.0D, 0.0D, 0.0D, 0.0F, tickDelta, matrixStack, vertexConsumerProvider, i);
 
             }
         }

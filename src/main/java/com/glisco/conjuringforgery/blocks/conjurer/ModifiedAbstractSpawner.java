@@ -38,6 +38,8 @@ public abstract class ModifiedAbstractSpawner extends AbstractSpawner {
     private int maxNearbyEntities = 6;
     private int activatingRangeFromPlayer = 16;
     private int spawnRange = 4;
+    private boolean requiresPlayer = true;
+    private boolean active = false;
 
     @Nullable
     private ResourceLocation getEntityId() {
@@ -59,13 +61,13 @@ public abstract class ModifiedAbstractSpawner extends AbstractSpawner {
     /**
      * Returns true if there's a player close enough to this mob spawner to activate it.
      */
-    private boolean isActivated() {
+    public boolean isPlayerInRange() {
         BlockPos blockpos = this.getSpawnerPosition();
-        return this.getWorld().isPlayerWithin((double)blockpos.getX() + 0.5D, (double)blockpos.getY() + 0.5D, (double)blockpos.getZ() + 0.5D, (double)this.activatingRangeFromPlayer);
+        return getWorld().getRedstonePowerFromNeighbors(blockpos) == 0 && (!requiresPlayer || this.getWorld().isPlayerWithin((double)blockpos.getX() + 0.5D, (double)blockpos.getY() + 0.5D, (double)blockpos.getZ() + 0.5D, (double)this.activatingRangeFromPlayer));
     }
 
     public void tick() {
-        if (!this.isActivated()) {
+        if (!this.isPlayerInRange()|| !active) {
             this.prevMobRotation = this.mobRotation;
         } else {
             World world = this.getWorld();
@@ -142,7 +144,7 @@ public abstract class ModifiedAbstractSpawner extends AbstractSpawner {
                                 }
                             }
 
-                            if (!serverworld.func_242106_g(entity)) {
+                            if (!serverworld.addEntityAndUniquePassengers(entity)) {
                                 this.resetTimer();
                                 return;
                             }
@@ -213,6 +215,14 @@ public abstract class ModifiedAbstractSpawner extends AbstractSpawner {
             this.spawnRange = nbt.getShort("SpawnRange");
         }
 
+        if (nbt.contains("RequiresPlayer")) {
+            this.requiresPlayer = nbt.getBoolean("RequiresPlayer");
+        }
+
+        if (nbt.contains("Active")) {
+            this.active = nbt.getBoolean("Active");
+        }
+
         if (this.getWorld() != null) {
             this.cachedEntity = null;
         }
@@ -232,6 +242,9 @@ public abstract class ModifiedAbstractSpawner extends AbstractSpawner {
             compound.putShort("RequiredPlayerRange", (short)this.activatingRangeFromPlayer);
             compound.putShort("SpawnRange", (short)this.spawnRange);
             compound.put("SpawnData", this.spawnData.getNbt().copy());
+            compound.putBoolean("RequiresPlayer", requiresPlayer);
+            compound.putBoolean("Active", active);
+
             ListNBT listnbt = new ListNBT();
             if (this.potentialSpawns.isEmpty()) {
                 listnbt.add(this.spawnData.toCompoundTag());
@@ -320,5 +333,17 @@ public abstract class ModifiedAbstractSpawner extends AbstractSpawner {
         this.potentialSpawns.clear();
         this.potentialSpawns.addAll(spawnPotentials);
         this.cachedEntity = null;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public void setRequiresPlayer(boolean requiresPlayer) {
+        this.requiresPlayer = requiresPlayer;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 }

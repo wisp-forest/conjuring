@@ -2,6 +2,10 @@ package com.glisco.conjuringforgery.blocks;
 
 import com.glisco.conjuringforgery.ConjuringForgery;
 import com.glisco.conjuringforgery.WorldHelper;
+import com.glisco.conjuringforgery.items.ConjuringFocus;
+import com.glisco.conjuringforgery.items.ConjuringScepter;
+import com.glisco.owo.client.ClientParticles;
+import com.sun.javafx.geom.Vec3d;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -18,16 +22,14 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
@@ -95,7 +97,8 @@ public class SoulFunnelBlock extends Block {
     public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 
         //Pedestal highlighting logic
-        if (player.getHeldItem(hand).equals(ItemStack.EMPTY) && player.isSneaking()) {
+        final ItemStack playerStack = player.getHeldItem(hand);
+        if (playerStack.isEmpty() && player.isSneaking()) {
 
             if (world.isRemote) {
 
@@ -105,25 +108,26 @@ public class SoulFunnelBlock extends Block {
                 possiblePedestals.add(pos.add(0, 0, 3));
                 possiblePedestals.add(pos.add(0, 0, -3));
 
+                ClientParticles.setParticleCount(50);
+                ClientParticles.persist();
+
                 for (BlockPos pedestal : possiblePedestals) {
                     if (world.getTileEntity(pedestal) instanceof BlackstonePedestalTileEntity) continue;
-                    for (int i = 0; i < 50; i++) {
-                        WorldHelper.spawnParticle(ParticleTypes.DRIPPING_OBSIDIAN_TEAR, world, pedestal, 0.5f, 0.75f, 0.5f, 0, 0, 0, 0.5f, 0.75f, 0.5f);
-                    }
+
+                    ClientParticles.spawnPrecise(ParticleTypes.DRIPPING_OBSIDIAN_TEAR, world, new Vector3d(pedestal.getX() + 0.5, pedestal.getY() + 0.75, pedestal.getZ() + 0.5), 0.5, 0.75, 0.5);
                 }
+
+                ClientParticles.reset();
             }
             return ActionResultType.SUCCESS;
         }
 
         //Filling logic
-        if (player.getHeldItem(hand).getItem().equals(Items.SOUL_SAND) && !state.get(FILLED)) {
+        if (playerStack.getItem().equals(Items.SOUL_SAND) && !state.get(FILLED)) {
             world.setBlockState(pos, state.with(FILLED, true));
 
-            ItemStack playerStack = player.getHeldItem(hand);
             playerStack.shrink(1);
-            if (playerStack.getCount() == 0) playerStack = ItemStack.EMPTY;
-
-            player.setHeldItem(hand, playerStack);
+            if (playerStack.getCount() == 0) player.setHeldItem(hand, ItemStack.EMPTY);
 
             if (!world.isRemote()) {
                 WorldHelper.playSound(world, pos, 20, SoundEvents.BLOCK_SOUL_SAND_PLACE, SoundCategory.BLOCKS, 1, 1);
@@ -132,8 +136,10 @@ public class SoulFunnelBlock extends Block {
         }
 
         //Ritual logic
-        if (player.getHeldItem(hand).getItem().equals(ConjuringForgery.CONJURING_SCEPTER.get()) || player.getHeldItem(hand).getItem().equals(ConjuringForgery.SUPERIOR_CONJURING_SCEPTER.get())) {
-            if (runRitualChecks(world, pos)) return ActionResultType.SUCCESS;
+        if (playerStack.getItem() instanceof ConjuringScepter) {
+
+            RitualCore core = (RitualCore) world.getTileEntity(pos);
+            if (core.tryStartRitual(player)) return ActionResultType.SUCCESS;
         }
 
         //Focus placing logic
@@ -143,16 +149,16 @@ public class SoulFunnelBlock extends Block {
         ItemStack funnelFocus = funnel.getItem();
 
         if (funnelFocus == null) {
-            if (!player.getHeldItem(hand).getItem().equals(ConjuringForgery.CONJURING_FOCUS.get()) || !player.getHeldItem(hand).getOrCreateTag().getCompound("Entity").isEmpty())
+            if (!(playerStack.getItem() instanceof ConjuringFocus) || !playerStack.getOrCreateTag().getCompound("Entity").isEmpty())
                 return ActionResultType.PASS;
 
             if (!world.isRemote()) {
-                funnel.setItem(player.getHeldItem(hand).copy());
+                funnel.setItem(playerStack.copy());
                 player.setHeldItem(hand, ItemStack.EMPTY);
             }
         } else {
             if (!world.isRemote() && !funnel.isRitualRunning()) {
-                if (player.getHeldItem(hand).equals(ItemStack.EMPTY)) {
+                if (playerStack.equals(ItemStack.EMPTY)) {
                     player.setHeldItem(hand, funnelFocus);
                 } else {
                     InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY() + 0.55d, pos.getZ(), funnelFocus);
@@ -162,20 +168,6 @@ public class SoulFunnelBlock extends Block {
         }
 
         return ActionResultType.SUCCESS;
-    }
-
-    private boolean runRitualChecks(World world, BlockPos pos) {
-        SoulFunnelTileEntity blockEntity = (SoulFunnelTileEntity) world.getTileEntity(pos);
-        if (blockEntity.getItem() == null) return false;
-
-        if (world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos, pos.add(1, 3, 1))).isEmpty()) return false;
-        Entity e = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos, pos.add(1, 3, 1))).get(0);
-        if (!(e instanceof MobEntity) || e instanceof WitherEntity || e instanceof EnderDragonEntity) return false;
-
-        if (!world.isRemote()) {
-            blockEntity.startRitual(e.getUniqueID());
-        }
-        return true;
     }
 
     @Override
@@ -200,6 +192,7 @@ public class SoulFunnelBlock extends Block {
 
         for (BlockPos p : funnel.getPedestalPositions()) {
             if (random.nextDouble() > 0.5f) continue;
+            if (!(world.getTileEntity(p) instanceof BlackstonePedestalTileEntity)) continue;
             BlackstonePedestalTileEntity pedestal = (BlackstonePedestalTileEntity) world.getTileEntity(p);
             if (pedestal == null) continue;
             if (pedestal.getLinkedFunnel() == null) continue;

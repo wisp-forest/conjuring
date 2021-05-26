@@ -25,7 +25,6 @@ public class SoulfireForgeRecipeSerializer extends ForgeRegistryEntry<IRecipeSer
     public static final SoulfireForgeRecipeSerializer INSTANCE = new SoulfireForgeRecipeSerializer();
     public static final ResourceLocation ID = new ResourceLocation("conjuring:soulfire_forge");
 
-
     @Override
     public SoulfireForgeRecipe read(ResourceLocation id, JsonObject json) {
         SoulfireForgeRecipeJson recipe = new Gson().fromJson(json, SoulfireForgeRecipeJson.class);

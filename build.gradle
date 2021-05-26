@@ -29,6 +29,11 @@ repositories {
     }
 
     maven { url 'https://maven.blamejared.com' }
+    maven { url "https://maven.shedaniel.me/" }
+
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 minecraft {
@@ -40,7 +45,7 @@ minecraft {
     mappings channel: 'snapshot', version: "${mapping}-${mcp_version}"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
@@ -48,8 +53,8 @@ minecraft {
         client {
             workingDirectory project.file('run')
 
-            jvmArg("-javaagent:\"C:\\Users\\zombi\\.gradle\\caches\\modules-2\\files-2.1\\org.spongepowered\\mixin\\0.8.2\\1cf212283d26f706fd3074318870bebd14d2a9ed\\mixin-0.8.2.jar\"")
             arg "-mixin.config=conjuring.mixins.json"
+            property 'mixin.env.disableRefMap', 'true'
 
             // Recommended logging data for a userdev environment
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
@@ -101,7 +106,7 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.4-35.1.32'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.1.24'
 
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api")
     // at runtime, use the full JEI jar
@@ -109,6 +114,15 @@ dependencies {
 
     compileOnly fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.5:${crafttweaker_version}")
     runtimeOnly fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.5:${crafttweaker_version}")
+
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${project.patchouli_version}")
+
+    compileOnly fg.deobf("com.glisco:owo-0.1")
+    runtimeOnly fg.deobf("com.glisco:owo-0.1")
+
+    compileOnly fg.deobf("me.shedaniel.cloth:cloth-config-forge:${project.cloth_config_version}")
+    runtimeOnly fg.deobf("me.shedaniel.cloth:cloth-config-forge:${project.cloth_config_version}")
 }
 
 jar {

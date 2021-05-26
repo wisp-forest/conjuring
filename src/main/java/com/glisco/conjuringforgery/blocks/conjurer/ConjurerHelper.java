@@ -1,10 +1,7 @@
 package com.glisco.conjuringforgery.blocks.conjurer;
 
+import com.glisco.conjuringforgery.ConjuringForgery;
 import com.glisco.conjuringforgery.items.ConjuringFocus;
-import com.glisco.conjuringforgery.items.charms.HasteCharm;
-import com.glisco.conjuringforgery.items.charms.IgnoranceCharm;
-import com.glisco.conjuringforgery.items.charms.PlentifulnessCharm;
-import com.glisco.conjuringforgery.items.charms.ScopeCharm;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedSpawnerEntity;
 
@@ -25,6 +22,7 @@ public class ConjurerHelper {
         ItemStack scopeCharms = conjurer.getInventory().getStackInSlot(3);
         ItemStack ignoranceCharms = conjurer.getInventory().getStackInSlot(4);
 
+
         if (focus.getItem() instanceof ConjuringFocus) {
             WeightedSpawnerEntity entry = new WeightedSpawnerEntity(1, focus.getTag().getCompound("Entity"));
             List<WeightedSpawnerEntity> entries = new ArrayList<>();
@@ -39,20 +37,20 @@ public class ConjurerHelper {
             return;
         }
 
-        if (hasteCharms.getItem() instanceof HasteCharm) {
-            maxSpawnDelay = Math.round(800 - hasteCharms.getCount() * 93.75f);
+        if (hasteCharms.getItem() == ConjuringForgery.HASTE_CHARM.get()) {
+            maxSpawnDelay = Math.max(10, Math.round(800 - hasteCharms.getCount() * ConjuringForgery.CONFIG.conjurer_config.haste_multiplier));
         }
 
-        if (plentifulnessCharms.getItem() instanceof PlentifulnessCharm) {
-            spawnCount = 4 + plentifulnessCharms.getCount() * 2;
+        if (plentifulnessCharms.getItem() == ConjuringForgery.PLENTIFULNESS_CHARM.get()) {
+            spawnCount = 4 + plentifulnessCharms.getCount() * ConjuringForgery.CONFIG.conjurer_config.abundance_multiplier;
         }
 
-        if (scopeCharms.getItem() instanceof ScopeCharm) {
-            requiredPlayerRange = 16 + scopeCharms.getCount() * 6;
+        if (scopeCharms.getItem() == ConjuringForgery.SCOPE_CHARM.get()) {
+            requiredPlayerRange = 16 + scopeCharms.getCount() * ConjuringForgery.CONFIG.conjurer_config.scope_multiplier;
         }
 
-        if (ignoranceCharms.getItem() instanceof IgnoranceCharm) {
-            maxNearbyEntities = 6 + ignoranceCharms.getCount() * 2;
+        if (ignoranceCharms.getItem() == ConjuringForgery.IGNORANCE_CHARM.get()) {
+            maxNearbyEntities = 6 + ignoranceCharms.getCount() * ConjuringForgery.CONFIG.conjurer_config.ignorance_multiplier;
         }
 
         conjurer.getLogic().setRequiredPlayerRange(requiredPlayerRange);

@@ -18,7 +18,6 @@ import javax.annotation.Nullable;
 
 public class ConjurerTileEntity extends TileEntity implements ITickableTileEntity {
 
-    private boolean active;
     private ItemStackHandler inventory = new ItemStackHandler(5) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -40,21 +39,10 @@ public class ConjurerTileEntity extends TileEntity implements ITickableTileEntit
         public BlockPos getSpawnerPosition() {
             return ConjurerTileEntity.this.pos;
         }
-
-        public void setSpawnEntry(WeightedSpawnerEntity spawnEntry) {
-            super.setNextSpawnData(spawnEntry);
-            if (this.getWorld() != null) {
-                BlockState blockState = this.getWorld().getBlockState(this.getSpawnerPosition());
-                this.getWorld().notifyBlockUpdate(ConjurerTileEntity.this.pos, blockState, blockState, 4);
-            }
-
-        }
     };
 
     public ConjurerTileEntity() {
         super(ConjuringForgery.CONJURER_TILE.get());
-        active = false;
-        this.logic.setRequiredPlayerRange(0);
     }
 
     //Conjurer Logic
@@ -74,18 +62,17 @@ public class ConjurerTileEntity extends TileEntity implements ITickableTileEntit
     }
 
     public boolean isActive() {
-        return active;
+        return logic.isActive();
     }
 
     public void setActive(boolean active) {
-        this.active = active;
+        this.logic.setActive(active);
     }
 
     //NBT Logic
     public void read(BlockState state, CompoundNBT tag) {
         super.read(state, tag);
         this.logic.read(tag);
-        active = tag.getBoolean("Active");
         inventory.deserializeNBT(tag.getCompound("Items"));
     }
 
@@ -93,7 +80,6 @@ public class ConjurerTileEntity extends TileEntity implements ITickableTileEntit
         super.write(tag);
         this.logic.write(tag);
         tag.put("Items", inventory.serializeNBT());
-        tag.putBoolean("Active", active);
         return tag;
     }
 

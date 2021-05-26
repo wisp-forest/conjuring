@@ -1,0 +1,28 @@
+{
+  "parent": "conjuring:soul_alloy_tools",
+  "display": {
+    "icon": {
+      "item": "conjuring:gem_tinkerer"
+    },
+    "title": {
+      "translate": "advancement.conjuring.gem_tinkerer.title"
+    },
+    "description": {
+      "translate": "advancement.conjuring.gem_tinkerer.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "gem_tinkerer": {
+      "trigger": "conjuring:gem_tinkering"
+    }
+  },
+  "requirements": [
+    [
+      "gem_tinkerer"
+    ]
+  ]
+}

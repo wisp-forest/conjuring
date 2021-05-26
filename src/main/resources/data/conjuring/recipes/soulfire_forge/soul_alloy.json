@@ -9,19 +9,19 @@
     "s": {
       "item": "minecraft:soul_soil"
     },
-	"g": {
+    "g": {
       "item": "minecraft:gold_ingot"
     },
-	"i": {
+    "i": {
       "item": "minecraft:iron_ingot"
     },
     "n": {
       "item": "minecraft:netherite_scrap"
     }
   },
-  "smeltTime" : 600,
+  "smeltTime": 600,
   "result": {
     "item": "conjuring:soul_alloy",
-    "count": 4
+    "count": 2
   }
 }

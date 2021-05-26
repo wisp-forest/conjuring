@@ -1,7 +1,6 @@
 package com.glisco.conjuringforgery.blocks;
 
 import com.glisco.conjuringforgery.ConjuringForgery;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -11,11 +10,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class BlackstonePedestalTileEntity extends TileEntity {
 
-    private ItemStack renderedItem;
+    private ItemStack item = ItemStack.EMPTY;
     private boolean active = false;
     private BlockPos linkedFunnel = null;
 
@@ -27,11 +27,9 @@ public class BlackstonePedestalTileEntity extends TileEntity {
     @Override
     public CompoundNBT write(CompoundNBT tag) {
         super.write(tag);
-        CompoundNBT item;
-        if (renderedItem != null) {
-            item = renderedItem.serializeNBT();
-            tag.put("Item", item);
-        }
+        CompoundNBT itemTag = new CompoundNBT();
+        item.write(itemTag);
+        tag.put("Item", itemTag);
         if (linkedFunnel == null) {
             tag.putIntArray("LinkedFunnel", new int[]{});
         } else {
@@ -44,12 +42,7 @@ public class BlackstonePedestalTileEntity extends TileEntity {
     @Override
     public void read(BlockState state, CompoundNBT tag) {
         super.read(state, tag);
-        CompoundNBT item = tag.getCompound("Item");
-        if (!item.isEmpty()) {
-            this.renderedItem = ItemStack.read(tag.getCompound("Item"));
-        } else {
-            this.renderedItem = null;
-        }
+        this.item = ItemStack.read(tag.getCompound("Item"));
         int[] funnelPos = tag.getIntArray("LinkedFunnel");
         if (funnelPos.length > 0) {
             this.linkedFunnel = new BlockPos(funnelPos[0], funnelPos[1], funnelPos[2]);
@@ -101,16 +94,13 @@ public class BlackstonePedestalTileEntity extends TileEntity {
         return linkedFunnel != null;
     }
 
-    public void setRenderedItem(@Nullable ItemStack renderedItem) {
-        this.renderedItem = renderedItem == null ? null : renderedItem.copy();
+    public void setItem(@Nonnull ItemStack item) {
+        this.item = item;
         this.markDirty();
     }
 
-    @Nullable
-    public ItemStack getRenderedItem() {
-        if (renderedItem == null) {
-            return null;
-        }
-        return renderedItem.copy();
+    @Nonnull
+    public ItemStack getItem() {
+        return item;
     }
 }

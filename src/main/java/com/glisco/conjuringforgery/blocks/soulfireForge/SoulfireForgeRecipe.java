@@ -28,6 +28,11 @@ public class SoulfireForgeRecipe implements IRecipe<Inventory> {
     }
 
     @Override
+    public boolean isDynamic() {
+        return true;
+    }
+
+    @Override
     public boolean matches(Inventory inventory, World world) {
         for (int r = 0; r < 3; r++) {
             for (int c = 0; c < 3; c++) {

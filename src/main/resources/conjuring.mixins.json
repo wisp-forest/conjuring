@@ -8,6 +8,12 @@
   },
   "minVersion": "0.8",
   "mixins": [
+    "EnchantmentHelperMixin",
+    "InGameHudMixin",
+    "ItemAccessor",
+    "ItemRendererMixin",
+    "ItemStackMixin",
+    "PlayerEntityMixin",
     "RecipeManagerAccessor",
     "SpawnerParticleMixin"
   ]

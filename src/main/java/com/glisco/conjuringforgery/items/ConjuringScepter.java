@@ -1,9 +1,10 @@
 package com.glisco.conjuringforgery.items;
 
 import com.glisco.conjuringforgery.ConjuringForgery;
-import com.glisco.conjuringforgery.WorldHelper;
 import com.glisco.conjuringforgery.blocks.BlackstonePedestalTileEntity;
+import com.glisco.conjuringforgery.blocks.RitualCore;
 import com.glisco.conjuringforgery.blocks.SoulFunnelTileEntity;
+import com.glisco.owo.client.ClientParticles;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,9 +20,8 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.*;
 import net.minecraft.world.World;
 
 public class ConjuringScepter extends Item {
@@ -49,7 +49,7 @@ public class ConjuringScepter extends Item {
         scepter.setTag(stackTag);
     }
 
-    public static String finishLinking(World world, ItemStack scepter, BlockPos funnel) {
+    public static String finishLinking(World world, ItemStack scepter, BlockPos core) {
         CompoundNBT stackTag = scepter.getOrCreateTag();
         if (!isLinking(scepter)) return "INVALID_SCEPTER";
         BlockPos pedestal = getLinkingFrom(scepter);
@@ -58,14 +58,14 @@ public class ConjuringScepter extends Item {
         scepter.setTag(stackTag);
 
         if (!(world.getTileEntity(pedestal) instanceof BlackstonePedestalTileEntity)) return "NO_PEDESTAL";
-        if (!(world.getTileEntity(funnel) instanceof SoulFunnelTileEntity)) return "NO_FUNNEL";
+        if (!(world.getTileEntity(core) instanceof RitualCore)) return "NO_FUNNEL";
 
-        if (funnel.manhattanDistance(pedestal) != 3 || funnel.getY() != pedestal.getY()) {
+        if (core.manhattanDistance(pedestal) != 3 || core.getY() != pedestal.getY()) {
             return "INCORRECT_POSITION";
         }
 
-        if (((SoulFunnelTileEntity) world.getTileEntity(funnel)).addPedestal(pedestal)) {
-            ((BlackstonePedestalTileEntity) world.getTileEntity(pedestal)).setLinkedFunnel(funnel);
+        if (((RitualCore) world.getTileEntity(core)).linkPedestal(pedestal)) {
+            ((BlackstonePedestalTileEntity) world.getTileEntity(pedestal)).setLinkedFunnel(core);
             return "SUCCESS";
         } else {
             return "PEDESTAL_LIMIT_REACHED";
@@ -82,17 +82,17 @@ public class ConjuringScepter extends Item {
         if (world.getTileEntity(pos) instanceof BlackstonePedestalTileEntity) {
             startLinking(scepter, pos);
             return ActionResultType.SUCCESS;
-        } else if (world.getTileEntity(pos) instanceof SoulFunnelTileEntity) {
+        } else if (world.getTileEntity(pos) instanceof RitualCore) {
             String result = finishLinking(world, scepter, pos);
             switch (result) {
                 case "SUCCESS":
-                    context.getPlayer().sendStatusMessage(new StringTextComponent("The pedestal has been entangled").mergeStyle(TextFormatting.GREEN), true);
+                    context.getPlayer().sendStatusMessage(new TranslationTextComponent("item.conjuring.conjuring_scepter.linking_success").mergeStyle(TextFormatting.GREEN), true);
                     return ActionResultType.SUCCESS;
                 case "PEDESTAL_LIMIT_REACHED":
-                    context.getPlayer().sendStatusMessage(new StringTextComponent("This soul funnel is already entangled to 4 pedestals").mergeStyle(TextFormatting.RED), true);
+                    context.getPlayer().sendStatusMessage(new TranslationTextComponent("item.conjuring.conjuring_scepter.max_pedestals").mergeStyle(TextFormatting.RED), true);
                     return ActionResultType.PASS;
                 case "INCORRECT_POSITION":
-                    context.getPlayer().sendStatusMessage(new StringTextComponent("The pedestal is incorrectly positioned").mergeStyle(TextFormatting.RED), true);
+                    context.getPlayer().sendStatusMessage(new TranslationTextComponent("item.conjuring.conjuring_scepter.incorrect_position").mergeStyle(TextFormatting.RED), true);
                     return ActionResultType.PASS;
                 default:
                     return ActionResultType.PASS;
@@ -121,7 +121,6 @@ public class ConjuringScepter extends Item {
         return onBlockUse(context);
     }
 
-
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity user, Hand hand) {
         return onUse(user, hand);
@@ -138,21 +137,13 @@ public class ConjuringScepter extends Item {
         ClientPlayerEntity player = (ClientPlayerEntity) entity;
 
         IParticleData particle = new RedstoneParticleData(1, 1, 1, 1);
-        WorldHelper.spawnParticle(particle, world, pedestal, 0.5f, 1.25f, 0.5f, 0.15f);
+        ClientParticles.spawnWithOffsetFromBlock(particle, world, pedestal, new Vector3d(0.5, 1.25, 0.5), 0.15);
 
+        IFormattableTextComponent linkingFrom = new TranslationTextComponent("item.conjuring.conjuring_scepter.linking");
 
-        StringTextComponent linkingFrom = new StringTextComponent("Linking from ");
+        IFormattableTextComponent text = new StringTextComponent("§7[§3" + pedestal.getZ() + " " + pedestal.getY() + " " + pedestal.getX() + "§7]");
 
-        StringTextComponent openBracket = new StringTextComponent("[");
-        openBracket.mergeStyle(TextFormatting.GRAY);
-
-        StringTextComponent coordinates = new StringTextComponent(pedestal.getZ() + " " + pedestal.getY() + " " + pedestal.getX());
-        coordinates.mergeStyle(TextFormatting.DARK_AQUA);
-
-        StringTextComponent closeBracket = new StringTextComponent("]");
-        closeBracket.mergeStyle(TextFormatting.GRAY);
-
-        ITextComponent message = linkingFrom.append(openBracket).append(coordinates).append(closeBracket);
+        ITextComponent message = linkingFrom.appendSibling(text);
         player.sendStatusMessage(message, true);
     }
 }

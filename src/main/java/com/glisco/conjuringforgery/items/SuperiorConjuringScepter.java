@@ -3,12 +3,13 @@ package com.glisco.conjuringforgery.items;
 import com.glisco.conjuringforgery.ConjuringForgery;
 import com.glisco.conjuringforgery.WorldHelper;
 import com.glisco.conjuringforgery.blocks.soulfireForge.SoulfireForgeTileEntity;
-import com.glisco.conjuringforgery.entities.SoulProjectile;
-import net.minecraft.entity.EntityType;
+import com.glisco.conjuringforgery.entities.SoulProjectileEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.Rarity;
+import net.minecraft.item.UseAction;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 
@@ -44,7 +45,7 @@ public class SuperiorConjuringScepter extends ConjuringScepter {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity user, Hand hand) {
-        if(user.isSneaking()){
+        if (user.isSneaking()) {
             return ConjuringScepter.onUse(user, hand);
         }
 
@@ -55,19 +56,20 @@ public class SuperiorConjuringScepter extends ConjuringScepter {
 
     @Override
     public void onPlayerStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if(!(user instanceof PlayerEntity)) return;
-        if(72000 - remainingUseTicks < 20) return;
+        if (!(user instanceof PlayerEntity)) return;
+        if (72000 - remainingUseTicks < 20) return;
 
         if (!world.isRemote()) {
-            SoulProjectile projectile = new SoulProjectile(world, user.getPosX(), user.getPosYEye(), user.getPosZ(), user);
-            projectile.func_234612_a_(user, user.rotationPitch, user.rotationYaw, 0f, 1.5f, 1);
-
+            SoulProjectileEntity projectile = new SoulProjectileEntity(world, user);
+            projectile.setLocationAndAngles(user.getPosX(), user.getPosYEye(), user.getPosZ(), 0, 0);
+            projectile.setDirectionAndMovement(user, user.rotationPitch, user.rotationYaw, 0f, 1.5f, 1);
             world.addEntity(projectile);
+
             WorldHelper.playSound(world, user.getPosition(), 15, SoundEvents.PARTICLE_SOUL_ESCAPE, SoundCategory.PLAYERS, 2, 1);
         }
 
-        if(!((PlayerEntity)user).abilities.isCreativeMode){
-            ((PlayerEntity)user).getCooldownTracker().setCooldown(ConjuringForgery.SUPERIOR_CONJURING_SCEPTER.get(), 100);
+        if (!((PlayerEntity) user).abilities.isCreativeMode) {
+            ((PlayerEntity) user).getCooldownTracker().setCooldown(ConjuringForgery.SUPERIOR_CONJURING_SCEPTER.get(), 100);
         }
     }
 
