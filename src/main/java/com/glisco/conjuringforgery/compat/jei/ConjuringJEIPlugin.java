@@ -1,6 +1,7 @@
 package com.glisco.conjuringforgery.compat.jei;
 
 import com.glisco.conjuringforgery.ConjuringForgery;
+import com.glisco.conjuringforgery.blocks.gem_tinkerer.GemTinkererRecipe;
 import com.glisco.conjuringforgery.blocks.soulfireForge.SoulfireForgeRecipe;
 import com.glisco.conjuringforgery.mixin.RecipeManagerAccessor;
 import mezz.jei.api.IModPlugin;
@@ -23,6 +24,7 @@ public class ConjuringJEIPlugin implements IModPlugin {
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         registration.addRecipeCategories(new SoulfireForgeRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new GemTinkeringCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -30,10 +32,12 @@ public class ConjuringJEIPlugin implements IModPlugin {
         RecipeManagerAccessor manager = ((RecipeManagerAccessor) Minecraft.getInstance().world.getRecipeManager());
 
         registration.addRecipes(manager.exposeRecipes(SoulfireForgeRecipe.Type.INSTANCE).values(), SoulfireForgeRecipeCategory.ID);
+        registration.addRecipes(manager.exposeRecipes(GemTinkererRecipe.Type.INSTANCE).values(), GemTinkeringCategory.ID);
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(new ItemStack(ConjuringForgery.SOULFIRE_FORGE_ITEM.get()), SoulfireForgeRecipeCategory.ID);
+        registration.addRecipeCatalyst(new ItemStack(ConjuringForgery.GEM_TINKERER_ITEM.get()), GemTinkeringCategory.ID);
     }
 }
