@@ -1,6 +1,6 @@
 package com.glisco.conjuringforgery.mixin;
 
-import com.glisco.conjuringforgery.WorldHelper;
+import com.glisco.owo.client.ClientParticles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,6 +10,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -69,17 +70,15 @@ public class SpawnerParticleMixin {
             float offsetX = 0.5f + data / 8f;
             float offsetY = 0.35f;
 
-            for (i = 0; i < 20; i++) {
-                WorldHelper.spawnParticle(ParticleTypes.SMOKE, Minecraft.getInstance().world, pos, offsetX, offsetY, 0.5f, 0, 0, 0, 0, 0.1f, data / 12f);
-            }
+            ClientParticles.setParticleCount(20);
+            ClientParticles.spawnPrecise(ParticleTypes.SMOKE, Minecraft.getInstance().world, Vector3d.copy(pos).add(new Vector3d(offsetX, offsetY, 0.5)), 0, 0.1, data / 12d);
         } else if (eventId == 9011) {
 
             float offsetZ = 0.5f + data / 8f;
             float offsetY = 0.35f;
 
-            for (i = 0; i < 20; i++) {
-                WorldHelper.spawnParticle(ParticleTypes.SMOKE, Minecraft.getInstance().world, pos, 0.5f, offsetY, offsetZ, 0, 0, 0, data / 12f, 0.1f, 0);
-            }
+            ClientParticles.setParticleCount(20);
+            ClientParticles.spawnPrecise(ParticleTypes.SMOKE, Minecraft.getInstance().world, Vector3d.copy(pos).add(new Vector3d(0.5, offsetY, offsetZ)), data / 12d, 0.1, 0);
         }
     }
 

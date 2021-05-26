@@ -7,10 +7,8 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.WeightedSpawnerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -105,5 +103,9 @@ public class ConjurerTileEntity extends TileEntity implements ITickableTileEntit
     //Interface Logic
     public ItemStackHandler getInventory() {
         return inventory;
+    }
+
+    public void setRequiresPlayer(boolean requiresPlayer) {
+        this.logic.setRequiresPlayer(requiresPlayer);
     }
 }

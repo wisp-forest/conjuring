@@ -58,7 +58,7 @@ public class SoulfireForgeTileEntity extends TileEntity implements ITickableTile
             Optional<SoulfireForgeRecipe> currentRecipe = world.getRecipeManager().getRecipe(SoulfireForgeRecipe.Type.INSTANCE, inventory, world);
 
             if (currentRecipe.isPresent() && world.getBlockState(pos).get(SoulfireForgeBlock.BURNING)) {
-                if (inventory.getStackInSlot(0).isEmpty() || ItemOps.canStack(inventory.getStackInSlot(9), currentRecipe.get().getRecipeOutput())) {
+                if (inventory.getStackInSlot(9).isEmpty() || ItemOps.canStack(inventory.getStackInSlot(9), currentRecipe.get().getRecipeOutput())) {
                     targetSmeltTime = currentRecipe.get().getSmeltTime();
 
                     if (smeltTime == targetSmeltTime) {
@@ -89,9 +89,9 @@ public class SoulfireForgeTileEntity extends TileEntity implements ITickableTile
             }
         } else if (world.getBlockState(pos).get(SoulfireForgeBlock.BURNING)) {
             for (int i = 0; i < 4; i++) {
-                double x = (double) pos.getX() + 0.5D + (world.rand.nextDouble() - 0.5D) * 0.6;
-                double y = (double) pos.getY() + 0.05D;
-                double z = (double) pos.getZ() + 0.5D + (world.rand.nextDouble() - 0.5D) * 0.6;
+                double x = (double) pos.getX() + 0.5D + (world.rand.nextDouble() - 0.5D) * 0.3;
+                double y = (double) pos.getY() + 0.6D;
+                double z = (double) pos.getZ() + 0.5D + (world.rand.nextDouble() - 0.5D) * 0.3;
                 this.world.addParticle(ParticleTypes.SMOKE, x, y, z, 0, 0, 0);
             }
         }

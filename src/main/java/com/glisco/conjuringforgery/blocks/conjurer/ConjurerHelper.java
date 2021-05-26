@@ -31,9 +31,12 @@ public class ConjurerHelper {
             conjurer.getLogic().setSpawnPotentials(entries);
             conjurer.getLogic().setNextSpawnData(entry);
             conjurer.setActive(true);
+
+            conjurer.setRequiresPlayer(focus.getItem() != ConjuringForgery.STABILIZED_FOCUS.get());
+
         } else {
-            conjurer.getLogic().setRequiredPlayerRange(0);
             conjurer.setActive(false);
+            conjurer.setRequiresPlayer(true);
             return;
         }
 

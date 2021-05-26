@@ -1,5 +1,5 @@
 {
-  "processor": "com.glisco.conjuring.compat.patchouli.SoulfireForgeProcessor",
+  "processor": "com.glisco.conjuringforgery.compat.patchouli.SoulfireForgeProcessor",
 
   "components": [
     {
