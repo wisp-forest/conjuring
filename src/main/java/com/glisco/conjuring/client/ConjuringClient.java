@@ -4,6 +4,8 @@ import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.entities.EntityCreatePacket;
 import com.glisco.conjuring.entities.SoulEntityRenderer;
 import com.glisco.conjuring.items.soul_alloy_tools.ChangeToolModePacket;
+import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyToolAbilities;
+import com.glisco.conjuring.mixin.WorldRendererInvoker;
 import com.glisco.owo.ServerParticles;
 import com.glisco.owo.VectorSerializer;
 import com.glisco.owo.client.ClientParticles;
@@ -18,8 +20,12 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.util.InputUtil;
@@ -98,6 +104,22 @@ public class ConjuringClient implements ClientModInitializer {
                 ClientParticles.spawnLine(ParticleTypes.ENCHANTED_HIT, client.world, start, end, 0.1f);
             });
 
+        });
+
+        WorldRenderEvents.BLOCK_OUTLINE.register((worldRenderContext, blockOutlineContext) -> {
+            final MinecraftClient client = MinecraftClient.getInstance();
+            if (!SoulAlloyToolAbilities.canAoeDig(client.player)) {
+                return true;
+            }
+
+            BlockState blockState;
+            for (BlockPos pos : SoulAlloyToolAbilities.getBlocksToDig(client.player)) {
+                blockState = client.world.getBlockState(pos);
+                if (!blockState.isAir()) {
+                    WorldRendererInvoker.invokeDrawShapeOutline(worldRenderContext.matrixStack(), blockOutlineContext.vertexConsumer(), blockState.getOutlineShape(client.world, pos, ShapeContext.of(blockOutlineContext.entity())), (double) pos.getX() - blockOutlineContext.cameraX(), (double) pos.getY() - blockOutlineContext.cameraY(), (double) pos.getZ() - blockOutlineContext.cameraZ(), 0.0F, 0.0F, 0.0F, 0.4F);
+                }
+            }
+            return true;
         });
 
     }

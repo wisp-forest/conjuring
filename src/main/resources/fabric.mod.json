@@ -38,6 +38,14 @@
   "depends": {
     "fabricloader": ">=0.9.2+build.206",
     "fabric": "*",
-    "minecraft": ">=1.16.2"
+    "minecraft": ">=1.16.2",
+    "cloth-config2": ">=4.0.0"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/xrwHKktV2d"
+      }
+    }
   }
 }

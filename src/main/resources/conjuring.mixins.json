@@ -6,14 +6,10 @@
   "mixins": [
     "DispenserBehaviorMixin",
     "EnchantmentHelperMixin",
-    "InGameHudMixin",
     "ItemAccessor",
-    "ItemRendererMixin",
     "ItemStackMixin",
     "LivingEntityMixin",
-    "OverlaySearchFieldSyntaxHighlighterMixin",
     "PlayerEntityMixin",
-    "WorldRendererInvoker",
     "angerables.BeeEntityMixin",
     "angerables.EndermanEntityMixin",
     "angerables.IronGolemEntityMixin",
@@ -22,6 +18,10 @@
     "angerables.ZombifiedPiglinEntityMixin"
   ],
   "client": [
+    "InGameHudMixin",
+    "ItemRendererMixin",
+    "OverlaySearchFieldSyntaxHighlighterMixin",
+    "WorldRendererInvoker",
     "SpawnerParticleMixin",
     "TooltipMixin"
   ],
