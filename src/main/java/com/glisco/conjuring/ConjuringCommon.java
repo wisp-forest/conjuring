@@ -67,7 +67,6 @@ public class ConjuringCommon implements ModInitializer {
                     }
                 }
 
-
                 for (int i = 0; i < 3; i++) {
                     itemStacks.add(6, ItemStack.EMPTY);
                 }

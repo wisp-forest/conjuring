@@ -6,20 +6,19 @@ import com.glisco.conjuring.blocks.soul_weaver.SoulWeaverRecipe;
 import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeRecipe;
 import me.shedaniel.rei.api.EntryRegistry;
 import me.shedaniel.rei.api.EntryStack;
-import me.shedaniel.rei.api.RecipeCategory;
 import me.shedaniel.rei.api.RecipeHelper;
 import me.shedaniel.rei.api.plugins.REIPluginV0;
 import net.minecraft.item.Items;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 
+import java.util.List;
+
 public class ConjuringPlugin implements REIPluginV0 {
 
     public static final Identifier SOULFIRE_FORGE = new Identifier("conjuring", "soulfire_forge");
     public static final Identifier GEM_TINKERING = new Identifier("conjuring", "gem_tinkering");
     public static final Identifier SOUL_WEAVING = new Identifier("conjuring", "soul_weaving");
-
-    private static final RecipeCategory<SoulfireForgeDisplay> SOULFIRE_FORGE_CATEGORY = new SoulfireForgeCategory();
 
     @Override
     public Identifier getPluginIdentifier() {
@@ -30,7 +29,7 @@ public class ConjuringPlugin implements REIPluginV0 {
     public void registerPluginCategories(RecipeHelper recipeHelper) {
         recipeHelper.registerCategory(new GemTinkeringCategory());
         recipeHelper.registerCategory(new SoulWeavingCategory());
-        recipeHelper.registerCategory(SOULFIRE_FORGE_CATEGORY);
+        recipeHelper.registerCategory(new SoulfireForgeCategory());
     }
 
     @Override
@@ -52,7 +51,15 @@ public class ConjuringPlugin implements REIPluginV0 {
         recipeHelper.registerWorkingStations(SOUL_WEAVING, EntryStack.create(ConjuringCommon.SOUL_WEAVER_BLOCK));
         recipeHelper.registerWorkingStations(SOUL_WEAVING, EntryStack.create(ConjuringCommon.BLACKSTONE_PEDESTAL_BLOCK));
 
-        recipeHelper.registerRecipeVisibilityHandler((category, display) -> (category.getIdentifier() == SOULFIRE_FORGE && (display.getResultingEntries().get(0).stream().map(EntryStack::getItem).anyMatch(item -> item == ConjuringCommon.PIZZA)) ? ActionResult.FAIL : ActionResult.PASS));
-        recipeHelper.registerRecipeVisibilityHandler((category, display) -> (category.getIdentifier() == GEM_TINKERING && (display.getResultingEntries().get(0).stream().map(EntryStack::getItem).anyMatch(item -> item == Items.COOKIE)) ? ActionResult.FAIL : ActionResult.PASS));
+        recipeHelper.registerRecipeVisibilityHandler((category, display) -> {
+            if (category.getIdentifier() == SOULFIRE_FORGE) {
+                if (display.getResultingEntries().stream().flatMap(List::stream).anyMatch(entryStack -> entryStack.getItem() == ConjuringCommon.PIZZA))
+                    return ActionResult.FAIL;
+            } else if (category.getIdentifier() == GEM_TINKERING) {
+                if (display.getResultingEntries().stream().flatMap(List::stream).anyMatch(entryStack -> entryStack.getItem() == Items.COOKIE))
+                    return ActionResult.FAIL;
+            }
+            return ActionResult.PASS;
+        });
     }
 }
