@@ -72,7 +72,7 @@ public interface SoulAlloyTool {
 
             StringBuilder level = new StringBuilder();
             for (int i = 0; i < modifiers.getInt(key); i++) {
-                level.append("●");
+                level.append("\u25CF");
             }
 
             tooltip.add(new TranslationTextComponent(modifier.translation_key).setStyle(Style.EMPTY.setColor(Color.fromInt(modifier.textColor))).appendString(": §7" + level));

@@ -30,6 +30,7 @@ import com.glisco.owo.client.ClientParticles;
 import com.google.gson.JsonObject;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
@@ -55,7 +56,6 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.LootTableLoadEvent;
@@ -115,6 +115,60 @@ public class ConjuringForgery {
         @Override
         public ItemStack createIcon() {
             return new ItemStack(Items.SPAWNER);
+        }
+
+        @Override
+        public void fill(NonNullList<ItemStack> itemStacks) {
+
+            itemStacks.add(new ItemStack(CONJURER_ITEM.get()));
+            itemStacks.add(new ItemStack(SOULFIRE_FORGE_ITEM.get()));
+            itemStacks.add(new ItemStack(BLACKSTONE_PEDESTAL_ITEM.get()));
+            itemStacks.add(new ItemStack(SOUL_FUNNEL_ITEM.get()));
+            itemStacks.add(new ItemStack(SOuL_WEAVER_ITEM.get()));
+            itemStacks.add(new ItemStack(GEM_TINKERER_ITEM.get()));
+
+            for (int i = 0; i < 3; i++) {
+                itemStacks.add(ItemStack.EMPTY);
+            }
+
+            itemStacks.add(new ItemStack(CONJURING_SCEPTER.get()));
+            itemStacks.add(new ItemStack(SUPERIOR_CONJURING_SCEPTER.get()));
+            itemStacks.add(new ItemStack(CONJURING_FOCUS.get()));
+            itemStacks.add(new ItemStack(STABILIZED_FOCUS.get()));
+            itemStacks.add(new ItemStack(ENCHIRIDION.get()));
+
+            for (int i = 0; i < 4; i++) {
+                itemStacks.add(ItemStack.EMPTY);
+            }
+
+            itemStacks.add(new ItemStack(SOUL_ALLOY_SWORD.get()));
+            itemStacks.add(new ItemStack(SOUL_ALLOY_PICKAXE.get()));
+            itemStacks.add(new ItemStack(SOUL_ALLOY_HATCHET.get()));
+            itemStacks.add(new ItemStack(SOUL_ALLOY_SHOVEL.get()));
+
+            for (int i = 0; i < 5; i++) {
+                itemStacks.add(ItemStack.EMPTY);
+            }
+
+            itemStacks.add(new ItemStack(SOUL_ALLOY.get()));
+            itemStacks.add(new ItemStack(SOUL_SLICE.get()));
+            itemStacks.add(new ItemStack(SOUL_ROD.get()));
+            itemStacks.add(new ItemStack(CONJURATION_ESSENCE.get()));
+            itemStacks.add(new ItemStack(LESSER_CONJURATION_ESSENCE.get()));
+
+            for (int i = 0; i < 4; i++) {
+                itemStacks.add(ItemStack.EMPTY);
+            }
+
+            itemStacks.add(new ItemStack(GEM_SOCKET.get()));
+            itemStacks.add(new ItemStack(HASTE_CHARM.get()));
+            itemStacks.add(new ItemStack(IGNORANCE_CHARM.get()));
+            itemStacks.add(new ItemStack(PLENTIFULNESS_CHARM.get()));
+            itemStacks.add(new ItemStack(SCOPE_CHARM.get()));
+            itemStacks.add(new ItemStack(HASTE_GEM.get()));
+            itemStacks.add(new ItemStack(IGNORANCE_GEM.get()));
+            itemStacks.add(new ItemStack(ABUNDANCE_GEM.get()));
+            itemStacks.add(new ItemStack(SCOPE_GEM.get()));
         }
     };
 
@@ -203,6 +257,9 @@ public class ConjuringForgery {
 
     public static final KeyBinding TOGGLE_TOOL_MODE_BIND = new KeyBinding("key.conjuring.toggle_tool_mode", GLFW.GLFW_KEY_LEFT_ALT, "category.conjuring");
 
+    public static final GemTinkeringCriterion GEM_TINKERING_CRITERION = new GemTinkeringCriterion();
+    public static final ExtractionRitualCriterion EXTRACTION_RITUAL_CRITERION = new ExtractionRitualCriterion();
+
     public ConjuringForgery() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
@@ -226,6 +283,9 @@ public class ConjuringForgery {
         CONFIG = AutoConfig.getConfigHolder(ConjuringConfig.class).getConfig();
 
         NETWORK_CHANNEL.registerMessage(0, ChangeToolModePacket.class, ChangeToolModePacket::encode, ChangeToolModePacket::decode, ChangeToolModePacket::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
+
+        CriteriaTriggers.register(GEM_TINKERING_CRITERION);
+        CriteriaTriggers.register(EXTRACTION_RITUAL_CRITERION);
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {

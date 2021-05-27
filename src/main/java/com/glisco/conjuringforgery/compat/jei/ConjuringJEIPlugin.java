@@ -7,12 +7,17 @@ import com.glisco.conjuringforgery.blocks.soulfireForge.SoulfireForgeRecipe;
 import com.glisco.conjuringforgery.mixin.RecipeManagerAccessor;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.registration.IAdvancedRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.Collections;
 
 @JeiPlugin
 public class ConjuringJEIPlugin implements IModPlugin {
@@ -36,6 +41,16 @@ public class ConjuringJEIPlugin implements IModPlugin {
         registration.addRecipes(manager.exposeRecipes(SoulfireForgeRecipe.Type.INSTANCE).values(), SoulfireForgeRecipeCategory.ID);
         registration.addRecipes(manager.exposeRecipes(GemTinkererRecipe.Type.INSTANCE).values(), GemTinkeringCategory.ID);
         registration.addRecipes(manager.exposeRecipes(SoulWeaverRecipe.Type.INSTANCE).values(), SoulWeavingRecipeCategory.ID);
+
+    }
+
+    @Override
+    public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+        RecipeManagerAccessor manager = ((RecipeManagerAccessor) Minecraft.getInstance().world.getRecipeManager());
+
+        jeiRuntime.getRecipeManager().hideRecipe(manager.exposeRecipes(SoulfireForgeRecipe.Type.INSTANCE).get(new ResourceLocation("conjuring", "soulfire_forge/pizza")), SoulfireForgeRecipeCategory.ID);
+        jeiRuntime.getRecipeManager().hideRecipe(manager.exposeRecipes(GemTinkererRecipe.Type.INSTANCE).get(new ResourceLocation("conjuring", "gem_tinkering/cookie")), GemTinkeringCategory.ID);
+        jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM, Collections.singleton(new ItemStack(ConjuringForgery.PIZZA.get())));
     }
 
     @Override

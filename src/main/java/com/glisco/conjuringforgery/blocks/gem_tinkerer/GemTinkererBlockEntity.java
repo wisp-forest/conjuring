@@ -5,6 +5,7 @@ import com.glisco.conjuringforgery.items.GemItem;
 import com.glisco.conjuringforgery.items.soul_alloy_tools.SoulAlloyTool;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
@@ -97,8 +98,7 @@ public class GemTinkererBlockEntity extends TileEntity implements ITickableTileE
         if (!world.isRemote()) {
             processTick = 1;
             markDirty();
-            //TODO criterion
-            //ConjuringForgery.GEM_TINKERING_CRITERION.trigger((ServerPlayerEntity) player);
+            ConjuringForgery.GEM_TINKERING_CRITERION.trigger((ServerPlayerEntity) player);
         }
 
         return ActionResultType.SUCCESS;

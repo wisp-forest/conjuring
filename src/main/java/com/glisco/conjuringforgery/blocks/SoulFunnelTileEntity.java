@@ -14,6 +14,7 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -173,7 +174,8 @@ public class SoulFunnelTileEntity extends TileEntity implements ITickableTileEnt
                         e.setMotion(0, 0, 0);
                         e.setNoAI(true);
                         final Vector3d entityPos = Vector3d.copy(pos).add(0.5, 1.85, 0.5);
-                        e.setPosition(entityPos.x, entityPos.y, entityPos.z); }
+                        e.setPosition(entityPos.x, entityPos.y, entityPos.z);
+                    }
                 }
 
             } else if (ritualTick > 20 && ritualTick <= 80) {
@@ -283,8 +285,7 @@ public class SoulFunnelTileEntity extends TileEntity implements ITickableTileEnt
             this.ritualEntity = e.getUniqueID();
             this.markDirty();
 
-            //TODO criterion
-            //ConjuringForgery.EXTRACTION_RITUAL_CRITERION.trigger((ServerPlayerEntity) player);
+            ConjuringForgery.EXTRACTION_RITUAL_CRITERION.trigger((ServerPlayerEntity) player);
         }
 
         return true;
