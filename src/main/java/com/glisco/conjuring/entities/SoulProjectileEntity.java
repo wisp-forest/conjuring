@@ -11,7 +11,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.ProjectileDamageSource;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
@@ -31,12 +31,12 @@ public class SoulProjectileEntity extends SoulEntity {
     public SoulProjectileEntity(World world, LivingEntity owner) {
         super(ConjuringCommon.SOUL_PROJECTILE, world);
         setOwner(owner);
-        UNIQUE_CLOSEST = new TargetPredicate().setBaseMaxDistance(8).setPredicate(livingEntity -> livingEntity.isAlive() && (!TARGET_ENTITIES.containsValue(livingEntity) || TARGET_ENTITIES.get(this) == livingEntity));
+        UNIQUE_CLOSEST = TargetPredicate.createAttackable().setBaseMaxDistance(8).setPredicate(livingEntity -> livingEntity.isAlive() && (!TARGET_ENTITIES.containsValue(livingEntity) || TARGET_ENTITIES.get(this) == livingEntity));
     }
 
     public SoulProjectileEntity(EntityType<SoulProjectileEntity> entityType, World world) {
         super(entityType, world);
-        UNIQUE_CLOSEST = new TargetPredicate().setBaseMaxDistance(8).setPredicate(livingEntity -> livingEntity.isAlive() && (!TARGET_ENTITIES.containsValue(livingEntity) || TARGET_ENTITIES.get(this) == livingEntity));
+        UNIQUE_CLOSEST = TargetPredicate.createAttackable().setBaseMaxDistance(8).setPredicate(livingEntity -> livingEntity.isAlive() && (!TARGET_ENTITIES.containsValue(livingEntity) || TARGET_ENTITIES.get(this) == livingEntity));
     }
 
     @Override
@@ -45,14 +45,14 @@ public class SoulProjectileEntity extends SoulEntity {
     }
 
     @Override
-    protected void writeCustomDataToTag(CompoundTag tag) {
-        super.writeCustomDataToTag(tag);
+    protected void writeCustomDataToNbt(NbtCompound tag) {
+        super.writeCustomDataToNbt(tag);
         tag.putFloat("Damage", damage);
     }
 
     @Override
-    protected void readCustomDataFromTag(CompoundTag tag) {
-        super.readCustomDataFromTag(tag);
+    protected void readCustomDataFromNbt(NbtCompound tag) {
+        super.readCustomDataFromNbt(tag);
         damage = tag.getFloat("Damage");
     }
 
@@ -62,7 +62,7 @@ public class SoulProjectileEntity extends SoulEntity {
 
         if (!(entityHitResult.getEntity() instanceof LivingEntity) || entityHitResult.getEntity() instanceof EnderDragonEntity || entityHitResult.getEntity() instanceof WitherEntity || entityHitResult.getEntity() instanceof PlayerEntity)
             return;
-        this.remove();
+        this.remove(RemovalReason.KILLED);
 
         LivingEntity e = (LivingEntity) entityHitResult.getEntity();
 
@@ -83,8 +83,8 @@ public class SoulProjectileEntity extends SoulEntity {
     }
 
     @Override
-    public void remove() {
-        super.remove();
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
         TARGET_ENTITIES.remove(this);
     }
 
@@ -108,7 +108,7 @@ public class SoulProjectileEntity extends SoulEntity {
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
         super.onBlockHit(blockHitResult);
-        this.remove();
+        this.remove(RemovalReason.KILLED);
     }
 
     public DamageSource createDamageSource() {

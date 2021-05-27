@@ -1,7 +1,10 @@
 package com.glisco.conjuring.blocks.soulfire_forge;
 
+import com.glisco.conjuring.ConjuringCommon;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
@@ -23,6 +26,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 import java.util.function.ToIntFunction;
@@ -98,21 +102,22 @@ public class SoulfireForgeBlock extends BlockWithEntity {
 
     //Construction stuff
     public SoulfireForgeBlock() {
-        super(AbstractBlock.Settings.of(Material.STONE).requiresTool().strength(5.0F, 1200.0F).sounds(BlockSoundGroup.STONE).nonOpaque().luminance(getLightLevel()));
+        super(Settings.of(Material.STONE).requiresTool().strength(5.0F, 1200.0F).sounds(BlockSoundGroup.STONE).nonOpaque().luminance(getLightLevel()));
         setDefaultState(getStateManager().getDefaultState().with(BURNING, false));
     }
 
+    @Nullable
     @Override
-    public BlockEntity createBlockEntity(BlockView world) {
-        return new SoulfireForgeBlockEntity();
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new SoulfireForgeBlockEntity(pos, state);
     }
 
     @Override
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
     }
-
     //BlockState shit
+
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 
@@ -141,8 +146,8 @@ public class SoulfireForgeBlock extends BlockWithEntity {
         builder.add(BURNING);
         builder.add(FACING);
     }
-
     //Actual Logic
+
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 
@@ -164,6 +169,12 @@ public class SoulfireForgeBlock extends BlockWithEntity {
 
         }
         return ActionResult.SUCCESS;
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return checkType(type, ConjuringCommon.SOULFIRE_FORGE_BLOCK_ENTITY, SoulfireForgeBlockEntity::ticker);
     }
 
     @Override

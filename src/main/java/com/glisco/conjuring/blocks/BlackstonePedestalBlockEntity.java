@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
@@ -17,16 +17,16 @@ public class BlackstonePedestalBlockEntity extends BlockEntity implements BlockE
     private boolean active = false;
     private BlockPos linkedFunnel = null;
 
-    public BlackstonePedestalBlockEntity() {
-        super(ConjuringCommon.BLACKSTONE_PEDESTAL_BLOCK_ENTITY);
+    public BlackstonePedestalBlockEntity(BlockPos pos, BlockState state) {
+        super(ConjuringCommon.BLACKSTONE_PEDESTAL_BLOCK_ENTITY, pos, state);
     }
 
     //Data Logic
     @Override
-    public CompoundTag toTag(CompoundTag tag) {
-        super.toTag(tag);
-        CompoundTag item = new CompoundTag();
-        renderedItem.toTag(item);
+    public NbtCompound writeNbt(NbtCompound tag) {
+        super.writeNbt(tag);
+        NbtCompound item = new NbtCompound();
+        renderedItem.writeNbt(item);
         tag.put("Item", item);
         if (linkedFunnel == null) {
             tag.putIntArray("LinkedFunnel", new int[]{});
@@ -38,9 +38,9 @@ public class BlackstonePedestalBlockEntity extends BlockEntity implements BlockE
     }
 
     @Override
-    public void fromTag(BlockState state, CompoundTag tag) {
-        super.fromTag(state, tag);
-        this.renderedItem = ItemStack.fromTag(tag.getCompound("Item"));
+    public void readNbt(NbtCompound tag) {
+        super.readNbt(tag);
+        this.renderedItem = ItemStack.fromNbt(tag.getCompound("Item"));
         int[] funnelPos = tag.getIntArray("LinkedFunnel");
         if (funnelPos.length > 0) {
             this.linkedFunnel = new BlockPos(funnelPos[0], funnelPos[1], funnelPos[2]);
@@ -58,13 +58,13 @@ public class BlackstonePedestalBlockEntity extends BlockEntity implements BlockE
     }
 
     @Override
-    public void fromClientTag(CompoundTag tag) {
-        this.fromTag(null, tag);
+    public void fromClientTag(NbtCompound tag) {
+        this.readNbt(tag);
     }
 
     @Override
-    public CompoundTag toClientTag(CompoundTag tag) {
-        return this.toTag(tag);
+    public NbtCompound toClientTag(NbtCompound tag) {
+        return this.writeNbt(tag);
     }
 
     public boolean isActive() {

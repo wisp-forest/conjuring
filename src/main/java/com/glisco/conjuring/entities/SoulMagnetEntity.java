@@ -7,6 +7,7 @@ import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
 public class SoulMagnetEntity extends SoulEntity {
@@ -35,7 +36,7 @@ public class SoulMagnetEntity extends SoulEntity {
 
         if ((recalled || age > 40) && getOwner() != null) {
             Vec3d ownerVector = getOwner().getPos().add(0, 0.75, 0).subtract(getPos());
-            if (ownerVector.length() < 1) this.remove();
+            if (ownerVector.length() < 1) this.remove(RemovalReason.KILLED);
 
             double scalar = ownerVector.length() > 3 ? 0.075 : 0.15d;
             setVelocity(ownerVector.multiply(scalar));
@@ -57,7 +58,7 @@ public class SoulMagnetEntity extends SoulEntity {
             item.setVelocity(difference);
 
             if (world.isClient && difference.length() > 0.5) {
-                ParticleEffect dust = new DustParticleEffect(0.5f, 1f, 1f, 0.5f);
+                ParticleEffect dust = new DustParticleEffect(new Vec3f(0.5f, 1f, 1f), 0.5f);
                 ClientParticles.setParticleCount(45);
                 ClientParticles.spawnLine(dust, world, getPos(), item.getPos(), 0);
             }
@@ -71,7 +72,7 @@ public class SoulMagnetEntity extends SoulEntity {
 
         if (ticksInBlock > (recalled ? 30 : 8)) {
             if (recalled || age > 40) {
-                this.remove();
+                this.remove(RemovalReason.KILLED);
             } else {
                 recall();
                 ticksInBlock = 0;

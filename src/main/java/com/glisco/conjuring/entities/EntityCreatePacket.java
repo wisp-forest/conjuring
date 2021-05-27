@@ -25,13 +25,13 @@ public class EntityCreatePacket {
     public static Packet<?> create(Entity e) {
         PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
         buffer.writeVarInt(Registry.ENTITY_TYPE.getRawId(e.getType()));
-        buffer.writeVarInt(e.getEntityId());
+        buffer.writeVarInt(e.getId());
         buffer.writeUuid(e.getUuid());
         buffer.writeDouble(e.getX());
         buffer.writeDouble(e.getY());
         buffer.writeDouble(e.getZ());
-        buffer.writeByte(MathHelper.floor(e.pitch * 256f / 360f));
-        buffer.writeByte(MathHelper.floor(e.yaw * 256f / 360f));
+        buffer.writeByte(MathHelper.floor(e.getPitch() * 256f / 360f));
+        buffer.writeByte(MathHelper.floor(e.getYaw() * 256f / 360f));
         return ServerPlayNetworking.createS2CPacket(ID, buffer);
     }
 
@@ -54,10 +54,10 @@ public class EntityCreatePacket {
             if (e != null) {
                 e.setEntityId(entityID);
                 e.setUuid(uuid);
-                e.updatePosition(x, y, z);
+                e.setPosition(x, y, z);
                 e.updateTrackedPosition(x, y, z);
-                e.pitch = pitch;
-                e.yaw = yaw;
+                e.setPitch(pitch);
+                e.setYaw(yaw);
 
                 world.addEntity(entityID, e);
             }

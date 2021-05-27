@@ -36,15 +36,15 @@ public abstract class SoulEntity extends ProjectileEntity {
     public void tick() {
         super.tick();
 
-        HitResult hitResult = ProjectileUtil.getCollision(this, this::method_26958);
+        HitResult hitResult = ProjectileUtil.getCollision(this, this::canHit);
         if (hitResult.getType() != HitResult.Type.MISS) {
             this.onCollision(hitResult);
         }
 
-        if (age > maxAge) this.remove();
+        if (age > maxAge) this.remove(RemovalReason.KILLED);
 
         Vec3d newPos = this.getPos().add(this.getVelocity());
-        this.updatePosition(newPos.getX(), newPos.getY(), newPos.getZ());
+        this.setPosition(newPos.getX(), newPos.getY(), newPos.getZ());
     }
 }
 

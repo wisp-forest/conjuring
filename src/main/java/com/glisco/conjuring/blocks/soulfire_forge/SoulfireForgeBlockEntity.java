@@ -11,20 +11,21 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
 
 import java.util.Optional;
 
-public class SoulfireForgeBlockEntity extends BlockEntity implements ImplementedInventory, SidedInventory, NamedScreenHandlerFactory, Tickable {
+public class SoulfireForgeBlockEntity extends BlockEntity implements ImplementedInventory, SidedInventory, NamedScreenHandlerFactory {
 
     private DefaultedList<ItemStack> items = DefaultedList.ofSize(10, ItemStack.EMPTY);
 
@@ -35,8 +36,8 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
     private int smeltTime;
     private int targetSmeltTime;
 
-    public SoulfireForgeBlockEntity() {
-        super(ConjuringCommon.SOULFIRE_FORGE_BLOCK_ENTITY);
+    public SoulfireForgeBlockEntity(BlockPos pos, BlockState state) {
+        super(ConjuringCommon.SOULFIRE_FORGE_BLOCK_ENTITY, pos, state);
     }
 
     private final PropertyDelegate properties = new PropertyDelegate() {
@@ -57,10 +58,12 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
     };
 
 
-    //Tick Logic
-    @Override
-    public void tick() {
+    public static void ticker(World world, BlockPos pos, BlockState state, SoulfireForgeBlockEntity forge){
+        forge.tick();
+    }
 
+    //Tick Logic
+    public void tick() {
         if (!this.world.isClient()) {
 
             Optional<SoulfireForgeRecipe> currentRecipe = world.getRecipeManager().getFirstMatch(SoulfireForgeRecipe.Type.INSTANCE, this, world);
@@ -112,18 +115,18 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag tag) {
-        super.toTag(tag);
-        Inventories.toTag(tag, items);
+    public NbtCompound writeNbt(NbtCompound tag) {
+        super.writeNbt(tag);
+        Inventories.writeNbt(tag, items);
         tag.putInt("Progress", progress);
         tag.putInt("SmeltTime", smeltTime);
         return tag;
     }
 
     @Override
-    public void fromTag(BlockState state, CompoundTag tag) {
-        super.fromTag(state, tag);
-        Inventories.fromTag(tag, items);
+    public void readNbt(NbtCompound tag) {
+        super.readNbt(tag);
+        Inventories.readNbt(tag, items);
         this.progress = tag.getInt("Progress");
         this.smeltTime = tag.getInt("SmeltTime");
     }

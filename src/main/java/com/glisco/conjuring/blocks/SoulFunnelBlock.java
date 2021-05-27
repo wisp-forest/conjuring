@@ -1,10 +1,14 @@
 package com.glisco.conjuring.blocks;
 
+import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeBlockEntity;
 import com.glisco.conjuring.items.ConjuringFocus;
 import com.glisco.conjuring.items.ConjuringScepter;
 import com.glisco.owo.client.ClientParticles;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -23,14 +27,15 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class SoulFunnelBlock extends BlockWithEntity {
-
     private static VoxelShape PILLAR1 = Block.createCuboidShape(12, 0, 0, 16, 9, 4);
+
     private static VoxelShape PILLAR2 = Block.createCuboidShape(12, 0, 12, 16, 9, 16);
     private static VoxelShape PILLAR3 = Block.createCuboidShape(0, 0, 12, 4, 9, 16);
     private static VoxelShape PILLAR4 = Block.createCuboidShape(0, 0, 0, 4, 9, 4);
@@ -52,9 +57,10 @@ public class SoulFunnelBlock extends BlockWithEntity {
         setDefaultState(getStateManager().getDefaultState().with(FILLED, false));
     }
 
+    @Nullable
     @Override
-    public BlockEntity createBlockEntity(BlockView world) {
-        return new SoulFunnelBlockEntity();
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new SoulFunnelBlockEntity(pos, state);
     }
 
     @Override
@@ -62,8 +68,8 @@ public class SoulFunnelBlock extends BlockWithEntity {
         return SHAPE;
     }
 
-
     //BlockState shit
+
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(FILLED);
@@ -74,8 +80,8 @@ public class SoulFunnelBlock extends BlockWithEntity {
         return BlockRenderType.MODEL;
     }
 
-
     //Actual Logic
+
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 
@@ -167,6 +173,12 @@ public class SoulFunnelBlock extends BlockWithEntity {
             }
             super.onStateReplaced(state, world, pos, newState, moved);
         }
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return checkType(type, ConjuringCommon.SOUL_FUNNEL_BLOCK_ENTITY, SoulFunnelBlockEntity::ticker);
     }
 
     @Override

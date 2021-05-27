@@ -45,7 +45,7 @@ public class SoulAlloyShovel extends ShovelItem implements SoulAlloyTool {
             } else {
                 SoulMagnetEntity magnet = new SoulMagnetEntity(world, user);
                 magnet.refreshPositionAndAngles(user.getX(), user.getEyeY(), user.getZ(), 0, 0);
-                magnet.setProperties(user, user.pitch, user.yaw, 0f, 1.5f, 1);
+                magnet.setProperties(user, user.getPitch(), user.getYaw(), 0f, 1.5f, 1);
                 world.spawnEntity(magnet);
 
                 shovel.getOrCreateTag().putUuid("CurrentProjectile", magnet.getUuid());

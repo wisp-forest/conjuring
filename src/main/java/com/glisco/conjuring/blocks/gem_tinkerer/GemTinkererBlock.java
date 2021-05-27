@@ -1,8 +1,11 @@
 package com.glisco.conjuring.blocks.gem_tinkerer;
 
+import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.owo.ItemOps;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -42,6 +45,12 @@ public class GemTinkererBlock extends BlockWithEntity {
         return SHAPE;
     }
 
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return checkType(type, ConjuringCommon.GEM_TINKERER_BLOCK_ENTITY, GemTinkererBlockEntity::ticker);
+    }
+
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 
@@ -68,7 +77,7 @@ public class GemTinkererBlock extends BlockWithEntity {
                     for (int i = 1; i < 5; i++) {
 
                         if (tinkererInventory.get(i).isEmpty()) continue;
-                        player.inventory.offerOrDrop(world, tinkererInventory.get(i));
+                        player.getInventory().offerOrDrop(tinkererInventory.get(i));
 
                         tinkererInventory.set(i, ItemStack.EMPTY);
                     }
@@ -135,7 +144,7 @@ public class GemTinkererBlock extends BlockWithEntity {
 
     @Nullable
     @Override
-    public BlockEntity createBlockEntity(BlockView world) {
-        return new GemTinkererBlockEntity();
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new GemTinkererBlockEntity(pos, state);
     }
 }

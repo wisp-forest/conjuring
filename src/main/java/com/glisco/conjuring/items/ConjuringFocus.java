@@ -5,7 +5,7 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
@@ -19,7 +19,7 @@ import java.util.List;
 public class ConjuringFocus extends Item {
 
     public ConjuringFocus() {
-        super(new Item.Settings().group(ConjuringCommon.CONJURING_GROUP).maxCount(1).rarity(Rarity.UNCOMMON));
+        super(new Settings().group(ConjuringCommon.CONJURING_GROUP).maxCount(1).rarity(Rarity.UNCOMMON));
     }
 
     @Override
@@ -33,9 +33,9 @@ public class ConjuringFocus extends Item {
     }
 
     public static ItemStack writeData(ItemStack focus, EntityType<?> entityType) {
-        CompoundTag stackTag = focus.getOrCreateTag();
+        NbtCompound stackTag = focus.getOrCreateTag();
 
-        CompoundTag entityTag = new CompoundTag();
+        NbtCompound entityTag = new NbtCompound();
         entityTag.putString("id", Registry.ENTITY_TYPE.getId(entityType).toString());
 
         stackTag.put("Entity", entityTag);

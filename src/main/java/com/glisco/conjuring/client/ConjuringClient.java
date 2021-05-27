@@ -25,7 +25,7 @@ import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredica
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.particle.ParticleTypes;
@@ -49,17 +49,17 @@ public class ConjuringClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(ConjuringCommon.CONJURER_BLOCK, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ConjuringCommon.SOULFIRE_FORGE_BLOCK, RenderLayer.getCutout());
 
-        EntityRendererRegistry.INSTANCE.register(ConjuringCommon.SOUL_PROJECTILE, (dispatcher, context) -> new SoulEntityRenderer(dispatcher));
-        EntityRendererRegistry.INSTANCE.register(ConjuringCommon.SOUL_DIGGER, (dispatcher, context) -> new SoulEntityRenderer(dispatcher));
-        EntityRendererRegistry.INSTANCE.register(ConjuringCommon.SOUL_FELLER, (dispatcher, context) -> new SoulEntityRenderer(dispatcher));
-        EntityRendererRegistry.INSTANCE.register(ConjuringCommon.SOUL_MAGNET, (dispatcher, context) -> new SoulEntityRenderer(dispatcher));
+        EntityRendererRegistry.INSTANCE.register(ConjuringCommon.SOUL_PROJECTILE, SoulEntityRenderer::new);
+        EntityRendererRegistry.INSTANCE.register(ConjuringCommon.SOUL_DIGGER, SoulEntityRenderer::new);
+        EntityRendererRegistry.INSTANCE.register(ConjuringCommon.SOUL_FELLER, SoulEntityRenderer::new);
+        EntityRendererRegistry.INSTANCE.register(ConjuringCommon.SOUL_MAGNET, SoulEntityRenderer::new);
 
         ClientPlayNetworking.registerGlobalReceiver(EntityCreatePacket.ID, EntityCreatePacket::onPacket);
 
-        FabricModelPredicateProviderRegistry.register(ConjuringCommon.CONJURING_FOCUS, new Identifier("has_soul"), (stack, world, entity) -> stack.getOrCreateTag().contains("Entity") ? 1f : 0f);
-        FabricModelPredicateProviderRegistry.register(ConjuringCommon.STABILIZED_CONJURING_FOCUS, new Identifier("has_soul"), (stack, world, entity) -> stack.getOrCreateTag().contains("Entity") ? 1f : 0f);
-        FabricModelPredicateProviderRegistry.register(ConjuringCommon.ENCHIRIDION, new Identifier("is_sandwich"), (stack, world, entity) -> stack.getOrCreateTag().getBoolean("Sandwich") ? 1f : 0f);
-        FabricModelPredicateProviderRegistry.register(ConjuringCommon.PIZZA, new Identifier("is_brinsa"), (stack, world, entity) -> stack.getOrCreateTag().contains("Brinsa") ? 1f : 0f);
+        FabricModelPredicateProviderRegistry.register(ConjuringCommon.CONJURING_FOCUS, new Identifier("has_soul"), (stack, world, entity, seed) -> stack.getOrCreateTag().contains("Entity") ? 1f : 0f);
+        FabricModelPredicateProviderRegistry.register(ConjuringCommon.STABILIZED_CONJURING_FOCUS, new Identifier("has_soul"), (stack, world, entity, seed) -> stack.getOrCreateTag().contains("Entity") ? 1f : 0f);
+        FabricModelPredicateProviderRegistry.register(ConjuringCommon.ENCHIRIDION, new Identifier("is_sandwich"), (stack, world, entity, seed) -> stack.getOrCreateTag().getBoolean("Sandwich") ? 1f : 0f);
+        FabricModelPredicateProviderRegistry.register(ConjuringCommon.PIZZA, new Identifier("is_brinsa"), (stack, world, entity, seed) -> stack.getOrCreateTag().contains("Brinsa") ? 1f : 0f);
 
         ScreenRegistry.register(ConjuringCommon.CONJURER_SCREEN_HANDLER_TYPE, ConjurerScreen::new);
         ScreenRegistry.register(ConjuringCommon.SOULFIRE_FORGE_SCREEN_HANDLER_TYPE, SoulfireForgeScreen::new);

@@ -7,6 +7,8 @@ import com.glisco.owo.ItemOps;
 import com.glisco.owo.client.ClientParticles;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -53,8 +55,8 @@ public class SoulWeaverBlock extends BlockWithEntity {
 
     @Nullable
     @Override
-    public BlockEntity createBlockEntity(BlockView world) {
-        return new SoulWeaverBlockEntity();
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new SoulWeaverBlockEntity(pos, state);
     }
 
     @Override
@@ -101,6 +103,12 @@ public class SoulWeaverBlock extends BlockWithEntity {
         }
 
         return ActionResult.SUCCESS;
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return checkType(type, ConjuringCommon.SOUL_WEAVER_BLOCK_ENTITY, SoulWeaverBlockEntity::ticker);
     }
 
     @Override

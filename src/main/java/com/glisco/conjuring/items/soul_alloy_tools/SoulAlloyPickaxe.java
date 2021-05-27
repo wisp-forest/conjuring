@@ -29,7 +29,7 @@ public class SoulAlloyPickaxe extends PickaxeItem implements SoulAlloyTool {
         if (!world.isClient()) {
             SoulDiggerEntity digger = new SoulDiggerEntity(world, user);
             digger.refreshPositionAndAngles(user.getX(), user.getEyeY(), user.getZ(), 0, 0);
-            digger.setProperties(user, user.pitch, user.yaw, 0f, 1.5f, 1);
+            digger.setProperties(user, user.getPitch(), user.getYaw(), 0f, 1.5f, 1);
 
             digger.setItem(user.getStackInHand(hand));
 

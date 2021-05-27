@@ -11,19 +11,20 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class GemTinkererBlockEntity extends BlockEntity implements BlockEntityClientSerializable, Tickable {
+public class GemTinkererBlockEntity extends BlockEntity implements BlockEntityClientSerializable {
 
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(5, ItemStack.EMPTY);
     private int processTick = 0;
@@ -31,28 +32,28 @@ public class GemTinkererBlockEntity extends BlockEntity implements BlockEntityCl
 
     boolean particlesShown = false;
 
-    public GemTinkererBlockEntity() {
-        super(ConjuringCommon.GEM_TINKERER_BLOCK_ENTITY);
+    public GemTinkererBlockEntity(BlockPos pos, BlockState state) {
+        super(ConjuringCommon.GEM_TINKERER_BLOCK_ENTITY, pos, state);
     }
 
     @Override
-    public void fromTag(BlockState state, CompoundTag tag) {
-        super.fromTag(state, tag);
+    public void readNbt(NbtCompound tag) {
+        super.readNbt(tag);
         inventory.clear();
-        Inventories.fromTag(tag, inventory);
+        Inventories.readNbt(tag, inventory);
         processTick = tag.getInt("ProcessTick");
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag tag) {
-        Inventories.toTag(tag, inventory);
+    public NbtCompound writeNbt(NbtCompound tag) {
+        Inventories.writeNbt(tag, inventory);
         tag.putInt("ProcessTick", processTick);
-        return super.toTag(tag);
+        return super.writeNbt(tag);
     }
 
     @Override
-    public void fromClientTag(CompoundTag compoundTag) {
-        fromTag(this.getCachedState(), compoundTag);
+    public void fromClientTag(NbtCompound compoundTag) {
+        readNbt(compoundTag);
     }
 
     public boolean verifyRecipe() {
@@ -107,9 +108,12 @@ public class GemTinkererBlockEntity extends BlockEntity implements BlockEntityCl
         return ActionResult.SUCCESS;
     }
 
+    public static void ticker(World world, BlockPos pos, BlockState state, GemTinkererBlockEntity tinkerer) {
+        tinkerer.tick();
+    }
 
-    @Override
-    public void tick() {
+    //TODO separate client and server ticks
+    public void tick(){
         if (processTick > 0) {
 
             if (processTick == 1 && !world.isClient()) {
@@ -155,8 +159,8 @@ public class GemTinkererBlockEntity extends BlockEntity implements BlockEntityCl
     }
 
     @Override
-    public CompoundTag toClientTag(CompoundTag compoundTag) {
-        return toTag(compoundTag);
+    public NbtCompound toClientTag(NbtCompound compoundTag) {
+        return writeNbt(compoundTag);
     }
 
     public DefaultedList<ItemStack> getInventory() {

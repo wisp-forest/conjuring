@@ -48,7 +48,7 @@ public class SoulAlloyToolAbilities {
 
         List<BlockPos> blocksToDig = new ArrayList<>();
 
-        HitResult target = player.raycast(player.abilities.creativeMode ? 5.0F : 4.5F, 0, false);
+        HitResult target = player.raycast(player.getAbilities().creativeMode ? 5.0F : 4.5F, 0, false);
         if (target.getType() != HitResult.Type.BLOCK) return blocksToDig;
 
         BlockPos hit = ((BlockHitResult) target).getBlockPos();

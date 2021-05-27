@@ -80,7 +80,7 @@ public class SoulWeaverRecipe implements Recipe<Inventory> {
     }
 
     @Environment(EnvType.CLIENT)
-    public ItemStack getRecipeKindIcon() {
+    public ItemStack createIcon() {
         return new ItemStack(ConjuringCommon.SOUL_WEAVER_BLOCK);
     }
 

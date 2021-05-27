@@ -20,7 +20,7 @@ public class GemItem extends Item {
     public final SoulAlloyTool.SoulAlloyModifier modifier;
 
     public GemItem(SoulAlloyTool.SoulAlloyModifier modifier) {
-        super(new Item.Settings().rarity(Rarity.UNCOMMON).group(ConjuringCommon.CONJURING_GROUP));
+        super(new Settings().rarity(Rarity.UNCOMMON).group(ConjuringCommon.CONJURING_GROUP));
         this.modifier = modifier;
     }
 

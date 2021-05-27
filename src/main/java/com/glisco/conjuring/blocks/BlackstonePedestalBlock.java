@@ -14,6 +14,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public class BlackstonePedestalBlock extends BlockWithEntity {
 
@@ -36,12 +37,13 @@ public class BlackstonePedestalBlock extends BlockWithEntity {
 
     //Construction stuff
     public BlackstonePedestalBlock() {
-        super(AbstractBlock.Settings.copy(Blocks.BLACKSTONE).nonOpaque());
+        super(Settings.copy(Blocks.BLACKSTONE).nonOpaque());
     }
 
+    @Nullable
     @Override
-    public BlockEntity createBlockEntity(BlockView world) {
-        return new BlackstonePedestalBlockEntity();
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new BlackstonePedestalBlockEntity(pos, state);
     }
 
     @Override
@@ -54,8 +56,8 @@ public class BlackstonePedestalBlock extends BlockWithEntity {
         return BlockRenderType.MODEL;
     }
 
-
     //Actual Logic
+
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         BlackstonePedestalBlockEntity pedestal = (BlackstonePedestalBlockEntity) world.getBlockEntity(pos);

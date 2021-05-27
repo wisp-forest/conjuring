@@ -23,7 +23,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootGsons;
 import net.minecraft.loot.LootTable;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -33,18 +33,18 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityClientSerializable, Tickable, RitualCore {
+public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityClientSerializable, RitualCore {
 
     private ItemStack item;
     private float itemHeight = 0;
@@ -57,25 +57,25 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
     private float ritualStability = 0.1f;
     private final List<BlockPos> pedestalPositions;
 
-    public SoulFunnelBlockEntity() {
-        super(ConjuringCommon.SOUL_FUNNEL_BLOCK_ENTITY);
+    public SoulFunnelBlockEntity(BlockPos pos, BlockState state) {
+        super(ConjuringCommon.SOUL_FUNNEL_BLOCK_ENTITY, pos, state);
         pedestalPositions = new ArrayList<>();
     }
 
 
     //Data Logic
     @Override
-    public CompoundTag toTag(CompoundTag tag) {
-        super.toTag(tag);
-        CompoundTag item = new CompoundTag();
+    public NbtCompound writeNbt(NbtCompound tag) {
+        super.writeNbt(tag);
+        NbtCompound item = new NbtCompound();
         if (this.item != null) {
-            this.item.toTag(item);
+            this.item.writeNbt(item);
         }
         tag.put("Item", item);
         tag.putInt("Cooldown", slownessCooldown);
 
         if (ritualRunning) {
-            CompoundTag ritual = new CompoundTag();
+            NbtCompound ritual = new NbtCompound();
             ritual.putInt("Tick", ritualTick);
             ritual.putUuid("Entity", ritualEntity);
             ritual.putFloat("ParticleOffset", particleOffset);
@@ -89,13 +89,13 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
     }
 
     @Override
-    public void fromTag(BlockState state, CompoundTag tag) {
-        super.fromTag(state, tag);
+    public void readNbt(NbtCompound tag) {
+        super.readNbt(tag);
 
-        CompoundTag item = tag.getCompound("Item");
+        NbtCompound item = tag.getCompound("Item");
         this.item = null;
         if (!item.isEmpty()) {
-            this.item = ItemStack.fromTag(tag.getCompound("Item"));
+            this.item = ItemStack.fromNbt(tag.getCompound("Item"));
         }
 
         loadPedestals(tag, pedestalPositions);
@@ -105,7 +105,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
         if (tag.contains("Ritual")) {
             ritualRunning = true;
 
-            CompoundTag ritual = tag.getCompound("Ritual");
+            NbtCompound ritual = tag.getCompound("Ritual");
             ritualEntity = ritual.getUuid("Entity");
             ritualTick = ritual.getInt("Tick");
             particleOffset = ritual.getFloat("ParticleOffset");
@@ -120,13 +120,13 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
     }
 
     @Override
-    public void fromClientTag(CompoundTag tag) {
-        this.fromTag(this.getCachedState(), tag);
+    public void fromClientTag(NbtCompound tag) {
+        this.readNbt(tag);
     }
 
     @Override
-    public CompoundTag toClientTag(CompoundTag tag) {
-        return this.toTag(tag);
+    public NbtCompound toClientTag(NbtCompound tag) {
+        return this.writeNbt(tag);
     }
 
     @Override
@@ -138,9 +138,11 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
         }
     }
 
+    public static void ticker(World world, BlockPos pos, BlockState state, SoulFunnelBlockEntity funnel){
+        funnel.tick();
+    }
 
     //Tick Logic
-    @Override
     public void tick() {
         //Ritual tick logic
         if (ritualRunning) {

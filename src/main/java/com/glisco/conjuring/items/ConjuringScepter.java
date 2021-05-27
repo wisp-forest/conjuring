@@ -10,7 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -21,6 +21,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
 public class ConjuringScepter extends Item {
@@ -30,7 +31,7 @@ public class ConjuringScepter extends Item {
     }
 
     public ConjuringScepter() {
-        this(new Item.Settings().group(ConjuringCommon.CONJURING_GROUP).maxCount(1).rarity(Rarity.UNCOMMON));
+        this(new Settings().group(ConjuringCommon.CONJURING_GROUP).maxCount(1).rarity(Rarity.UNCOMMON));
     }
 
     public static boolean isLinking(ItemStack scepter) {
@@ -43,13 +44,13 @@ public class ConjuringScepter extends Item {
     }
 
     public static void startLinking(ItemStack scepter, BlockPos pedestal) {
-        CompoundTag stackTag = scepter.getOrCreateTag();
+        NbtCompound stackTag = scepter.getOrCreateTag();
         stackTag.putIntArray("LinkingFrom", new int[]{pedestal.getX(), pedestal.getY(), pedestal.getZ()});
         scepter.setTag(stackTag);
     }
 
     public static String finishLinking(World world, ItemStack scepter, BlockPos core) {
-        CompoundTag stackTag = scepter.getOrCreateTag();
+        NbtCompound stackTag = scepter.getOrCreateTag();
         if (!isLinking(scepter)) return "INVALID_SCEPTER";
         BlockPos pedestal = getLinkingFrom(scepter);
 
@@ -107,7 +108,7 @@ public class ConjuringScepter extends Item {
         if (!user.isSneaking()) return TypedActionResult.pass(scepter);
         if (!isLinking(scepter)) return TypedActionResult.pass(scepter);
 
-        CompoundTag stackTag = scepter.getOrCreateTag();
+        NbtCompound stackTag = scepter.getOrCreateTag();
         stackTag.remove("LinkingFrom");
         scepter.setTag(stackTag);
 
@@ -134,7 +135,7 @@ public class ConjuringScepter extends Item {
         BlockPos pedestal = getLinkingFrom(stack);
         ClientPlayerEntity player = (ClientPlayerEntity) entity;
 
-        ParticleEffect particle = new DustParticleEffect(1, 1, 1, 1);
+        ParticleEffect particle = new DustParticleEffect(new Vec3f(1, 1, 1), 1);
         ClientParticles.spawnWithOffsetFromBlock(particle, world, pedestal, new Vec3d(0.5, 1.25, 0.5), 0.15);
 
         MutableText linkingFrom = new TranslatableText("item.conjuring.conjuring_scepter.linking");

@@ -69,7 +69,7 @@ public class SoulfireForgeRecipe implements Recipe<Inventory> {
     }
 
     @Environment(EnvType.CLIENT)
-    public ItemStack getRecipeKindIcon() {
+    public ItemStack createIcon() {
         return new ItemStack(ConjuringCommon.SOULFIRE_FORGE_BLOCK);
     }
 

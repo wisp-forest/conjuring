@@ -15,7 +15,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
 import net.minecraft.network.packet.s2c.play.StopSoundS2CPacket;
 import net.minecraft.particle.BlockStateParticleEffect;
@@ -26,16 +26,16 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, BlockEntityClientSerializable, Tickable {
+public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, BlockEntityClientSerializable {
 
     List<BlockPos> pedestals = new ArrayList<>();
     @NotNull
@@ -45,17 +45,17 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
 
     SoulWeaverRecipe cachedRecipe = null;
 
-    public SoulWeaverBlockEntity() {
-        super(ConjuringCommon.SOUL_WEAVER_BLOCK_ENTITY);
+    public SoulWeaverBlockEntity(BlockPos pos, BlockState state) {
+        super(ConjuringCommon.SOUL_WEAVER_BLOCK_ENTITY, pos, state);
     }
 
     @Override
-    public void fromTag(BlockState state, CompoundTag tag) {
-        super.fromTag(state, tag);
+    public void readNbt(NbtCompound tag) {
+        super.readNbt(tag);
         loadPedestals(tag, pedestals);
-        CompoundTag item = tag.getCompound("Item");
+        NbtCompound item = tag.getCompound("Item");
         if (!item.isEmpty()) {
-            this.item = ItemStack.fromTag(tag.getCompound("Item"));
+            this.item = ItemStack.fromNbt(tag.getCompound("Item"));
         } else {
             this.item = ItemStack.EMPTY;
         }
@@ -64,14 +64,14 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag tag) {
+    public NbtCompound writeNbt(NbtCompound tag) {
         savePedestals(tag, pedestals);
-        CompoundTag itemTag = new CompoundTag();
-        if (!item.isEmpty()) item.toTag(itemTag);
+        NbtCompound itemTag = new NbtCompound();
+        if (!item.isEmpty()) item.writeNbt(itemTag);
         tag.put("Item", itemTag);
         tag.putInt("RitualTick", ritualTick);
         tag.putBoolean("Lit", lit);
-        return super.toTag(tag);
+        return super.writeNbt(tag);
     }
 
     public boolean linkPedestal(BlockPos pedestal) {
@@ -141,13 +141,13 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
     }
 
     @Override
-    public void fromClientTag(CompoundTag compoundTag) {
-        fromTag(getCachedState(), compoundTag);
+    public void fromClientTag(NbtCompound compoundTag) {
+        readNbt(compoundTag);
     }
 
     @Override
-    public CompoundTag toClientTag(CompoundTag compoundTag) {
-        return toTag(compoundTag);
+    public NbtCompound toClientTag(NbtCompound compoundTag) {
+        return writeNbt(compoundTag);
     }
 
     public boolean verifyRecipe() {
@@ -177,7 +177,11 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
         return true;
     }
 
-    @Override
+    public static void ticker(World world, BlockPos pos, BlockState state, SoulWeaverBlockEntity weaver){
+        weaver.tick();
+    }
+
+    //TODO separate client and server ticks
     public void tick() {
         if (ritualTick > 0 && ritualTick < 5) {
 

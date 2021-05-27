@@ -11,7 +11,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -39,15 +39,15 @@ public class SoulDiggerEntity extends SoulEntity {
     }
 
     @Override
-    protected void writeCustomDataToTag(CompoundTag tag) {
-        super.writeCustomDataToTag(tag);
-        tag.put("Item", getDataTracker().get(STACK).toTag(new CompoundTag()));
+    protected void writeCustomDataToNbt(NbtCompound tag) {
+        super.writeCustomDataToNbt(tag);
+        tag.put("Item", getDataTracker().get(STACK).writeNbt(new NbtCompound()));
     }
 
     @Override
-    protected void readCustomDataFromTag(CompoundTag tag) {
-        super.readCustomDataFromTag(tag);
-        ItemStack stack = ItemStack.fromTag(tag.getCompound("Item"));
+    protected void readCustomDataFromNbt(NbtCompound tag) {
+        super.readCustomDataFromNbt(tag);
+        ItemStack stack = ItemStack.fromNbt(tag.getCompound("Item"));
         this.setItem(stack.copy());
     }
 
@@ -72,7 +72,7 @@ public class SoulDiggerEntity extends SoulEntity {
             BlockCrawler.crawl(world, pos, getDataTracker().get(STACK), ConjuringCommon.CONFIG.tools_config.pickaxe_veinmine_max_blocks);
         }
 
-        this.remove();
+        this.remove(RemovalReason.KILLED);
     }
 
 }

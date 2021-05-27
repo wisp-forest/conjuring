@@ -4,40 +4,51 @@ import com.glisco.conjuring.blocks.gem_tinkerer.GemTinkererBlockEntity;
 import com.glisco.owo.client.ClientParticles;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.ModelPart;
-import net.minecraft.client.render.*;
-import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
+import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
-public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinkererBlockEntity> {
+import java.util.Collections;
+import java.util.HashMap;
+
+public class GemTinkererBlockEntityRenderer implements BlockEntityRenderer<GemTinkererBlockEntity> {
 
     public static final SpriteIdentifier MODEL_TEXTURE = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("conjuring", "block/gem_tinkerer"));
 
-    private static final ModelPart columnModel = new ModelPart(32, 32, 0, 0);
-    private static final ModelPart mainModel = new ModelPart(32, 32, 8, 0);
+    private static final ModelPart columnModel;
+    private static final ModelPart mainModel;
 
     static {
-        columnModel.addCuboid(0, 0, 0, 2, 6, 2);
-        mainModel.addCuboid(0, 0, 0, 4, 12, 4);
+
+        ModelPart.Cuboid columnCuboid = new ModelPart.Cuboid(0, 0, 0, 0, 0, 2, 6, 2, 0, 0, 0, false, 32, 32);
+        ModelPart.Cuboid mainCuboid = new ModelPart.Cuboid(8, 0, 0, 0, 0, 4, 12, 4, 0, 0, 0, false, 32, 32);
+
+        columnModel = new ModelPart(Collections.singletonList(columnCuboid), new HashMap<>());
+        mainModel = new ModelPart(Collections.singletonList(mainCuboid), new HashMap<>());
+
     }
 
     private static final double twoPi = Math.PI * 2;
     private double scalar = 800;
 
-    public GemTinkererBlockEntityRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher) {
-        super(blockEntityRenderDispatcher);
+    public GemTinkererBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
+
     }
 
     public void render(GemTinkererBlockEntity blockEntity, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
@@ -63,8 +74,8 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
 
         matrixStack.translate(0.125, 0.85, 0.125);
         matrixStack.scale(0.5f, 0.5f, 0.5f);
-        matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(itemRotation));
-        itemRenderer.renderItem(items.get(0), ModelTransformation.Mode.GROUND, i, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
+        matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(itemRotation));
+        itemRenderer.renderItem(items.get(0), ModelTransformation.Mode.GROUND, i, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider, 0);
 
         if (particles) {
             ClientParticles.setParticleCount(20);
@@ -85,8 +96,8 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
 
         matrixStack.translate(0.0625, 0.425, 0.0625);
         matrixStack.scale(0.25f, 0.25f, 0.25f);
-        matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(scaledRotation));
-        itemRenderer.renderItem(items.get(1), ModelTransformation.Mode.GROUND, i, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
+        matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(scaledRotation));
+        itemRenderer.renderItem(items.get(1), ModelTransformation.Mode.GROUND, i, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider, 0);
 
         if (particles && !items.get(1).isEmpty()) spawnItemParticles(world, pos, 0.1, 0.45, 0.5 * twoPi);
 
@@ -101,8 +112,8 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
 
         matrixStack.translate(0.0625, 0.425, 0.0625);
         matrixStack.scale(0.25f, 0.25f, 0.25f);
-        matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(scaledRotation));
-        itemRenderer.renderItem(items.get(2), ModelTransformation.Mode.GROUND, i, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
+        matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(scaledRotation));
+        itemRenderer.renderItem(items.get(2), ModelTransformation.Mode.GROUND, i, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider, 0);
 
         if (particles && !items.get(2).isEmpty()) spawnItemParticles(world, pos, 0.45, 0.1, 1.5 * twoPi);
 
@@ -117,8 +128,8 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
 
         matrixStack.translate(0.0625, 0.425, 0.0625);
         matrixStack.scale(0.25f, 0.25f, 0.25f);
-        matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(scaledRotation));
-        itemRenderer.renderItem(items.get(3), ModelTransformation.Mode.GROUND, i, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
+        matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(scaledRotation));
+        itemRenderer.renderItem(items.get(3), ModelTransformation.Mode.GROUND, i, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider, 0);
 
         if (particles && !items.get(3).isEmpty()) spawnItemParticles(world, pos, 0.45, 0.8, twoPi);
 
@@ -133,8 +144,8 @@ public class GemTinkererBlockEntityRenderer extends BlockEntityRenderer<GemTinke
 
         matrixStack.translate(0.0625, 0.425, 0.0625);
         matrixStack.scale(0.25f, 0.25f, 0.25f);
-        matrixStack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(scaledRotation));
-        itemRenderer.renderItem(items.get(4), ModelTransformation.Mode.GROUND, i, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider);
+        matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(scaledRotation));
+        itemRenderer.renderItem(items.get(4), ModelTransformation.Mode.GROUND, i, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider, 0);
 
         if (particles && !items.get(4).isEmpty()) spawnItemParticles(world, pos, 0.8, 0.45, 0);
 

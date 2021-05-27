@@ -9,13 +9,7 @@
     "ItemAccessor",
     "ItemStackMixin",
     "LivingEntityMixin",
-    "PlayerEntityMixin",
-    "angerables.BeeEntityMixin",
-    "angerables.EndermanEntityMixin",
-    "angerables.IronGolemEntityMixin",
-    "angerables.PolarBearEntityMixin",
-    "angerables.WolfEntityMixin",
-    "angerables.ZombifiedPiglinEntityMixin"
+    "PlayerEntityMixin"
   ],
   "client": [
     "InGameHudMixin",

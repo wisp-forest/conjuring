@@ -1,7 +1,7 @@
 package com.glisco.conjuring.items.soul_alloy_tools;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.*;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public interface SoulAlloyTool {
     }
 
     static void addModifier(ItemStack stack, SoulAlloyModifier modifier) {
-        CompoundTag modifierTag = stack.getOrCreateSubTag("Modifiers");
+        NbtCompound modifierTag = stack.getOrCreateSubTag("Modifiers");
 
         int level = modifierTag.contains(modifier.name()) ? modifierTag.getInt(modifier.name()) : 0;
         level++;
@@ -31,7 +31,7 @@ public interface SoulAlloyTool {
     }
 
     static boolean canAddModifier(ItemStack stack, SoulAlloyModifier modifier) {
-        CompoundTag modifierTag = stack.getOrCreateSubTag("Modifiers");
+        NbtCompound modifierTag = stack.getOrCreateSubTag("Modifiers");
 
         if (modifierTag.getKeys().size() >= 2 && getModifierLevel(stack, modifier) == 0) return false;
 
@@ -65,7 +65,7 @@ public interface SoulAlloyTool {
     static List<Text> getTooltip(ItemStack stack) {
 
         List<Text> tooltip = new ArrayList<>();
-        CompoundTag modifiers = stack.getOrCreateSubTag("Modifiers");
+        NbtCompound modifiers = stack.getOrCreateSubTag("Modifiers");
 
         for (String key : modifiers.getKeys()) {
             final SoulAlloyModifier modifier = SoulAlloyModifier.valueOf(key);
@@ -91,7 +91,7 @@ public interface SoulAlloyTool {
 
     static HashMap<SoulAlloyModifier, Integer> getModifiers(ItemStack stack) {
         HashMap<SoulAlloyModifier, Integer> modifierMap = new HashMap<>();
-        CompoundTag modifierTag = stack.getOrCreateSubTag("Modifiers");
+        NbtCompound modifierTag = stack.getOrCreateSubTag("Modifiers");
         modifierTag.getKeys().forEach(s -> modifierMap.put(SoulAlloyModifier.valueOf(s), modifierTag.getInt(s)));
         return modifierMap;
     }

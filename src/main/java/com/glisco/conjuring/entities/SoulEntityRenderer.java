@@ -2,28 +2,29 @@ package com.glisco.conjuring.entities;
 
 import com.glisco.owo.client.ClientParticles;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.options.ParticlesMode;
+import net.minecraft.client.option.ParticlesMode;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
+import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
 public class SoulEntityRenderer extends EntityRenderer<SoulEntity> {
 
-    public SoulEntityRenderer(EntityRenderDispatcher dispatcher) {
-        super(dispatcher);
+    public SoulEntityRenderer(EntityRendererFactory.Context context) {
+        super(context);
     }
 
     @Override
     public void render(SoulEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
 
-        ParticleEffect dust = new DustParticleEffect(0.5f, 1f, 1f, 0.75f);
+        ParticleEffect dust = new DustParticleEffect(new Vec3f(0.5f, 1f, 1f), 0.75f);
 
         World world = MinecraftClient.getInstance().world;
         boolean allParticles = MinecraftClient.getInstance().options.particles == ParticlesMode.ALL;

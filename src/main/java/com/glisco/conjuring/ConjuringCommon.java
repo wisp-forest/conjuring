@@ -25,8 +25,6 @@ import com.glisco.conjuring.entities.SoulMagnetEntity;
 import com.glisco.conjuring.entities.SoulProjectileEntity;
 import com.glisco.conjuring.items.*;
 import com.glisco.conjuring.items.soul_alloy_tools.*;
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -34,6 +32,7 @@ import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.advancement.CriterionRegistry;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.block.Block;
@@ -42,10 +41,13 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.item.*;
-import net.minecraft.loot.ConstantLootTableRange;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.loot.condition.RandomChanceLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
+import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
@@ -162,27 +164,27 @@ public class ConjuringCommon implements ModInitializer {
     @Override
     public void onInitialize() {
 
-        CONJURER_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:conjurer", BlockEntityType.Builder.create(ConjurerBlockEntity::new, CONJURER_BLOCK).build(null));
+        CONJURER_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:conjurer", FabricBlockEntityTypeBuilder.create(ConjurerBlockEntity::new, CONJURER_BLOCK).build());
         Registry.register(Registry.BLOCK, new Identifier("conjuring", "conjurer"), CONJURER_BLOCK);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "conjurer"), new BlockItem(CONJURER_BLOCK, new Item.Settings().group(ConjuringCommon.CONJURING_GROUP).rarity(Rarity.UNCOMMON)));
 
-        SOULFIRE_FORGE_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:soulfire_forge", BlockEntityType.Builder.create(SoulfireForgeBlockEntity::new, SOULFIRE_FORGE_BLOCK).build(null));
+        SOULFIRE_FORGE_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:soulfire_forge", FabricBlockEntityTypeBuilder.create(SoulfireForgeBlockEntity::new, SOULFIRE_FORGE_BLOCK).build());
         Registry.register(Registry.BLOCK, new Identifier("conjuring", "soulfire_forge"), SOULFIRE_FORGE_BLOCK);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soulfire_forge"), new BlockItem(SOULFIRE_FORGE_BLOCK, new Item.Settings().group(ConjuringCommon.CONJURING_GROUP)));
 
-        BLACKSTONE_PEDESTAL_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:blackstone_pedestal", BlockEntityType.Builder.create(BlackstonePedestalBlockEntity::new, BLACKSTONE_PEDESTAL_BLOCK).build(null));
+        BLACKSTONE_PEDESTAL_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:blackstone_pedestal", FabricBlockEntityTypeBuilder.create(BlackstonePedestalBlockEntity::new, BLACKSTONE_PEDESTAL_BLOCK).build());
         Registry.register(Registry.BLOCK, new Identifier("conjuring", "blackstone_pedestal"), BLACKSTONE_PEDESTAL_BLOCK);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "blackstone_pedestal"), new BlockItem(BLACKSTONE_PEDESTAL_BLOCK, new Item.Settings().group(ConjuringCommon.CONJURING_GROUP)));
 
-        SOUL_FUNNEL_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:soul_funnel", BlockEntityType.Builder.create(SoulFunnelBlockEntity::new, SOUL_FUNNEL_BLOCK).build(null));
+        SOUL_FUNNEL_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:soul_funnel", FabricBlockEntityTypeBuilder.create(SoulFunnelBlockEntity::new, SOUL_FUNNEL_BLOCK).build());
         Registry.register(Registry.BLOCK, new Identifier("conjuring", "soul_funnel"), SOUL_FUNNEL_BLOCK);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_funnel"), new BlockItem(SOUL_FUNNEL_BLOCK, new Item.Settings().group(ConjuringCommon.CONJURING_GROUP)));
 
-        SOUL_WEAVER_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:soul_weaver", BlockEntityType.Builder.create(SoulWeaverBlockEntity::new, SOUL_WEAVER_BLOCK).build(null));
+        SOUL_WEAVER_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:soul_weaver", FabricBlockEntityTypeBuilder.create(SoulWeaverBlockEntity::new, SOUL_WEAVER_BLOCK).build());
         Registry.register(Registry.BLOCK, new Identifier("conjuring", "soul_weaver"), SOUL_WEAVER_BLOCK);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_weaver"), new BlockItem(SOUL_WEAVER_BLOCK, new Item.Settings().group(ConjuringCommon.CONJURING_GROUP)));
 
-        GEM_TINKERER_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:gem_tinkerer", BlockEntityType.Builder.create(GemTinkererBlockEntity::new, GEM_TINKERER_BLOCK).build(null));
+        GEM_TINKERER_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "conjuring:gem_tinkerer", FabricBlockEntityTypeBuilder.create(GemTinkererBlockEntity::new, GEM_TINKERER_BLOCK).build());
         Registry.register(Registry.BLOCK, new Identifier("conjuring", "gem_tinkerer"), GEM_TINKERER_BLOCK);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "gem_tinkerer"), new BlockItem(GEM_TINKERER_BLOCK, new Item.Settings().group(ConjuringCommon.CONJURING_GROUP)));
 
@@ -230,8 +232,10 @@ public class ConjuringCommon implements ModInitializer {
         Registry.register(Registry.ENTITY_TYPE, new Identifier("conjuring", "soul_digger"), SOUL_DIGGER);
         Registry.register(Registry.ENTITY_TYPE, new Identifier("conjuring", "soul_magnet"), SOUL_MAGNET);
 
-        AutoConfig.register(ConjuringConfig.class, JanksonConfigSerializer::new);
-        CONFIG = AutoConfig.getConfigHolder(ConjuringConfig.class).getConfig();
+//        AutoConfig.register(ConjuringConfig.class, JanksonConfigSerializer::new);
+//        CONFIG = AutoConfig.getConfigHolder(ConjuringConfig.class).getConfig();
+
+        CONFIG = new ConjuringConfig();
 
         ServerTickEvents.END_WORLD_TICK.register(BlockCrawler::tick);
 
@@ -241,27 +245,27 @@ public class ConjuringCommon implements ModInitializer {
 
         LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
             if (new Identifier("minecraft", "blocks/spawner").equals(id)) {
-                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootTableRange.create(1)).withEntry(ItemEntry.builder(CONJURATION_ESSENCE).build());
+                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootNumberProvider.create(1)).withEntry(ItemEntry.builder(CONJURATION_ESSENCE).build());
 
                 supplier.withPool(poolBuilder.build());
             } else if (new Identifier("minecraft", "chests/simple_dungeon").equals(id)) {
-                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootTableRange.create(1)).withEntry(ItemEntry.builder(CONJURATION_ESSENCE).conditionally(RandomChanceLootCondition.builder(0.35f)).build());
+                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootNumberProvider.create(1)).withEntry(ItemEntry.builder(CONJURATION_ESSENCE).conditionally(RandomChanceLootCondition.builder(0.35f)).build());
 
                 supplier.withPool(poolBuilder.build());
             } else if (new Identifier("minecraft", "chests/bastion_treasure").equals(id)) {
-                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootTableRange.create(1)).withEntry(ItemEntry.builder(CONJURATION_ESSENCE).conditionally(RandomChanceLootCondition.builder(0.175f)).build());
+                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootNumberProvider.create(1)).withEntry(ItemEntry.builder(CONJURATION_ESSENCE).conditionally(RandomChanceLootCondition.builder(0.175f)).build());
 
                 supplier.withPool(poolBuilder.build());
             } else if (new Identifier("minecraft", "chests/desert_pyramid").equals(id)) {
-                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootTableRange.create(1)).withEntry(ItemEntry.builder(CONJURATION_ESSENCE).conditionally(RandomChanceLootCondition.builder(0.2f)).build());
+                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootNumberProvider.create(1)).withEntry(ItemEntry.builder(CONJURATION_ESSENCE).conditionally(RandomChanceLootCondition.builder(0.2f)).build());
 
                 supplier.withPool(poolBuilder.build());
             } else if (new Identifier("minecraft", "chests/stronghold_corridor").equals(id)) {
-                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootTableRange.create(1)).withEntry(ItemEntry.builder(CONJURATION_ESSENCE).conditionally(RandomChanceLootCondition.builder(0.2f)).build());
+                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootNumberProvider.create(1)).withEntry(ItemEntry.builder(CONJURATION_ESSENCE).conditionally(RandomChanceLootCondition.builder(0.2f)).build());
 
                 supplier.withPool(poolBuilder.build());
             } else if (new Identifier("minecraft", "chests/stronghold_library").equals(id)) {
-                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootTableRange.create(1)).withEntry(ItemEntry.builder(CONJURATION_ESSENCE).conditionally(RandomChanceLootCondition.builder(0.05f)).build());
+                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootNumberProvider.create(1)).withEntry(ItemEntry.builder(CONJURATION_ESSENCE).conditionally(RandomChanceLootCondition.builder(0.05f)).build());
 
                 supplier.withPool(poolBuilder.build());
             }

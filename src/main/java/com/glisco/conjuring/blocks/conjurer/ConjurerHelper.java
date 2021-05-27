@@ -28,7 +28,7 @@ public class ConjurerHelper {
             entries.add(entry);
 
             conjurer.getLogic().setSpawnPotentials(entries);
-            conjurer.getLogic().setSpawnEntry(entry);
+            conjurer.getLogic().setSpawnEntry(conjurer.getWorld(), conjurer.getPos(), entry);
             conjurer.setActive(true);
 
             conjurer.setRequiresPlayer(focus.getItem() != ConjuringCommon.STABILIZED_CONJURING_FOCUS);
@@ -60,6 +60,6 @@ public class ConjurerHelper {
         conjurer.getLogic().setMaxSpawnDelay(maxSpawnDelay);
         conjurer.getLogic().setMinSpawnDelay(maxSpawnDelay / 4);
         conjurer.getLogic().setSpawnCount(spawnCount);
-        conjurer.getLogic().updateSpawns();
+        conjurer.getLogic().updateSpawns(conjurer.getWorld(), conjurer.getPos());
     }
 }
