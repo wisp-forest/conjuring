@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(targets = "net.minecraft.dispenser.IDispenseItemBehavior$18")
 public class DispenserBehaviorMixin {
 
-    @Inject(method = "dispenseStack", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "dispenseStack(Lnet/minecraft/dispenser/IBlockSource;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/ItemStack;", at = @At("HEAD"), cancellable = true)
     public void checkFroge(IBlockSource pointer, ItemStack stack, CallbackInfoReturnable<ItemStack> cir) {
         Direction direction = pointer.getWorld().getBlockState(pointer.getBlockPos()).get(DispenserBlock.FACING);
         BlockState state = pointer.getWorld().getBlockState(pointer.getBlockPos().offset(direction));

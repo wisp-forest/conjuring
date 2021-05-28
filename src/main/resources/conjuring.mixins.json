@@ -14,6 +14,7 @@
     "ItemAccessor",
     "ItemRendererMixin",
     "ItemStackMixin",
+    "ParticleManagerAccessor",
     "PlayerEntityMixin",
     "RecipeManagerAccessor",
     "SpawnerParticleMixin",
