@@ -16,9 +16,7 @@ public class ConjurerBlockEntityRenderer implements BlockEntityRenderer<Conjurer
     public ConjurerBlockEntityRenderer(BlockEntityRendererFactory.Context context) {}
 
     public void render(ConjurerBlockEntity conjurerBlockEntity, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
-//        System.out.println(conjurerBlockEntity.isActive());
         if (conjurerBlockEntity.isActive()) {
-
 
             matrixStack.push();
 
