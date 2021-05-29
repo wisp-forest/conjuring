@@ -52,6 +52,7 @@ public class ConjuringPlugin implements REIPluginV0 {
         recipeHelper.registerWorkingStations(SOUL_WEAVING, EntryStack.create(ConjuringCommon.BLACKSTONE_PEDESTAL_BLOCK));
 
         recipeHelper.registerRecipeVisibilityHandler((category, display) -> {
+            if(category == null) return ActionResult.PASS;
             if (category.getIdentifier() == SOULFIRE_FORGE) {
                 if (display.getResultingEntries().stream().flatMap(List::stream).anyMatch(entryStack -> entryStack.getItem() == ConjuringCommon.PIZZA))
                     return ActionResult.FAIL;
