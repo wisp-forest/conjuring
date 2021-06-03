@@ -14,7 +14,6 @@
   "client": [
     "InGameHudMixin",
     "ItemRendererMixin",
-    "OverlaySearchFieldSyntaxHighlighterMixin",
     "WorldRendererInvoker",
     "SpawnerParticleMixin",
     "TooltipMixin"
