@@ -1,58 +1,62 @@
 package com.glisco.conjuring.compat.rei;
 
-import net.minecraft.util.Identifier;
+import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.blocks.gem_tinkerer.GemTinkererRecipe;
+import com.glisco.conjuring.blocks.soul_weaver.SoulWeaverRecipe;
+import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeRecipe;
+import dev.architectury.event.EventResult;
+import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
+import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
+import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
+import me.shedaniel.rei.api.client.registry.entry.EntryRegistry;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 
-//import me.shedaniel.rei.api.EntryRegistry;
-//import me.shedaniel.rei.api.EntryStack;
-//import me.shedaniel.rei.api.RecipeHelper;
-//import me.shedaniel.rei.api.plugins.REIPluginV0;
+import java.util.List;
+import java.util.Objects;
 
-public class ConjuringPlugin /*implements REIPluginV0*/ {
+public class ConjuringPlugin implements REIClientPlugin {
 
-    public static final Identifier SOULFIRE_FORGE = new Identifier("conjuring", "soulfire_forge");
-    public static final Identifier GEM_TINKERING = new Identifier("conjuring", "gem_tinkering");
-    public static final Identifier SOUL_WEAVING = new Identifier("conjuring", "soul_weaving");
+    public static final CategoryIdentifier<SoulfireForgeDisplay> SOULFIRE_FORGE = CategoryIdentifier.of("conjuring", "soulfire_forge");
+    public static final CategoryIdentifier<GemTinkeringDisplay> GEM_TINKERING = CategoryIdentifier.of("conjuring", "gem_tinkering");
+    public static final CategoryIdentifier<SoulWeavingDisplay> SOUL_WEAVING = CategoryIdentifier.of("conjuring", "soul_weaving");
 
-//    @Override
-//    public Identifier getPluginIdentifier() {
-//        return new Identifier("conjuring", "conjuring_plugin");
-//    }
-//
-//    @Override
-//    public void registerPluginCategories(RecipeHelper recipeHelper) {
-//        recipeHelper.registerCategory(new GemTinkeringCategory());
-//        recipeHelper.registerCategory(new SoulWeavingCategory());
-//        recipeHelper.registerCategory(new SoulfireForgeCategory());
-//    }
-//
-//    @Override
-//    public void registerRecipeDisplays(RecipeHelper recipeHelper) {
-//        recipeHelper.registerRecipes(SOULFIRE_FORGE, SoulfireForgeRecipe.class, SoulfireForgeDisplay::new);
-//        recipeHelper.registerRecipes(GEM_TINKERING, GemTinkererRecipe.class, GemTinkeringDisplay::new);
-//        recipeHelper.registerRecipes(SOUL_WEAVING, SoulWeaverRecipe.class, SoulWeavingDisplay::new);
-//    }
-//
-//    @Override
-//    public void registerEntries(EntryRegistry entryRegistry) {
-//        entryRegistry.removeEntry(EntryStack.create(ConjuringCommon.PIZZA));
-//    }
-//
-//    @Override
-//    public void registerOthers(RecipeHelper recipeHelper) {
-//        recipeHelper.registerWorkingStations(SOULFIRE_FORGE, EntryStack.create(ConjuringCommon.SOULFIRE_FORGE_BLOCK));
-//        recipeHelper.registerWorkingStations(GEM_TINKERING, EntryStack.create(ConjuringCommon.GEM_TINKERER_BLOCK));
-//        recipeHelper.registerWorkingStations(SOUL_WEAVING, EntryStack.create(ConjuringCommon.SOUL_WEAVER_BLOCK));
-//        recipeHelper.registerWorkingStations(SOUL_WEAVING, EntryStack.create(ConjuringCommon.BLACKSTONE_PEDESTAL_BLOCK));
-//
-//        recipeHelper.registerRecipeVisibilityHandler((category, display) -> {
-//            if (category.getIdentifier() == SOULFIRE_FORGE) {
-//                if (display.getResultingEntries().stream().flatMap(List::stream).anyMatch(entryStack -> entryStack.getItem() == ConjuringCommon.PIZZA))
-//                    return ActionResult.FAIL;
-//            } else if (category.getIdentifier() == GEM_TINKERING) {
-//                if (display.getResultingEntries().stream().flatMap(List::stream).anyMatch(entryStack -> entryStack.getItem() == Items.COOKIE))
-//                    return ActionResult.FAIL;
-//            }
-//            return ActionResult.PASS;
-//        });
-//    }
+    @Override
+    public void registerCategories(CategoryRegistry registry) {
+        registry.add(new GemTinkeringCategory());
+        registry.add(new SoulWeavingCategory());
+        registry.add(new SoulfireForgeCategory());
+
+        registry.addWorkstations(SOULFIRE_FORGE, EntryStacks.of(ConjuringCommon.SOULFIRE_FORGE_BLOCK));
+        registry.addWorkstations(GEM_TINKERING, EntryStacks.of(ConjuringCommon.GEM_TINKERER_BLOCK));
+        registry.addWorkstations(SOUL_WEAVING, EntryStacks.of(ConjuringCommon.SOUL_WEAVER_BLOCK));
+        registry.addWorkstations(SOUL_WEAVING, EntryStacks.of(ConjuringCommon.BLACKSTONE_PEDESTAL_BLOCK));
+    }
+
+    @Override
+    public void registerDisplays(DisplayRegistry registry) {
+        registry.registerFiller(SoulfireForgeRecipe.class, SoulfireForgeDisplay::new);
+        registry.registerFiller(GemTinkererRecipe.class, GemTinkeringDisplay::new);
+        registry.registerFiller(SoulWeaverRecipe.class, SoulWeavingDisplay::new);
+
+        registry.registerVisibilityPredicate((category, display) -> {
+            if (Objects.equals(category.getCategoryIdentifier(), SOULFIRE_FORGE)) {
+                if (display.getOutputEntries().stream().flatMap(List::stream)
+                        .anyMatch(entryStack -> entryStack.getValue() instanceof ItemStack stack && stack.getItem() == ConjuringCommon.PIZZA))
+                    return EventResult.interruptFalse();
+            } else if (Objects.equals(category.getCategoryIdentifier(), GEM_TINKERING)) {
+                if (display.getOutputEntries().stream().flatMap(List::stream)
+                        .anyMatch(entryStack -> entryStack.getValue() instanceof ItemStack stack && stack.getItem() == Items.COOKIE))
+                    return EventResult.interruptFalse();
+            }
+            return EventResult.pass();
+        });
+    }
+
+    @Override
+    public void registerEntries(EntryRegistry registry) {
+        registry.removeEntry(EntryStacks.of(ConjuringCommon.PIZZA));
+    }
 }

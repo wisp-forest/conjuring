@@ -38,8 +38,8 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    //modCompileOnly "me.shedaniel:RoughlyEnoughItems-api:5.11.202"
-    //modRuntime "me.shedaniel:RoughlyEnoughItems:5.11.202"
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:6.0.246-alpha"
+    modRuntime "me.shedaniel:RoughlyEnoughItems-fabric:6.0.246-alpha"
 
     //modImplementation "curse.maven:modmenu-308702:3268909"
 
