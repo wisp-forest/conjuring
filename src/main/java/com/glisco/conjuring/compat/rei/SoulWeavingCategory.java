@@ -29,7 +29,7 @@ public class SoulWeavingCategory implements DisplayCategory<SoulWeavingDisplay> 
 
     @Override
     public Renderer getIcon() {
-        return EntryStacks.of(ConjuringCommon.SOULFIRE_FORGE_BLOCK);
+        return EntryStacks.of(ConjuringCommon.SOUL_WEAVER_BLOCK);
     }
 
     @Override

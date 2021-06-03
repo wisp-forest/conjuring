@@ -39,7 +39,7 @@ public class GemTinkeringCategory implements DisplayCategory<GemTinkeringDisplay
 
     @Override
     public Renderer getIcon() {
-        return EntryStacks.of(ConjuringCommon.SOULFIRE_FORGE_BLOCK);
+        return EntryStacks.of(ConjuringCommon.GEM_TINKERER_BLOCK);
     }
 
     @Override

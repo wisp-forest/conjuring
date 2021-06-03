@@ -47,10 +47,10 @@ public class EntityCreatePacket {
         float pitch = (buffer.readByte() * 360f) / 256f;
         float yaw = (buffer.readByte() * 360f) / 256f;
 
-        ClientWorld world = MinecraftClient.getInstance().world;
+        ClientWorld world = client.world;
         Entity e = entityType.create(world);
 
-        MinecraftClient.getInstance().execute(() -> {
+        client.execute(() -> {
             if (e != null) {
                 e.setEntityId(entityID);
                 e.setUuid(uuid);
