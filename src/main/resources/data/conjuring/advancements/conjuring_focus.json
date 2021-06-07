@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "conjuring:conjuring_focus"
+            "items": [
+              "conjuring:conjuring_focus"
+            ]
           }
         ]
       }

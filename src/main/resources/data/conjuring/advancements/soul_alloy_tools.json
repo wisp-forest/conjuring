@@ -16,42 +16,17 @@
     "hidden": false
   },
   "criteria": {
-    "soul_alloy_sword": {
+    "soul_alloy_tool": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "conjuring:soul_alloy_sword"
-          }
-        ]
-      }
-    },
-    "soul_alloy_shovel": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "item": "conjuring:soul_alloy_shovel"
-          }
-        ]
-      }
-    },
-    "soul_alloy_hatchet": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "item": "conjuring:soul_alloy_hatchet"
-          }
-        ]
-      }
-    },
-    "soul_alloy_pickaxe": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "item": "conjuring:soul_alloy_pickaxe"
+            "items": [
+              "conjuring:soul_alloy_sword",
+              "conjuring:soul_alloy_shovel",
+              "conjuring:soul_alloy_hatchet",
+              "conjuring:soul_alloy_pickaxe"
+            ]
           }
         ]
       }
@@ -59,10 +34,7 @@
   },
   "requirements": [
     [
-      "soul_alloy_pickaxe",
-      "soul_alloy_shovel",
-      "soul_alloy_hatchet",
-      "soul_alloy_sword"
+      "soul_alloy_tool"
     ]
   ]
 }

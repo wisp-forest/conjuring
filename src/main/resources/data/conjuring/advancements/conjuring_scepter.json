@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "conjuring:conjuring_scepter"
+            "items":[
+              "conjuring:conjuring_scepter"
+            ]
           }
         ]
       }
