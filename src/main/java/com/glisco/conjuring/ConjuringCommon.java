@@ -25,6 +25,8 @@ import com.glisco.conjuring.entities.SoulMagnetEntity;
 import com.glisco.conjuring.entities.SoulProjectileEntity;
 import com.glisco.conjuring.items.*;
 import com.glisco.conjuring.items.soul_alloy_tools.*;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -232,10 +234,8 @@ public class ConjuringCommon implements ModInitializer {
         Registry.register(Registry.ENTITY_TYPE, new Identifier("conjuring", "soul_digger"), SOUL_DIGGER);
         Registry.register(Registry.ENTITY_TYPE, new Identifier("conjuring", "soul_magnet"), SOUL_MAGNET);
 
-//        AutoConfig.register(ConjuringConfig.class, JanksonConfigSerializer::new);
-//        CONFIG = AutoConfig.getConfigHolder(ConjuringConfig.class).getConfig();
-
-        CONFIG = new ConjuringConfig();
+        AutoConfig.register(ConjuringConfig.class, JanksonConfigSerializer::new);
+        CONFIG = AutoConfig.getConfigHolder(ConjuringConfig.class).getConfig();
 
         ServerTickEvents.END_WORLD_TICK.register(BlockCrawler::tick);
 

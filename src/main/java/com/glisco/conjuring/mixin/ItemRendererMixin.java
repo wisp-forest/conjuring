@@ -37,6 +37,5 @@ public abstract class ItemRendererMixin {
         RenderSystem.enableBlend();
         RenderSystem.enableTexture();
         RenderSystem.enableDepthTest();
-
     }
 }

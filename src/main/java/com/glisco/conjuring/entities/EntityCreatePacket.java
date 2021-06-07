@@ -52,7 +52,7 @@ public class EntityCreatePacket {
 
         client.execute(() -> {
             if (e != null) {
-                e.setEntityId(entityID);
+                e.setId(entityID);
                 e.setUuid(uuid);
                 e.setPosition(x, y, z);
                 e.updateTrackedPosition(x, y, z);
