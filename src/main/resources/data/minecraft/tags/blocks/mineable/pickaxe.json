@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "conjuring:blackstone_pedestal",
+    "conjuring:soul_weaver",
+    "conjuring:conjurer",
+    "conjuring:soulfire_forge",
+    "conjuring:gem_tinkerer",
+    "conjuring:soul_funnel"
+  ]
+}

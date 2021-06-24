@@ -15,8 +15,7 @@ import net.minecraft.util.registry.Registry;
 
 public class SoulWeaverRecipeSerializer implements RecipeSerializer<SoulWeaverRecipe> {
 
-    private SoulWeaverRecipeSerializer() {
-    }
+    private SoulWeaverRecipeSerializer() {}
 
     public static final SoulWeaverRecipeSerializer INSTANCE = new SoulWeaverRecipeSerializer();
     public static final Identifier ID = SoulWeaverRecipe.Type.ID;

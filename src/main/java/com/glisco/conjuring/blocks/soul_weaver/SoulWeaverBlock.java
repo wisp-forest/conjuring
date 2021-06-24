@@ -84,7 +84,6 @@ public class SoulWeaverBlock extends BlockWithEntity {
             return ActionResult.SUCCESS;
         }
 
-
         if (weaverItem.isEmpty()) {
             if (playerStack.isEmpty()) return ActionResult.PASS;
 

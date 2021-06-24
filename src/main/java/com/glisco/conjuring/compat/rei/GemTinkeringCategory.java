@@ -101,7 +101,6 @@ public class GemTinkeringCategory implements DisplayCategory<GemTinkeringDisplay
 
         }));
 
-
         for (int i = 0; i < 5; i++) {
 
             int j = i;

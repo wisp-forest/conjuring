@@ -1,7 +1,6 @@
 package com.glisco.conjuring.items.soul_alloy_tools;
 
 import com.glisco.conjuring.ConjuringCommon;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
 
@@ -40,6 +39,6 @@ public class SoulAlloyToolMaterial implements ToolMaterial {
 
     @Override
     public Ingredient getRepairIngredient() {
-        return Ingredient.ofStacks(new ItemStack(ConjuringCommon.SOUL_ALLOY));
+        return Ingredient.ofItems(ConjuringCommon.SOUL_ALLOY);
     }
 }
