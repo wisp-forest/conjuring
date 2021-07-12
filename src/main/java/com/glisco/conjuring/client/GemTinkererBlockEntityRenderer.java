@@ -1,7 +1,7 @@
 package com.glisco.conjuring.client;
 
 import com.glisco.conjuring.blocks.gem_tinkerer.GemTinkererBlockEntity;
-import com.glisco.owo.client.ClientParticles;
+import com.glisco.owo.particles.ClientParticles;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.OverlayTexture;

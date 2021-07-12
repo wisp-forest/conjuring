@@ -1,7 +1,7 @@
 package com.glisco.conjuring.items.soul_alloy_tools;
 
 import com.glisco.conjuring.ConjuringCommon;
-import com.glisco.owo.WorldOps;
+import com.glisco.owo.ops.WorldOps;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Hand;

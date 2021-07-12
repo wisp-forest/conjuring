@@ -2,7 +2,7 @@ package com.glisco.conjuring.blocks;
 
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.items.ConjuringFocus;
-import com.glisco.owo.client.ClientParticles;
+import com.glisco.owo.particles.ClientParticles;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

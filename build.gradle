@@ -46,10 +46,10 @@ dependencies {
     modImplementation "vazkii.patchouli:Patchouli:${project.patchouli_version}"
     include "vazkii.patchouli:Patchouli:${project.patchouli_version}"
 
-    //modImplementation "com.ptsmods:devlogin:1.1"
+    modImplementation "com.ptsmods:devlogin:1.1"
 
-    modImplementation "com.glisco:owo-0.1-dev"
-    include "com.glisco:owo-0.1"
+    modImplementation "com.glisco:owo-0.1.1-dev"
+    include "com.glisco:owo-0.1.1"
 
 }
 

@@ -1,7 +1,7 @@
 package com.glisco.conjuring.entities;
 
 import com.glisco.conjuring.ConjuringCommon;
-import com.glisco.owo.client.ClientParticles;
+import com.glisco.owo.particles.ClientParticles;
 import net.minecraft.entity.*;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleEffect;

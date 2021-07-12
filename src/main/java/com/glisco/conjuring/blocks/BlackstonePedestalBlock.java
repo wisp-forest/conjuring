@@ -1,6 +1,6 @@
 package com.glisco.conjuring.blocks;
 
-import com.glisco.owo.ItemOps;
+import com.glisco.owo.ops.ItemOps;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;

@@ -3,7 +3,7 @@ package com.glisco.conjuring.blocks.soulfire_forge;
 import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.SoulfireForgeScreenHandler;
 import com.glisco.conjuring.blocks.ImplementedInventory;
-import com.glisco.owo.ItemOps;
+import com.glisco.owo.ops.ItemOps;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;

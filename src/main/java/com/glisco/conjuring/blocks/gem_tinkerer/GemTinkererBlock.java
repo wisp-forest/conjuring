@@ -1,7 +1,7 @@
 package com.glisco.conjuring.blocks.gem_tinkerer;
 
 import com.glisco.conjuring.ConjuringCommon;
-import com.glisco.owo.ItemOps;
+import com.glisco.owo.ops.ItemOps;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -53,6 +53,9 @@ public class GemTinkererBlock extends BlockWithEntity {
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+
+        //We dont allow offhand because it confuses people
+        if(hand == Hand.OFF_HAND) return ActionResult.PASS;
 
         GemTinkererBlockEntity tinkerer = (GemTinkererBlockEntity) world.getBlockEntity(pos);
         final Integer sideIndex = SIDE_TO_INDEX.get(hit.getSide());

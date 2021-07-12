@@ -1,10 +1,9 @@
 package com.glisco.conjuring.blocks;
 
 import com.glisco.conjuring.ConjuringCommon;
-import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeBlockEntity;
 import com.glisco.conjuring.items.ConjuringFocus;
 import com.glisco.conjuring.items.ConjuringScepter;
-import com.glisco.owo.client.ClientParticles;
+import com.glisco.owo.particles.ClientParticles;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;

@@ -1,6 +1,6 @@
 package com.glisco.conjuring.entities;
 
-import com.glisco.owo.client.ClientParticles;
+import com.glisco.owo.particles.ClientParticles;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.ParticlesMode;
 import net.minecraft.client.render.VertexConsumerProvider;

@@ -1,7 +1,7 @@
 package com.glisco.conjuring.items.soul_alloy_tools;
 
-import com.glisco.owo.ServerParticles;
-import com.glisco.owo.WorldOps;
+import com.glisco.owo.ops.WorldOps;
+import com.glisco.owo.particles.ServerParticles;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
