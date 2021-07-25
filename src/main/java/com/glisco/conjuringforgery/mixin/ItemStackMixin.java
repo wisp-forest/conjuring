@@ -29,7 +29,7 @@ public class ItemStackMixin {
     @ModifyVariable(method = "attemptDamageItem", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getEnchantmentLevel(Lnet/minecraft/enchantment/Enchantment;Lnet/minecraft/item/ItemStack;)I", shift = At.Shift.AFTER), ordinal = 1)
     public int applyIgnorance(int i) {
         if (!(item instanceof SoulAlloyTool)) return i;
-        if (item == ConjuringForgery.SOUL_ALLOY_SWORD.get()) return i;
+        if (item == ConjuringForgery.getValue(ConjuringForgery.SOUL_ALLOY_SWORD)) return i;
 
         return i + SoulAlloyTool.getModifierLevel((ItemStack) (Object) this, SoulAlloyTool.SoulAlloyModifier.IGNORANCE);
     }
@@ -37,7 +37,7 @@ public class ItemStackMixin {
     @Inject(method = "getAttributeModifiers", at = @At("TAIL"), cancellable = true)
     public void applyHasteSword(EquipmentSlotType equipmentSlot, CallbackInfoReturnable<Multimap<Attribute, AttributeModifier>> cir) {
         if (equipmentSlot != EquipmentSlotType.MAINHAND) return;
-        if (item != ConjuringForgery.SOUL_ALLOY_SWORD.get()) return;
+        if (item != ConjuringForgery.getValue(ConjuringForgery.SOUL_ALLOY_SWORD)) return;
 
         final ItemStack thisStack = (ItemStack) (Object) this;
 

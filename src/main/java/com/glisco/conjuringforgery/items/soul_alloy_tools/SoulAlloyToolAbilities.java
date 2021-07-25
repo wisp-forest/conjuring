@@ -17,11 +17,11 @@ public class SoulAlloyToolAbilities {
     }
 
     public static boolean canArmorPierce(PlayerEntity player) {
-        return player.getHeldItemMainhand().getItem() == ConjuringForgery.SOUL_ALLOY_SWORD.get() && SoulAlloyTool.getModifierLevel(player.getHeldItemMainhand(), SoulAlloyTool.SoulAlloyModifier.IGNORANCE) > 0;
+        return player.getHeldItemMainhand().getItem() == ConjuringForgery.getValue(ConjuringForgery.SOUL_ALLOY_SWORD) && SoulAlloyTool.getModifierLevel(player.getHeldItemMainhand(), SoulAlloyTool.SoulAlloyModifier.IGNORANCE) > 0;
     }
 
     public static boolean canAoeHit(PlayerEntity player) {
-        return player.getHeldItemMainhand().getItem() == ConjuringForgery.SOUL_ALLOY_SWORD.get() && SoulAlloyTool.isSecondaryEnabled(player.getHeldItemMainhand()) && SoulAlloyTool.getModifierLevel(player.getHeldItemMainhand(), SoulAlloyTool.SoulAlloyModifier.SCOPE) > 0;
+        return player.getHeldItemMainhand().getItem() == ConjuringForgery.getValue(ConjuringForgery.SOUL_ALLOY_SWORD) && SoulAlloyTool.isSecondaryEnabled(player.getHeldItemMainhand()) && SoulAlloyTool.getModifierLevel(player.getHeldItemMainhand(), SoulAlloyTool.SoulAlloyModifier.SCOPE) > 0;
     }
 
     public static List<BlockPos> getBlocksToDig(PlayerEntity player) {

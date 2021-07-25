@@ -18,14 +18,14 @@ public class EnchantmentHelperMixin {
     @Inject(method = "getEfficiencyModifier", at = @At("RETURN"), cancellable = true)
     private static void applyHaste(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
         if (!(entity.getHeldItemMainhand().getItem() instanceof SoulAlloyTool)) return;
-        if (entity.getHeldItemMainhand().getItem() == ConjuringForgery.SOUL_ALLOY_SWORD.get()) return;
+        if (entity.getHeldItemMainhand().getItem() == ConjuringForgery.getValue(ConjuringForgery.SOUL_ALLOY_SWORD)) return;
 
         cir.setReturnValue(cir.getReturnValue() + SoulAlloyTool.getModifierLevel(entity.getHeldItemMainhand(), SoulAlloyTool.SoulAlloyModifier.HASTE));
     }
 
     @Inject(method = "getLootingModifier", at = @At("RETURN"), cancellable = true)
     private static void applyAbundanceLooting(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
-        if (!(entity.getHeldItemMainhand().getItem() == ConjuringForgery.SOUL_ALLOY_SWORD.get() || entity.getHeldItemMainhand().getItem() == ConjuringForgery.SOUL_ALLOY_HATCHET.get()))
+        if (!(entity.getHeldItemMainhand().getItem() == ConjuringForgery.getValue(ConjuringForgery.SOUL_ALLOY_SWORD) || entity.getHeldItemMainhand().getItem() == ConjuringForgery.getValue(ConjuringForgery.SOUL_ALLOY_HATCHET)))
             return;
         cir.setReturnValue(cir.getReturnValue() + SoulAlloyTool.getModifierLevel(entity.getHeldItemMainhand(), SoulAlloyTool.SoulAlloyModifier.ABUNDANCE));
     }
@@ -33,7 +33,7 @@ public class EnchantmentHelperMixin {
     @Inject(method = "getEnchantmentLevel", at = @At(value = "RETURN"), cancellable = true)
     private static void applyAbundanceFortune(Enchantment enchantment, ItemStack stack, CallbackInfoReturnable<Integer> cir) {
         if (enchantment != Enchantments.FORTUNE) return;
-        if (!(stack.getItem() == ConjuringForgery.SOUL_ALLOY_PICKAXE.get() || stack.getItem() == ConjuringForgery.SOUL_ALLOY_SHOVEL.get())) return;
+        if (!(stack.getItem() == ConjuringForgery.getValue(ConjuringForgery.SOUL_ALLOY_PICKAXE) || stack.getItem() == ConjuringForgery.getValue(ConjuringForgery.SOUL_ALLOY_SHOVEL))) return;
 
         cir.setReturnValue(cir.getReturnValue() + SoulAlloyTool.getModifierLevel(stack, SoulAlloyTool.SoulAlloyModifier.ABUNDANCE));
     }

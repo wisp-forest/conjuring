@@ -20,7 +20,7 @@ public class InGameHudMixin {
 
     @ModifyVariable(method = "renderCrosshair", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/IngameGui;scaledHeight:I", opcode = Opcodes.GETFIELD), ordinal = 0)
     public boolean showAttackIndicator(boolean showIndicator) {
-        if (this.mc.player.getHeldItemMainhand().getItem() != ConjuringForgery.SOUL_ALLOY_SWORD.get()) return showIndicator;
+        if (this.mc.player.getHeldItemMainhand().getItem() != ConjuringForgery.getValue(ConjuringForgery.SOUL_ALLOY_SWORD)) return showIndicator;
         return this.mc.player.getCooledAttackStrength(0) == 1 && this.mc.pointedEntity != null && this.mc.pointedEntity instanceof LivingEntity;
     }
 

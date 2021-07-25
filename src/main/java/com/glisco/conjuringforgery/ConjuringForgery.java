@@ -18,24 +18,21 @@ import com.glisco.conjuringforgery.blocks.soulfireForge.SoulfireForgeBlock;
 import com.glisco.conjuringforgery.blocks.soulfireForge.SoulfireForgeRecipe;
 import com.glisco.conjuringforgery.blocks.soulfireForge.SoulfireForgeRecipeSerializer;
 import com.glisco.conjuringforgery.blocks.soulfireForge.SoulfireForgeTileEntity;
-import com.glisco.conjuringforgery.client.*;
 import com.glisco.conjuringforgery.compat.config.ConjuringConfig;
-import com.glisco.conjuringforgery.entities.*;
+import com.glisco.conjuringforgery.entities.SoulDiggerEntity;
+import com.glisco.conjuringforgery.entities.SoulFellerEntity;
+import com.glisco.conjuringforgery.entities.SoulMagnetEntity;
+import com.glisco.conjuringforgery.entities.SoulProjectileEntity;
 import com.glisco.conjuringforgery.items.*;
 import com.glisco.conjuringforgery.items.soul_alloy_tools.*;
 import com.glisco.owo.ServerParticles;
 import com.glisco.owo.VectorSerializer;
 import com.glisco.owo.WorldOps;
-import com.glisco.owo.client.ClientParticles;
 import com.google.gson.JsonObject;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
-import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -47,12 +44,10 @@ import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.loot.ItemLootEntry;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.conditions.RandomChance;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -70,8 +65,6 @@ import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -81,10 +74,13 @@ import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.glfw.GLFW;
+import sun.misc.Unsafe;
 
+import java.lang.invoke.MethodHandles.Lookup;
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,6 +89,21 @@ public class ConjuringForgery {
 
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
+    private static final Unsafe VERY_SAFE;
+
+    static {
+        Unsafe MAYBE_SAFE;
+
+        try {
+            Field f = Unsafe.class.getDeclaredField("theUnsafe");
+            f.setAccessible(true);
+            MAYBE_SAFE = (Unsafe) f.get(null);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            MAYBE_SAFE = null;
+        }
+
+        VERY_SAFE = MAYBE_SAFE;
+    }
 
     public static final String MODID = "conjuring";
 
@@ -276,6 +287,15 @@ public class ConjuringForgery {
         SOUNDS.register(FMLJavaModLoadingContext.get().getModEventBus());
 
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () -> (minecraft, screen) -> AutoConfig.getConfigScreen(ConjuringConfig.class, screen).get());
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends IForgeRegistryEntry<? super T>> T getValue(RegistryObject<T> object) {
+        try {
+            return (T) VERY_SAFE.getObject(object, VERY_SAFE.objectFieldOffset(object.getClass().getDeclaredField("value")));
+        } catch (NoSuchFieldException e) {
+            return null;
+        }
     }
 
     private void setup(final FMLCommonSetupEvent event) {
