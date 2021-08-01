@@ -68,7 +68,6 @@ public class SoulFunnelBlock extends BlockWithEntity {
     }
 
     //BlockState shit
-
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(FILLED);
@@ -80,7 +79,6 @@ public class SoulFunnelBlock extends BlockWithEntity {
     }
 
     //Actual Logic
-
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 
@@ -137,7 +135,7 @@ public class SoulFunnelBlock extends BlockWithEntity {
         ItemStack funnelFocus = funnel.getItem();
 
         if (funnelFocus == null) {
-            if (!(playerStack.getItem() instanceof ConjuringFocus) || !playerStack.getOrCreateTag().getCompound("Entity").isEmpty())
+            if (!(playerStack.getItem() instanceof ConjuringFocus))
                 return ActionResult.PASS;
 
             if (!world.isClient()) {

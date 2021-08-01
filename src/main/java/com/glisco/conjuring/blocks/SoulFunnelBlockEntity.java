@@ -11,7 +11,10 @@ import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -43,6 +46,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Function;
 
 public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityClientSerializable, RitualCore {
 
@@ -138,7 +142,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
         }
     }
 
-    public static void ticker(World world, BlockPos pos, BlockState state, SoulFunnelBlockEntity funnel){
+    public static void ticker(World world, BlockPos pos, BlockState state, SoulFunnelBlockEntity funnel) {
         funnel.tick();
     }
 
@@ -275,10 +279,40 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
 
         if (item == null) return false;
 
-        if (world.getOtherEntities(null, new Box(pos, pos.add(1, 3, 1))).isEmpty()) return false;
-        Entity e = world.getOtherEntities(null, new Box(pos, pos.add(1, 3, 1))).get(0);
+        if (world.getOtherEntities(player, new Box(pos, pos.add(1, 3, 1))).isEmpty()) return false;
+        Entity e = world.getOtherEntities(player, new Box(pos, pos.add(1, 3, 1))).get(0);
+
+        if (e instanceof ItemEntity item && item.getStack().isOf(ConjuringCommon.DISTILLED_SPIRIT) && this.item != null) {
+
+            final MobEntity newEntity = (MobEntity) EntityType.loadEntityWithPassengers(this.item.getTag().getCompound("Entity"), world, Function.identity());
+
+            if (newEntity == null) return false;
+
+            final var health = newEntity.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+            health.setBaseValue(health.getBaseValue() * 1.5);
+            newEntity.setHealth(newEntity.getMaxHealth());
+
+            final var attackDamage = newEntity.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+            if (attackDamage != null) attackDamage.setBaseValue(attackDamage.getBaseValue() * 1.5);
+
+            newEntity.updatePosition(pos.getX(), pos.getY() + 1, pos.getZ());
+            world.spawnEntity(newEntity);
+
+            world.syncWorldEvent(9005, pos.add(0, 1, 0), 1);
+            world.syncWorldEvent(9007, pos.add(0, 1, 0), 1);
+
+            ItemScatterer.spawn(world, pos.getX(), pos.getY() + 0.75, pos.getZ(), new ItemStack(this.item.getItem()));
+
+            item.discard();
+            this.item = null;
+            markDirty();
+            return true;
+        }
+
         if (!(e instanceof MobEntity) || ConjuringCommon.CONFIG.conjurer_config.conjurer_blacklist.contains(Registry.ENTITY_TYPE.getId(e.getType()).toString()))
             return false;
+
+        if (item.getTag().contains("Enitity")) return false;
 
         if (!world.isClient()) {
             this.ritualRunning = true;

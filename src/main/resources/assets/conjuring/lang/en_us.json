@@ -25,6 +25,8 @@
   "item.conjuring.scope_charm": "Scope Charm",
   "item.conjuring.gem_socket": "Gem Socket",
   "item.conjuring.enchiridion": "Conjuring Enchiridion",
+  "item.conjuring.distilled_spirit": "Distilled Spirit",
+  "text.conjuring.distilled_spirit_tooltip": "Smells strange. Maybe don't drink it",
 
   "item.conjuring.haste_gem": "Aspect Gem",
   "item.conjuring.abundance_gem": "Aspect Gem",
@@ -34,6 +36,10 @@
   "modifier.conjuring.abundance": "ღ Abundance",
   "modifier.conjuring.ignorance": "ʊ Ignorance",
   "modifier.conjuring.scope": "λ Scope",
+  "modifier.conjuring.haste.description": "Decreases the Conjurer's cycle time",
+  "modifier.conjuring.abundance.description": "Increases the Conjurer's spawns per cycle",
+  "modifier.conjuring.ignorance.description": "Decreases the Conjurer's crowd awareness",
+  "modifier.conjuring.scope.description": "Increases the Conjurer's player awareness",
 
   "item.conjuring.soul_alloy_hatchet": "Soul Alloy Hatchet",
   "item.conjuring.soul_alloy_sword": "Soul Alloy Sword",

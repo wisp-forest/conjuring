@@ -79,8 +79,8 @@ public class ConjuringCommon implements ModInitializer {
                     itemStacks.add(14, ItemStack.EMPTY);
                 }
 
-                for (int i = 0; i < 5; i++) {
-                    itemStacks.add(22, ItemStack.EMPTY);
+                for (int i = 0; i < 4; i++) {
+                    itemStacks.add(23, ItemStack.EMPTY);
                 }
 
                 for (int i = 0; i < 4; i++) {
@@ -94,6 +94,7 @@ public class ConjuringCommon implements ModInitializer {
     public static Item SUPERIOR_CONJURING_SCEPTER = new SuperiorConjuringScepter();
     public static Item CONJURATION_ESSENCE = new ConjurationEssence();
     public static Item LESSER_CONJURATION_ESSENCE = new LesserConjurationEssence();
+    public static Item DISTILLED_SPIRIT = new DistilledSpiritItem();
 
     public static Item CONJURING_FOCUS = new ConjuringFocus();
     public static Item STABILIZED_CONJURING_FOCUS = new ConjuringFocus() {
@@ -208,6 +209,7 @@ public class ConjuringCommon implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier("conjuring", "soul_rod"), SOUL_ROD);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "conjuration_essence"), CONJURATION_ESSENCE);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "lesser_conjuration_essence"), LESSER_CONJURATION_ESSENCE);
+        Registry.register(Registry.ITEM, new Identifier("conjuring", "distilled_spirit"), DISTILLED_SPIRIT);
 
         Registry.register(Registry.ITEM, new Identifier("conjuring", "gem_socket"), GEM_SOCKET);
         Registry.register(Registry.ITEM, new Identifier("conjuring", "haste_charm"), HASTE_CHARM);

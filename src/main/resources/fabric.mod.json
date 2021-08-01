@@ -18,6 +18,7 @@
   "icon": "assets/conjuring/icon.png",
   "accessWidener": "conjuring.accesswidener",
   "environment": "*",
+  "license": "MIT",
   "entrypoints": {
     "client": [
       "com.glisco.conjuring.client.ConjuringClient"
