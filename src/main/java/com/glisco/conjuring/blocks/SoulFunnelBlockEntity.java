@@ -312,7 +312,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
         if (!(e instanceof MobEntity) || ConjuringCommon.CONFIG.conjurer_config.conjurer_blacklist.contains(Registry.ENTITY_TYPE.getId(e.getType()).toString()))
             return false;
 
-        if (item.getTag().contains("Enitity")) return false;
+        if (item.getOrCreateTag().contains("Entity")) return false;
 
         if (!world.isClient()) {
             this.ritualRunning = true;
