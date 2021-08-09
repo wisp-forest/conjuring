@@ -74,6 +74,9 @@ public class ConjurerBlockEntity extends BlockEntity implements ImplementedInven
 
     public void setActive(boolean active) {
         this.logic.setActive(active);
+
+        if (this.world == null) return;
+        this.world.setBlockState(pos, this.world.getBlockState(pos).with(ConjurerBlock.ACTIVE, active));
     }
 
     public void setRequiresPlayer(boolean requiresPlayer) {

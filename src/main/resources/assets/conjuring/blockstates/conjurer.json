@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "active=true": {
       "model": "conjuring:block/conjurer"
+    },
+    "active=false": {
+      "model": "conjuring:block/conjurer_off"
     }
   }
 }

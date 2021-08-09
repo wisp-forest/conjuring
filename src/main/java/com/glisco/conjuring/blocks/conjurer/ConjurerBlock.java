@@ -5,16 +5,15 @@ import com.glisco.conjuring.items.ConjuringScepter;
 import com.glisco.conjuring.items.SuperiorConjuringScepter;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
-import net.minecraft.block.Material;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
@@ -25,12 +24,19 @@ import org.jetbrains.annotations.Nullable;
 
 public class ConjurerBlock extends BlockWithEntity {
 
+    public static final BooleanProperty ACTIVE = BooleanProperty.of("active");
+
     public ConjurerBlock(Settings settings) {
         super(settings);
     }
 
     public ConjurerBlock() {
-        this(FabricBlockSettings.of(Material.METAL).requiresTool().strength(5.0F).sounds(BlockSoundGroup.METAL).nonOpaque().breakByTool(FabricToolTags.PICKAXES, 2));
+        this(FabricBlockSettings.of(Material.METAL).requiresTool().strength(5.0F).sounds(BlockSoundGroup.METAL).nonOpaque().breakByTool(FabricToolTags.PICKAXES, 2).luminance(ConjurerBlock::getLuminance));
+        setDefaultState(getDefaultState().with(ACTIVE, false));
+    }
+
+    private static int getLuminance(BlockState state) {
+        return state.get(ACTIVE) ? 7 : 0;
     }
 
     @Nullable
@@ -65,6 +71,11 @@ public class ConjurerBlock extends BlockWithEntity {
         }
 
         return ActionResult.SUCCESS;
+    }
+
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(ACTIVE);
     }
 
     @Override
