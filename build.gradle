@@ -48,8 +48,8 @@ dependencies {
 
     modImplementation "com.ptsmods:devlogin:1.1"
 
-    modImplementation "com.glisco:owo-0.1.1-dev"
-    include "com.glisco:owo-0.1.1"
+    modImplementation "com.glisco:owo-0.2.1-dev"
+    include "com.glisco:owo-0.2.1"
 
 }
 

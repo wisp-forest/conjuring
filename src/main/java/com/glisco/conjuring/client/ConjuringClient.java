@@ -28,6 +28,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -94,9 +95,9 @@ public class ConjuringClient implements ClientModInitializer {
 
         ServerParticles.registerClientSideHandler(new Identifier("conjuring", "line"), (client, pos, data) -> {
 
-            JsonObject object = ServerParticles.NETWORK_GSON.fromJson(data.readString(), JsonObject.class);
-            Vec3d start = VectorSerializer.fromJson(object, "start");
-            Vec3d end = VectorSerializer.fromJson(object, "end");
+            NbtCompound ntb = data.readNbt();
+            Vec3d start = VectorSerializer.get(ntb, "start");
+            Vec3d end = VectorSerializer.get(ntb, "end");
 
             client.execute(() -> {
                 ClientParticles.setParticleCount(15);

@@ -46,7 +46,7 @@ public class SoulEntityRenderer extends EntityRenderer<SoulEntity> {
         Vec3d currentRenderPosition = last.add(increment);
         for (int j = 0; j < Math.round(direction.length() * 4); j++) {
 
-            ClientParticles.spawnWithMaxAge(ParticleTypes.SOUL_FIRE_FLAME, world, currentRenderPosition, world.random.nextInt((10 + entity.age)));
+            ClientParticles.spawnWithMaxAge(ParticleTypes.SOUL_FIRE_FLAME, currentRenderPosition, world.random.nextInt((10 + entity.age)));
             if (allParticles) ClientParticles.spawn(dust, world, currentRenderPosition, 0.35);
 
             currentRenderPosition = currentRenderPosition.add(increment);

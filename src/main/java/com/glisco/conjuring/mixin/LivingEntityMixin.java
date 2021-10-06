@@ -13,6 +13,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -68,14 +69,12 @@ public abstract class LivingEntityMixin extends Entity {
             entities.get(i).damage(new CopycatPlayerDamageSource(player), amount * ConjuringCommon.CONFIG.tools_config.sword_scope_damage_multiplier * scopeLevel);
             player.getMainHandStack().damage(4 * scopeLevel, player, playerEntity -> player.sendToolBreakStatus(Hand.MAIN_HAND));
 
-            JsonObject object = new JsonObject();
-            VectorSerializer.toJson(getPos().add(0, 0.25 + random.nextDouble(), 0), object, "start");
-            VectorSerializer.toJson(entities.get(i).getPos().add(0, 0.25 + random.nextDouble(), 0), object, "end");
+            NbtCompound nbt = new NbtCompound();
+            VectorSerializer.store(getPos().add(0, 0.25 + random.nextDouble(), 0), nbt, "start");
+            VectorSerializer.store(entities.get(i).getPos().add(0, 0.25 + random.nextDouble(), 0), nbt, "end");
 
             if (!world.isClient()) {
-                ServerParticles.issueEvent((ServerWorld) world, getBlockPos(), new Identifier("conjuring", "line"), packetByteBuf -> {
-                    packetByteBuf.writeString(ServerParticles.NETWORK_GSON.toJson(object));
-                });
+                ServerParticles.issueEvent((ServerWorld) world, getBlockPos(), new Identifier("conjuring", "line"), ServerParticles.writeNbt(nbt));
             }
         }
 

@@ -191,7 +191,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
                     BlockPos pVector = pos.subtract(this.pos);
 
                     ClientParticles.setVelocity(new Vec3d(pVector.getX() * 0.115, 0, pVector.getZ() * 0.115));
-                    ClientParticles.spawnWithMaxAge(ParticleTypes.SOUL_FIRE_FLAME, world, Vec3d.of(this.pos).add(0.5, 0.4, 0.5), 10);
+                    ClientParticles.spawnWithMaxAge(ParticleTypes.SOUL_FIRE_FLAME, Vec3d.of(this.pos).add(0.5, 0.4, 0.5), 10);
                 }
 
             }
@@ -236,7 +236,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
                         Vec3d particleOrigin = VectorRandomUtils.getRandomOffset(world, new Vec3d(0.5, 0.3, 0.5).add(Vec3d.of(p)), 0.1);
 
                         ClientParticles.setVelocity(new Vec3d(pVector.getX() * -0.055f, -0.05f, pVector.getZ() * -0.05f));
-                        ClientParticles.spawnWithMaxAge(ParticleTypes.SOUL, world, particleOrigin, 30);
+                        ClientParticles.spawnWithMaxAge(ParticleTypes.SOUL, particleOrigin, 30);
                     }
                 }
 
