@@ -45,7 +45,6 @@ public class ConjurerBlockEntity extends BlockEntity implements ImplementedInven
         super(ConjuringCommon.CONJURER_BLOCK_ENTITY, pos, state);
     }
 
-    //TODO separate client and server ticks, like hard
     public static void tick(World world, BlockPos pos, BlockState state, ConjurerBlockEntity conjurer) {
         if (world.isClient) {
             conjurer.getLogic().clientTick(world, pos);

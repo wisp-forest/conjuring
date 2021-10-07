@@ -46,7 +46,7 @@ public class EnchiridionItem extends Item {
         if (!context.getPlayer().isSneaking()) return ActionResult.PASS;
         if (!context.getWorld().getBlockState(context.getBlockPos()).isOf(Blocks.SNOW_BLOCK)) return ActionResult.PASS;
 
-        final NbtCompound stackTag = context.getStack().getOrCreateTag();
+        final NbtCompound stackTag = context.getStack().getOrCreateNbt();
         stackTag.putBoolean("Sandwich", !stackTag.getBoolean("Sandwich"));
 
         return ActionResult.SUCCESS;
@@ -54,6 +54,6 @@ public class EnchiridionItem extends Item {
 
     @Override
     public Text getName(ItemStack stack) {
-        return stack.getOrCreateTag().getBoolean("Sandwich") ? new LiteralText("Ice Cream Sandwich") : super.getName(stack);
+        return stack.getOrCreateNbt().getBoolean("Sandwich") ? new LiteralText("Ice Cream Sandwich") : super.getName(stack);
     }
 }

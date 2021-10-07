@@ -23,7 +23,6 @@ public class ItemStackMixin {
 
     @Shadow
     @Final
-    @Deprecated
     private Item item;
 
     @ModifyVariable(method = "damage(ILjava/util/Random;Lnet/minecraft/server/network/ServerPlayerEntity;)Z", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getLevel(Lnet/minecraft/enchantment/Enchantment;Lnet/minecraft/item/ItemStack;)I", shift = At.Shift.AFTER), ordinal = 1)

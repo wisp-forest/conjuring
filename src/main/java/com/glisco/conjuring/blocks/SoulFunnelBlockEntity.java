@@ -1,6 +1,7 @@
 package com.glisco.conjuring.blocks;
 
 import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.blocks.gem_tinkerer.GemTinkererBlockEntity;
 import com.glisco.conjuring.items.ConjuringFocus;
 import com.glisco.owo.particles.ClientParticles;
 import com.google.gson.Gson;
@@ -10,6 +11,7 @@ import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
@@ -49,6 +51,9 @@ import java.util.UUID;
 import java.util.function.Function;
 
 public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityClientSerializable, RitualCore {
+
+    public static final BlockEntityTicker<SoulFunnelBlockEntity> SERVER_TICKER = (world1, pos1, state, blockEntity) -> blockEntity.tickServer();
+    public static final BlockEntityTicker<SoulFunnelBlockEntity> CLIENT_TICKER = (world1, pos1, state, blockEntity) -> blockEntity.tickClient();
 
     private ItemStack item;
     private float itemHeight = 0;
@@ -142,122 +147,120 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
         }
     }
 
-    public static void ticker(World world, BlockPos pos, BlockState state, SoulFunnelBlockEntity funnel) {
-        funnel.tick();
+    public void tickClient() {
+        itemHeight = itemHeight >= 100 ? 0 : itemHeight + 1;
+
+        if (!ritualRunning) return;
+
+        //Ritual tick logic
+        ritualTick++;
+
+        if (ritualTick == 1) {
+            world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1, 1, false);
+        } else if (ritualTick > 20 && ritualTick <= 80) {
+
+            for (BlockPos pos : pedestalPositions) {
+                if (!(world.getBlockEntity(pos) instanceof BlackstonePedestalBlockEntity)) continue;
+                if (!((BlackstonePedestalBlockEntity) world.getBlockEntity(pos)).isActive()) continue;
+
+                BlockPos p = pos.add(0, 1, 0);
+                BlockPos pVector = pos.subtract(this.pos);
+
+                ParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, world.getBlockState(pos));
+                ClientParticles.setParticleCount(4);
+                ClientParticles.spawnWithOffsetFromBlock(particle, world, p, new Vec3d(0.5, 0.25, 0.5), 0.1);
+
+                ClientParticles.setVelocity(new Vec3d(pVector.getX() * -0.05, particleOffset * 0.075, pVector.getZ() * -0.05));
+                ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.SOUL, world, p, new Vec3d(0.5, 0.3, 0.5), 0.1);
+            }
+
+            ClientParticles.setParticleCount(5);
+            ClientParticles.setVelocity(new Vec3d(0, -0.5, 0));
+            ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.SOUL_FIRE_FLAME, world, pos, new Vec3d(0.5, 1.75 + particleOffset, 0.5), 0.1);
+        }
     }
 
     //Tick Logic
-    public void tick() {
-        //Ritual tick logic
-        if (ritualRunning) {
-            ritualTick++;
+    public void tickServer() {
 
-            if (ritualTick == 1) {
-
-                if (world.isClient) {
-                    world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1, 1, false);
-                } else {
-                    MobEntity ritualEntity = (MobEntity) ((ServerWorld) world).getEntity(this.ritualEntity);
-
-                    particleOffset = ritualEntity.getHeight() / 2;
-                    this.markDirty();
-
-                    ritualEntity.teleport(pos.getX() + 0.5f, ritualEntity.getY(), pos.getZ() + 0.5f);
-                    ritualEntity.setVelocity(0, 0.075f, 0);
-                    ritualEntity.setNoGravity(true);
-                    calculateStability();
-
-                }
-
-            } else if (ritualTick == 20) {
-
-                if (!world.isClient) {
-
-                    MobEntity e = (MobEntity) ((ServerWorld) world).getEntity(this.ritualEntity);
-                    if (verifyRitualEntity()) {
-                        e.setVelocity(0, 0, 0);
-                        e.setAiDisabled(true);
-                        final Vec3d entityPos = Vec3d.of(pos).add(0.5, 1.85, 0.5);
-                        e.setPos(entityPos.x, entityPos.y, entityPos.z);
-                    }
-                }
-
-            } else if (ritualTick > 20 && ritualTick <= 80) {
-
-                if (world.isClient) {
-                    for (BlockPos pos : pedestalPositions) {
-                        if (!(world.getBlockEntity(pos) instanceof BlackstonePedestalBlockEntity)) continue;
-                        if (!((BlackstonePedestalBlockEntity) world.getBlockEntity(pos)).isActive()) continue;
-
-                        BlockPos p = pos.add(0, 1, 0);
-                        BlockPos pVector = pos.subtract(this.pos);
-
-                        ParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, world.getBlockState(pos));
-                        ClientParticles.setParticleCount(4);
-                        ClientParticles.spawnWithOffsetFromBlock(particle, world, p, new Vec3d(0.5, 0.25, 0.5), 0.1);
-
-                        ClientParticles.setVelocity(new Vec3d(pVector.getX() * -0.05, particleOffset * 0.075, pVector.getZ() * -0.05));
-                        ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.SOUL, world, p, new Vec3d(0.5, 0.3, 0.5), 0.1);
-                    }
-
-                    ClientParticles.setParticleCount(5);
-                    ClientParticles.setVelocity(new Vec3d(0, -0.5, 0));
-                    ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.SOUL_FIRE_FLAME, world, pos, new Vec3d(0.5, 1.75 + particleOffset, 0.5), 0.1);
-
-                } else {
-                    if (ritualTick % 10 == 0) {
-                        if (verifyRitualEntity()) {
-                            MobEntity e = (MobEntity) ((ServerWorld) world).getEntity(ritualEntity);
-                            e.damage(DamageSource.OUT_OF_WORLD, 0.01f);
-                        }
-                    }
-                }
-
-            } else if (ritualTick > 80) {
-
-                if (!world.isClient()) {
-                    if (verifyRitualEntity()) {
-                        MobEntity e = (MobEntity) ((ServerWorld) world).getEntity(ritualEntity);
-
-                        int data = e.world.random.nextDouble() < ritualStability ? 0 : 1;
-
-                        world.syncWorldEvent(9005, e.getBlockPos(), data);
-                        world.syncWorldEvent(9007, e.getBlockPos(), data);
-                        world.setBlockState(pos, world.getBlockState(pos).with(SoulFunnelBlock.FILLED, false));
-
-                        ItemStack drop = data == 0 ? ConjuringFocus.writeData(item, e.getType()) : item;
-                        ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1.25, pos.getZ(), drop);
-
-                        disablePedestals();
-                        e.kill();
-
-                        this.item = null;
-                        this.ritualEntity = null;
-                        this.ritualTick = 0;
-                        this.ritualRunning = false;
-                        this.ritualStability = 0.1f;
-                    }
-                }
-                this.markDirty();
-            }
-        }
-
-        //Item bouncing and slowness logic
-        itemHeight = itemHeight >= 100 ? 0 : itemHeight + 1;
         if (slownessCooldown > 0) slownessCooldown--;
 
-        if (!world.isClient()) {
-            if (slownessCooldown == 0 && this.getItem() != null) {
-                if (world.getOtherEntities(null, new Box(pos)).isEmpty()) return;
+        if (slownessCooldown == 0 && this.getItem() != null) {
+            if (world.getOtherEntities(null, new Box(pos)).isEmpty()) return;
 
-                Entity e = world.getOtherEntities(null, new Box(pos)).get(0);
-                if (e instanceof PlayerEntity || e instanceof EnderDragonEntity || e instanceof WitherEntity || !(e instanceof LivingEntity) || e.getScoreboardTags().contains("affected"))
-                    return;
+            Entity e = world.getOtherEntities(null, new Box(pos)).get(0);
+            if (e instanceof PlayerEntity || e instanceof EnderDragonEntity || e instanceof WitherEntity || !(e instanceof LivingEntity) || e.getScoreboardTags().contains("affected"))
+                return;
 
-                ((LivingEntity) e).addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 15 * 20, 20));
-                slownessCooldown = 30 * 20;
-                this.markDirty();
+            ((LivingEntity) e).addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 15 * 20, 20));
+            slownessCooldown = 30 * 20;
+            this.markDirty();
+        }
+
+        if (!ritualRunning) return;
+
+        //Ritual tick logic
+        ritualTick++;
+
+        if (ritualTick == 1) {
+
+            MobEntity ritualEntity = (MobEntity) ((ServerWorld) world).getEntity(this.ritualEntity);
+
+            particleOffset = ritualEntity.getHeight() / 2;
+            this.markDirty();
+
+            ritualEntity.teleport(pos.getX() + 0.5f, ritualEntity.getY(), pos.getZ() + 0.5f);
+            ritualEntity.setVelocity(0, 0.075f, 0);
+            ritualEntity.setNoGravity(true);
+            calculateStability();
+
+
+        } else if (ritualTick == 20) {
+
+            MobEntity e = (MobEntity) ((ServerWorld) world).getEntity(this.ritualEntity);
+            if (verifyRitualEntity()) {
+                e.setVelocity(0, 0, 0);
+                e.setAiDisabled(true);
+                final Vec3d entityPos = Vec3d.of(pos).add(0.5, 1.85, 0.5);
+                e.setPos(entityPos.x, entityPos.y, entityPos.z);
             }
+
+
+        } else if (ritualTick > 20 && ritualTick <= 80) {
+
+            if (ritualTick % 10 == 0) {
+                if (verifyRitualEntity()) {
+                    MobEntity e = (MobEntity) ((ServerWorld) world).getEntity(ritualEntity);
+                    e.damage(DamageSource.OUT_OF_WORLD, 0.01f);
+                }
+            }
+
+
+        } else if (ritualTick > 80) {
+
+            if (verifyRitualEntity()) {
+                MobEntity e = (MobEntity) ((ServerWorld) world).getEntity(ritualEntity);
+
+                int data = e.world.random.nextDouble() < ritualStability ? 0 : 1;
+
+                world.syncWorldEvent(9005, e.getBlockPos(), data);
+                world.syncWorldEvent(9007, e.getBlockPos(), data);
+                world.setBlockState(pos, world.getBlockState(pos).with(SoulFunnelBlock.FILLED, false));
+
+                ItemStack drop = data == 0 ? ConjuringFocus.writeData(item, e.getType()) : item;
+                ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1.25, pos.getZ(), drop);
+
+                disablePedestals();
+                e.kill();
+
+                this.item = null;
+                this.ritualEntity = null;
+                this.ritualTick = 0;
+                this.ritualRunning = false;
+                this.ritualStability = 0.1f;
+            }
+
+            this.markDirty();
         }
     }
 
@@ -284,7 +287,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
 
         if (e instanceof ItemEntity item && item.getStack().isOf(ConjuringCommon.DISTILLED_SPIRIT) && this.item != null) {
 
-            final MobEntity newEntity = (MobEntity) EntityType.loadEntityWithPassengers(this.item.getTag().getCompound("Entity"), world, Function.identity());
+            final MobEntity newEntity = (MobEntity) EntityType.loadEntityWithPassengers(this.item.getNbt().getCompound("Entity"), world, Function.identity());
 
             if (newEntity == null) return false;
 
@@ -312,7 +315,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
         if (!(e instanceof MobEntity) || ConjuringCommon.CONFIG.conjurer_config.conjurer_blacklist.contains(Registry.ENTITY_TYPE.getId(e.getType()).toString()))
             return false;
 
-        if (item.getOrCreateTag().contains("Entity")) return false;
+        if (item.getOrCreateNbt().contains("Entity")) return false;
 
         if (!world.isClient()) {
             this.ritualRunning = true;

@@ -48,14 +48,14 @@ public class GemTinkererBlock extends BlockWithEntity {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, ConjuringCommon.GEM_TINKERER_BLOCK_ENTITY, GemTinkererBlockEntity::ticker);
+        return checkType(type, ConjuringCommon.GEM_TINKERER_BLOCK_ENTITY, world.isClient ? GemTinkererBlockEntity.CLIENT_TICKER : GemTinkererBlockEntity.SERVER_TICKER);
     }
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 
         //We dont allow offhand because it confuses people
-        if(hand == Hand.OFF_HAND) return ActionResult.PASS;
+        if (hand == Hand.OFF_HAND) return ActionResult.PASS;
 
         GemTinkererBlockEntity tinkerer = (GemTinkererBlockEntity) world.getBlockEntity(pos);
         final Integer sideIndex = SIDE_TO_INDEX.get(hit.getSide());

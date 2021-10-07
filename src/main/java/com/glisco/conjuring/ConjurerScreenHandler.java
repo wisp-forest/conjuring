@@ -24,7 +24,7 @@ public class ConjurerScreenHandler extends ScreenHandler {
         this.addSlot(new Slot(this.inventory, 0, 77, 41) {
             @Override
             public boolean canInsert(ItemStack stack) {
-                return stack.getItem() instanceof ConjuringFocus && stack.getOrCreateTag().contains("Entity");
+                return stack.getItem() instanceof ConjuringFocus && stack.getOrCreateNbt().contains("Entity");
             }
         });
 

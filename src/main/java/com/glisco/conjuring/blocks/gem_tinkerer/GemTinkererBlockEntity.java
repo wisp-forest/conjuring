@@ -6,6 +6,7 @@ import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyTool;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
@@ -18,13 +19,15 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class GemTinkererBlockEntity extends BlockEntity implements BlockEntityClientSerializable {
+
+    public static final BlockEntityTicker<GemTinkererBlockEntity> SERVER_TICKER = (world1, pos1, state, blockEntity) -> blockEntity.tickServer();
+    public static final BlockEntityTicker<GemTinkererBlockEntity> CLIENT_TICKER = (world1, pos1, state, blockEntity) -> blockEntity.tickClient();
 
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(5, ItemStack.EMPTY);
     private int processTick = 0;
@@ -108,51 +111,43 @@ public class GemTinkererBlockEntity extends BlockEntity implements BlockEntityCl
         return ActionResult.SUCCESS;
     }
 
-    public static void ticker(World world, BlockPos pos, BlockState state, GemTinkererBlockEntity tinkerer) {
-        tinkerer.tick();
+    public void tickClient() {
+        if (processTick < 1) return;
+
+        if (testProcessFinishedAndReset()) return;
+        processTick++;
     }
 
-    //TODO separate client and server ticks
-    public void tick(){
+    public void tickServer() {
         if (processTick > 0) {
 
-            if (processTick == 1 && !world.isClient()) {
+            if (processTick == 1) {
                 world.playSound(null, pos, SoundEvents.ENTITY_EVOKER_PREPARE_ATTACK, SoundCategory.BLOCKS, 0.25f, 0);
-
             }
 
             if (processTick == 100) {
+                world.playSound(null, pos, SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.BLOCKS, 1, 0);
+                verifyRecipe();
 
-                if (!world.isClient) {
-
-                    world.playSound(null, pos, SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.BLOCKS, 1, 0);
-                    verifyRecipe();
-
-                    if (cachedRecipe == null) {
-                        for (int i = 1; i < inventory.size(); i++) {
-                            if (!inventory.get(i).isEmpty() && SoulAlloyTool.canAddModifier(inventory.get(0), ((GemItem) inventory.get(i).getItem()).getModifier())) {
-                                SoulAlloyTool.addModifier(inventory.get(0), ((GemItem) inventory.get(i).getItem()).getModifier());
-                                inventory.set(i, ItemStack.EMPTY);
-                            }
-
-                        }
-                    } else {
-                        for (int i = 1; i < inventory.size(); i++) {
+                if (cachedRecipe == null) {
+                    for (int i = 1; i < inventory.size(); i++) {
+                        if (!inventory.get(i).isEmpty() && SoulAlloyTool.canAddModifier(inventory.get(0), ((GemItem) inventory.get(i).getItem()).getModifier())) {
+                            SoulAlloyTool.addModifier(inventory.get(0), ((GemItem) inventory.get(i).getItem()).getModifier());
                             inventory.set(i, ItemStack.EMPTY);
                         }
-                        inventory.set(0, cachedRecipe.getOutput());
+
                     }
-
-                    markDirty();
+                } else {
+                    for (int i = 1; i < inventory.size(); i++) {
+                        inventory.set(i, ItemStack.EMPTY);
+                    }
+                    inventory.set(0, cachedRecipe.getOutput());
                 }
+
+                markDirty();
             }
 
-            if (processTick > 200) {
-                processTick = 0;
-                particlesShown = false;
-                cachedRecipe = null;
-                return;
-            }
+            if (testProcessFinishedAndReset()) return;
 
             processTick++;
         }
@@ -184,8 +179,17 @@ public class GemTinkererBlockEntity extends BlockEntity implements BlockEntityCl
         return false;
     }
 
-    public boolean isCraftingComplete(){
+    public boolean isCraftingComplete() {
         return processTick > 100;
+    }
+
+    private boolean testProcessFinishedAndReset() {
+        if (processTick < 200) return false;
+
+        processTick = 0;
+        particlesShown = false;
+        cachedRecipe = null;
+        return true;
     }
 
     @Override

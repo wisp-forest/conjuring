@@ -12,17 +12,17 @@ import java.util.Map;
 public interface SoulAlloyTool {
 
     static void toggleEnabledState(ItemStack stack) {
-        boolean currentState = stack.getOrCreateTag().contains("SecondaryEnabled") && stack.getOrCreateTag().getBoolean("SecondaryEnabled");
+        boolean currentState = stack.getOrCreateNbt().contains("SecondaryEnabled") && stack.getOrCreateNbt().getBoolean("SecondaryEnabled");
         currentState = !currentState;
-        stack.getOrCreateTag().putBoolean("SecondaryEnabled", currentState);
+        stack.getOrCreateNbt().putBoolean("SecondaryEnabled", currentState);
     }
 
     static boolean isSecondaryEnabled(ItemStack stack) {
-        return stack.getOrCreateTag().contains("SecondaryEnabled") && stack.getOrCreateTag().getBoolean("SecondaryEnabled");
+        return stack.getOrCreateNbt().contains("SecondaryEnabled") && stack.getOrCreateNbt().getBoolean("SecondaryEnabled");
     }
 
     static void addModifier(ItemStack stack, SoulAlloyModifier modifier) {
-        NbtCompound modifierTag = stack.getOrCreateSubTag("Modifiers");
+        NbtCompound modifierTag = stack.getOrCreateSubNbt("Modifiers");
 
         int level = modifierTag.contains(modifier.name()) ? modifierTag.getInt(modifier.name()) : 0;
         level++;
@@ -31,7 +31,7 @@ public interface SoulAlloyTool {
     }
 
     static boolean canAddModifier(ItemStack stack, SoulAlloyModifier modifier) {
-        NbtCompound modifierTag = stack.getOrCreateSubTag("Modifiers");
+        NbtCompound modifierTag = stack.getOrCreateSubNbt("Modifiers");
 
         if (modifierTag.getKeys().size() >= 2 && getModifierLevel(stack, modifier) == 0) return false;
 
@@ -65,7 +65,7 @@ public interface SoulAlloyTool {
     static List<Text> getTooltip(ItemStack stack) {
 
         List<Text> tooltip = new ArrayList<>();
-        NbtCompound modifiers = stack.getOrCreateSubTag("Modifiers");
+        NbtCompound modifiers = stack.getOrCreateSubNbt("Modifiers");
 
         for (String key : modifiers.getKeys()) {
             final SoulAlloyModifier modifier = SoulAlloyModifier.valueOf(key);
@@ -86,12 +86,12 @@ public interface SoulAlloyTool {
     }
 
     static int getModifierLevel(ItemStack stack, SoulAlloyModifier modifier) {
-        return stack.getOrCreateSubTag("Modifiers").contains(modifier.name()) ? stack.getOrCreateSubTag("Modifiers").getInt(modifier.name()) : 0;
+        return stack.getOrCreateSubNbt("Modifiers").contains(modifier.name()) ? stack.getOrCreateSubNbt("Modifiers").getInt(modifier.name()) : 0;
     }
 
     static HashMap<SoulAlloyModifier, Integer> getModifiers(ItemStack stack) {
         HashMap<SoulAlloyModifier, Integer> modifierMap = new HashMap<>();
-        NbtCompound modifierTag = stack.getOrCreateSubTag("Modifiers");
+        NbtCompound modifierTag = stack.getOrCreateSubNbt("Modifiers");
         modifierTag.getKeys().forEach(s -> modifierMap.put(SoulAlloyModifier.valueOf(s), modifierTag.getInt(s)));
         return modifierMap;
     }

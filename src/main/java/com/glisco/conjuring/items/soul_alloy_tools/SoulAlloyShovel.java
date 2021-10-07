@@ -40,15 +40,15 @@ public class SoulAlloyShovel extends ShovelItem implements SoulAlloyTool {
 
             ItemStack shovel = user.getStackInHand(hand);
 
-            if (shovel.getOrCreateTag().contains("CurrentProjectile") && ((ServerWorld) world).getEntity(shovel.getOrCreateTag().getUuid("CurrentProjectile")) != null) {
-                ((SoulMagnetEntity) ((ServerWorld) world).getEntity(shovel.getOrCreateTag().getUuid("CurrentProjectile"))).recall();
+            if (shovel.getOrCreateNbt().contains("CurrentProjectile") && ((ServerWorld) world).getEntity(shovel.getOrCreateNbt().getUuid("CurrentProjectile")) != null) {
+                ((SoulMagnetEntity) ((ServerWorld) world).getEntity(shovel.getOrCreateNbt().getUuid("CurrentProjectile"))).recall();
             } else {
                 SoulMagnetEntity magnet = new SoulMagnetEntity(world, user);
                 magnet.refreshPositionAndAngles(user.getX(), user.getEyeY(), user.getZ(), 0, 0);
                 magnet.setProperties(user, user.getPitch(), user.getYaw(), 0f, 1.5f, 1);
                 world.spawnEntity(magnet);
 
-                shovel.getOrCreateTag().putUuid("CurrentProjectile", magnet.getUuid());
+                shovel.getOrCreateNbt().putUuid("CurrentProjectile", magnet.getUuid());
             }
 
         }

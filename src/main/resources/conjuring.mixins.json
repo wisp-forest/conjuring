@@ -15,8 +15,7 @@
     "InGameHudMixin",
     "ItemRendererMixin",
     "WorldRendererInvoker",
-    "SpawnerParticleMixin",
-    "TooltipMixin"
+    "SpawnerParticleMixin"
   ],
   "injectors": {
     "defaultRequire": 1

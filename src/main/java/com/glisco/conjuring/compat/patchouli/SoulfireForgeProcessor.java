@@ -28,7 +28,7 @@ public class SoulfireForgeProcessor implements IComponentProcessor {
         if (key.startsWith("input")) {
             int index = Integer.parseInt(key.substring(5));
             Ingredient ingredient = recipe.getInputs().get(index);
-            ItemStack[] stacks = ingredient.getMatchingStacksClient();
+            ItemStack[] stacks = ingredient.getMatchingStacks();
             return IVariable.from(stacks);
         } else if (key.equals("time")) {
             return IVariable.from(Text.of(recipe.getSmeltTime() / 20 + "s"));

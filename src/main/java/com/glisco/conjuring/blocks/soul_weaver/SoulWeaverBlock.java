@@ -107,7 +107,7 @@ public class SoulWeaverBlock extends BlockWithEntity {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, ConjuringCommon.SOUL_WEAVER_BLOCK_ENTITY, SoulWeaverBlockEntity::ticker);
+        return checkType(type, ConjuringCommon.SOUL_WEAVER_BLOCK_ENTITY, world.isClient ? SoulWeaverBlockEntity.CLIENT_TICKER : SoulWeaverBlockEntity.SERVER_TICKER);
     }
 
     @Override

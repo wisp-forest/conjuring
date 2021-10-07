@@ -174,7 +174,7 @@ public class SoulfireForgeBlock extends BlockWithEntity {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, ConjuringCommon.SOULFIRE_FORGE_BLOCK_ENTITY, SoulfireForgeBlockEntity::ticker);
+        return checkType(type, ConjuringCommon.SOULFIRE_FORGE_BLOCK_ENTITY, (world1, pos, state1, blockEntity) -> blockEntity.tick());
     }
 
     @Override

@@ -57,10 +57,10 @@ public class ConjuringClient implements ClientModInitializer {
 
         ClientPlayNetworking.registerGlobalReceiver(EntityCreatePacket.ID, EntityCreatePacket::onPacket);
 
-        FabricModelPredicateProviderRegistry.register(ConjuringCommon.CONJURING_FOCUS, new Identifier("has_soul"), (stack, world, entity, seed) -> stack.getOrCreateTag().contains("Entity") ? 1f : 0f);
-        FabricModelPredicateProviderRegistry.register(ConjuringCommon.STABILIZED_CONJURING_FOCUS, new Identifier("has_soul"), (stack, world, entity, seed) -> stack.getOrCreateTag().contains("Entity") ? 1f : 0f);
-        FabricModelPredicateProviderRegistry.register(ConjuringCommon.ENCHIRIDION, new Identifier("is_sandwich"), (stack, world, entity, seed) -> stack.getOrCreateTag().getBoolean("Sandwich") ? 1f : 0f);
-        FabricModelPredicateProviderRegistry.register(ConjuringCommon.PIZZA, new Identifier("is_brinsa"), (stack, world, entity, seed) -> stack.getOrCreateTag().contains("Brinsa") ? 1f : 0f);
+        FabricModelPredicateProviderRegistry.register(ConjuringCommon.CONJURING_FOCUS, new Identifier("has_soul"), (stack, world, entity, seed) -> stack.getOrCreateNbt().contains("Entity") ? 1f : 0f);
+        FabricModelPredicateProviderRegistry.register(ConjuringCommon.STABILIZED_CONJURING_FOCUS, new Identifier("has_soul"), (stack, world, entity, seed) -> stack.getOrCreateNbt().contains("Entity") ? 1f : 0f);
+        FabricModelPredicateProviderRegistry.register(ConjuringCommon.ENCHIRIDION, new Identifier("is_sandwich"), (stack, world, entity, seed) -> stack.getOrCreateNbt().getBoolean("Sandwich") ? 1f : 0f);
+        FabricModelPredicateProviderRegistry.register(ConjuringCommon.PIZZA, new Identifier("is_brinsa"), (stack, world, entity, seed) -> stack.getOrCreateNbt().contains("Brinsa") ? 1f : 0f);
 
         ScreenRegistry.register(ConjuringCommon.CONJURER_SCREEN_HANDLER_TYPE, ConjurerScreen::new);
         ScreenRegistry.register(ConjuringCommon.SOULFIRE_FORGE_SCREEN_HANDLER_TYPE, SoulfireForgeScreen::new);

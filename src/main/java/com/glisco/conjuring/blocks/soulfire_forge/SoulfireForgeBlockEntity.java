@@ -27,7 +27,7 @@ import java.util.Optional;
 
 public class SoulfireForgeBlockEntity extends BlockEntity implements ImplementedInventory, SidedInventory, NamedScreenHandlerFactory {
 
-    private DefaultedList<ItemStack> items = DefaultedList.ofSize(10, ItemStack.EMPTY);
+    private final DefaultedList<ItemStack> items = DefaultedList.ofSize(10, ItemStack.EMPTY);
 
     private final int[] SIDE_AND_TOP_SLOTS = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8};
     private final int[] BOTTOM_SLOT = new int[]{9};
@@ -56,11 +56,6 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
             return 1;
         }
     };
-
-
-    public static void ticker(World world, BlockPos pos, BlockState state, SoulfireForgeBlockEntity forge){
-        forge.tick();
-    }
 
     //Tick Logic
     public void tick() {

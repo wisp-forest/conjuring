@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
@@ -36,6 +37,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, BlockEntityClientSerializable {
+
+    public static final BlockEntityTicker<SoulWeaverBlockEntity> SERVER_TICKER = (world1, pos1, state, blockEntity) -> blockEntity.tickServer();
+    public static final BlockEntityTicker<SoulWeaverBlockEntity> CLIENT_TICKER = (world1, pos1, state, blockEntity) -> blockEntity.tickClient();
 
     List<BlockPos> pedestals = new ArrayList<>();
     @NotNull
@@ -177,55 +181,31 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
         return true;
     }
 
-    public static void ticker(World world, BlockPos pos, BlockState state, SoulWeaverBlockEntity weaver){
-        weaver.tick();
-    }
-
-    //TODO separate client and server ticks
-    public void tick() {
+    public void tickClient() {
         if (ritualTick > 0 && ritualTick < 5) {
 
-            if (world.isClient) {
-                for (BlockPos pos : pedestals) {
-                    if (!(world.getBlockEntity(pos) instanceof BlackstonePedestalBlockEntity)) continue;
-                    BlockPos pVector = pos.subtract(this.pos);
+            for (BlockPos pos : pedestals) {
+                if (!(world.getBlockEntity(pos) instanceof BlackstonePedestalBlockEntity)) continue;
+                BlockPos pVector = pos.subtract(this.pos);
 
-                    ClientParticles.setVelocity(new Vec3d(pVector.getX() * 0.115, 0, pVector.getZ() * 0.115));
-                    ClientParticles.spawnWithMaxAge(ParticleTypes.SOUL_FIRE_FLAME, Vec3d.of(this.pos).add(0.5, 0.4, 0.5), 10);
-                }
-
+                ClientParticles.setVelocity(new Vec3d(pVector.getX() * 0.115, 0, pVector.getZ() * 0.115));
+                ClientParticles.spawnWithMaxAge(ParticleTypes.SOUL_FIRE_FLAME, Vec3d.of(this.pos).add(0.5, 0.4, 0.5), 10);
             }
 
         } else if (ritualTick == 10) {
 
-            if (world.isClient) {
-                ClientParticles.setParticleCount(16);
-                ClientParticles.persist();
-            }
+            ClientParticles.setParticleCount(16);
+            ClientParticles.persist();
 
             for (BlockPos pedestal : pedestals) {
-                if (world.isClient) {
-                    ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.LAVA, world, pedestal, new Vec3d(0.5, 1.25, 0.5), 0.1);
-                } else {
-                    ((BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal)).setActive(true);
-                    ((BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal)).setItem(ItemStack.EMPTY);
-                }
+                ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.LAVA, world, pedestal, new Vec3d(0.5, 1.25, 0.5), 0.1);
             }
 
-            if (world.isClient) {
-                ClientParticles.reset();
-            }
+            ClientParticles.reset();
+
         } else if (ritualTick > 10 && ritualTick < 165) {
 
-            if (ritualTick == 15) {
-                world.playSound(null, pos, SoundEvents.BLOCK_BEACON_AMBIENT, SoundCategory.BLOCKS, 1.5f, 0.7f);
-            }
-
-            if (ritualTick == 127) {
-                world.playSound(null, pos, SoundEvents.BLOCK_PORTAL_TRIGGER, SoundCategory.BLOCKS, 0.15f, 2f);
-            }
-
-            if (world.isClient && ritualTick % 2 == 0) {
+            if (ritualTick % 2 == 0) {
                 if (ritualTick < 140) {
                     for (BlockPos pos : pedestals) {
                         if (!(world.getBlockEntity(pos) instanceof BlackstonePedestalBlockEntity)) continue;
@@ -259,40 +239,62 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
                 }
             }
         } else if (ritualTick > 165) {
-            if (!world.isClient) {
-
-                world.playSound(null, pos, SoundEvents.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.BLOCKS, 1, 0);
-
-                for (BlockPos pedestal : pedestals) {
-                    ((BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal)).setActive(false);
-                }
-
-                if (cachedRecipe != null) {
-                    if (cachedRecipe.transferTag) {
-                        ItemStack output = cachedRecipe.getOutput();
-                        output.setTag(getItem().getOrCreateTag());
-                        setItem(output);
-                    } else {
-                        setItem(cachedRecipe.getOutput());
-                    }
-                }
-
-                setLit(false);
-                cachedRecipe = null;
-            } else {
-                try {
-                    MinecraftClient.getInstance().getSoundManager().stopSounds(new Identifier("minecraft", "block.beacon.ambient"), SoundCategory.BLOCKS);
-                } catch (Exception ignored) {
-                }
-
-                ParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.GILDED_BLACKSTONE.getDefaultState());
-
-                ClientParticles.setParticleCount(30);
-                ClientParticles.spawnWithOffsetFromBlock(particle, world, pos, new Vec3d(0.5, 1.3, 0.5), 0.2);
-
-                ClientParticles.setParticleCount(40);
-                ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.LAVA, world, pos, new Vec3d(0.5, 1.25, 0.5), 0.15);
+            try {
+                MinecraftClient.getInstance().getSoundManager().stopSounds(new Identifier("minecraft", "block.beacon.ambient"), SoundCategory.BLOCKS);
+            } catch (Exception ignored) {
             }
+
+            ParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.GILDED_BLACKSTONE.getDefaultState());
+
+            ClientParticles.setParticleCount(30);
+            ClientParticles.spawnWithOffsetFromBlock(particle, world, pos, new Vec3d(0.5, 1.3, 0.5), 0.2);
+
+            ClientParticles.setParticleCount(40);
+            ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.LAVA, world, pos, new Vec3d(0.5, 1.25, 0.5), 0.15);
+
+            ritualTick = 0;
+        }
+
+        if (ritualTick > 0) ritualTick++;
+    }
+
+    public void tickServer() {
+        if (ritualTick == 10) {
+            for (BlockPos pedestal : pedestals) {
+                ((BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal)).setActive(true);
+                ((BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal)).setItem(ItemStack.EMPTY);
+            }
+
+        } else if (ritualTick > 10 && ritualTick < 165) {
+
+            if (ritualTick == 15) {
+                world.playSound(null, pos, SoundEvents.BLOCK_BEACON_AMBIENT, SoundCategory.BLOCKS, 1.5f, 0.7f);
+            }
+
+            if (ritualTick == 127) {
+                world.playSound(null, pos, SoundEvents.BLOCK_PORTAL_TRIGGER, SoundCategory.BLOCKS, 0.15f, 2f);
+            }
+
+        } else if (ritualTick > 165) {
+
+            world.playSound(null, pos, SoundEvents.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.BLOCKS, 1, 0);
+
+            for (BlockPos pedestal : pedestals) {
+                ((BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal)).setActive(false);
+            }
+
+            if (cachedRecipe != null) {
+                if (cachedRecipe.transferTag) {
+                    ItemStack output = cachedRecipe.getOutput();
+                    output.setNbt(getItem().getOrCreateNbt());
+                    setItem(output);
+                } else {
+                    setItem(cachedRecipe.getOutput());
+                }
+            }
+
+            setLit(false);
+            cachedRecipe = null;
             ritualTick = 0;
         }
 
@@ -300,7 +302,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
     }
 
     public void onBroken() {
-        if (!item.isEmpty()){
+        if (!item.isEmpty()) {
             ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1.25, pos.getZ(), item);
         }
         cancelRitual();

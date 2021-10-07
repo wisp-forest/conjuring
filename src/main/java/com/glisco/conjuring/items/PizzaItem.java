@@ -16,8 +16,8 @@ public class PizzaItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (!user.getStackInHand(hand).getOrCreateTag().contains("Brinsa")) {
-            user.getStackInHand(hand).getTag().putBoolean("Brinsa", true);
+        if (!user.getStackInHand(hand).getOrCreateNbt().contains("Brinsa")) {
+            user.getStackInHand(hand).getNbt().putBoolean("Brinsa", true);
             return TypedActionResult.success(user.getStackInHand(hand));
         } else {
             return super.use(world, user, hand);

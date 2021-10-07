@@ -35,27 +35,27 @@ public class ConjuringScepter extends Item {
     }
 
     public static boolean isLinking(ItemStack scepter) {
-        return scepter.getOrCreateTag().contains("LinkingFrom");
+        return scepter.getOrCreateNbt().contains("LinkingFrom");
     }
 
     public static BlockPos getLinkingFrom(ItemStack scepter) {
-        int[] intPos = scepter.getOrCreateTag().getIntArray("LinkingFrom");
+        int[] intPos = scepter.getOrCreateNbt().getIntArray("LinkingFrom");
         return intPos.length == 0 ? null : new BlockPos(intPos[0], intPos[1], intPos[2]);
     }
 
     public static void startLinking(ItemStack scepter, BlockPos pedestal) {
-        NbtCompound stackTag = scepter.getOrCreateTag();
+        NbtCompound stackTag = scepter.getOrCreateNbt();
         stackTag.putIntArray("LinkingFrom", new int[]{pedestal.getX(), pedestal.getY(), pedestal.getZ()});
-        scepter.setTag(stackTag);
+        scepter.setNbt(stackTag);
     }
 
     public static String finishLinking(World world, ItemStack scepter, BlockPos core) {
-        NbtCompound stackTag = scepter.getOrCreateTag();
+        NbtCompound stackTag = scepter.getOrCreateNbt();
         if (!isLinking(scepter)) return "INVALID_SCEPTER";
         BlockPos pedestal = getLinkingFrom(scepter);
 
         stackTag.remove("LinkingFrom");
-        scepter.setTag(stackTag);
+        scepter.setNbt(stackTag);
 
         if (!(world.getBlockEntity(pedestal) instanceof BlackstonePedestalBlockEntity)) return "NO_PEDESTAL";
         if (!(world.getBlockEntity(core) instanceof RitualCore)) return "NO_FUNNEL";
@@ -108,9 +108,9 @@ public class ConjuringScepter extends Item {
         if (!user.isSneaking()) return TypedActionResult.pass(scepter);
         if (!isLinking(scepter)) return TypedActionResult.pass(scepter);
 
-        NbtCompound stackTag = scepter.getOrCreateTag();
+        NbtCompound stackTag = scepter.getOrCreateNbt();
         stackTag.remove("LinkingFrom");
-        scepter.setTag(stackTag);
+        scepter.setNbt(stackTag);
 
         return TypedActionResult.success(scepter);
     }

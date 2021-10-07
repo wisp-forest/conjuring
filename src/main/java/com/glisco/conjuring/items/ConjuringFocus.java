@@ -24,22 +24,22 @@ public class ConjuringFocus extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        if (!stack.getOrCreateTag().contains("Entity")) {
+        if (!stack.getOrCreateNbt().contains("Entity")) {
             return;
         }
 
-        String entityName = "entity." + stack.getTag().getCompound("Entity").getString("id").replace(':', '.');
+        String entityName = "entity." + stack.getNbt().getCompound("Entity").getString("id").replace(':', '.');
         tooltip.add(new TranslatableText(entityName).setStyle(Style.EMPTY.withColor(TextColor.parse("gray"))));
     }
 
     public static ItemStack writeData(ItemStack focus, EntityType<?> entityType) {
-        NbtCompound stackTag = focus.getOrCreateTag();
+        NbtCompound stackTag = focus.getOrCreateNbt();
 
         NbtCompound entityTag = new NbtCompound();
         entityTag.putString("id", Registry.ENTITY_TYPE.getId(entityType).toString());
 
         stackTag.put("Entity", entityTag);
-        focus.setTag(stackTag);
+        focus.setNbt(stackTag);
         return focus;
     }
 }
