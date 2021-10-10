@@ -1,7 +1,8 @@
 package com.glisco.conjuring.items.soul_alloy_tools;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.entities.SoulFellerEntity;
+import com.glisco.conjuring.items.ConjuringItems;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
@@ -20,7 +21,7 @@ import java.util.List;
 public class SoulAlloyHatchet extends AxeItem implements SoulAlloyTool {
 
     public SoulAlloyHatchet() {
-        super(SoulAlloyToolMaterial.INSTANCE, 5.0f, -3.0f, new Settings().group(ConjuringCommon.CONJURING_GROUP).rarity(Rarity.UNCOMMON));
+        super(SoulAlloyToolMaterial.INSTANCE, 5.0f, -3.0f, new Settings().group(Conjuring.CONJURING_GROUP).rarity(Rarity.UNCOMMON));
     }
 
     @Override
@@ -46,13 +47,13 @@ public class SoulAlloyHatchet extends AxeItem implements SoulAlloyTool {
 
             int scopeGems = SoulAlloyTool.getModifierLevel(user.getStackInHand(hand), SoulAlloyModifier.SCOPE);
             if (scopeGems > 0) {
-                feller.setMaxBlocks((int) (8 + Math.pow(scopeGems, ConjuringCommon.CONFIG.tools_config.axe_scope_exponent) * 8));
+                feller.setMaxBlocks((int) (8 + Math.pow(scopeGems, Conjuring.CONFIG.tools_config.axe_scope_exponent) * 8));
             }
 
             world.spawnEntity(feller);
 
-            user.getItemCooldownManager().set(ConjuringCommon.SOUL_ALLOY_HATCHET, ConjuringCommon.CONFIG.tools_config.axe_secondary_cooldown);
-            user.getStackInHand(hand).damage(ConjuringCommon.CONFIG.tools_config.axe_secondary_base_durability_cost + ConjuringCommon.CONFIG.tools_config.axe_secondary_per_scope_durability_cost * scopeGems, user, player -> player.sendToolBreakStatus(hand));
+            user.getItemCooldownManager().set(ConjuringItems.SOUL_ALLOY_HATCHET, Conjuring.CONFIG.tools_config.axe_secondary_cooldown);
+            user.getStackInHand(hand).damage(Conjuring.CONFIG.tools_config.axe_secondary_base_durability_cost + Conjuring.CONFIG.tools_config.axe_secondary_per_scope_durability_cost * scopeGems, user, player -> player.sendToolBreakStatus(hand));
 
         }
         return TypedActionResult.success(user.getStackInHand(hand));

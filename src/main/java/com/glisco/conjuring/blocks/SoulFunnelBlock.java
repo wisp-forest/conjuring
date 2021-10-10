@@ -1,8 +1,8 @@
 package com.glisco.conjuring.blocks;
 
-import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.items.ConjuringFocus;
 import com.glisco.conjuring.items.ConjuringScepter;
+import com.glisco.owo.ops.ItemOps;
 import com.glisco.owo.particles.ClientParticles;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -33,22 +33,23 @@ import java.util.List;
 import java.util.Random;
 
 public class SoulFunnelBlock extends BlockWithEntity {
-    private static VoxelShape PILLAR1 = Block.createCuboidShape(12, 0, 0, 16, 9, 4);
 
-    private static VoxelShape PILLAR2 = Block.createCuboidShape(12, 0, 12, 16, 9, 16);
-    private static VoxelShape PILLAR3 = Block.createCuboidShape(0, 0, 12, 4, 9, 16);
-    private static VoxelShape PILLAR4 = Block.createCuboidShape(0, 0, 0, 4, 9, 4);
+    private static final VoxelShape PILLAR1 = Block.createCuboidShape(12, 0, 0, 16, 9, 4);
 
-    private static VoxelShape WALL1 = Block.createCuboidShape(4, 0, 0, 12, 6, 4);
-    private static VoxelShape WALL2 = Block.createCuboidShape(12, 0, 4, 16, 6, 12);
-    private static VoxelShape WALL3 = Block.createCuboidShape(4, 0, 12, 12, 6, 16);
-    private static VoxelShape WALL4 = Block.createCuboidShape(0, 0, 4, 4, 6, 12);
+    private static final VoxelShape PILLAR2 = Block.createCuboidShape(12, 0, 12, 16, 9, 16);
+    private static final VoxelShape PILLAR3 = Block.createCuboidShape(0, 0, 12, 4, 9, 16);
+    private static final VoxelShape PILLAR4 = Block.createCuboidShape(0, 0, 0, 4, 9, 4);
 
-    private static VoxelShape SOUL_SAND = Block.createCuboidShape(4, 0, 4, 12, 5, 12);
+    private static final VoxelShape WALL1 = Block.createCuboidShape(4, 0, 0, 12, 6, 4);
+    private static final VoxelShape WALL2 = Block.createCuboidShape(12, 0, 4, 16, 6, 12);
+    private static final VoxelShape WALL3 = Block.createCuboidShape(4, 0, 12, 12, 6, 16);
+    private static final VoxelShape WALL4 = Block.createCuboidShape(0, 0, 4, 4, 6, 12);
 
-    private static VoxelShape SHAPE = VoxelShapes.union(SOUL_SAND, PILLAR1, PILLAR2, PILLAR3, PILLAR4, WALL1, WALL2, WALL3, WALL4);
+    private static final VoxelShape SOUL_SAND = Block.createCuboidShape(4, 0, 4, 12, 5, 12);
 
-    public static BooleanProperty FILLED = BooleanProperty.of("filled");
+    private static final VoxelShape SHAPE = VoxelShapes.union(SOUL_SAND, PILLAR1, PILLAR2, PILLAR3, PILLAR4, WALL1, WALL2, WALL3, WALL4);
+
+    public static final BooleanProperty FILLED = BooleanProperty.of("filled");
 
     //Construction stuff
     public SoulFunnelBlock() {
@@ -85,26 +86,23 @@ public class SoulFunnelBlock extends BlockWithEntity {
         //Pedestal highlighting logic
         final ItemStack playerStack = player.getStackInHand(hand);
         if (playerStack.isEmpty() && player.isSneaking()) {
+            if (!world.isClient) return ActionResult.SUCCESS;
 
-            if (world.isClient) {
+            List<BlockPos> possiblePedestals = new ArrayList<>();
+            possiblePedestals.add(pos.add(3, 0, 0));
+            possiblePedestals.add(pos.add(-3, 0, 0));
+            possiblePedestals.add(pos.add(0, 0, 3));
+            possiblePedestals.add(pos.add(0, 0, -3));
 
-                List<BlockPos> possiblePedestals = new ArrayList<>();
-                possiblePedestals.add(pos.add(3, 0, 0));
-                possiblePedestals.add(pos.add(-3, 0, 0));
-                possiblePedestals.add(pos.add(0, 0, 3));
-                possiblePedestals.add(pos.add(0, 0, -3));
+            ClientParticles.setParticleCount(50);
+            ClientParticles.persist();
 
-                ClientParticles.setParticleCount(50);
-                ClientParticles.persist();
-
-                for (BlockPos pedestal : possiblePedestals) {
-                    if (world.getBlockEntity(pedestal) instanceof BlackstonePedestalBlockEntity) continue;
-
-                    ClientParticles.spawnPrecise(ParticleTypes.DRIPPING_OBSIDIAN_TEAR, world, new Vec3d(pedestal.getX() + 0.5, pedestal.getY() + 0.75, pedestal.getZ() + 0.5), 0.5, 0.75, 0.5);
-                }
-
-                ClientParticles.reset();
+            for (BlockPos pedestal : possiblePedestals) {
+                if (world.getBlockEntity(pedestal) instanceof BlackstonePedestalBlockEntity) continue;
+                ClientParticles.spawnPrecise(ParticleTypes.DRIPPING_OBSIDIAN_TEAR, world, new Vec3d(pedestal.getX() + 0.5, pedestal.getY() + 0.75, pedestal.getZ() + 0.5), 0.5, 0.75, 0.5);
             }
+
+            ClientParticles.reset();
             return ActionResult.SUCCESS;
         }
 
@@ -112,8 +110,8 @@ public class SoulFunnelBlock extends BlockWithEntity {
         if (playerStack.getItem().equals(Items.SOUL_SAND) && !state.get(FILLED)) {
             world.setBlockState(pos, state.with(FILLED, true));
 
-            playerStack.decrement(1);
-            if (playerStack.getCount() == 0) player.setStackInHand(hand, ItemStack.EMPTY);
+            ItemOps.decrementPlayerHandItem(player, hand);
+
 
             if (!world.isClient()) {
                 world.playSound(null, pos, SoundEvents.BLOCK_SOUL_SAND_PLACE, SoundCategory.BLOCKS, 1, 1);
@@ -134,7 +132,7 @@ public class SoulFunnelBlock extends BlockWithEntity {
         SoulFunnelBlockEntity funnel = (SoulFunnelBlockEntity) world.getBlockEntity(pos);
         ItemStack funnelFocus = funnel.getItem();
 
-        if (funnelFocus == null) {
+        if (funnelFocus.isEmpty()) {
             if (!(playerStack.getItem() instanceof ConjuringFocus))
                 return ActionResult.PASS;
 
@@ -149,7 +147,7 @@ public class SoulFunnelBlock extends BlockWithEntity {
                 } else {
                     ItemScatterer.spawn(world, pos.getX(), pos.getY() + 0.55d, pos.getZ(), funnelFocus);
                 }
-                funnel.setItem(null);
+                funnel.setItem(ItemStack.EMPTY);
             }
         }
 
@@ -162,11 +160,8 @@ public class SoulFunnelBlock extends BlockWithEntity {
             if (state.get(FILLED)) ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(Items.SOUL_SAND));
 
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof SoulFunnelBlockEntity) {
-                SoulFunnelBlockEntity funnel = (SoulFunnelBlockEntity) blockEntity;
-
+            if (blockEntity instanceof SoulFunnelBlockEntity funnel) {
                 funnel.onBroken();
-
             }
             super.onStateReplaced(state, world, pos, newState, moved);
         }
@@ -175,19 +170,17 @@ public class SoulFunnelBlock extends BlockWithEntity {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, ConjuringCommon.SOUL_FUNNEL_BLOCK_ENTITY, world.isClient ? SoulFunnelBlockEntity.CLIENT_TICKER : SoulFunnelBlockEntity.SERVER_TICKER);
+        return checkType(type, ConjuringBlocks.Entities.SOUL_FUNNEL, world.isClient ? SoulFunnelBlockEntity.CLIENT_TICKER : SoulFunnelBlockEntity.SERVER_TICKER);
     }
 
     @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-        if (!(world.getBlockEntity(pos) instanceof SoulFunnelBlockEntity)) return;
-        SoulFunnelBlockEntity funnel = (SoulFunnelBlockEntity) world.getBlockEntity(pos);
+        if (!(world.getBlockEntity(pos) instanceof SoulFunnelBlockEntity funnel)) return;
 
         for (BlockPos p : funnel.getPedestalPositions()) {
             if (random.nextDouble() > 0.5f) continue;
-            if (!(world.getBlockEntity(p) instanceof BlackstonePedestalBlockEntity)) continue;
-            BlackstonePedestalBlockEntity pedestal = (BlackstonePedestalBlockEntity) world.getBlockEntity(p);
-            if (pedestal == null) continue;
+            if (!(world.getBlockEntity(p) instanceof BlackstonePedestalBlockEntity pedestal)) continue;
+
             if (pedestal.getLinkedFunnel() == null) continue;
             if (pedestal.getLinkedFunnel().compareTo(pos) != 0) return;
 

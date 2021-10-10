@@ -97,8 +97,8 @@ public class BlackstonePedestalBlock extends BlockWithEntity {
             }
 
             if (pedestalEntity.isLinked()) {
-                if (world.getBlockEntity(pedestalEntity.getLinkedFunnel()) instanceof RitualCore) {
-                    ((RitualCore) world.getBlockEntity(pedestalEntity.getLinkedFunnel())).removePedestal(pos, pedestalEntity.isActive());
+                if (world.getBlockEntity(pedestalEntity.getLinkedFunnel()) instanceof RitualCore core) {
+                    core.removePedestal(pos, pedestalEntity.isActive());
                 }
             }
 

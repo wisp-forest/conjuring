@@ -1,12 +1,13 @@
 package com.glisco.conjuring.items.soul_alloy_tools;
 
+import com.glisco.conjuring.Conjuring;
 import com.glisco.owo.ops.WorldOps;
 import com.glisco.owo.particles.ServerParticles;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
@@ -17,7 +18,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class BlockCrawler {
 
-    public static ConcurrentLinkedQueue<CrawlData> blocksToCrawl = new ConcurrentLinkedQueue<>();
+    public static final ConcurrentLinkedQueue<CrawlData> blocksToCrawl = new ConcurrentLinkedQueue<>();
 
     public static void crawl(World world, BlockPos firstBlock, ItemStack breakStack, int maxBlocks) {
 
@@ -73,7 +74,7 @@ public class BlockCrawler {
 
             WorldOps.breakBlockWithItem(world, pos, data.mineItem);
 
-            ServerParticles.issueEvent((ServerWorld) world, pos, new Identifier("conjuring", "break_block"), packetByteBuf -> {});
+            ServerParticles.issueEvent((ServerWorld) world, Vec3d.of(pos), Conjuring.id("break_block"), packetByteBuf -> {});
         }
     }
 

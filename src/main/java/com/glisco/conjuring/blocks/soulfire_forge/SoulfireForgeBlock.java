@@ -1,15 +1,13 @@
 package com.glisco.conjuring.blocks.soulfire_forge;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.blocks.ConjuringBlocks;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.Items;
-import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -28,7 +26,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Consumer;
 import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
 
@@ -116,21 +113,15 @@ public class SoulfireForgeBlock extends BlockWithEntity {
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
     }
-    //BlockState shit
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-
-        switch (state.get(FACING)) {
-            case EAST:
-                return SHAPE_E;
-            case WEST:
-                return SHAPE_W;
-            case SOUTH:
-                return SHAPE_S;
-            default:
-                return SHAPE_N;
-        }
+        return switch (state.get(FACING)) {
+            case EAST -> SHAPE_E;
+            case WEST -> SHAPE_W;
+            case SOUTH -> SHAPE_S;
+            default -> SHAPE_N;
+        };
     }
 
     private static ToIntFunction<BlockState> getLightLevel() {
@@ -146,35 +137,34 @@ public class SoulfireForgeBlock extends BlockWithEntity {
         builder.add(BURNING);
         builder.add(FACING);
     }
-    //Actual Logic
 
+    //Actual Logic
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 
         if (player.getStackInHand(hand).getItem().equals(Items.FLINT_AND_STEEL) && !world.getBlockState(pos).get(BURNING)) {
-            if (!world.isClient()) {
-                world.setBlockState(pos, world.getBlockState(pos).with(SoulfireForgeBlock.BURNING, true));
-                player.getStackInHand(hand).damage(1, player, (Consumer<LivingEntity>) ((p) -> {
-                    p.sendToolBreakStatus(hand);
-                }));
-            }
+            if (world.isClient()) return ActionResult.SUCCESS;
+
+            world.setBlockState(pos, world.getBlockState(pos).with(SoulfireForgeBlock.BURNING, true));
+            player.getStackInHand(hand).damage(1, player, (p) -> p.sendToolBreakStatus(hand));
+
             return ActionResult.SUCCESS;
         }
 
-        if (!world.isClient) {
-            NamedScreenHandlerFactory screenHandlerFactory = state.createScreenHandlerFactory(world, pos);
-            if (screenHandlerFactory != null) {
-                player.openHandledScreen(screenHandlerFactory);
-            }
+        if (world.isClient) return ActionResult.SUCCESS;
 
+        var screenHandlerFactory = state.createScreenHandlerFactory(world, pos);
+        if (screenHandlerFactory != null) {
+            player.openHandledScreen(screenHandlerFactory);
         }
+
         return ActionResult.SUCCESS;
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, ConjuringCommon.SOULFIRE_FORGE_BLOCK_ENTITY, (world1, pos, state1, blockEntity) -> blockEntity.tick());
+        return checkType(type, ConjuringBlocks.Entities.SOULFIRE_FORGE, world.isClient ? SoulfireForgeBlockEntity.CLIENT_TICKER : SoulfireForgeBlockEntity.SERVER_TICKER);
     }
 
     @Override

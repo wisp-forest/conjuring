@@ -1,6 +1,7 @@
 package com.glisco.conjuring.compat.rei;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.Conjuring;
+import com.glisco.conjuring.blocks.ConjuringBlocks;
 import com.glisco.conjuring.blocks.gem_tinkerer.GemTinkererBlockEntity;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.shedaniel.math.Point;
@@ -19,7 +20,6 @@ import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Matrix4f;
@@ -39,7 +39,7 @@ public class GemTinkeringCategory implements DisplayCategory<GemTinkeringDisplay
 
     @Override
     public Renderer getIcon() {
-        return EntryStacks.of(ConjuringCommon.GEM_TINKERER_BLOCK);
+        return EntryStacks.of(ConjuringBlocks.GEM_TINKERER);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class GemTinkeringCategory implements DisplayCategory<GemTinkeringDisplay
 
         widgets.add(Widgets.createRecipeBase(bounds));
 
-        GemTinkererBlockEntity tinkerer = new GemTinkererBlockEntity(BlockPos.ORIGIN, ConjuringCommon.GEM_TINKERER_BLOCK.getDefaultState());
+        GemTinkererBlockEntity tinkerer = new GemTinkererBlockEntity(BlockPos.ORIGIN, ConjuringBlocks.GEM_TINKERER.getDefaultState());
         tinkerer.getInventory().set(0, recipeDisplay.getInputEntries().get(0).get(0).castValue());
         tinkerer.getInventory().set(1, recipeDisplay.getInputEntries().get(1).get(0).castValue());
         tinkerer.getInventory().set(2, recipeDisplay.getInputEntries().get(2).get(0).castValue());
@@ -73,7 +73,7 @@ public class GemTinkeringCategory implements DisplayCategory<GemTinkeringDisplay
 
             if (FROGE_MODE) {
                 matrixStack.push();
-                RenderSystem.setShaderTexture(0, new Identifier("conjuring", "textures/gui/froge.png"));
+                RenderSystem.setShaderTexture(0, Conjuring.id("textures/gui/froge.png"));
                 DrawableHelper.drawTexture(matrixStack, origin.x, origin.y, 0, 0, 0, 128, 128, 128, 128);
 
                 matrixStack.method_34425(new Matrix4f(Vec3f.POSITIVE_Y.getDegreesQuaternion((float) (System.currentTimeMillis() / 30d % 360))));
@@ -113,8 +113,8 @@ public class GemTinkeringCategory implements DisplayCategory<GemTinkeringDisplay
         widgets.add(Widgets.createResultSlotBackground(new Point(origin.getX() + 47, origin.getY() + 85)));
         widgets.add(Widgets.createSlot(new Point(origin.getX() + 47, origin.getY() + 85)).entries(recipeDisplay.getOutputEntries().get(0)).disableBackground());
 
-        widgets.add(Widgets.createTexturedWidget(new Identifier("conjuring", "textures/gui/gem_tinkerer.png"), origin.getX() + 9, origin.getY() + 75, 0, 0, 25, 25));
-        widgets.add(Widgets.createTexturedWidget(new Identifier("conjuring", "textures/gui/gem_tinkerer.png"), origin.getX() + 75, origin.getY() + 75, 25, 0, 25, 25));
+        widgets.add(Widgets.createTexturedWidget(Conjuring.id("textures/gui/gem_tinkerer.png"), origin.getX() + 9, origin.getY() + 75, 0, 0, 25, 25));
+        widgets.add(Widgets.createTexturedWidget(Conjuring.id("textures/gui/gem_tinkerer.png"), origin.getX() + 75, origin.getY() + 75, 25, 0, 25, 25));
 
         return widgets;
     }

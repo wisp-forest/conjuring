@@ -1,5 +1,6 @@
 package com.glisco.conjuring.entities;
 
+import com.glisco.conjuring.Conjuring;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -20,7 +21,7 @@ import java.util.UUID;
 
 public class EntityCreatePacket {
 
-    public static final Identifier ID = new Identifier("conjuring", "entity_create");
+    public static final Identifier ID = Conjuring.id("entity_create");
 
     public static Packet<?> create(Entity e) {
         PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());

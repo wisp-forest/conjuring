@@ -1,6 +1,7 @@
 package com.glisco.conjuring.mixin;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.Conjuring;
+import com.glisco.conjuring.items.ConjuringItems;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyTool;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -28,7 +29,7 @@ public class ItemStackMixin {
     @ModifyVariable(method = "damage(ILjava/util/Random;Lnet/minecraft/server/network/ServerPlayerEntity;)Z", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getLevel(Lnet/minecraft/enchantment/Enchantment;Lnet/minecraft/item/ItemStack;)I", shift = At.Shift.AFTER), ordinal = 1)
     public int applyIgnorance(int i) {
         if (!(item instanceof SoulAlloyTool)) return i;
-        if (item == ConjuringCommon.SOUL_ALLOY_SWORD) return i;
+        if (item == ConjuringItems.SOUL_ALLOY_SWORD) return i;
 
         return i + SoulAlloyTool.getModifierLevel((ItemStack) (Object) this, SoulAlloyTool.SoulAlloyModifier.IGNORANCE);
     }
@@ -36,7 +37,7 @@ public class ItemStackMixin {
     @Inject(method = "getAttributeModifiers", at = @At("TAIL"), cancellable = true)
     public void applyHasteSword(EquipmentSlot equipmentSlot, CallbackInfoReturnable<Multimap<EntityAttribute, EntityAttributeModifier>> cir) {
         if (equipmentSlot != EquipmentSlot.MAINHAND) return;
-        if (item != ConjuringCommon.SOUL_ALLOY_SWORD) return;
+        if (item != ConjuringItems.SOUL_ALLOY_SWORD) return;
 
         final ItemStack thisStack = (ItemStack) (Object) this;
 
@@ -47,7 +48,7 @@ public class ItemStackMixin {
         modifierMap = HashMultimap.create(modifierMap);
         modifierMap.removeAll(EntityAttributes.GENERIC_ATTACK_SPEED);
 
-        modifierMap.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ItemAccessor.getAttackSpeedModifierID(), "Weapon modifier", -2.4f + Math.pow(SoulAlloyTool.getModifierLevel(thisStack, SoulAlloyTool.SoulAlloyModifier.HASTE), ConjuringCommon.CONFIG.tools_config.sword_haste_exponent), EntityAttributeModifier.Operation.ADDITION));
+        modifierMap.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ItemAccessor.getAttackSpeedModifierID(), "Weapon modifier", -2.4f + Math.pow(SoulAlloyTool.getModifierLevel(thisStack, SoulAlloyTool.SoulAlloyModifier.HASTE), Conjuring.CONFIG.tools_config.sword_haste_exponent), EntityAttributeModifier.Operation.ADDITION));
 
         cir.setReturnValue(modifierMap);
     }

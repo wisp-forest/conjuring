@@ -1,6 +1,6 @@
 package com.glisco.conjuring.blocks.conjurer;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.blocks.ConjuringBlocks;
 import com.glisco.conjuring.items.ConjuringScepter;
 import com.glisco.conjuring.items.SuperiorConjuringScepter;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -48,7 +48,7 @@ public class ConjurerBlock extends BlockWithEntity {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, ConjuringCommon.CONJURER_BLOCK_ENTITY, ConjurerBlockEntity::tick);
+        return checkType(type, ConjuringBlocks.Entities.CONJURER, ConjurerBlockEntity::tick);
     }
 
     @Override

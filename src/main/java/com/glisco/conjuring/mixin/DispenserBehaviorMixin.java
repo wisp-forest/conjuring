@@ -1,6 +1,6 @@
 package com.glisco.conjuring.mixin;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.blocks.ConjuringBlocks;
 import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DispenserBlock;
@@ -19,7 +19,7 @@ public class DispenserBehaviorMixin {
     public void checkFroge(BlockPointer pointer, ItemStack stack, CallbackInfoReturnable<ItemStack> cir) {
         Direction direction = pointer.getWorld().getBlockState(pointer.getPos()).get(DispenserBlock.FACING);
         BlockState state = pointer.getWorld().getBlockState(pointer.getPos().offset(direction));
-        if (!state.getBlock().equals(ConjuringCommon.SOULFIRE_FORGE_BLOCK)) return;
+        if (!state.getBlock().equals(ConjuringBlocks.SOULFIRE_FORGE)) return;
 
         if (state.get(SoulfireForgeBlock.BURNING)) return;
 

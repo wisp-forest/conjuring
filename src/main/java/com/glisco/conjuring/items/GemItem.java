@@ -1,6 +1,6 @@
 package com.glisco.conjuring.items;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyTool;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
@@ -21,7 +21,7 @@ public class GemItem extends Item {
     public final SoulAlloyTool.SoulAlloyModifier modifier;
 
     public GemItem(SoulAlloyTool.SoulAlloyModifier modifier) {
-        super(new Settings().rarity(Rarity.UNCOMMON).group(ConjuringCommon.CONJURING_GROUP));
+        super(new Settings().rarity(Rarity.UNCOMMON).group(Conjuring.CONJURING_GROUP));
         this.modifier = modifier;
     }
 

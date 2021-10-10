@@ -12,9 +12,9 @@ import java.util.List;
 
 public class SoulfireForgeDisplay implements Display {
 
-    protected SoulfireForgeRecipe display;
-    protected List<EntryIngredient> input;
-    protected List<EntryIngredient> output;
+    protected final SoulfireForgeRecipe display;
+    protected final List<EntryIngredient> input;
+    protected final List<EntryIngredient> output;
 
     public SoulfireForgeDisplay(SoulfireForgeRecipe recipe) {
         this.display = recipe;

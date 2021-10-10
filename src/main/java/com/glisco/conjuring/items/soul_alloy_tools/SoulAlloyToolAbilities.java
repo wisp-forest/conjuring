@@ -1,6 +1,6 @@
 package com.glisco.conjuring.items.soul_alloy_tools;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.items.ConjuringItems;
 import com.glisco.owo.ops.WorldOps;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.entity.player.PlayerEntity;
@@ -34,11 +34,11 @@ public class SoulAlloyToolAbilities {
     }
 
     public static boolean canArmorPierce(PlayerEntity player) {
-        return player.getMainHandStack().getItem() == ConjuringCommon.SOUL_ALLOY_SWORD && SoulAlloyTool.getModifierLevel(player.getMainHandStack(), SoulAlloyTool.SoulAlloyModifier.IGNORANCE) > 0;
+        return player.getMainHandStack().getItem() == ConjuringItems.SOUL_ALLOY_SWORD && SoulAlloyTool.getModifierLevel(player.getMainHandStack(), SoulAlloyTool.SoulAlloyModifier.IGNORANCE) > 0;
     }
 
     public static boolean canAoeHit(PlayerEntity player) {
-        return player.getMainHandStack().getItem() == ConjuringCommon.SOUL_ALLOY_SWORD && SoulAlloyTool.isSecondaryEnabled(player.getMainHandStack()) && SoulAlloyTool.getModifierLevel(player.getMainHandStack(), SoulAlloyTool.SoulAlloyModifier.SCOPE) > 0;
+        return player.getMainHandStack().getItem() == ConjuringItems.SOUL_ALLOY_SWORD && SoulAlloyTool.isSecondaryEnabled(player.getMainHandStack()) && SoulAlloyTool.getModifierLevel(player.getMainHandStack(), SoulAlloyTool.SoulAlloyModifier.SCOPE) > 0;
     }
 
     public static List<BlockPos> getBlocksToDig(PlayerEntity player) {
@@ -59,37 +59,31 @@ public class SoulAlloyToolAbilities {
         if (player.getMainHandStack().getItem().getMiningSpeedMultiplier(player.getMainHandStack(), player.world.getBlockState(hit)) == 1) return blocksToDig;
 
         switch (side.getAxis()) {
-            case X:
-
+            case X -> {
                 hit = hit.add(0, -1 * scopeLevel, -1 * scopeLevel);
-
                 for (int i = 0; i < 1 + 2 * scopeLevel; i++) {
                     for (int j = 0; j < 1 + 2 * scopeLevel; j++) {
                         blocksToDig.add(hit.add(0, i, j));
                     }
                 }
-
-                break;
-            case Y:
+            }
+            case Y -> {
                 hit = hit.add(-1 * scopeLevel, 0, -1 * scopeLevel);
-
                 for (int i = 0; i < 1 + 2 * scopeLevel; i++) {
                     for (int j = 0; j < 1 + 2 * scopeLevel; j++) {
                         blocksToDig.add(hit.add(j, 0, i));
                     }
                 }
-                break;
-            case Z:
+            }
+            case Z -> {
                 hit = hit.add(-1 * scopeLevel, -1 * scopeLevel, 0);
-
                 for (int i = 0; i < 1 + 2 * scopeLevel; i++) {
                     for (int j = 0; j < 1 + 2 * scopeLevel; j++) {
                         blocksToDig.add(hit.add(j, i, 0));
                     }
                 }
-                break;
+            }
         }
-
 
         blocksToDig.removeIf(blockPos -> player.world.getBlockState(blockPos).getHardness(player.world, blockPos) <= 0 || player.getMainHandStack().getItem().getMiningSpeedMultiplier(player.getMainHandStack(), player.world.getBlockState(blockPos)) <= 1);
         blocksToDig.remove(origin);

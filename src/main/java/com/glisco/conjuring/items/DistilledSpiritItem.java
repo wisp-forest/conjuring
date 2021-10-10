@@ -1,13 +1,16 @@
 package com.glisco.conjuring.items;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.Conjuring;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsage;
+import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
@@ -26,10 +29,7 @@ public class DistilledSpiritItem extends Item {
     }
 
     public DistilledSpiritItem() {
-        super(new Settings()
-                .group(ConjuringCommon.CONJURING_GROUP)
-                .maxCount(1)
-                .rarity(Rarity.UNCOMMON));
+        super(new Settings().group(Conjuring.CONJURING_GROUP).maxCount(1).rarity(Rarity.UNCOMMON));
     }
 
     @Override

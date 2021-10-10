@@ -1,7 +1,8 @@
 package com.glisco.conjuring.blocks.soul_weaver;
 
-import com.glisco.conjuring.ConjuringCommon;
 import com.glisco.conjuring.blocks.BlackstonePedestalBlockEntity;
+import com.glisco.conjuring.blocks.ConjuringBlocks;
+import com.glisco.conjuring.items.ConjuringItems;
 import com.glisco.conjuring.items.ConjuringScepter;
 import com.glisco.owo.ops.ItemOps;
 import com.glisco.owo.particles.ClientParticles;
@@ -73,7 +74,7 @@ public class SoulWeaverBlock extends BlockWithEntity {
         final ItemStack playerStack = player.getStackInHand(hand);
         final ItemStack weaverItem = weaver.getItem();
 
-        if (playerStack.getItem().equals(ConjuringCommon.CONJURATION_ESSENCE) && !weaver.isLit()) {
+        if (playerStack.getItem().equals(ConjuringItems.CONJURATION_ESSENCE) && !weaver.isLit()) {
             weaver.setLit(true);
             if (!ItemOps.emptyAwareDecrement(playerStack)) player.setStackInHand(hand, ItemStack.EMPTY);
             return ActionResult.SUCCESS;
@@ -107,15 +108,14 @@ public class SoulWeaverBlock extends BlockWithEntity {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, ConjuringCommon.SOUL_WEAVER_BLOCK_ENTITY, world.isClient ? SoulWeaverBlockEntity.CLIENT_TICKER : SoulWeaverBlockEntity.SERVER_TICKER);
+        return checkType(type, ConjuringBlocks.Entities.SOUL_WEAVER, SoulWeaverBlockEntity.TICKER);
     }
 
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof SoulWeaverBlockEntity) {
-                SoulWeaverBlockEntity weaverEntity = (SoulWeaverBlockEntity) blockEntity;
+            if (blockEntity instanceof SoulWeaverBlockEntity weaverEntity) {
                 weaverEntity.onBroken();
             }
             super.onStateReplaced(state, world, pos, newState, moved);

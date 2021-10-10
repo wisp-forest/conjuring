@@ -1,6 +1,6 @@
 package com.glisco.conjuring.blocks.gem_tinkerer;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.blocks.ConjuringBlocks;
 import com.glisco.owo.ops.ItemOps;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -27,15 +27,6 @@ public class GemTinkererBlock extends BlockWithEntity {
     private static final VoxelShape SHAPE = Block.createCuboidShape(6, 3.6, 6, 10, 14.8, 10);
     private static final HashMap<Direction, Integer> SIDE_TO_INDEX = new HashMap<>();
 
-    static {
-        SIDE_TO_INDEX.put(Direction.EAST, 4);
-        SIDE_TO_INDEX.put(Direction.NORTH, 2);
-        SIDE_TO_INDEX.put(Direction.WEST, 1);
-        SIDE_TO_INDEX.put(Direction.SOUTH, 3);
-        SIDE_TO_INDEX.put(Direction.UP, 0);
-        SIDE_TO_INDEX.put(Direction.DOWN, 0);
-    }
-
     public GemTinkererBlock() {
         super(Settings.copy(Blocks.BLACKSTONE).nonOpaque());
     }
@@ -48,13 +39,13 @@ public class GemTinkererBlock extends BlockWithEntity {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, ConjuringCommon.GEM_TINKERER_BLOCK_ENTITY, world.isClient ? GemTinkererBlockEntity.CLIENT_TICKER : GemTinkererBlockEntity.SERVER_TICKER);
+        return checkType(type, ConjuringBlocks.Entities.GEM_TINKERER, GemTinkererBlockEntity.TICKER);
     }
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 
-        //We dont allow offhand because it confuses people
+        //We don't allow offhand because it confuses people
         if (hand == Hand.OFF_HAND) return ActionResult.PASS;
 
         GemTinkererBlockEntity tinkerer = (GemTinkererBlockEntity) world.getBlockEntity(pos);
@@ -78,15 +69,11 @@ public class GemTinkererBlock extends BlockWithEntity {
 
                 if (hit.getSide() == Direction.UP) {
                     for (int i = 1; i < 5; i++) {
-
-                        if (tinkererInventory.get(i).isEmpty()) continue;
                         player.getInventory().offerOrDrop(tinkererInventory.get(i));
-
                         tinkererInventory.set(i, ItemStack.EMPTY);
                     }
 
                     tinkerer.markDirty();
-
                     return ActionResult.SUCCESS;
                 }
 
@@ -121,7 +108,7 @@ public class GemTinkererBlock extends BlockWithEntity {
                     tinkererInventory.set(sideIndex, ItemOps.singleCopy(playerStack));
                     tinkerer.markDirty();
 
-                    if (!ItemOps.emptyAwareDecrement(playerStack)) player.setStackInHand(hand, ItemStack.EMPTY);
+                    ItemOps.decrementPlayerHandItem(player, hand);
                 } else {
                     if (!ItemOps.canStack(playerStack, sideStack)) return ActionResult.PASS;
 
@@ -131,9 +118,7 @@ public class GemTinkererBlock extends BlockWithEntity {
                     playerStack.increment(1);
                 }
             }
-
         }
-
         return ActionResult.SUCCESS;
     }
 
@@ -149,5 +134,14 @@ public class GemTinkererBlock extends BlockWithEntity {
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new GemTinkererBlockEntity(pos, state);
+    }
+
+    static {
+        SIDE_TO_INDEX.put(Direction.EAST, 4);
+        SIDE_TO_INDEX.put(Direction.NORTH, 2);
+        SIDE_TO_INDEX.put(Direction.WEST, 1);
+        SIDE_TO_INDEX.put(Direction.SOUTH, 3);
+        SIDE_TO_INDEX.put(Direction.UP, 0);
+        SIDE_TO_INDEX.put(Direction.DOWN, 0);
     }
 }

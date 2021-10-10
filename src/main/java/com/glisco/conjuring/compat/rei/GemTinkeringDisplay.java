@@ -12,9 +12,9 @@ import java.util.List;
 
 public class GemTinkeringDisplay implements Display {
 
-    protected GemTinkererRecipe display;
-    protected List<EntryIngredient> input;
-    protected List<EntryIngredient> output;
+    protected final GemTinkererRecipe display;
+    protected final List<EntryIngredient> input;
+    protected final List<EntryIngredient> output;
 
     public GemTinkeringDisplay(GemTinkererRecipe recipe) {
         this.display = recipe;

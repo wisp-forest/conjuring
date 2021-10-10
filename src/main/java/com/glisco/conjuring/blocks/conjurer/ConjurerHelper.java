@@ -1,7 +1,8 @@
 package com.glisco.conjuring.blocks.conjurer;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.items.ConjuringFocus;
+import com.glisco.conjuring.items.ConjuringItems;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.MobSpawnerEntry;
 
@@ -31,7 +32,7 @@ public class ConjurerHelper {
             conjurer.getLogic().setSpawnEntry(conjurer.getWorld(), conjurer.getPos(), entry);
             conjurer.setActive(true);
 
-            conjurer.setRequiresPlayer(focus.getItem() != ConjuringCommon.STABILIZED_CONJURING_FOCUS);
+            conjurer.setRequiresPlayer(focus.getItem() != ConjuringItems.STABILIZED_CONJURING_FOCUS);
 
         } else {
             conjurer.setActive(false);
@@ -39,20 +40,20 @@ public class ConjurerHelper {
             return;
         }
 
-        if (hasteCharms.getItem() == ConjuringCommon.HASTE_CHARM) {
-            maxSpawnDelay = Math.max(10, Math.round(800 - hasteCharms.getCount() * ConjuringCommon.CONFIG.conjurer_config.haste_multiplier));
+        if (hasteCharms.getItem() == ConjuringItems.HASTE_CHARM) {
+            maxSpawnDelay = Math.max(10, Math.round(800 - hasteCharms.getCount() * Conjuring.CONFIG.conjurer_config.haste_multiplier));
         }
 
-        if (abundanceCharms.getItem() == ConjuringCommon.ABUNDANCE_CHARM) {
-            spawnCount = 4 + abundanceCharms.getCount() * ConjuringCommon.CONFIG.conjurer_config.abundance_multiplier;
+        if (abundanceCharms.getItem() == ConjuringItems.ABUNDANCE_CHARM) {
+            spawnCount = 4 + abundanceCharms.getCount() * Conjuring.CONFIG.conjurer_config.abundance_multiplier;
         }
 
-        if (scopeCharms.getItem() == ConjuringCommon.SCOPE_CHARM) {
-            requiredPlayerRange = 16 + scopeCharms.getCount() * ConjuringCommon.CONFIG.conjurer_config.scope_multiplier;
+        if (scopeCharms.getItem() == ConjuringItems.SCOPE_CHARM) {
+            requiredPlayerRange = 16 + scopeCharms.getCount() * Conjuring.CONFIG.conjurer_config.scope_multiplier;
         }
 
-        if (ignoranceCharms.getItem() == ConjuringCommon.IGNORANCE_CHARM) {
-            maxNearbyEntities = 6 + ignoranceCharms.getCount() * ConjuringCommon.CONFIG.conjurer_config.ignorance_multiplier;
+        if (ignoranceCharms.getItem() == ConjuringItems.IGNORANCE_CHARM) {
+            maxNearbyEntities = 6 + ignoranceCharms.getCount() * Conjuring.CONFIG.conjurer_config.ignorance_multiplier;
         }
 
         conjurer.getLogic().setRequiredPlayerRange(requiredPlayerRange);

@@ -1,6 +1,6 @@
 package com.glisco.conjuring.entities;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.items.soul_alloy_tools.BlockCrawler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -24,7 +24,7 @@ public class SoulFellerEntity extends SoulEntity {
     }
 
     public SoulFellerEntity(World world, LivingEntity owner) {
-        super(ConjuringCommon.SOUL_FELLER, world);
+        super(Conjuring.SOUL_FELLER, world);
         setOwner(owner);
     }
 

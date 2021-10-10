@@ -1,7 +1,8 @@
 package com.glisco.conjuring.items.soul_alloy_tools;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.entities.SoulProjectileEntity;
+import com.glisco.conjuring.items.ConjuringItems;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityGroup;
@@ -21,7 +22,7 @@ import java.util.List;
 public class SoulAlloySword extends SwordItem implements SoulAlloyTool {
 
     public SoulAlloySword() {
-        super(SoulAlloyToolMaterial.INSTANCE, 3, -2.4f, new Settings().group(ConjuringCommon.CONJURING_GROUP).rarity(Rarity.UNCOMMON));
+        super(SoulAlloyToolMaterial.INSTANCE, 3, -2.4f, new Settings().group(Conjuring.CONJURING_GROUP).rarity(Rarity.UNCOMMON));
     }
 
     @Override
@@ -31,7 +32,7 @@ public class SoulAlloySword extends SwordItem implements SoulAlloyTool {
 
         if (!world.isClient()) {
 
-            float damage = (float) ((user.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE) + EnchantmentHelper.getAttackDamage(user.getMainHandStack(), EntityGroup.DEFAULT)) * 1.5f *  ConjuringCommon.CONFIG.tools_config.sword_projectile_damage_multiplier);
+            float damage = (float) ((user.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE) + EnchantmentHelper.getAttackDamage(user.getMainHandStack(), EntityGroup.DEFAULT)) * 1.5f * Conjuring.CONFIG.tools_config.sword_projectile_damage_multiplier);
 
             for (int i = 0; i < 5; i++) {
                 SoulProjectileEntity projectile = new SoulProjectileEntity(world, user);
@@ -42,8 +43,8 @@ public class SoulAlloySword extends SwordItem implements SoulAlloyTool {
                 world.spawnEntity(projectile);
             }
 
-            user.getItemCooldownManager().set(ConjuringCommon.SOUL_ALLOY_SWORD, ConjuringCommon.CONFIG.tools_config.sword_secondary_cooldown);
-            user.getStackInHand(hand).damage(ConjuringCommon.CONFIG.tools_config.sword_secondary_durability_cost, user, player -> player.sendToolBreakStatus(hand));
+            user.getItemCooldownManager().set(ConjuringItems.SOUL_ALLOY_SWORD, Conjuring.CONFIG.tools_config.sword_secondary_cooldown);
+            user.getStackInHand(hand).damage(Conjuring.CONFIG.tools_config.sword_secondary_durability_cost, user, player -> player.sendToolBreakStatus(hand));
         }
 
         return TypedActionResult.success(user.getStackInHand(hand));

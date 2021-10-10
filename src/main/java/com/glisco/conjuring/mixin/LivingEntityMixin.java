@@ -1,22 +1,19 @@
 package com.glisco.conjuring.mixin;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.items.soul_alloy_tools.CopycatPlayerDamageSource;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyTool;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyToolAbilities;
 import com.glisco.owo.particles.ServerParticles;
 import com.glisco.owo.util.VectorSerializer;
-import com.google.gson.JsonObject;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -65,16 +62,16 @@ public abstract class LivingEntityMixin extends Entity {
 
         entities.remove(player);
 
-        for (int i = 0; i < ConjuringCommon.CONFIG.tools_config.sword_scope_max_entities && i < entities.size(); i++) {
-            entities.get(i).damage(new CopycatPlayerDamageSource(player), amount * ConjuringCommon.CONFIG.tools_config.sword_scope_damage_multiplier * scopeLevel);
+        for (int i = 0; i < Conjuring.CONFIG.tools_config.sword_scope_max_entities && i < entities.size(); i++) {
+            entities.get(i).damage(new CopycatPlayerDamageSource(player), amount * Conjuring.CONFIG.tools_config.sword_scope_damage_multiplier * scopeLevel);
             player.getMainHandStack().damage(4 * scopeLevel, player, playerEntity -> player.sendToolBreakStatus(Hand.MAIN_HAND));
 
-            NbtCompound nbt = new NbtCompound();
-            VectorSerializer.store(getPos().add(0, 0.25 + random.nextDouble(), 0), nbt, "start");
-            VectorSerializer.store(entities.get(i).getPos().add(0, 0.25 + random.nextDouble(), 0), nbt, "end");
-
             if (!world.isClient()) {
-                ServerParticles.issueEvent((ServerWorld) world, getBlockPos(), new Identifier("conjuring", "line"), ServerParticles.writeNbt(nbt));
+                final int entityIndex = i;
+                ServerParticles.issueEvent((ServerWorld) world, getPos(), Conjuring.id("line"), byteBuf -> {
+                    VectorSerializer.write(getPos().add(0, 0.25 + random.nextDouble(), 0), byteBuf);
+                    VectorSerializer.write(entities.get(entityIndex).getPos().add(0, 0.25 + random.nextDouble(), 0), byteBuf);
+                });
             }
         }
 
@@ -96,7 +93,7 @@ public abstract class LivingEntityMixin extends Entity {
 
         if (!SoulAlloyToolAbilities.canArmorPierce(player)) return;
 
-        float pierceDamage = SoulAlloyTool.getModifierLevel(player.getMainHandStack(), SoulAlloyTool.SoulAlloyModifier.IGNORANCE) * ConjuringCommon.CONFIG.tools_config.sword_ignorance_multiplier * amount;
+        float pierceDamage = SoulAlloyTool.getModifierLevel(player.getMainHandStack(), SoulAlloyTool.SoulAlloyModifier.IGNORANCE) * Conjuring.CONFIG.tools_config.sword_ignorance_multiplier * amount;
         applyDamage(new CopycatPlayerDamageSource(player).pierceArmor(), pierceDamage);
         damageReduction = pierceDamage;
     }

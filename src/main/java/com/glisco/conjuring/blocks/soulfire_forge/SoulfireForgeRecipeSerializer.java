@@ -18,12 +18,10 @@ import java.util.Map;
 
 public class SoulfireForgeRecipeSerializer implements RecipeSerializer<SoulfireForgeRecipe> {
 
-    private SoulfireForgeRecipeSerializer() {
-    }
+    private SoulfireForgeRecipeSerializer() {}
 
     public static final SoulfireForgeRecipeSerializer INSTANCE = new SoulfireForgeRecipeSerializer();
     public static final Identifier ID = SoulfireForgeRecipe.Type.ID;
-
 
     @Override
     public SoulfireForgeRecipe read(Identifier id, JsonObject json) {
@@ -40,7 +38,6 @@ public class SoulfireForgeRecipeSerializer implements RecipeSerializer<SoulfireF
             if (ingredient.isEmpty()) throw new JsonSyntaxException("Invalid key '" + key.getKey() + " ', no item found");
             keys.put(key.getKey().charAt(0), ingredient);
         }
-
 
         DefaultedList<Ingredient> inputs = DefaultedList.ofSize(9, Ingredient.EMPTY);
         int rowCounter = 0;
@@ -60,7 +57,7 @@ public class SoulfireForgeRecipeSerializer implements RecipeSerializer<SoulfireF
             rowCounter++;
         }
 
-        Item resultItem = Registry.ITEM.getOrEmpty(Identifier.tryParse(recipe.result.get("item").getAsString())).orElseThrow(() -> new JsonSyntaxException("No such item \'" + recipe.result.get("item").getAsString() + "\'"));
+        Item resultItem = Registry.ITEM.getOrEmpty(Identifier.tryParse(recipe.result.get("item").getAsString())).orElseThrow(() -> new JsonSyntaxException("No such item '" + recipe.result.get("item").getAsString() + "'"));
         ItemStack result = new ItemStack(resultItem, recipe.result.get("count").getAsInt());
 
         return new SoulfireForgeRecipe(id, result, recipe.smeltTime, inputs);
@@ -76,7 +73,6 @@ public class SoulfireForgeRecipeSerializer implements RecipeSerializer<SoulfireF
         for (int i = 0; i < 9; i++) {
             inputs.set(i, Ingredient.fromPacket(buf));
         }
-
 
         return new SoulfireForgeRecipe(id, result, smeltTime, inputs);
     }

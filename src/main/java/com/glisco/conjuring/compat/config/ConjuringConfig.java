@@ -11,7 +11,7 @@ import java.util.List;
 @Config(name = "conjuring")
 public class ConjuringConfig implements ConfigData {
 
-    public ConjuringConfig(){
+    public ConjuringConfig() {
         conjurer_config.conjurer_blacklist.add("minecraft:wither");
         conjurer_config.conjurer_blacklist.add("minecraft:ender_dragon");
     }

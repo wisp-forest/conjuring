@@ -37,7 +37,7 @@ public class SoulWeaverRecipeSerializer implements RecipeSerializer<SoulWeaverRe
             index++;
         }
 
-        Item resultItem = Registry.ITEM.getOrEmpty(Identifier.tryParse(recipe.result.get("item").getAsString())).orElseThrow(() -> new JsonSyntaxException("No such item \'" + recipe.result.get("item").getAsString() + "\'"));
+        Item resultItem = Registry.ITEM.getOrEmpty(Identifier.tryParse(recipe.result.get("item").getAsString())).orElseThrow(() -> new JsonSyntaxException("No such item '" + recipe.result.get("item").getAsString() + "'"));
         ItemStack result = new ItemStack(resultItem, recipe.result.get("count").getAsInt());
 
         return new SoulWeaverRecipe(id, result, inputs, recipe.transferTag);

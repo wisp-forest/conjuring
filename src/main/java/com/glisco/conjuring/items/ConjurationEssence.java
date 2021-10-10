@@ -1,6 +1,6 @@
 package com.glisco.conjuring.items;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.Conjuring;
 import net.minecraft.block.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,7 +16,7 @@ public class ConjurationEssence extends Item {
     }
 
     public ConjurationEssence() {
-        this(new Settings().group(ConjuringCommon.CONJURING_GROUP).rarity(Rarity.RARE));
+        this(new Settings().group(Conjuring.CONJURING_GROUP).rarity(Rarity.RARE));
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ConjurationEssence extends Item {
             context.getPlayer().setStackInHand(context.getHand(), ItemStack.EMPTY);
         }
 
-        ItemScatterer.spawn(context.getWorld(), context.getHitPos().x, context.getHitPos().y, context.getHitPos().z, new ItemStack(ConjuringCommon.LESSER_CONJURATION_ESSENCE, 4));
+        ItemScatterer.spawn(context.getWorld(), context.getHitPos().x, context.getHitPos().y, context.getHitPos().z, new ItemStack(ConjuringItems.LESSER_CONJURATION_ESSENCE, 4));
 
         return ActionResult.SUCCESS;
     }

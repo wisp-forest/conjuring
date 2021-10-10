@@ -1,6 +1,6 @@
-package com.glisco.conjuring.client;
+package com.glisco.conjuring.client.ui;
 
-import com.glisco.conjuring.SoulfireForgeScreenHandler;
+import com.glisco.conjuring.Conjuring;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
@@ -10,27 +10,24 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-public class SoulfireForgeScreen extends HandledScreen<ScreenHandler> {
+public class ConjurerScreen extends HandledScreen<ScreenHandler> {
 
-    private static final Identifier TEXTURE = new Identifier("conjuring", "textures/gui/soulfire_forge.png");
+    private static final Identifier TEXTURE = Conjuring.id("textures/gui/conjurer.png");
 
-    public SoulfireForgeScreen(ScreenHandler handler, PlayerInventory inventory, Text title) {
+    public ConjurerScreen(ScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
+        this.backgroundHeight = 192;
+        this.playerInventoryTitleY = 10000;
     }
 
     @Override
     protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
+        int x = (width - backgroundWidth) / 2;
+        int y = (height - backgroundHeight) / 2;
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        int x = (width - backgroundWidth) / 2;
-        int y = (height - backgroundHeight) / 2;
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
-
-        int progress = ((SoulfireForgeScreenHandler) this.handler).getProgress();
-
-        drawTexture(matrices, x + 90, y + 57 - progress, 176, 32 - progress, 32, 32);
-
     }
 
     @Override
@@ -44,6 +41,6 @@ public class SoulfireForgeScreen extends HandledScreen<ScreenHandler> {
     protected void init() {
         super.init();
         titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
-        titleY--;
     }
+
 }

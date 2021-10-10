@@ -1,6 +1,8 @@
 package com.glisco.conjuring.entities;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.Conjuring;
+import com.glisco.conjuring.items.ConjuringItems;
+import com.glisco.conjuring.util.ConjuringParticleEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -29,7 +31,7 @@ public class SoulProjectileEntity extends SoulEntity {
     private final TargetPredicate UNIQUE_CLOSEST;
 
     public SoulProjectileEntity(World world, LivingEntity owner) {
-        super(ConjuringCommon.SOUL_PROJECTILE, world);
+        super(Conjuring.SOUL_PROJECTILE, world);
         setOwner(owner);
         UNIQUE_CLOSEST = TargetPredicate.createAttackable().setBaseMaxDistance(8).setPredicate(livingEntity -> livingEntity.isAlive() && (!TARGET_ENTITIES.containsValue(livingEntity) || TARGET_ENTITIES.get(this) == livingEntity));
     }
@@ -60,18 +62,15 @@ public class SoulProjectileEntity extends SoulEntity {
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
 
-        if (!(entityHitResult.getEntity() instanceof LivingEntity) || entityHitResult.getEntity() instanceof EnderDragonEntity || entityHitResult.getEntity() instanceof WitherEntity || entityHitResult.getEntity() instanceof PlayerEntity)
+        if (!(entityHitResult.getEntity() instanceof LivingEntity e) || entityHitResult.getEntity() instanceof EnderDragonEntity || entityHitResult.getEntity() instanceof WitherEntity || entityHitResult.getEntity() instanceof PlayerEntity)
             return;
         this.remove(RemovalReason.KILLED);
 
-        LivingEntity e = (LivingEntity) entityHitResult.getEntity();
-
         e.damage(createDamageSource(), damage);
 
-
         if (!e.isAlive() && damage == 1.5f) {
-            e.dropItem(ConjuringCommon.CONJURATION_ESSENCE);
-            e.world.syncWorldEvent(9005, entityHitResult.getEntity().getBlockPos(), 0);
+            e.dropItem(ConjuringItems.CONJURATION_ESSENCE);
+            ConjuringParticleEvents.sendRitualFinished(world, entityHitResult.getEntity().getBlockPos(), true);
 
             if (!e.world.isClient) {
                 BlockPos pos = e.getBlockPos();
@@ -91,7 +90,7 @@ public class SoulProjectileEntity extends SoulEntity {
     @Override
     public void tick() {
         Entity closest = world.getClosestEntity(MobEntity.class, UNIQUE_CLOSEST, null, getX(), getY(), getZ(), getBoundingBox().expand(3, 2, 3));
-        if(closest == null && TARGET_ENTITIES.containsKey(this)) closest = TARGET_ENTITIES.get(this);
+        if (closest == null && TARGET_ENTITIES.containsKey(this)) closest = TARGET_ENTITIES.get(this);
         if (closest != null) {
             Vec3d targetVector = closest.getPos().add(0, closest.getHeight() * 0.5, 0).subtract(getPos());
             setVelocity(targetVector.multiply(0.25f));

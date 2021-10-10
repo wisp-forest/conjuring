@@ -1,8 +1,8 @@
 package com.glisco.conjuring.blocks.conjurer;
 
-import com.glisco.conjuring.ConjurerScreenHandler;
-import com.glisco.conjuring.ConjuringCommon;
-import com.glisco.conjuring.blocks.ImplementedInventory;
+import com.glisco.conjuring.blocks.ConjuringBlocks;
+import com.glisco.conjuring.util.ConjurerScreenHandler;
+import com.glisco.owo.util.ImplementedInventory;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -29,7 +29,7 @@ public class ConjurerBlockEntity extends BlockEntity implements ImplementedInven
     private final ConjurerLogic logic = new ConjurerLogic() {
         @Override
         public void sendStatus(World world, BlockPos pos, int i) {
-            ConjurerBlockEntity.this.world.addSyncedBlockEvent(ConjurerBlockEntity.this.pos, ConjuringCommon.CONJURER_BLOCK, i, 0);
+            ConjurerBlockEntity.this.world.addSyncedBlockEvent(ConjurerBlockEntity.this.pos, ConjuringBlocks.CONJURER, i, 0);
         }
 
         public World getWorld() {
@@ -42,7 +42,7 @@ public class ConjurerBlockEntity extends BlockEntity implements ImplementedInven
     };
 
     public ConjurerBlockEntity(BlockPos pos, BlockState state) {
-        super(ConjuringCommon.CONJURER_BLOCK_ENTITY, pos, state);
+        super(ConjuringBlocks.Entities.CONJURER, pos, state);
     }
 
     public static void tick(World world, BlockPos pos, BlockState state, ConjurerBlockEntity conjurer) {
@@ -81,6 +81,7 @@ public class ConjurerBlockEntity extends BlockEntity implements ImplementedInven
     public void setRequiresPlayer(boolean requiresPlayer) {
         this.logic.setRequiresPlayer(requiresPlayer);
     }
+
 
     //NBT Logic
     @Override

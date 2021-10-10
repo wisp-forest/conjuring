@@ -1,11 +1,15 @@
 package com.glisco.conjuring.blocks.soulfire_forge;
 
-import com.glisco.conjuring.ConjuringCommon;
-import com.glisco.conjuring.SoulfireForgeScreenHandler;
-import com.glisco.conjuring.blocks.ImplementedInventory;
+import com.glisco.conjuring.blocks.ConjuringBlocks;
+import com.glisco.conjuring.util.ConjuringParticleEvents;
+import com.glisco.conjuring.util.SoulfireForgeScreenHandler;
 import com.glisco.owo.ops.ItemOps;
+import com.glisco.owo.particles.ClientParticles;
+import com.glisco.owo.particles.ServerParticles;
+import com.glisco.owo.util.ImplementedInventory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
@@ -16,16 +20,18 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
-
-import java.util.Optional;
+import net.minecraft.util.math.Vec3d;
 
 public class SoulfireForgeBlockEntity extends BlockEntity implements ImplementedInventory, SidedInventory, NamedScreenHandlerFactory {
+
+    public static final BlockEntityTicker<SoulfireForgeBlockEntity> SERVER_TICKER = (world1, pos1, state, blockEntity) -> blockEntity.tickServer();
+    public static final BlockEntityTicker<SoulfireForgeBlockEntity> CLIENT_TICKER = (world1, pos1, state, blockEntity) -> blockEntity.tickClient();
 
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(10, ItemStack.EMPTY);
 
@@ -35,9 +41,10 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
     private int progress;
     private int smeltTime;
     private int targetSmeltTime;
+    private SoulfireForgeRecipe cachedRecipe;
 
     public SoulfireForgeBlockEntity(BlockPos pos, BlockState state) {
-        super(ConjuringCommon.SOULFIRE_FORGE_BLOCK_ENTITY, pos, state);
+        super(ConjuringBlocks.Entities.SOULFIRE_FORGE, pos, state);
     }
 
     private final PropertyDelegate properties = new PropertyDelegate() {
@@ -57,58 +64,53 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
         }
     };
 
+    public void tickClient() {
+        if (!getCachedState().get(SoulfireForgeBlock.BURNING)) return;
+
+        final var loc = Vec3d.of(pos);
+        ClientParticles.setParticleCount(4);
+        ClientParticles.spawnPrecise(ParticleTypes.SMOKE, world, loc.add(.5, .6, .5), .3, 0, .3);
+
+        if (!updateCachedRecipe() || world.random.nextDouble() > .1) return;
+
+        ClientParticles.spawnPrecise(ParticleTypes.SOUL, world, loc.add(.5, .75, .5), .45, 0, .45);
+    }
+
     //Tick Logic
-    public void tick() {
-        if (!this.world.isClient()) {
+    public void tickServer() {
+        if (!getCachedState().get(SoulfireForgeBlock.BURNING) || !updateCachedRecipe()) return;
 
-            Optional<SoulfireForgeRecipe> currentRecipe = world.getRecipeManager().getFirstMatch(SoulfireForgeRecipe.Type.INSTANCE, this, world);
+        targetSmeltTime = cachedRecipe.getSmeltTime();
 
-            if (currentRecipe.isPresent() && getCachedState().get(SoulfireForgeBlock.BURNING)) {
-                if (items.get(9).isEmpty() || ItemOps.canStack(items.get(9), currentRecipe.get().getOutput())) {
-                    targetSmeltTime = currentRecipe.get().getSmeltTime();
+        if (smeltTime == targetSmeltTime) {
+            this.decrementCraftingItems();
+            this.incrementOutput(cachedRecipe.getOutput());
 
-                    if (smeltTime == targetSmeltTime) {
-                        this.decrementCraftingItems();
-                        this.incrementOutput(currentRecipe.get().getOutput());
-                        this.markDirty();
+            this.progress = 0;
+            this.smeltTime = 0;
 
-                        progress = 0;
-                        smeltTime = 0;
+            world.setBlockState(pos, world.getBlockState(pos).with(SoulfireForgeBlock.BURNING, false));
+            this.markDirty();
+        } else {
+            this.smeltTime++;
+            this.progress = Math.round(((float) smeltTime / (float) targetSmeltTime) * 32);
+        }
 
-                        world.setBlockState(pos, world.getBlockState(pos).with(SoulfireForgeBlock.BURNING, false));
-                    } else {
-                        //TODO make this client sided
-                        this.world.syncWorldEvent(9001, pos, 0);
-                        smeltTime++;
-                        progress = Math.round(((float) smeltTime / (float) targetSmeltTime) * 32);
-                    }
+        world.updateComparators(pos, ConjuringBlocks.SOULFIRE_FORGE);
+    }
 
-                    world.updateComparators(pos, ConjuringCommon.SOULFIRE_FORGE_BLOCK);
-
-                } else {
-                    smeltTime = 0;
-                    progress = 0;
-                }
-            } else {
-                smeltTime = 0;
-                progress = 0;
-            }
-        } else if (getCachedState().get(SoulfireForgeBlock.BURNING)) {
-            for (int i = 0; i < 4; i++) {
-                double x = (double) pos.getX() + 0.5D + (world.random.nextDouble() - 0.5D) * 0.3;
-                double y = (double) pos.getY() + 0.6D;
-                double z = (double) pos.getZ() + 0.5D + (world.random.nextDouble() - 0.5D) * 0.3;
-                this.world.addParticle(ParticleTypes.SMOKE, x, y, z, 0, 0, 0);
-            }
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    private boolean updateCachedRecipe() {
+        var recipe = world.getRecipeManager().getFirstMatch(SoulfireForgeRecipe.Type.INSTANCE, this, world);
+        if (recipe.isPresent()) {
+            this.cachedRecipe = recipe.get();
+            return ItemOps.canStack(this.getItems().get(9), recipe.get().getOutput());
+        } else {
+            return false;
         }
     }
 
     //Data Logic
-    @Override
-    public void markDirty() {
-        super.markDirty();
-    }
-
     @Override
     public NbtCompound writeNbt(NbtCompound tag) {
         super.writeNbt(tag);
@@ -126,17 +128,19 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
         this.smeltTime = tag.getInt("SmeltTime");
     }
 
-
     public boolean isRunning() {
         return smeltTime > 0;
     }
 
-    public void finishInstantly() {
-        if (!this.world.isClient()) {
-            this.smeltTime = targetSmeltTime;
+    public int getProgress() {
+        return progress;
+    }
 
-            this.world.syncWorldEvent(9004, this.pos, 0);
-        }
+    public void finishInstantly() {
+        if (this.world.isClient()) return;
+
+        this.smeltTime = targetSmeltTime;
+        ServerParticles.issueEvent((ServerWorld) world, Vec3d.of(this.pos), ConjuringParticleEvents.CONJURER_SUMMON);
     }
 
     //Inventory Logic
@@ -178,10 +182,6 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
         } else {
             items.get(9).increment(craftingResult.getCount());
         }
-    }
-
-    public int getProgress() {
-        return progress;
     }
 
     @Override

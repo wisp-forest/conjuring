@@ -1,6 +1,6 @@
 package com.glisco.conjuring.entities;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.items.soul_alloy_tools.BlockCrawler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -23,7 +23,7 @@ public class SoulDiggerEntity extends SoulEntity {
     }
 
     public SoulDiggerEntity(World world, LivingEntity owner) {
-        super(ConjuringCommon.SOUL_DIGGER, world);
+        super(Conjuring.SOUL_DIGGER, world);
         setOwner(owner);
     }
 
@@ -67,7 +67,7 @@ public class SoulDiggerEntity extends SoulEntity {
         BlockPos pos = blockHitResult.getBlockPos();
 
         if (world.getBlockState(pos).getBlock().getClass().getSimpleName().contains("OreBlock")) {
-            BlockCrawler.crawl(world, pos, getDataTracker().get(STACK), ConjuringCommon.CONFIG.tools_config.pickaxe_veinmine_max_blocks);
+            BlockCrawler.crawl(world, pos, getDataTracker().get(STACK), Conjuring.CONFIG.tools_config.pickaxe_veinmine_max_blocks);
         }
 
         this.remove(RemovalReason.KILLED);

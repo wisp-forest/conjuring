@@ -1,6 +1,6 @@
 package com.glisco.conjuring.items;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeBlockEntity;
 import com.glisco.conjuring.entities.SoulProjectileEntity;
 import net.minecraft.entity.LivingEntity;
@@ -19,7 +19,7 @@ public class SuperiorConjuringScepter extends ConjuringScepter {
     }
 
     public SuperiorConjuringScepter() {
-        this(new Settings().group(ConjuringCommon.CONJURING_GROUP).maxCount(1).rarity(Rarity.RARE));
+        this(new Settings().group(Conjuring.CONJURING_GROUP).maxCount(1).rarity(Rarity.RARE));
     }
 
     @Override
@@ -29,15 +29,14 @@ public class SuperiorConjuringScepter extends ConjuringScepter {
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
-        if (!(context.getWorld().getBlockEntity(context.getBlockPos()) instanceof SoulfireForgeBlockEntity)) {
+        if (!(context.getWorld().getBlockEntity(context.getBlockPos()) instanceof SoulfireForgeBlockEntity forge)) {
             return ConjuringScepter.onBlockUse(context);
         }
 
-        SoulfireForgeBlockEntity forge = (SoulfireForgeBlockEntity) context.getWorld().getBlockEntity(context.getBlockPos());
         if (!forge.isRunning()) return ActionResult.PASS;
 
         forge.finishInstantly();
-        context.getPlayer().getItemCooldownManager().set(ConjuringCommon.SUPERIOR_CONJURING_SCEPTER, 30);
+        context.getPlayer().getItemCooldownManager().set(ConjuringItems.SUPERIOR_CONJURING_SCEPTER, 30);
 
         return ActionResult.SUCCESS;
     }
@@ -67,7 +66,7 @@ public class SuperiorConjuringScepter extends ConjuringScepter {
         }
 
         if (!((PlayerEntity) user).getAbilities().creativeMode) {
-            ((PlayerEntity) user).getItemCooldownManager().set(ConjuringCommon.SUPERIOR_CONJURING_SCEPTER, 100);
+            ((PlayerEntity) user).getItemCooldownManager().set(ConjuringItems.SUPERIOR_CONJURING_SCEPTER, 100);
         }
     }
 

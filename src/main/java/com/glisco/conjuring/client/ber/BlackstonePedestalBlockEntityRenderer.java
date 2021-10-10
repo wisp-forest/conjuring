@@ -1,6 +1,7 @@
-package com.glisco.conjuring.client;
+package com.glisco.conjuring.client.ber;
 
-import com.glisco.conjuring.blocks.SoulFunnelBlockEntity;
+import com.glisco.conjuring.blocks.BlackstonePedestalBlockEntity;
+import com.glisco.owo.particles.ClientParticles;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -14,36 +15,38 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 
 import java.util.Objects;
 
-public class SoulFunnelBlockEntityRenderer implements BlockEntityRenderer<SoulFunnelBlockEntity> {
+public class BlackstonePedestalBlockEntityRenderer implements BlockEntityRenderer<BlackstonePedestalBlockEntity> {
 
-    public SoulFunnelBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
+    public BlackstonePedestalBlockEntityRenderer(BlockEntityRendererFactory.Context context) {}
 
-    }
+    public void render(BlackstonePedestalBlockEntity blockEntity, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
+        if (!blockEntity.getItem().isEmpty()) {
 
-    public void render(SoulFunnelBlockEntity blockEntity, float f, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
-        if (blockEntity.getItem() != null) {
             ItemStack item = blockEntity.getItem();
             BakedModel itemModel = MinecraftClient.getInstance().getItemRenderer().getHeldItemModel(item, null, null, 0);
 
             int lightAbove = WorldRenderer.getLightmapCoordinates(Objects.requireNonNull(blockEntity.getWorld()), blockEntity.getPos().up());
 
             matrixStack.push();
-            matrixStack.translate(0.5, 0.45 + (float) 1.5 * Math.sin(Math.PI * ((float) (System.currentTimeMillis() / 20d % 200d)) / 100f) / 50f, 0.405);
+            matrixStack.translate(0.5, 1.25, 0.5);
             matrixStack.scale(0.75f, 0.75f, 0.75f);
-            matrixStack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90f));
+            matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion((float) (System.currentTimeMillis() / 20d % 360d)));
             MinecraftClient.getInstance().getItemRenderer().renderItem(item, ModelTransformation.Mode.GROUND, false, matrixStack, vertexConsumerProvider, lightAbove, OverlayTexture.DEFAULT_UV, itemModel);
             matrixStack.pop();
 
-            if (blockEntity.getWorld().random.nextDouble() > 0.95) {
+        }
+
+        if (!blockEntity.getItem().isEmpty() || blockEntity.isActive()) {
+            if (blockEntity.getWorld().random.nextDouble() > (blockEntity.isActive() ? 0.85 : 0.95)) {
                 BlockPos pos = blockEntity.getPos();
+                ParticleEffect particle = blockEntity.isActive() ? ParticleTypes.SOUL_FIRE_FLAME : ParticleTypes.SMOKE;
 
-                ParticleEffect particle = blockEntity.onCooldown() ? ParticleTypes.SMOKE : ParticleTypes.WITCH;
-
-                blockEntity.getWorld().addParticle(particle, pos.getX() + 0.5, pos.getY() + blockEntity.getItemHeight(), pos.getZ() + 0.5, 0, 0, 0);
+                ClientParticles.spawnWithOffsetFromBlock(particle, blockEntity.getWorld(), pos, new Vec3d(0.5, 1.35, 0.5), 0.25);
             }
         }
 

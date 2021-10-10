@@ -12,9 +12,9 @@ import java.util.List;
 
 public class SoulWeavingDisplay implements Display {
 
-    protected SoulWeaverRecipe display;
-    protected List<EntryIngredient> input;
-    protected List<EntryIngredient> output;
+    protected final SoulWeaverRecipe display;
+    protected final List<EntryIngredient> input;
+    protected final List<EntryIngredient> output;
 
     public SoulWeavingDisplay(SoulWeaverRecipe recipe) {
         this.display = recipe;
@@ -28,12 +28,12 @@ public class SoulWeavingDisplay implements Display {
     public @NotNull List<EntryIngredient> getInputEntries() {
         return input;
     }
-    
+
     @Override
     public CategoryIdentifier<?> getCategoryIdentifier() {
         return ConjuringPlugin.SOUL_WEAVING;
     }
-    
+
     @Override
     public @NotNull List<EntryIngredient> getOutputEntries() {
         return output;

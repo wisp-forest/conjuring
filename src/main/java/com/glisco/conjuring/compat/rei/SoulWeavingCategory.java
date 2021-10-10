@@ -1,6 +1,8 @@
 package com.glisco.conjuring.compat.rei;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.Conjuring;
+import com.glisco.conjuring.blocks.ConjuringBlocks;
+import com.glisco.conjuring.items.ConjuringItems;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
@@ -11,7 +13,6 @@ import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class SoulWeavingCategory implements DisplayCategory<SoulWeavingDisplay> 
 
     @Override
     public Renderer getIcon() {
-        return EntryStacks.of(ConjuringCommon.SOUL_WEAVER_BLOCK);
+        return EntryStacks.of(ConjuringBlocks.SOUL_WEAVER);
     }
 
     @Override
@@ -65,8 +66,8 @@ public class SoulWeavingCategory implements DisplayCategory<SoulWeavingDisplay> 
         widgets.add(Widgets.createResultSlotBackground(new Point(bounds.getX() + 77, bounds.getY() + 88)));
         widgets.add(Widgets.createSlot(new Point(bounds.getX() + 77, bounds.getY() + 88)).entries(recipeDisplay.getOutputEntries().get(0)).disableBackground());
 
-        widgets.add(Widgets.createTexturedWidget(new Identifier("conjuring", "textures/gui/soul_weaver.png"), bounds.getX() + 8, bounds.getY() + 10, 0, 0, 154, 96));
-        widgets.add(Widgets.createSlot(new Point(bounds.getX() + 24, bounds.getY() + 88)).entry(EntryStacks.of(ConjuringCommon.CONJURATION_ESSENCE)));
+        widgets.add(Widgets.createTexturedWidget(Conjuring.id("textures/gui/soul_weaver.png"), bounds.getX() + 8, bounds.getY() + 10, 0, 0, 154, 96));
+        widgets.add(Widgets.createSlot(new Point(bounds.getX() + 24, bounds.getY() + 88)).entry(EntryStacks.of(ConjuringItems.CONJURATION_ESSENCE)));
 
         return widgets;
     }

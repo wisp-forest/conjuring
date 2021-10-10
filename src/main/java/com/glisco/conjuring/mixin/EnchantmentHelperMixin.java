@@ -1,6 +1,6 @@
 package com.glisco.conjuring.mixin;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.items.ConjuringItems;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyTool;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -18,14 +18,14 @@ public class EnchantmentHelperMixin {
     @Inject(method = "getEfficiency", at = @At("RETURN"), cancellable = true)
     private static void applyHaste(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
         if (!(entity.getMainHandStack().getItem() instanceof SoulAlloyTool)) return;
-        if (entity.getMainHandStack().getItem() == ConjuringCommon.SOUL_ALLOY_SWORD) return;
+        if (entity.getMainHandStack().getItem() == ConjuringItems.SOUL_ALLOY_SWORD) return;
 
         cir.setReturnValue(cir.getReturnValue() + SoulAlloyTool.getModifierLevel(entity.getMainHandStack(), SoulAlloyTool.SoulAlloyModifier.HASTE));
     }
 
     @Inject(method = "getLooting", at = @At("RETURN"), cancellable = true)
     private static void applyAbundanceLooting(LivingEntity entity, CallbackInfoReturnable<Integer> cir) {
-        if (!(entity.getMainHandStack().getItem() == ConjuringCommon.SOUL_ALLOY_SWORD || entity.getMainHandStack().getItem() == ConjuringCommon.SOUL_ALLOY_HATCHET))
+        if (!(entity.getMainHandStack().getItem() == ConjuringItems.SOUL_ALLOY_SWORD || entity.getMainHandStack().getItem() == ConjuringItems.SOUL_ALLOY_HATCHET))
             return;
         cir.setReturnValue(cir.getReturnValue() + SoulAlloyTool.getModifierLevel(entity.getMainHandStack(), SoulAlloyTool.SoulAlloyModifier.ABUNDANCE));
     }
@@ -33,7 +33,7 @@ public class EnchantmentHelperMixin {
     @Inject(method = "getLevel", at = @At(value = "RETURN"), cancellable = true)
     private static void applyAbundanceFortune(Enchantment enchantment, ItemStack stack, CallbackInfoReturnable<Integer> cir) {
         if (enchantment != Enchantments.FORTUNE) return;
-        if (!(stack.getItem() == ConjuringCommon.SOUL_ALLOY_PICKAXE || stack.getItem() == ConjuringCommon.SOUL_ALLOY_SHOVEL)) return;
+        if (!(stack.getItem() == ConjuringItems.SOUL_ALLOY_PICKAXE || stack.getItem() == ConjuringItems.SOUL_ALLOY_SHOVEL)) return;
 
         cir.setReturnValue(cir.getReturnValue() + SoulAlloyTool.getModifierLevel(stack, SoulAlloyTool.SoulAlloyModifier.ABUNDANCE));
     }

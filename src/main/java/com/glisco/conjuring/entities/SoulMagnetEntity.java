@@ -1,6 +1,6 @@
 package com.glisco.conjuring.entities;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.Conjuring;
 import com.glisco.owo.particles.ClientParticles;
 import net.minecraft.entity.*;
 import net.minecraft.particle.DustParticleEffect;
@@ -16,7 +16,7 @@ public class SoulMagnetEntity extends SoulEntity {
     boolean recalled = false;
 
     public SoulMagnetEntity(World world, LivingEntity owner) {
-        super(ConjuringCommon.SOUL_MAGNET, world);
+        super(Conjuring.SOUL_MAGNET, world);
         setOwner(owner);
         maxAge = 100;
     }
@@ -50,7 +50,7 @@ public class SoulMagnetEntity extends SoulEntity {
             ticksInBlock = 0;
         }
 
-        int range = ConjuringCommon.CONFIG.tools_config.shovel_magnet_range;
+        int range = Conjuring.CONFIG.tools_config.shovel_magnet_range;
         Box box = new Box(getPos().subtract(range, range, range), getPos().add(range, range, range));
 
         for (ItemEntity item : world.getEntitiesByType(EntityType.ITEM, box, ItemEntity::isAlive)) {

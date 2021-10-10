@@ -25,7 +25,7 @@
       "com.glisco.conjuring.client.ConjuringClient"
     ],
     "main": [
-      "com.glisco.conjuring.ConjuringCommon"
+      "com.glisco.conjuring.Conjuring"
     ],
     "rei_plugins": [
       "com.glisco.conjuring.compat.rei.ConjuringPlugin"

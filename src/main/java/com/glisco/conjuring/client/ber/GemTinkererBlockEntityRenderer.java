@@ -1,5 +1,6 @@
-package com.glisco.conjuring.client;
+package com.glisco.conjuring.client.ber;
 
+import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.blocks.gem_tinkerer.GemTinkererBlockEntity;
 import com.glisco.owo.particles.ClientParticles;
 import net.minecraft.client.MinecraftClient;
@@ -17,7 +18,6 @@ import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -29,19 +29,17 @@ import java.util.HashMap;
 
 public class GemTinkererBlockEntityRenderer implements BlockEntityRenderer<GemTinkererBlockEntity> {
 
-    public static final SpriteIdentifier MODEL_TEXTURE = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, new Identifier("conjuring", "block/gem_tinkerer"));
+    public static final SpriteIdentifier MODEL_TEXTURE = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Conjuring.id("block/gem_tinkerer"));
 
     private static final ModelPart columnModel;
     private static final ModelPart mainModel;
 
     static {
-
         ModelPart.Cuboid columnCuboid = new ModelPart.Cuboid(0, 0, 0, 0, 0, 2, 6, 2, 0, 0, 0, false, 32, 32);
         ModelPart.Cuboid mainCuboid = new ModelPart.Cuboid(8, 0, 0, 0, 0, 4, 12, 4, 0, 0, 0, false, 32, 32);
 
         columnModel = new ModelPart(Collections.singletonList(columnCuboid), new HashMap<>());
         mainModel = new ModelPart(Collections.singletonList(mainCuboid), new HashMap<>());
-
     }
 
     private static final double twoPi = Math.PI * 2;

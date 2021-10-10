@@ -70,10 +70,7 @@ public interface SoulAlloyTool {
         for (String key : modifiers.getKeys()) {
             final SoulAlloyModifier modifier = SoulAlloyModifier.valueOf(key);
 
-            StringBuilder level = new StringBuilder();
-            for (int i = 0; i < modifiers.getInt(key); i++) {
-                level.append("●");
-            }
+            String level = "●".repeat(Math.max(0, modifiers.getInt(key)));
 
             tooltip.add(new TranslatableText(modifier.translation_key).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(modifier.textColor))).append(": §7" + level));
         }

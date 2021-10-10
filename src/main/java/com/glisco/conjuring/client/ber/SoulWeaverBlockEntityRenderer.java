@@ -1,4 +1,4 @@
-package com.glisco.conjuring.client;
+package com.glisco.conjuring.client.ber;
 
 import com.glisco.conjuring.blocks.soul_weaver.SoulWeaverBlockEntity;
 import com.glisco.owo.particles.ClientParticles;
@@ -20,12 +20,10 @@ import java.util.Objects;
 
 public class SoulWeaverBlockEntityRenderer implements BlockEntityRenderer<SoulWeaverBlockEntity> {
 
-    public SoulWeaverBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
-
-    }
+    public SoulWeaverBlockEntityRenderer(BlockEntityRendererFactory.Context context) {}
 
     public void render(SoulWeaverBlockEntity blockEntity, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light, int overlay) {
-        if (blockEntity.getItem() != null) {
+        if (!blockEntity.getItem().isEmpty()) {
 
             ItemStack item = blockEntity.getItem();
             BakedModel itemModel = MinecraftClient.getInstance().getItemRenderer().getHeldItemModel(item, null, null, 0);
@@ -44,7 +42,9 @@ public class SoulWeaverBlockEntityRenderer implements BlockEntityRenderer<SoulWe
             matrixStack.scale(0.75f, 0.75f, 0.75f);
             matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion((float) (System.currentTimeMillis() / (60d) % 360d)));
             matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion((float) Math.pow(scale * 100, 3)));
+
             MinecraftClient.getInstance().getItemRenderer().renderItem(item, ModelTransformation.Mode.GROUND, false, matrixStack, vertexConsumerProvider, lightAbove, OverlayTexture.DEFAULT_UV, itemModel);
+
             matrixStack.pop();
         }
 
@@ -55,6 +55,5 @@ public class SoulWeaverBlockEntityRenderer implements BlockEntityRenderer<SoulWe
                 ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.SOUL_FIRE_FLAME, blockEntity.getWorld(), blockEntity.getPos(), new Vec3d(0.5, 0.35, 0.5), 0.15);
             }
         }
-
     }
 }

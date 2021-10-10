@@ -1,7 +1,8 @@
 package com.glisco.conjuring.items.soul_alloy_tools;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.entities.SoulDiggerEntity;
+import com.glisco.conjuring.items.ConjuringItems;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -18,7 +19,7 @@ import java.util.List;
 public class SoulAlloyPickaxe extends PickaxeItem implements SoulAlloyTool {
 
     public SoulAlloyPickaxe() {
-        super(SoulAlloyToolMaterial.INSTANCE, 1, -2.8f, new Settings().group(ConjuringCommon.CONJURING_GROUP).rarity(Rarity.UNCOMMON));
+        super(SoulAlloyToolMaterial.INSTANCE, 1, -2.8f, new Settings().group(Conjuring.CONJURING_GROUP).rarity(Rarity.UNCOMMON));
     }
 
     @Override
@@ -35,8 +36,8 @@ public class SoulAlloyPickaxe extends PickaxeItem implements SoulAlloyTool {
 
             world.spawnEntity(digger);
 
-            user.getItemCooldownManager().set(ConjuringCommon.SOUL_ALLOY_PICKAXE, ConjuringCommon.CONFIG.tools_config.pickaxe_secondary_cooldown);
-            user.getStackInHand(hand).damage(ConjuringCommon.CONFIG.tools_config.pickaxe_secondary_durability_cost, user, player -> player.sendToolBreakStatus(hand));
+            user.getItemCooldownManager().set(ConjuringItems.SOUL_ALLOY_PICKAXE, Conjuring.CONFIG.tools_config.pickaxe_secondary_cooldown);
+            user.getStackInHand(hand).damage(Conjuring.CONFIG.tools_config.pickaxe_secondary_durability_cost, user, player -> player.sendToolBreakStatus(hand));
         }
 
         return TypedActionResult.success(user.getStackInHand(hand));

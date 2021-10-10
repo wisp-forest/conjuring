@@ -1,5 +1,6 @@
-package com.glisco.conjuring;
+package com.glisco.conjuring.util;
 
+import com.glisco.conjuring.Conjuring;
 import com.google.gson.JsonObject;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
@@ -11,7 +12,7 @@ import net.minecraft.util.Identifier;
 
 public class GemTinkeringCriterion extends AbstractCriterion<GemTinkeringCriterion.Conditions> {
 
-    public static final Identifier ID = new Identifier("conjuring", "gem_tinkering");
+    public static final Identifier ID = Conjuring.id("gem_tinkering");
 
     @Override
     public Identifier getId() {

@@ -1,6 +1,7 @@
 package com.glisco.conjuring.blocks.soulfire_forge;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.Conjuring;
+import com.glisco.conjuring.blocks.ConjuringBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.inventory.Inventory;
@@ -70,7 +71,7 @@ public class SoulfireForgeRecipe implements Recipe<Inventory> {
 
     @Environment(EnvType.CLIENT)
     public ItemStack createIcon() {
-        return new ItemStack(ConjuringCommon.SOULFIRE_FORGE_BLOCK);
+        return new ItemStack(ConjuringBlocks.SOULFIRE_FORGE);
     }
 
     @Override
@@ -93,6 +94,6 @@ public class SoulfireForgeRecipe implements Recipe<Inventory> {
 
         public static final Type INSTANCE = new Type();
 
-        public static final Identifier ID = new Identifier("conjuring", "soulfire_forge");
+        public static final Identifier ID = Conjuring.id("soulfire_forge");
     }
 }

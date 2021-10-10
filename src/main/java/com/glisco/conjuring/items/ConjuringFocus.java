@@ -1,15 +1,14 @@
 package com.glisco.conjuring.items;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.Conjuring;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
@@ -18,8 +17,11 @@ import java.util.List;
 
 public class ConjuringFocus extends Item {
 
-    public ConjuringFocus() {
-        super(new Settings().group(ConjuringCommon.CONJURING_GROUP).maxCount(1).rarity(Rarity.UNCOMMON));
+    private final boolean hasGlint;
+
+    public ConjuringFocus(boolean hasGlint) {
+        super(new Settings().group(Conjuring.CONJURING_GROUP).maxCount(1).rarity(Rarity.UNCOMMON));
+        this.hasGlint = hasGlint;
     }
 
     @Override
@@ -29,7 +31,7 @@ public class ConjuringFocus extends Item {
         }
 
         String entityName = "entity." + stack.getNbt().getCompound("Entity").getString("id").replace(':', '.');
-        tooltip.add(new TranslatableText(entityName).setStyle(Style.EMPTY.withColor(TextColor.parse("gray"))));
+        tooltip.add(new TranslatableText(entityName).formatted(Formatting.GRAY));
     }
 
     public static ItemStack writeData(ItemStack focus, EntityType<?> entityType) {
@@ -41,5 +43,10 @@ public class ConjuringFocus extends Item {
         stackTag.put("Entity", entityTag);
         focus.setNbt(stackTag);
         return focus;
+    }
+
+    @Override
+    public boolean hasGlint(ItemStack stack) {
+        return hasGlint;
     }
 }

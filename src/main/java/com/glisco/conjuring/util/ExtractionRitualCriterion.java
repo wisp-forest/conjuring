@@ -1,5 +1,6 @@
-package com.glisco.conjuring;
+package com.glisco.conjuring.util;
 
+import com.glisco.conjuring.Conjuring;
 import com.google.gson.JsonObject;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
@@ -11,7 +12,7 @@ import net.minecraft.util.Identifier;
 
 public class ExtractionRitualCriterion extends AbstractCriterion<ExtractionRitualCriterion.Conditions> {
 
-    public static final Identifier ID = new Identifier("conjuring", "extraction_ritual");
+    public static final Identifier ID = Conjuring.id("extraction_ritual");
 
     @Override
     public Identifier getId() {

@@ -1,6 +1,6 @@
 package com.glisco.conjuring.items;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.Conjuring;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -22,10 +22,10 @@ import vazkii.patchouli.common.book.BookRegistry;
 
 public class EnchiridionItem extends Item {
 
-    private final Identifier BOOK_ID = new Identifier("conjuring", "conjuring_guide");
+    private final Identifier BOOK_ID = Conjuring.id("conjuring_guide");
 
     public EnchiridionItem() {
-        super(new Settings().maxCount(1).group(ConjuringCommon.CONJURING_GROUP));
+        super(new Settings().maxCount(1).group(Conjuring.CONJURING_GROUP));
     }
 
     @Override

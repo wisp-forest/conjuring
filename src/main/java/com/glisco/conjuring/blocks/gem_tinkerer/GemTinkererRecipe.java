@@ -1,6 +1,7 @@
 package com.glisco.conjuring.blocks.gem_tinkerer;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.Conjuring;
+import com.glisco.conjuring.blocks.ConjuringBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.inventory.Inventory;
@@ -19,8 +20,8 @@ import java.util.List;
 public class GemTinkererRecipe implements Recipe<Inventory> {
 
     private final DefaultedList<Ingredient> inputs;
-    private final ItemStack                 result;
-    private final Identifier                id;
+    private final ItemStack result;
+    private final Identifier id;
 
     @Override
     public boolean isIgnoredInRecipeBook() {
@@ -79,7 +80,7 @@ public class GemTinkererRecipe implements Recipe<Inventory> {
 
     @Environment(EnvType.CLIENT)
     public ItemStack createIcon() {
-        return new ItemStack(ConjuringCommon.GEM_TINKERER_BLOCK);
+        return new ItemStack(ConjuringBlocks.GEM_TINKERER);
     }
 
     @Override
@@ -98,6 +99,6 @@ public class GemTinkererRecipe implements Recipe<Inventory> {
 
         public static final Type INSTANCE = new Type();
 
-        public static final Identifier ID = new Identifier("conjuring", "gem_tinkering");
+        public static final Identifier ID = Conjuring.id("gem_tinkering");
     }
 }

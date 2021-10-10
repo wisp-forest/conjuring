@@ -1,5 +1,7 @@
 package com.glisco.conjuring.blocks.conjurer;
 
+import com.glisco.conjuring.util.ConjuringParticleEvents;
+import com.glisco.owo.particles.ServerParticles;
 import com.google.common.collect.Lists;
 import net.minecraft.entity.*;
 import net.minecraft.entity.mob.MobEntity;
@@ -13,6 +15,7 @@ import net.minecraft.util.InvalidIdentifierException;
 import net.minecraft.util.collection.Pool;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.MobSpawnerEntry;
 import net.minecraft.world.World;
@@ -34,7 +37,6 @@ import java.util.function.Function;
  */
 public abstract class ConjurerLogic {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final int field_30951 = 1;
     private static Pool<MobSpawnerEntry> field_30952 = Pool.empty();
     private int spawnDelay = 20;
     private Pool<MobSpawnerEntry> spawnPotentials;
@@ -72,7 +74,7 @@ public abstract class ConjurerLogic {
         try {
             return ChatUtil.isEmpty(string) ? null : new Identifier(string);
         } catch (InvalidIdentifierException var5) {
-            LOGGER.warn((String)"Invalid entity id '{}' at spawner {}:[{},{},{}]", (Object)string, world != null ? world.getRegistryKey().getValue() : "<null>", pos.getX(), pos.getY(), pos.getZ());
+            LOGGER.warn("Invalid entity id '{}' at spawner {}:[{},{},{}]", string, world != null ? world.getRegistryKey().getValue() : "<null>", pos.getX(), pos.getY(), pos.getZ());
             return null;
         }
     }
@@ -82,16 +84,16 @@ public abstract class ConjurerLogic {
     }
 
     public boolean isPlayerInRange(World world, BlockPos pos) {
-        return world.getReceivedRedstonePower(pos) == 0 && (!requiresPlayer || world.isPlayerInRange((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, (double)this.requiredPlayerRange));
+        return world.getReceivedRedstonePower(pos) == 0 && (!requiresPlayer || world.isPlayerInRange((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, this.requiredPlayerRange));
     }
 
     public void clientTick(World world, BlockPos pos) {
         if (!this.isPlayerInRange(world, pos) || !active) {
             this.field_9159 = this.field_9161;
         } else {
-            double d = (double)pos.getX() + world.random.nextDouble();
-            double e = (double)pos.getY() + world.random.nextDouble();
-            double f = (double)pos.getZ() + world.random.nextDouble();
+            double d = (double) pos.getX() + world.random.nextDouble();
+            double e = (double) pos.getY() + world.random.nextDouble();
+            double f = (double) pos.getZ() + world.random.nextDouble();
 
             //These particles have been changed to reflect the custom spawner version
             world.addParticle(ParticleTypes.ENCHANTED_HIT, d, e, f, 0.0D, 1.0D, 0.0D);
@@ -101,7 +103,7 @@ public abstract class ConjurerLogic {
             }
 
             this.field_9159 = this.field_9161;
-            this.field_9161 = (this.field_9161 + (double)(1000.0F / ((float)this.spawnDelay + 200.0F))) % 360.0D;
+            this.field_9161 = (this.field_9161 + (double) (1000.0F / ((float) this.spawnDelay + 200.0F))) % 360.0D;
         }
 
     }
@@ -117,7 +119,7 @@ public abstract class ConjurerLogic {
             } else {
                 boolean bl = false;
 
-                for(int i = 0; i < this.spawnCount; ++i) {
+                for (int i = 0; i < this.spawnCount; ++i) {
                     NbtCompound nbtCompound = this.spawnEntry.getEntityNbt();
                     Optional<EntityType<?>> optional = EntityType.fromNbt(nbtCompound);
                     if (!optional.isPresent()) {
@@ -127,10 +129,10 @@ public abstract class ConjurerLogic {
 
                     NbtList nbtList = nbtCompound.getList("Pos", 6);
                     int j = nbtList.size();
-                    double d = j >= 1 ? nbtList.getDouble(0) : (double)pos.getX() + (world.random.nextDouble() - world.random.nextDouble()) * (double)this.spawnRange + 0.5D;
-                    double e = j >= 2 ? nbtList.getDouble(1) : (double)(pos.getY() + world.random.nextInt(3) - 1);
-                    double f = j >= 3 ? nbtList.getDouble(2) : (double)pos.getZ() + (world.random.nextDouble() - world.random.nextDouble()) * (double)this.spawnRange + 0.5D;
-                    if (world.isSpaceEmpty(((EntityType)optional.get()).createSimpleBoundingBox(d, e, f)) && SpawnRestriction.canSpawn((EntityType)optional.get(), world, SpawnReason.SPAWNER, new BlockPos(d, e, f), world.getRandom())) {
+                    double d = j >= 1 ? nbtList.getDouble(0) : (double) pos.getX() + (world.random.nextDouble() - world.random.nextDouble()) * (double) this.spawnRange + 0.5D;
+                    double e = j >= 2 ? nbtList.getDouble(1) : (double) (pos.getY() + world.random.nextInt(3) - 1);
+                    double f = j >= 3 ? nbtList.getDouble(2) : (double) pos.getZ() + (world.random.nextDouble() - world.random.nextDouble()) * (double) this.spawnRange + 0.5D;
+                    if (world.isSpaceEmpty(optional.get().createSimpleBoundingBox(d, e, f)) && SpawnRestriction.canSpawn((EntityType) optional.get(), world, SpawnReason.SPAWNER, new BlockPos(d, e, f), world.getRandom())) {
                         Entity entity = EntityType.loadEntityWithPassengers(nbtCompound, world, (entityx) -> {
                             entityx.refreshPositionAndAngles(d, e, f, entityx.getYaw(), entityx.getPitch());
                             return entityx;
@@ -140,7 +142,7 @@ public abstract class ConjurerLogic {
                             return;
                         }
 
-                        int k = world.getNonSpectatingEntities(entity.getClass(), (new Box((double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), (double)(pos.getX() + 1), (double)(pos.getY() + 1), (double)(pos.getZ() + 1))).expand((double)this.spawnRange)).size();
+                        int k = world.getNonSpectatingEntities(entity.getClass(), (new Box(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1)).expand(this.spawnRange)).size();
                         if (k >= this.maxNearbyEntities) {
                             this.updateSpawns(world, pos);
                             return;
@@ -148,13 +150,13 @@ public abstract class ConjurerLogic {
 
                         entity.refreshPositionAndAngles(entity.getX(), entity.getY(), entity.getZ(), world.random.nextFloat() * 360.0F, 0.0F);
                         if (entity instanceof MobEntity) {
-                            MobEntity mobEntity = (MobEntity)entity;
+                            MobEntity mobEntity = (MobEntity) entity;
                             if (!mobEntity.canSpawn(world, SpawnReason.SPAWNER) || !mobEntity.canSpawn(world)) {
                                 continue;
                             }
 
                             if (this.spawnEntry.getEntityNbt().getSize() == 1 && this.spawnEntry.getEntityNbt().contains("id", 8)) {
-                                ((MobEntity)entity).initialize(world, world.getLocalDifficulty(entity.getBlockPos()), SpawnReason.SPAWNER, (EntityData)null, (NbtCompound)null);
+                                ((MobEntity) entity).initialize(world, world.getLocalDifficulty(entity.getBlockPos()), SpawnReason.SPAWNER, null, null);
                             }
                         }
 
@@ -164,9 +166,9 @@ public abstract class ConjurerLogic {
                         }
 
                         //This worldEvent has different ID to work in conjunction with a mixin in the Client's WorldRenderer
-                        world.syncWorldEvent(9004, pos, 0);
+                        ServerParticles.issueEvent(world, Vec3d.of(pos), ConjuringParticleEvents.CONJURER_SUMMON);
                         if (entity instanceof MobEntity) {
-                            ((MobEntity)entity).playSpawnEffects();
+                            ((MobEntity) entity).playSpawnEffects();
                         }
 
                         bl = true;
@@ -200,12 +202,12 @@ public abstract class ConjurerLogic {
         if (nbt.contains("SpawnPotentials", 9)) {
             NbtList nbtList = nbt.getList("SpawnPotentials", 10);
 
-            for(int i = 0; i < nbtList.size(); ++i) {
+            for (int i = 0; i < nbtList.size(); ++i) {
                 list.add(new MobSpawnerEntry(nbtList.getCompound(i)));
             }
         }
 
-        this.spawnPotentials = Pool.of((List)list);
+        this.spawnPotentials = Pool.of((List) list);
         if (nbt.contains("SpawnData", 10)) {
             this.setSpawnEntry(world, pos, new MobSpawnerEntry(1, nbt.getCompound("SpawnData")));
         } else if (!list.isEmpty()) {
@@ -245,13 +247,13 @@ public abstract class ConjurerLogic {
         if (identifier == null) {
             return nbt;
         } else {
-            nbt.putShort("Delay", (short)this.spawnDelay);
-            nbt.putShort("MinSpawnDelay", (short)this.minSpawnDelay);
-            nbt.putShort("MaxSpawnDelay", (short)this.maxSpawnDelay);
-            nbt.putShort("SpawnCount", (short)this.spawnCount);
-            nbt.putShort("MaxNearbyEntities", (short)this.maxNearbyEntities);
-            nbt.putShort("RequiredPlayerRange", (short)this.requiredPlayerRange);
-            nbt.putShort("SpawnRange", (short)this.spawnRange);
+            nbt.putShort("Delay", (short) this.spawnDelay);
+            nbt.putShort("MinSpawnDelay", (short) this.minSpawnDelay);
+            nbt.putShort("MaxSpawnDelay", (short) this.maxSpawnDelay);
+            nbt.putShort("SpawnCount", (short) this.spawnCount);
+            nbt.putShort("MaxNearbyEntities", (short) this.maxNearbyEntities);
+            nbt.putShort("RequiredPlayerRange", (short) this.requiredPlayerRange);
+            nbt.putShort("SpawnRange", (short) this.spawnRange);
             nbt.put("SpawnData", this.spawnEntry.getEntityNbt().copy());
             nbt.putBoolean("RequiresPlayer", requiresPlayer);
             nbt.putBoolean("Active", active);
@@ -260,10 +262,8 @@ public abstract class ConjurerLogic {
             if (this.spawnPotentials.isEmpty()) {
                 nbtList.add(this.spawnEntry.toNbt());
             } else {
-                Iterator var6 = this.spawnPotentials.getEntries().iterator();
 
-                while(var6.hasNext()) {
-                    MobSpawnerEntry mobSpawnerEntry = (MobSpawnerEntry)var6.next();
+                for (MobSpawnerEntry mobSpawnerEntry : this.spawnPotentials.getEntries()) {
                     nbtList.add(mobSpawnerEntry.toNbt());
                 }
             }

@@ -1,14 +1,16 @@
 package com.glisco.conjuring.blocks;
 
-import com.glisco.conjuring.ConjuringCommon;
-import com.glisco.conjuring.blocks.gem_tinkerer.GemTinkererBlockEntity;
+import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.items.ConjuringFocus;
+import com.glisco.conjuring.items.ConjuringItems;
+import com.glisco.conjuring.util.ConjuringParticleEvents;
+import com.glisco.owo.Owo;
+import com.glisco.owo.blockentity.LinearProcess;
+import com.glisco.owo.blockentity.LinearProcessExecutor;
+import com.glisco.owo.blockentity.SimpleSerializableBlockEntity;
 import com.glisco.owo.particles.ClientParticles;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -38,57 +40,70 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
+import net.minecraft.util.JsonHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.biome.BiomeKeys;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
 
-public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityClientSerializable, RitualCore {
+@SuppressWarnings("ConstantConditions")
+public class SoulFunnelBlockEntity extends BlockEntity implements SimpleSerializableBlockEntity, RitualCore {
 
     public static final BlockEntityTicker<SoulFunnelBlockEntity> SERVER_TICKER = (world1, pos1, state, blockEntity) -> blockEntity.tickServer();
     public static final BlockEntityTicker<SoulFunnelBlockEntity> CLIENT_TICKER = (world1, pos1, state, blockEntity) -> blockEntity.tickClient();
 
-    private ItemStack item;
+    public static final LinearProcess<SoulFunnelBlockEntity> PROCESS = new LinearProcess<>(80);
+    public static final Gson GSON = LootGsons.getTableGsonBuilder().create();
+
+    @NotNull
+    private ItemStack item = ItemStack.EMPTY;
     private float itemHeight = 0;
     private int slownessCooldown = 0;
 
-    private int ritualTick = 0;
-    private boolean ritualRunning = false;
     private UUID ritualEntity = null;
     private float particleOffset = 0;
     private float ritualStability = 0.1f;
+
     private final List<BlockPos> pedestalPositions;
 
+    private final LinearProcessExecutor<SoulFunnelBlockEntity> ritualExecutor;
+
     public SoulFunnelBlockEntity(BlockPos pos, BlockState state) {
-        super(ConjuringCommon.SOUL_FUNNEL_BLOCK_ENTITY, pos, state);
+        super(ConjuringBlocks.Entities.SOUL_FUNNEL, pos, state);
         pedestalPositions = new ArrayList<>();
+        this.ritualExecutor = PROCESS.deriveExecutor(this, false);
     }
 
+    @Override
+    public void setWorld(World world) {
+        super.setWorld(world);
+        PROCESS.reconfigureExecutor(ritualExecutor, world.isClient);
+    }
 
     //Data Logic
     @Override
     public NbtCompound writeNbt(NbtCompound tag) {
         super.writeNbt(tag);
         NbtCompound item = new NbtCompound();
-        if (this.item != null) {
-            this.item.writeNbt(item);
-        }
+        if (!this.item.isEmpty()) this.item.writeNbt(item);
         tag.put("Item", item);
         tag.putInt("Cooldown", slownessCooldown);
 
-        if (ritualRunning) {
+        if (ritualExecutor.running()) {
             NbtCompound ritual = new NbtCompound();
-            ritual.putInt("Tick", ritualTick);
             ritual.putUuid("Entity", ritualEntity);
             ritual.putFloat("ParticleOffset", particleOffset);
             ritual.putFloat("Stability", ritualStability);
+            ritualExecutor.writeState(ritual);
             tag.put("Ritual", ritual);
         }
 
@@ -102,87 +117,42 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
         super.readNbt(tag);
 
         NbtCompound item = tag.getCompound("Item");
-        this.item = null;
-        if (!item.isEmpty()) {
-            this.item = ItemStack.fromNbt(tag.getCompound("Item"));
-        }
+        this.item = ItemStack.EMPTY;
+        if (!item.isEmpty()) this.item = ItemStack.fromNbt(tag.getCompound("Item"));
 
         loadPedestals(tag, pedestalPositions);
 
         slownessCooldown = tag.getInt("Cooldown");
 
         if (tag.contains("Ritual")) {
-            ritualRunning = true;
-
             NbtCompound ritual = tag.getCompound("Ritual");
             ritualEntity = ritual.getUuid("Entity");
-            ritualTick = ritual.getInt("Tick");
             particleOffset = ritual.getFloat("ParticleOffset");
             ritualStability = ritual.getFloat("Stability");
+            ritualExecutor.readState(ritual);
         } else {
-            ritualRunning = false;
             ritualEntity = null;
-            ritualTick = 0;
             particleOffset = 0;
             ritualStability = 0.1f;
+            ritualExecutor.readState(new NbtCompound());
         }
-    }
-
-    @Override
-    public void fromClientTag(NbtCompound tag) {
-        this.readNbt(tag);
-    }
-
-    @Override
-    public NbtCompound toClientTag(NbtCompound tag) {
-        return this.writeNbt(tag);
     }
 
     @Override
     public void markDirty() {
         super.markDirty();
-
-        if (this.world instanceof ServerWorld) {
-            this.sync();
-        }
-    }
-
-    public void tickClient() {
-        itemHeight = itemHeight >= 100 ? 0 : itemHeight + 1;
-
-        if (!ritualRunning) return;
-
-        //Ritual tick logic
-        ritualTick++;
-
-        if (ritualTick == 1) {
-            world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1, 1, false);
-        } else if (ritualTick > 20 && ritualTick <= 80) {
-
-            for (BlockPos pos : pedestalPositions) {
-                if (!(world.getBlockEntity(pos) instanceof BlackstonePedestalBlockEntity)) continue;
-                if (!((BlackstonePedestalBlockEntity) world.getBlockEntity(pos)).isActive()) continue;
-
-                BlockPos p = pos.add(0, 1, 0);
-                BlockPos pVector = pos.subtract(this.pos);
-
-                ParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, world.getBlockState(pos));
-                ClientParticles.setParticleCount(4);
-                ClientParticles.spawnWithOffsetFromBlock(particle, world, p, new Vec3d(0.5, 0.25, 0.5), 0.1);
-
-                ClientParticles.setVelocity(new Vec3d(pVector.getX() * -0.05, particleOffset * 0.075, pVector.getZ() * -0.05));
-                ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.SOUL, world, p, new Vec3d(0.5, 0.3, 0.5), 0.1);
-            }
-
-            ClientParticles.setParticleCount(5);
-            ClientParticles.setVelocity(new Vec3d(0, -0.5, 0));
-            ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.SOUL_FIRE_FLAME, world, pos, new Vec3d(0.5, 1.75 + particleOffset, 0.5), 0.1);
-        }
+        if (this.world instanceof ServerWorld) this.sync();
     }
 
     //Tick Logic
-    public void tickServer() {
+    public void tickClient() {
+        itemHeight = itemHeight >= 100 ? 0 : itemHeight + 1;
+        if (slownessCooldown > 0) slownessCooldown--;
 
+        ritualExecutor.tick();
+    }
+
+    public void tickServer() {
         if (slownessCooldown > 0) slownessCooldown--;
 
         if (slownessCooldown == 0 && this.getItem() != null) {
@@ -197,98 +167,31 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
             this.markDirty();
         }
 
-        if (!ritualRunning) return;
-
-        //Ritual tick logic
-        ritualTick++;
-
-        if (ritualTick == 1) {
-
-            MobEntity ritualEntity = (MobEntity) ((ServerWorld) world).getEntity(this.ritualEntity);
-
-            particleOffset = ritualEntity.getHeight() / 2;
-            this.markDirty();
-
-            ritualEntity.teleport(pos.getX() + 0.5f, ritualEntity.getY(), pos.getZ() + 0.5f);
-            ritualEntity.setVelocity(0, 0.075f, 0);
-            ritualEntity.setNoGravity(true);
-            calculateStability();
-
-
-        } else if (ritualTick == 20) {
-
-            MobEntity e = (MobEntity) ((ServerWorld) world).getEntity(this.ritualEntity);
-            if (verifyRitualEntity()) {
-                e.setVelocity(0, 0, 0);
-                e.setAiDisabled(true);
-                final Vec3d entityPos = Vec3d.of(pos).add(0.5, 1.85, 0.5);
-                e.setPos(entityPos.x, entityPos.y, entityPos.z);
-            }
-
-
-        } else if (ritualTick > 20 && ritualTick <= 80) {
-
-            if (ritualTick % 10 == 0) {
-                if (verifyRitualEntity()) {
-                    MobEntity e = (MobEntity) ((ServerWorld) world).getEntity(ritualEntity);
-                    e.damage(DamageSource.OUT_OF_WORLD, 0.01f);
-                }
-            }
-
-
-        } else if (ritualTick > 80) {
-
-            if (verifyRitualEntity()) {
-                MobEntity e = (MobEntity) ((ServerWorld) world).getEntity(ritualEntity);
-
-                int data = e.world.random.nextDouble() < ritualStability ? 0 : 1;
-
-                world.syncWorldEvent(9005, e.getBlockPos(), data);
-                world.syncWorldEvent(9007, e.getBlockPos(), data);
-                world.setBlockState(pos, world.getBlockState(pos).with(SoulFunnelBlock.FILLED, false));
-
-                ItemStack drop = data == 0 ? ConjuringFocus.writeData(item, e.getType()) : item;
-                ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1.25, pos.getZ(), drop);
-
-                disablePedestals();
-                e.kill();
-
-                this.item = null;
-                this.ritualEntity = null;
-                this.ritualTick = 0;
-                this.ritualRunning = false;
-                this.ritualStability = 0.1f;
-            }
-
-            this.markDirty();
-        }
+        ritualExecutor.tick();
     }
 
     //Actual Logic
-    public void setItem(@Nullable ItemStack item) {
-        this.item = item == null ? null : item.copy();
+    public void setItem(@NotNull ItemStack item) {
+        this.item = item.copy();
         this.markDirty();
     }
 
-    @Nullable
+    @NotNull
     public ItemStack getItem() {
-        if (item == null) {
-            return null;
-        }
         return item.copy();
     }
 
     public boolean tryStartRitual(PlayerEntity player) {
 
-        if (item == null) return false;
+        if (item.isEmpty()) return false;
 
         if (world.getOtherEntities(player, new Box(pos, pos.add(1, 3, 1))).isEmpty()) return false;
         Entity e = world.getOtherEntities(player, new Box(pos, pos.add(1, 3, 1))).get(0);
 
-        if (e instanceof ItemEntity item && item.getStack().isOf(ConjuringCommon.DISTILLED_SPIRIT) && this.item != null) {
+        if (e instanceof ItemEntity item && item.getStack().isOf(ConjuringItems.DISTILLED_SPIRIT) && this.item != null) {
+            if (world.isClient) return true;
 
             final MobEntity newEntity = (MobEntity) EntityType.loadEntityWithPassengers(this.item.getNbt().getCompound("Entity"), world, Function.identity());
-
             if (newEntity == null) return false;
 
             final var health = newEntity.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
@@ -301,35 +204,35 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
             newEntity.updatePosition(pos.getX(), pos.getY() + 1, pos.getZ());
             world.spawnEntity(newEntity);
 
-            world.syncWorldEvent(9005, pos.add(0, 1, 0), 1);
-            world.syncWorldEvent(9007, pos.add(0, 1, 0), 1);
+            ConjuringParticleEvents.sendRitualFinished(world, pos.add(0, 1, 0), false);
+            world.playSound(null, pos, SoundEvents.ENTITY_WITHER_HURT, SoundCategory.BLOCKS, 1, 0);
 
             ItemScatterer.spawn(world, pos.getX(), pos.getY() + 0.75, pos.getZ(), new ItemStack(this.item.getItem()));
+            this.item = ItemStack.EMPTY;
 
             item.discard();
-            this.item = null;
             markDirty();
             return true;
         }
 
-        if (!(e instanceof MobEntity) || ConjuringCommon.CONFIG.conjurer_config.conjurer_blacklist.contains(Registry.ENTITY_TYPE.getId(e.getType()).toString()))
+        if (!(e instanceof MobEntity) || Conjuring.CONFIG.conjurer_config.conjurer_blacklist.contains(Registry.ENTITY_TYPE.getId(e.getType()).toString()))
             return false;
 
         if (item.getOrCreateNbt().contains("Entity")) return false;
 
         if (!world.isClient()) {
-            this.ritualRunning = true;
+            ritualExecutor.begin();
             this.ritualEntity = e.getUuid();
             this.markDirty();
 
-            ConjuringCommon.EXTRACTION_RITUAL_CRITERION.trigger((ServerPlayerEntity) player);
+            Conjuring.EXTRACTION_RITUAL_CRITERION.trigger((ServerPlayerEntity) player);
         }
 
         return true;
     }
 
     public boolean isRitualRunning() {
-        return ritualRunning;
+        return ritualExecutor.running();
     }
 
     public float getItemHeight() {
@@ -372,16 +275,11 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
         boolean returnValue = pedestalPositions.remove(pedestal);
         this.markDirty();
 
-        BlockPos offset = pedestal.subtract(pos);
-        if (offset.getX() != 0) {
-            world.syncWorldEvent(9010, pos, offset.getX());
-        } else {
-            world.syncWorldEvent(9011, pos, offset.getZ());
-        }
+        BlockPos offset = new BlockPos(Vec3d.of(pedestal.subtract(pos)).normalize());
+        ConjuringParticleEvents.sendPedestalRemoved(world, pos, Direction.fromVector(offset));
 
-        if (this.ritualRunning && pedestalActive) {
-            this.ritualStability = 0f;
-            this.ritualTick = 81;
+        if (pedestalActive) {
+            ritualExecutor.cancel();
             this.markDirty();
         }
 
@@ -389,48 +287,20 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
     }
 
     public List<BlockPos> getPedestalPositions() {
-        return new ArrayList<>(pedestalPositions);
-    }
-
-    public List<Item> extractDrops(LootTable table) {
-        Gson GSON = LootGsons.getTableGsonBuilder().create();
-
-        JsonObject tableJSON = GSON.toJsonTree(table).getAsJsonObject();
-        List<Item> drops = new ArrayList<>();
-
-        try {
-            for (JsonElement poolElement : tableJSON.get("pools").getAsJsonArray()) {
-
-                JsonObject pool = poolElement.getAsJsonObject();
-                JsonArray entries = pool.get("entries").getAsJsonArray();
-
-                for (JsonElement entryElement : entries) {
-
-                    JsonObject entry = entryElement.getAsJsonObject();
-
-                    drops.add(Registry.ITEM.get(new Identifier(entry.get("name").getAsString())));
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return drops;
+        return pedestalPositions;
     }
 
     public void calculateStability() {
-        ritualStability += world.getServer().getRegistryManager().get(Registry.BIOME_KEY).getId(world.getBiome(pos)).getPath().equalsIgnoreCase("soul_sand_valley") ? 0.1f : 0f;
+        if (world.getServer().getRegistryManager().get(Registry.BIOME_KEY).getKey(world.getBiome(pos)).orElse(null) == BiomeKeys.SOUL_SAND_VALLEY)
+            ritualStability += .1f;
 
-        List<Item> drops = extractDrops(world.getServer().getLootManager().getTable(((MobEntity) ((ServerWorld) world).getEntity(ritualEntity)).getLootTable()));
+        var drops = extractDrops(world.getServer().getLootManager().getTable(((MobEntity) ((ServerWorld) world).getEntity(ritualEntity)).getLootTable()));
 
-        for (BlockPos p : pedestalPositions) {
-            if (!(world.getBlockEntity(p) instanceof BlackstonePedestalBlockEntity)) continue;
-            BlackstonePedestalBlockEntity pedestal = (BlackstonePedestalBlockEntity) world.getBlockEntity(p);
+        for (var pedestalPos : pedestalPositions) {
+            if (!(world.getBlockEntity(pedestalPos) instanceof BlackstonePedestalBlockEntity pedestal)) continue;
 
             if (pedestal.getItem().isEmpty()) continue;
-            Item pedestalItem = pedestal.getItem().getItem();
-            if (!drops.contains(pedestalItem)) continue;
+            if (!drops.contains(pedestal.getItem().getItem())) continue;
 
             ritualStability += 0.2f;
             pedestal.setActive(true);
@@ -439,48 +309,144 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
     }
 
     public void onBroken() {
-        if (item != null)
-            ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1.25, pos.getZ(), item);
+        if (!item.isEmpty()) ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1.25, pos.getZ(), item);
 
-        if (ritualRunning) {
-            cancelRitual(false);
-        }
-    }
-
-    public void cancelRitual(boolean clearFlags) {
-        world.syncWorldEvent(9005, pos.add(0, 2, 0), 1);
-        world.syncWorldEvent(9007, pos.add(0, 2, 0), 1);
-
-        disablePedestals();
         for (BlockPos pos : pedestalPositions) {
             if (!(world.getBlockEntity(pos) instanceof BlackstonePedestalBlockEntity)) continue;
             ((BlackstonePedestalBlockEntity) world.getBlockEntity(pos)).setLinkedFunnel(null);
         }
 
-        MobEntity e = (MobEntity) ((ServerWorld) world).getEntity(ritualEntity);
-        if (e != null) e.kill();
+        ritualExecutor.cancel();
+    }
 
-        if (clearFlags) {
-            ritualRunning = false;
-            ritualEntity = null;
-            ritualTick = 0;
-            markDirty();
+    private static List<Item> extractDrops(LootTable table) {
+
+        final var tableObject = GSON.toJsonTree(table).getAsJsonObject();
+        final var extractedDrops = new ArrayList<Item>();
+
+        try {
+            for (var poolElement : tableObject.get("pools").getAsJsonArray()) {
+                JsonArray entries = poolElement.getAsJsonObject().get("entries").getAsJsonArray();
+
+                for (var entryElement : entries) {
+                    var entryObject = entryElement.getAsJsonObject();
+                    if (!"minecraft:item".equals(JsonHelper.getString(entryObject, "type"))) continue;
+
+                    extractedDrops.add(Registry.ITEM.get(new Identifier(JsonHelper.getString(entryObject, "name"))));
+                }
+            }
+
+            return extractedDrops;
+        } catch (Exception e) {
+            if (!Owo.debugEnabled()) return new ArrayList<>();
+            throw new RuntimeException("Unable to parse loot table", e);
         }
     }
 
-    private boolean verifyRitualEntity() {
+    private boolean verifyTargetedEntity() {
+        if (world.isClient) return true;
+        var targetEntity = (MobEntity) ((ServerWorld) world).getEntity(ritualEntity);
+        return targetEntity != null && !targetEntity.isDead();
+    }
 
-        MobEntity e = (MobEntity) ((ServerWorld) world).getEntity(ritualEntity);
-        if (e == null) {
-            cancelRitual(true);
-            return false;
-        }
+    // Main Tick Logic
+    static {
+        PROCESS.runConditionally(executor -> executor.getTarget().verifyTargetedEntity());
 
-        if (e.isDead()) {
-            cancelRitual(true);
-            return false;
-        }
+        PROCESS.addClientEvent(1, (executor, funnel) -> {
+            funnel.world.playSound(funnel.getPos().getX(), funnel.getPos().getY(), funnel.getPos().getZ(), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1, 1, false);
+        });
 
-        return true;
+        PROCESS.addClientStep(20, 60, (executor, funnel) -> {
+            final var world = funnel.getWorld();
+
+            for (BlockPos pos : funnel.pedestalPositions) {
+                if (!(world.getBlockEntity(pos) instanceof BlackstonePedestalBlockEntity pedestal) || !pedestal.isActive()) continue;
+
+                BlockPos particleOrigin = pos.add(0, 1, 0);
+                BlockPos particleVelocity = pos.subtract(funnel.pos);
+
+                ParticleEffect particle = new BlockStateParticleEffect(ParticleTypes.BLOCK, world.getBlockState(pos));
+                ClientParticles.setParticleCount(4);
+                ClientParticles.spawnWithOffsetFromBlock(particle, world, particleOrigin, new Vec3d(0.5, 0.25, 0.5), 0.1);
+
+                ClientParticles.setVelocity(new Vec3d(particleVelocity.getX() * -0.05, funnel.particleOffset * 0.075, particleVelocity.getZ() * -0.05));
+                ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.SOUL, world, particleOrigin, new Vec3d(0.5, 0.3, 0.5), 0.1);
+            }
+
+            ClientParticles.setParticleCount(5);
+            ClientParticles.setVelocity(new Vec3d(0, -0.5, 0));
+            ClientParticles.spawnWithOffsetFromBlock(ParticleTypes.SOUL_FIRE_FLAME, world, funnel.pos, new Vec3d(0.5, 1.75 + funnel.particleOffset, 0.5), 0.1);
+        });
+
+        PROCESS.addServerEvent(1, (executor, funnel) -> {
+            var targetEntity = (MobEntity) ((ServerWorld) funnel.world).getEntity(funnel.ritualEntity);
+
+            funnel.particleOffset = targetEntity.getHeight() / 2;
+            funnel.markDirty();
+
+            targetEntity.teleport(funnel.pos.getX() + 0.5f, targetEntity.getY(), funnel.pos.getZ() + 0.5f);
+            targetEntity.setVelocity(0, 0.075f, 0);
+            targetEntity.setNoGravity(true);
+            funnel.calculateStability();
+        });
+
+        PROCESS.addServerEvent(20, (executor, funnel) -> {
+            var targetEntity = (MobEntity) ((ServerWorld) funnel.world).getEntity(funnel.ritualEntity);
+
+            targetEntity.setVelocity(0, 0, 0);
+            targetEntity.setAiDisabled(true);
+
+            final Vec3d entityTargetPos = Vec3d.of(funnel.pos).add(0.5, 1.85, 0.5);
+            targetEntity.setPos(entityTargetPos.x, entityTargetPos.y, entityTargetPos.z);
+        });
+
+        PROCESS.addServerStep(20, 60, (executor, funnel) -> {
+            if (executor.getProcessTick() % 10 != 0) return;
+            ((ServerWorld) funnel.world).getEntity(funnel.ritualEntity).damage(DamageSource.OUT_OF_WORLD, 0.01f);
+        });
+
+        PROCESS.whenFinishedServer((executor, funnel) -> {
+            final var world = funnel.world;
+            final var pos = funnel.pos;
+
+            var targetEntity = (MobEntity) ((ServerWorld) world).getEntity(funnel.ritualEntity);
+
+            boolean success = targetEntity.world.random.nextDouble() < funnel.ritualStability;
+
+            ConjuringParticleEvents.sendRitualFinished(world, pos.add(0, 2, 0), success);
+            world.playSound(null, pos, success ? SoundEvents.ITEM_TOTEM_USE : SoundEvents.ENTITY_WITHER_HURT, SoundCategory.BLOCKS, 1, 0);
+            world.setBlockState(pos, world.getBlockState(pos).with(SoulFunnelBlock.FILLED, false));
+
+            ItemStack drop = success ? ConjuringFocus.writeData(funnel.item, targetEntity.getType()) : funnel.item;
+            ItemScatterer.spawn(world, pos.getX(), pos.getY() + 1.25, pos.getZ(), drop);
+
+            funnel.disablePedestals();
+            targetEntity.kill();
+
+            funnel.item = ItemStack.EMPTY;
+            funnel.ritualEntity = null;
+            funnel.ritualStability = 0.1f;
+
+            funnel.markDirty();
+        });
+
+        PROCESS.onCancelledServer((executor, funnel) -> {
+            final var world = funnel.world;
+            final var funnelPos = funnel.pos;
+
+            ConjuringParticleEvents.sendRitualFinished(world, funnelPos.add(0, 2, 0), false);
+            world.playSound(null, funnelPos, SoundEvents.ENTITY_WITHER_HURT, SoundCategory.BLOCKS, 1, 0);
+
+            funnel.disablePedestals();
+
+            var targetEntity = (MobEntity) ((ServerWorld) world).getEntity(funnel.ritualEntity);
+            if (targetEntity != null) targetEntity.kill();
+
+            funnel.ritualEntity = null;
+            funnel.markDirty();
+        });
+
+        PROCESS.finish();
     }
 }

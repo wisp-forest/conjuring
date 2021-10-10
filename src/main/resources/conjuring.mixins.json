@@ -14,8 +14,7 @@
   "client": [
     "InGameHudMixin",
     "ItemRendererMixin",
-    "WorldRendererInvoker",
-    "SpawnerParticleMixin"
+    "WorldRendererInvoker"
   ],
   "injectors": {
     "defaultRequire": 1

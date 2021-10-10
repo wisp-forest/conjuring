@@ -4,9 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 public class GemTinkererRecipeJson {
-
     public JsonArray inputs;
-
     public JsonObject result;
-
 }

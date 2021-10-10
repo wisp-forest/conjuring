@@ -1,6 +1,7 @@
 package com.glisco.conjuring.blocks.soul_weaver;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.Conjuring;
+import com.glisco.conjuring.blocks.ConjuringBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.inventory.Inventory;
@@ -81,7 +82,7 @@ public class SoulWeaverRecipe implements Recipe<Inventory> {
 
     @Environment(EnvType.CLIENT)
     public ItemStack createIcon() {
-        return new ItemStack(ConjuringCommon.SOUL_WEAVER_BLOCK);
+        return new ItemStack(ConjuringBlocks.SOUL_WEAVER);
     }
 
     @Override
@@ -100,6 +101,6 @@ public class SoulWeaverRecipe implements Recipe<Inventory> {
 
         public static final Type INSTANCE = new Type();
 
-        public static final Identifier ID = new Identifier("conjuring", "soul_weaving");
+        public static final Identifier ID = Conjuring.id("soul_weaving");
     }
 }

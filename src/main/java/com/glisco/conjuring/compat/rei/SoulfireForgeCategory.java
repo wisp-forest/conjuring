@@ -1,6 +1,7 @@
 package com.glisco.conjuring.compat.rei;
 
-import com.glisco.conjuring.ConjuringCommon;
+import com.glisco.conjuring.Conjuring;
+import com.glisco.conjuring.blocks.ConjuringBlocks;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
@@ -15,7 +16,6 @@ import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class SoulfireForgeCategory implements DisplayCategory<SoulfireForgeDispl
 
     @Override
     public Renderer getIcon() {
-        return EntryStacks.of(ConjuringCommon.SOULFIRE_FORGE_BLOCK);
+        return EntryStacks.of(ConjuringBlocks.SOULFIRE_FORGE);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class SoulfireForgeCategory implements DisplayCategory<SoulfireForgeDispl
         widgets.add(Widgets.createResultSlotBackground(new Point(origin.x + 95, origin.y + 19)));
         widgets.add(Widgets.createSlot(new Point(origin.x + 95, origin.y + 19)).entries(recipeDisplay.getOutputEntries().get(0)).disableBackground().markOutput());
 
-        widgets.add(Widgets.createTexturedWidget(new Identifier("conjuring", "textures/gui/soulfire_forge.png"), origin.x + 57, origin.y + 11, 176, 0, 32, 32));
+        widgets.add(Widgets.createTexturedWidget(Conjuring.id("textures/gui/soulfire_forge.png"), origin.x + 57, origin.y + 11, 176, 0, 32, 32));
 
         Label timeWidget = Widgets.createLabel(new Point(origin.x + 74, origin.y + 43), new LiteralText(recipeDisplay.getSmeltTime() / 20 + "s")).color(0x3F3F3F).shadow(false);
         if (recipeDisplay.getSmeltTime() == 1380) {
