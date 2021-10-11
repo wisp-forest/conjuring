@@ -35,20 +35,20 @@ public class GemTinkererBlockEntity extends BlockEntity implements SimpleSeriali
     private static final LinearProcess<GemTinkererBlockEntity> PROCESS = new LinearProcess<>(200);
 
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(5, ItemStack.EMPTY);
-    private GemTinkererRecipe cachedRecipe;
     private final LinearProcessExecutor<GemTinkererBlockEntity> executor;
+    private GemTinkererRecipe cachedRecipe;
 
     private boolean particlesShown = false;
 
     public GemTinkererBlockEntity(BlockPos pos, BlockState state) {
         super(ConjuringBlocks.Entities.GEM_TINKERER, pos, state);
-        this.executor = PROCESS.deriveExecutor(this, false);
+        this.executor = PROCESS.createExecutor(this);
     }
 
     @Override
     public void setWorld(World world) {
         super.setWorld(world);
-        PROCESS.reconfigureExecutor(executor, world.isClient);
+        PROCESS.configureExecutor(executor, world.isClient);
     }
 
     @Override

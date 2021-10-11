@@ -70,10 +70,6 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
         final var loc = Vec3d.of(pos);
         ClientParticles.setParticleCount(4);
         ClientParticles.spawnPrecise(ParticleTypes.SMOKE, world, loc.add(.5, .6, .5), .3, 0, .3);
-
-        if (!updateCachedRecipe() || world.random.nextDouble() > .1) return;
-
-        ClientParticles.spawnPrecise(ParticleTypes.SOUL, world, loc.add(.5, .75, .5), .45, 0, .45);
     }
 
     //Tick Logic
@@ -94,6 +90,11 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
         } else {
             this.smeltTime++;
             this.progress = Math.round(((float) smeltTime / (float) targetSmeltTime) * 32);
+
+            if (world.random.nextDouble() < .05) {
+                ServerParticles.issueEvent((ServerWorld) world, Vec3d.of(pos), ConjuringParticleEvents.SOULFIRE_FORGE_SOULS);
+            }
+
         }
 
         world.updateComparators(pos, ConjuringBlocks.SOULFIRE_FORGE);
@@ -106,6 +107,8 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
             this.cachedRecipe = recipe.get();
             return ItemOps.canStack(this.getItems().get(9), recipe.get().getOutput());
         } else {
+            this.progress = 0;
+            this.smeltTime = 0;
             return false;
         }
     }

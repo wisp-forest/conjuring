@@ -80,13 +80,13 @@ public class SoulFunnelBlockEntity extends BlockEntity implements SimpleSerializ
     public SoulFunnelBlockEntity(BlockPos pos, BlockState state) {
         super(ConjuringBlocks.Entities.SOUL_FUNNEL, pos, state);
         pedestalPositions = new ArrayList<>();
-        this.ritualExecutor = PROCESS.deriveExecutor(this, false);
+        this.ritualExecutor = PROCESS.createExecutor(this);
     }
 
     @Override
     public void setWorld(World world) {
         super.setWorld(world);
-        PROCESS.reconfigureExecutor(ritualExecutor, world.isClient);
+        PROCESS.configureExecutor(ritualExecutor, world.isClient);
     }
 
     //Data Logic
@@ -338,7 +338,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements SimpleSerializ
 
             return extractedDrops;
         } catch (Exception e) {
-            if (!Owo.debugEnabled()) return new ArrayList<>();
+            if (!Owo.DEBUG) return new ArrayList<>();
             throw new RuntimeException("Unable to parse loot table", e);
         }
     }

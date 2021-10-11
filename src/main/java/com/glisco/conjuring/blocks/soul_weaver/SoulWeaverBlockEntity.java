@@ -21,6 +21,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
 import net.minecraft.network.packet.s2c.play.StopSoundS2CPacket;
 import net.minecraft.particle.BlockStateParticleEffect;
@@ -51,18 +52,18 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Si
     private ItemStack item = ItemStack.EMPTY;
     private boolean lit = false;
 
-    private SoulWeaverRecipe cachedRecipe = null;
     private final LinearProcessExecutor<SoulWeaverBlockEntity> ritualExecutor;
+    private SoulWeaverRecipe cachedRecipe = null;
 
     public SoulWeaverBlockEntity(BlockPos pos, BlockState state) {
         super(ConjuringBlocks.Entities.SOUL_WEAVER, pos, state);
-        this.ritualExecutor = PROCESS.deriveExecutor(this, false);
+        this.ritualExecutor = PROCESS.createExecutor(this);
     }
 
     @Override
     public void setWorld(World world) {
         super.setWorld(world);
-        PROCESS.reconfigureExecutor(ritualExecutor, world.isClient);
+        PROCESS.configureExecutor(ritualExecutor, world.isClient);
     }
 
     @Override
@@ -72,6 +73,10 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Si
         ritualExecutor.readState(tag);
 
         this.item = ItemOps.get(tag, "Item");
+        if (tag.contains("CachedRecipe", NbtElement.STRING_TYPE) && world != null) {
+            this.cachedRecipe = (SoulWeaverRecipe) world.getRecipeManager().get(new Identifier(tag.getString("CachedRecipe"))).orElse(null);
+        }
+
         lit = tag.getBoolean("Lit");
     }
 
@@ -81,6 +86,8 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Si
         ritualExecutor.writeState(tag);
 
         ItemOps.store(item, tag, "Item");
+        if (cachedRecipe != null) tag.putString("CachedRecipe", cachedRecipe.getId().toString());
+
         tag.putBoolean("Lit", lit);
         return super.writeNbt(tag);
     }

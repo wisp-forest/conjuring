@@ -22,6 +22,7 @@ public class ConjuringParticleEvents {
     public static final Identifier CONJURER_SUMMON = Conjuring.id("conjurer_summon");
     public static final Identifier EXTRACTION_RITUAL_FINISHED = Conjuring.id("extraction_ritual_finished");
     public static final Identifier PEDESTAL_REMOVED = Conjuring.id("pedestal_removed");
+    public static final Identifier SOULFIRE_FORGE_SOULS = Conjuring.id("soulfire_forge_souls");
 
     public static void registerClientListeners() {
         ServerParticles.registerClientSideHandler(UNLINK_WEAVER, (client, pos, buffer) -> {
@@ -87,6 +88,13 @@ public class ConjuringParticleEvents {
 
                 ClientParticles.setParticleCount(20);
                 ClientParticles.spawnPrecise(ParticleTypes.SMOKE, client.world, loc.add(direction.getOffsetX() * .15, .35, direction.getOffsetZ() * .15), direction.getOffsetZ() / 4d, 0.1, direction.getOffsetX() / 4d);
+            });
+        });
+
+        ServerParticles.registerClientSideHandler(SOULFIRE_FORGE_SOULS, (client, pos, data) -> {
+            client.execute(() -> {
+                ClientParticles.setParticleCount(3);
+                ClientParticles.spawnPrecise(ParticleTypes.SOUL, client.world, pos.add(.5, .75, .5), .45, 0, .45);
             });
         });
     }

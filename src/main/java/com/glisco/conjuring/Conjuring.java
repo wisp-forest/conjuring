@@ -21,13 +21,12 @@ import com.glisco.conjuring.util.ExtractionRitualCriterion;
 import com.glisco.conjuring.util.GemTinkeringCriterion;
 import com.glisco.conjuring.util.SoulfireForgeScreenHandler;
 import com.glisco.owo.itemgroup.OwoItemGroup;
+import com.glisco.owo.ops.LootOps;
 import com.glisco.owo.registration.reflect.FieldRegistrationHandler;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
-import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.advancement.CriterionRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
@@ -36,9 +35,7 @@ import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.condition.RandomChanceLootCondition;
-import net.minecraft.loot.entry.ItemEntry;
-import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
+import net.minecraft.loot.LootTables;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
@@ -127,33 +124,11 @@ public class Conjuring implements ModInitializer {
 
         Registry.register(Registry.SOUND_EVENT, Conjuring.id("block.soul_weaver.weee"), WEEE);
 
-        LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
-            if (new Identifier("minecraft", "blocks/spawner").equals(id)) {
-                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootNumberProvider.create(1)).withEntry(ItemEntry.builder(ConjuringItems.CONJURATION_ESSENCE).build());
-
-                supplier.withPool(poolBuilder.build());
-            } else if (new Identifier("minecraft", "chests/simple_dungeon").equals(id)) {
-                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootNumberProvider.create(1)).withEntry(ItemEntry.builder(ConjuringItems.CONJURATION_ESSENCE).conditionally(RandomChanceLootCondition.builder(0.35f)).build());
-
-                supplier.withPool(poolBuilder.build());
-            } else if (new Identifier("minecraft", "chests/bastion_treasure").equals(id)) {
-                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootNumberProvider.create(1)).withEntry(ItemEntry.builder(ConjuringItems.CONJURATION_ESSENCE).conditionally(RandomChanceLootCondition.builder(0.175f)).build());
-
-                supplier.withPool(poolBuilder.build());
-            } else if (new Identifier("minecraft", "chests/desert_pyramid").equals(id)) {
-                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootNumberProvider.create(1)).withEntry(ItemEntry.builder(ConjuringItems.CONJURATION_ESSENCE).conditionally(RandomChanceLootCondition.builder(0.2f)).build());
-
-                supplier.withPool(poolBuilder.build());
-            } else if (new Identifier("minecraft", "chests/stronghold_corridor").equals(id)) {
-                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootNumberProvider.create(1)).withEntry(ItemEntry.builder(ConjuringItems.CONJURATION_ESSENCE).conditionally(RandomChanceLootCondition.builder(0.2f)).build());
-
-                supplier.withPool(poolBuilder.build());
-            } else if (new Identifier("minecraft", "chests/stronghold_library").equals(id)) {
-                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(ConstantLootNumberProvider.create(1)).withEntry(ItemEntry.builder(ConjuringItems.CONJURATION_ESSENCE).conditionally(RandomChanceLootCondition.builder(0.05f)).build());
-
-                supplier.withPool(poolBuilder.build());
-            }
-        });
+        LootOps.injectItem(ConjuringItems.CONJURATION_ESSENCE, 1, new Identifier("blocks/spawner"));
+        LootOps.injectItem(ConjuringItems.CONJURATION_ESSENCE, .35f, LootTables.SIMPLE_DUNGEON_CHEST);
+        LootOps.injectItem(ConjuringItems.CONJURATION_ESSENCE, .175f, LootTables.BASTION_TREASURE_CHEST);
+        LootOps.injectItem(ConjuringItems.CONJURATION_ESSENCE, .2f, LootTables.DESERT_PYRAMID_CHEST, LootTables.STRONGHOLD_CORRIDOR_CHEST);
+        LootOps.injectItem(ConjuringItems.CONJURATION_ESSENCE, .05f, LootTables.STRONGHOLD_LIBRARY_CHEST);
 
         CriterionRegistry.register(EXTRACTION_RITUAL_CRITERION);
         CriterionRegistry.register(GEM_TINKERING_CRITERION);
