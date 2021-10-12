@@ -1,7 +1,7 @@
 package com.glisco.conjuring.blocks;
 
-import com.glisco.owo.blockentity.SimpleSerializableBlockEntity;
 import com.glisco.owo.ops.ItemOps;
+import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
@@ -10,7 +10,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
-public class BlackstonePedestalBlockEntity extends BlockEntity implements SimpleSerializableBlockEntity {
+public class BlackstonePedestalBlockEntity extends BlockEntity implements BlockEntityClientSerializable {
 
     @NotNull
     private ItemStack renderedItem = ItemStack.EMPTY;
@@ -90,6 +90,16 @@ public class BlackstonePedestalBlockEntity extends BlockEntity implements Simple
     @NotNull
     public ItemStack getItem() {
         return renderedItem;
+    }
+
+    @Override
+    public void fromClientTag(NbtCompound tag) {
+        this.readNbt(tag);
+    }
+
+    @Override
+    public NbtCompound toClientTag(NbtCompound tag) {
+        return writeNbt(tag);
     }
 
 }

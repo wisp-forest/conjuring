@@ -6,7 +6,7 @@ import com.glisco.conjuring.items.GemItem;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyTool;
 import com.glisco.owo.blockentity.LinearProcess;
 import com.glisco.owo.blockentity.LinearProcessExecutor;
-import com.glisco.owo.blockentity.SimpleSerializableBlockEntity;
+import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class GemTinkererBlockEntity extends BlockEntity implements SimpleSerializableBlockEntity {
+public class GemTinkererBlockEntity extends BlockEntity implements BlockEntityClientSerializable {
 
     public static final BlockEntityTicker<GemTinkererBlockEntity> TICKER = (world1, pos1, state, blockEntity) -> blockEntity.executor.tick();
 
@@ -180,4 +180,13 @@ public class GemTinkererBlockEntity extends BlockEntity implements SimpleSeriali
         PROCESS.finish();
     }
 
+    @Override
+    public void fromClientTag(NbtCompound tag) {
+        this.readNbt(tag);
+    }
+
+    @Override
+    public NbtCompound toClientTag(NbtCompound tag) {
+        return writeNbt(tag);
+    }
 }

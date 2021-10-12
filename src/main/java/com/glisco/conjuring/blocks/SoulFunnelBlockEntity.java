@@ -7,10 +7,10 @@ import com.glisco.conjuring.util.ConjuringParticleEvents;
 import com.glisco.owo.Owo;
 import com.glisco.owo.blockentity.LinearProcess;
 import com.glisco.owo.blockentity.LinearProcessExecutor;
-import com.glisco.owo.blockentity.SimpleSerializableBlockEntity;
 import com.glisco.owo.particles.ClientParticles;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -56,7 +56,7 @@ import java.util.UUID;
 import java.util.function.Function;
 
 @SuppressWarnings("ConstantConditions")
-public class SoulFunnelBlockEntity extends BlockEntity implements SimpleSerializableBlockEntity, RitualCore {
+public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityClientSerializable, RitualCore {
 
     public static final BlockEntityTicker<SoulFunnelBlockEntity> SERVER_TICKER = (world1, pos1, state, blockEntity) -> blockEntity.tickServer();
     public static final BlockEntityTicker<SoulFunnelBlockEntity> CLIENT_TICKER = (world1, pos1, state, blockEntity) -> blockEntity.tickClient();
@@ -347,6 +347,16 @@ public class SoulFunnelBlockEntity extends BlockEntity implements SimpleSerializ
         if (world.isClient) return true;
         var targetEntity = (MobEntity) ((ServerWorld) world).getEntity(ritualEntity);
         return targetEntity != null && !targetEntity.isDead();
+    }
+
+    @Override
+    public void fromClientTag(NbtCompound tag) {
+        this.readNbt(tag);
+    }
+
+    @Override
+    public NbtCompound toClientTag(NbtCompound tag) {
+        return writeNbt(tag);
     }
 
     // Main Tick Logic

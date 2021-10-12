@@ -6,11 +6,11 @@ import com.glisco.conjuring.blocks.ConjuringBlocks;
 import com.glisco.conjuring.blocks.RitualCore;
 import com.glisco.owo.blockentity.LinearProcess;
 import com.glisco.owo.blockentity.LinearProcessExecutor;
-import com.glisco.owo.blockentity.SimpleSerializableBlockEntity;
 import com.glisco.owo.ops.ItemOps;
 import com.glisco.owo.particles.ClientParticles;
 import com.glisco.owo.particles.ServerParticles;
 import com.glisco.owo.util.VectorRandomUtils;
+import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, SimpleSerializableBlockEntity {
+public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, BlockEntityClientSerializable {
 
     public static final BlockEntityTicker<SoulWeaverBlockEntity> TICKER = (world1, pos1, state, blockEntity) -> blockEntity.ritualExecutor.tick();
     private static final LinearProcess<SoulWeaverBlockEntity> PROCESS = new LinearProcess<>(165);
@@ -203,6 +203,16 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Si
 
     public boolean isRunning() {
         return ritualExecutor.running();
+    }
+
+    @Override
+    public void fromClientTag(NbtCompound tag) {
+        this.readNbt(tag);
+    }
+
+    @Override
+    public NbtCompound toClientTag(NbtCompound tag) {
+        return writeNbt(tag);
     }
 
     static {
