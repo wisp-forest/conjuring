@@ -72,7 +72,7 @@ public class ConjuringClient implements ClientModInitializer {
             }
         });
 
-        ConjuringParticleEvents.registerClientListeners();
+        ConjuringParticleEvents.Client.registerClientListeners();
 
         WorldRenderEvents.BLOCK_OUTLINE.register((worldRenderContext, blockOutlineContext) -> {
             final MinecraftClient client = MinecraftClient.getInstance();

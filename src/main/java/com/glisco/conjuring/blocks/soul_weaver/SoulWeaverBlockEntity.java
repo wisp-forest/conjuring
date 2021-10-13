@@ -4,6 +4,7 @@ import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.blocks.BlackstonePedestalBlockEntity;
 import com.glisco.conjuring.blocks.ConjuringBlocks;
 import com.glisco.conjuring.blocks.RitualCore;
+import com.glisco.conjuring.util.ConjuringParticleEvents;
 import com.glisco.owo.blockentity.LinearProcess;
 import com.glisco.owo.blockentity.LinearProcessExecutor;
 import com.glisco.owo.ops.ItemOps;
@@ -109,7 +110,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
         this.markDirty();
 
         if (!world.isClient())
-            ServerParticles.issueEvent((ServerWorld) world, Vec3d.of(pos), Conjuring.id("unlink_weaver"), buffer -> buffer.writeBlockPos(pedestal));
+            ServerParticles.issueEvent((ServerWorld) world, Vec3d.of(pos), ConjuringParticleEvents.UNLINK_WEAVER, buffer -> buffer.writeBlockPos(pedestal));
 
         ritualExecutor.cancel();
 

@@ -204,7 +204,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
             newEntity.updatePosition(pos.getX(), pos.getY() + 1, pos.getZ());
             world.spawnEntity(newEntity);
 
-            ConjuringParticleEvents.sendRitualFinished(world, pos.add(0, 1, 0), false);
+            ConjuringParticleEvents.Server.sendRitualFinished(world, pos.add(0, 1, 0), false);
             world.playSound(null, pos, SoundEvents.ENTITY_WITHER_HURT, SoundCategory.BLOCKS, 1, 0);
 
             ItemScatterer.spawn(world, pos.getX(), pos.getY() + 0.75, pos.getZ(), new ItemStack(this.item.getItem()));
@@ -276,7 +276,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
         this.markDirty();
 
         BlockPos offset = new BlockPos(Vec3d.of(pedestal.subtract(pos)).normalize());
-        ConjuringParticleEvents.sendPedestalRemoved(world, pos, Direction.fromVector(offset));
+        ConjuringParticleEvents.Server.sendPedestalRemoved(world, pos, Direction.fromVector(offset));
 
         if (pedestalActive) {
             ritualExecutor.cancel();
@@ -424,7 +424,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
 
             boolean success = targetEntity.world.random.nextDouble() < funnel.ritualStability;
 
-            ConjuringParticleEvents.sendRitualFinished(world, pos.add(0, 2, 0), success);
+            ConjuringParticleEvents.Server.sendRitualFinished(world, pos.add(0, 2, 0), success);
             world.playSound(null, pos, success ? SoundEvents.ITEM_TOTEM_USE : SoundEvents.ENTITY_WITHER_HURT, SoundCategory.BLOCKS, 1, 0);
             world.setBlockState(pos, world.getBlockState(pos).with(SoulFunnelBlock.FILLED, false));
 
@@ -445,7 +445,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
             final var world = funnel.world;
             final var funnelPos = funnel.pos;
 
-            ConjuringParticleEvents.sendRitualFinished(world, funnelPos.add(0, 2, 0), false);
+            ConjuringParticleEvents.Server.sendRitualFinished(world, funnelPos.add(0, 2, 0), false);
             world.playSound(null, funnelPos, SoundEvents.ENTITY_WITHER_HURT, SoundCategory.BLOCKS, 1, 0);
 
             funnel.disablePedestals();

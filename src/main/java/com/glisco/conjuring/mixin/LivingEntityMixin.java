@@ -4,6 +4,7 @@ import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.items.soul_alloy_tools.CopycatPlayerDamageSource;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyTool;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyToolAbilities;
+import com.glisco.conjuring.util.ConjuringParticleEvents;
 import com.glisco.owo.particles.ServerParticles;
 import com.glisco.owo.util.VectorSerializer;
 import net.minecraft.entity.Entity;
@@ -68,7 +69,7 @@ public abstract class LivingEntityMixin extends Entity {
 
             if (!world.isClient()) {
                 final int entityIndex = i;
-                ServerParticles.issueEvent((ServerWorld) world, getPos(), Conjuring.id("line"), byteBuf -> {
+                ServerParticles.issueEvent((ServerWorld) world, getPos(), ConjuringParticleEvents.LINE, byteBuf -> {
                     VectorSerializer.write(getPos().add(0, 0.25 + random.nextDouble(), 0), byteBuf);
                     VectorSerializer.write(entities.get(entityIndex).getPos().add(0, 0.25 + random.nextDouble(), 0), byteBuf);
                 });
