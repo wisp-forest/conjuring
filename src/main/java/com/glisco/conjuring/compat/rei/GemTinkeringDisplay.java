@@ -1,18 +1,8 @@
 package com.glisco.conjuring.compat.rei;
 
-import com.glisco.conjuring.blocks.gem_tinkerer.GemTinkererRecipe;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.display.Display;
-import me.shedaniel.rei.api.common.entry.EntryIngredient;
-import me.shedaniel.rei.api.common.util.EntryIngredients;
-import org.jetbrains.annotations.NotNull;
+public class GemTinkeringDisplay /*implements Display*/ {
 
-import java.util.Collections;
-import java.util.List;
-
-public class GemTinkeringDisplay implements Display {
-
-    protected final GemTinkererRecipe display;
+    /*protected final GemTinkererRecipe display;
     protected final List<EntryIngredient> input;
     protected final List<EntryIngredient> output;
 
@@ -37,5 +27,5 @@ public class GemTinkeringDisplay implements Display {
     @Override
     public @NotNull List<EntryIngredient> getOutputEntries() {
         return output;
-    }
+    }*/
 }

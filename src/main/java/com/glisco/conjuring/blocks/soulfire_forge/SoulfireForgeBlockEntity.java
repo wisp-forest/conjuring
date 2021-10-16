@@ -67,7 +67,7 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
     public void tickClient() {
         if (!getCachedState().get(SoulfireForgeBlock.BURNING)) return;
 
-        final var loc = Vec3d.of(pos);
+        final Vec3d loc = Vec3d.of(pos);
         ClientParticles.setParticleCount(4);
         ClientParticles.spawnPrecise(ParticleTypes.SMOKE, world, loc.add(.5, .6, .5), .3, 0, .3);
     }
@@ -115,12 +115,11 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
 
     //Data Logic
     @Override
-    public NbtCompound writeNbt(NbtCompound tag) {
+    public void writeNbt(NbtCompound tag) {
         super.writeNbt(tag);
         Inventories.writeNbt(tag, items);
         tag.putInt("Progress", progress);
         tag.putInt("SmeltTime", smeltTime);
-        return tag;
     }
 
     @Override

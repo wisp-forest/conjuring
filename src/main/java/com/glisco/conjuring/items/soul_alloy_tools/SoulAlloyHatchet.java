@@ -41,7 +41,7 @@ public class SoulAlloyHatchet extends AxeItem implements SoulAlloyTool {
         if (!world.isClient()) {
             SoulFellerEntity feller = new SoulFellerEntity(world, user);
             feller.refreshPositionAndAngles(user.getX(), user.getEyeY(), user.getZ(), 0, 0);
-            feller.setProperties(user, user.getPitch(), user.getYaw(), 0f, 1.5f, 1);
+            feller.setVelocity(user, user.getPitch(), user.getYaw(), 0f, 1.5f, 1);
 
             feller.setItem(user.getStackInHand(hand));
 

@@ -7,10 +7,12 @@ import com.glisco.conjuring.util.ConjuringParticleEvents;
 import com.glisco.owo.Owo;
 import com.glisco.owo.blockentity.LinearProcess;
 import com.glisco.owo.blockentity.LinearProcessExecutor;
+import com.glisco.owo.ops.WorldOps;
 import com.glisco.owo.particles.ClientParticles;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -31,6 +33,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootGsons;
 import net.minecraft.loot.LootTable;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.Packet;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -49,6 +54,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeKeys;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +62,7 @@ import java.util.UUID;
 import java.util.function.Function;
 
 @SuppressWarnings("ConstantConditions")
-public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityClientSerializable, RitualCore {
+public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
 
     public static final BlockEntityTicker<SoulFunnelBlockEntity> SERVER_TICKER = (world1, pos1, state, blockEntity) -> blockEntity.tickServer();
     public static final BlockEntityTicker<SoulFunnelBlockEntity> CLIENT_TICKER = (world1, pos1, state, blockEntity) -> blockEntity.tickClient();
@@ -89,9 +95,15 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
         PROCESS.configureExecutor(ritualExecutor, world.isClient);
     }
 
+    @Override
+    public void markDirty() {
+        super.markDirty();
+        WorldOps.updateIfOnServer(world, this.getPos());
+    }
+
     //Data Logic
     @Override
-    public NbtCompound writeNbt(NbtCompound tag) {
+    public void writeNbt(NbtCompound tag) {
         super.writeNbt(tag);
         NbtCompound item = new NbtCompound();
         if (!this.item.isEmpty()) this.item.writeNbt(item);
@@ -108,8 +120,6 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
         }
 
         savePedestals(tag, pedestalPositions);
-
-        return tag;
     }
 
     @Override
@@ -136,12 +146,6 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
             ritualStability = 0.1f;
             ritualExecutor.readState(new NbtCompound());
         }
-    }
-
-    @Override
-    public void markDirty() {
-        super.markDirty();
-        if (this.world instanceof ServerWorld) this.sync();
     }
 
     //Tick Logic
@@ -321,15 +325,15 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
 
     private static List<Item> extractDrops(LootTable table) {
 
-        final var tableObject = GSON.toJsonTree(table).getAsJsonObject();
-        final var extractedDrops = new ArrayList<Item>();
+        final JsonObject tableObject = GSON.toJsonTree(table).getAsJsonObject();
+        final ArrayList extractedDrops = new ArrayList<Item>();
 
         try {
-            for (var poolElement : tableObject.get("pools").getAsJsonArray()) {
+            for (JsonElement poolElement : tableObject.get("pools").getAsJsonArray()) {
                 JsonArray entries = poolElement.getAsJsonObject().get("entries").getAsJsonArray();
 
-                for (var entryElement : entries) {
-                    var entryObject = entryElement.getAsJsonObject();
+                for (JsonElement entryElement : entries) {
+                    JsonObject entryObject = entryElement.getAsJsonObject();
                     if (!"minecraft:item".equals(JsonHelper.getString(entryObject, "type"))) continue;
 
                     extractedDrops.add(Registry.ITEM.get(new Identifier(JsonHelper.getString(entryObject, "name"))));
@@ -345,18 +349,21 @@ public class SoulFunnelBlockEntity extends BlockEntity implements BlockEntityCli
 
     private boolean verifyTargetedEntity() {
         if (world.isClient) return true;
-        var targetEntity = (MobEntity) ((ServerWorld) world).getEntity(ritualEntity);
+        MobEntity targetEntity = (MobEntity) ((ServerWorld) world).getEntity(ritualEntity);
         return targetEntity != null && !targetEntity.isDead();
     }
 
     @Override
-    public void fromClientTag(NbtCompound tag) {
-        this.readNbt(tag);
+    public NbtCompound toInitialChunkDataNbt() {
+        var tag = new NbtCompound();
+        this.writeNbt(tag);
+        return tag;
     }
 
+    @Nullable
     @Override
-    public NbtCompound toClientTag(NbtCompound tag) {
-        return writeNbt(tag);
+    public Packet<ClientPlayPacketListener> toUpdatePacket() {
+        return BlockEntityUpdateS2CPacket.create(this);
     }
 
     // Main Tick Logic

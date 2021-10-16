@@ -58,7 +58,7 @@ public class ConjuringParticleEvents {
 
             ServerParticles.registerClientSideHandler(CONJURER_SUMMON, (client, pos, data) -> {
                 client.execute(() -> {
-                    var loc = pos.add(.5, .5, .5);
+                    Vec3d loc = pos.add(.5, .5, .5);
 
                     ClientParticles.setParticleCount(20);
                     ClientParticles.spawn(ParticleTypes.ENCHANTED_HIT, client.world, loc, 2);
@@ -71,7 +71,7 @@ public class ConjuringParticleEvents {
             ServerParticles.registerClientSideHandler(EXTRACTION_RITUAL_FINISHED, (client, pos, data) -> {
                 boolean successful = data.readBoolean();
                 client.execute(() -> {
-                    var loc = pos.add(.5, .5, .5);
+                    Vec3d loc = pos.add(.5, .5, .5);
                     ParticleEffect particle = successful ? ParticleTypes.SOUL_FIRE_FLAME : ParticleTypes.LAVA;
 
                     for (int i = 0; i < 60; ++i) {
@@ -84,9 +84,9 @@ public class ConjuringParticleEvents {
             });
 
             ServerParticles.registerClientSideHandler(PEDESTAL_REMOVED, (client, pos, data) -> {
-                var direction = data.readEnumConstant(Direction.class);
+                Direction direction = data.readEnumConstant(Direction.class);
                 client.execute(() -> {
-                    final var loc = pos.add(.5, 0, .5);
+                    final Vec3d loc = pos.add(.5, 0, .5);
 
                     ClientParticles.setParticleCount(20);
                     ClientParticles.spawnPrecise(ParticleTypes.SMOKE, client.world, loc.add(direction.getOffsetX() * .15, .35, direction.getOffsetZ() * .15), direction.getOffsetZ() / 4d, 0.1, direction.getOffsetX() / 4d);

@@ -8,10 +8,10 @@ import com.glisco.conjuring.util.ConjuringParticleEvents;
 import com.glisco.owo.blockentity.LinearProcess;
 import com.glisco.owo.blockentity.LinearProcessExecutor;
 import com.glisco.owo.ops.ItemOps;
+import com.glisco.owo.ops.WorldOps;
 import com.glisco.owo.particles.ClientParticles;
 import com.glisco.owo.particles.ServerParticles;
 import com.glisco.owo.util.VectorRandomUtils;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
@@ -23,6 +23,9 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.network.Packet;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
 import net.minecraft.network.packet.s2c.play.StopSoundS2CPacket;
 import net.minecraft.particle.BlockStateParticleEffect;
@@ -37,12 +40,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, BlockEntityClientSerializable {
+public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore {
 
     public static final BlockEntityTicker<SoulWeaverBlockEntity> TICKER = (world1, pos1, state, blockEntity) -> blockEntity.ritualExecutor.tick();
     private static final LinearProcess<SoulWeaverBlockEntity> PROCESS = new LinearProcess<>(165);
@@ -82,7 +86,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
     }
 
     @Override
-    public NbtCompound writeNbt(NbtCompound tag) {
+    public void writeNbt(NbtCompound tag) {
         savePedestals(tag, pedestals);
         ritualExecutor.writeState(tag);
 
@@ -90,7 +94,6 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
         if (cachedRecipe != null) tag.putString("CachedRecipe", cachedRecipe.getId().toString());
 
         tag.putBoolean("Lit", lit);
-        return super.writeNbt(tag);
     }
 
     public boolean linkPedestal(BlockPos pedestal) {
@@ -148,13 +151,6 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
         return true;
     }
 
-    @Override
-    public void markDirty() {
-        super.markDirty();
-
-        if (!world.isClient()) sync();
-    }
-
     public boolean verifyRecipe() {
 
         if (item.isEmpty()) return false;
@@ -206,14 +202,23 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
         return ritualExecutor.running();
     }
 
+    @Nullable
     @Override
-    public void fromClientTag(NbtCompound tag) {
-        this.readNbt(tag);
+    public Packet<ClientPlayPacketListener> toUpdatePacket() {
+        return BlockEntityUpdateS2CPacket.create(this);
     }
 
     @Override
-    public NbtCompound toClientTag(NbtCompound tag) {
-        return writeNbt(tag);
+    public NbtCompound toInitialChunkDataNbt() {
+        var tag = new NbtCompound();
+        this.writeNbt(tag);
+        return tag;
+    }
+
+    @Override
+    public void markDirty() {
+        super.markDirty();
+        WorldOps.updateIfOnServer(world, this.getPos());
     }
 
     static {
@@ -239,8 +244,8 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
         });
 
         PROCESS.addClientStep(10, 155, (executor, weaver) -> {
-            final var world = weaver.world;
-            final var pos = weaver.pos;
+            final World world = weaver.world;
+            final BlockPos pos = weaver.pos;
 
             if (executor.getProcessTick() % 2 == 0) {
                 if (executor.getProcessTick() < 140) {
@@ -308,7 +313,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
         });
 
         PROCESS.whenFinishedServer((executor, weaver) -> {
-            final var cachedRecipe = weaver.cachedRecipe;
+            final SoulWeaverRecipe cachedRecipe = weaver.cachedRecipe;
 
             weaver.world.playSound(null, weaver.pos, SoundEvents.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.BLOCKS, 1, 0);
 
@@ -331,8 +336,8 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore, Bl
         });
 
         PROCESS.onCancelledServer((executor, weaver) -> {
-            final var world = weaver.world;
-            final var pos = weaver.pos;
+            final World world = weaver.world;
+            final BlockPos pos = weaver.pos;
 
             for (BlockPos pedestal : weaver.pedestals) {
                 ((BlackstonePedestalBlockEntity) world.getBlockEntity(pedestal)).setActive(false);

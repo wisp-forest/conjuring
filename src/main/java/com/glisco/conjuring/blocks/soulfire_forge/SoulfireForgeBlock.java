@@ -8,6 +8,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.Items;
+import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -153,7 +154,7 @@ public class SoulfireForgeBlock extends BlockWithEntity {
 
         if (world.isClient) return ActionResult.SUCCESS;
 
-        var screenHandlerFactory = state.createScreenHandlerFactory(world, pos);
+        NamedScreenHandlerFactory screenHandlerFactory = state.createScreenHandlerFactory(world, pos);
         if (screenHandlerFactory != null) {
             player.openHandledScreen(screenHandlerFactory);
         }

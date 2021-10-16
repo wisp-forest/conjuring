@@ -54,8 +54,8 @@ public class SoulDiggerEntity extends SoulEntity {
     }
 
     @Override
-    public void setProperties(Entity user, float pitch, float yaw, float roll, float modifierZ, float modifierXYZ) {
-        super.setProperties(user, pitch, yaw, roll, modifierZ, modifierXYZ);
+    public void setVelocity(Entity user, float pitch, float yaw, float roll, float modifierZ, float modifierXYZ) {
+        super.setVelocity(user, pitch, yaw, roll, modifierZ, modifierXYZ);
         this.setVelocity(this.getVelocity().multiply(0.65f));
     }
 

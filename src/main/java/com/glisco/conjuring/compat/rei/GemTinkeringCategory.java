@@ -1,36 +1,7 @@
 package com.glisco.conjuring.compat.rei;
 
-import com.glisco.conjuring.Conjuring;
-import com.glisco.conjuring.blocks.ConjuringBlocks;
-import com.glisco.conjuring.blocks.gem_tinkerer.GemTinkererBlockEntity;
-import com.mojang.blaze3d.systems.RenderSystem;
-import me.shedaniel.math.Point;
-import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.client.REIRuntime;
-import me.shedaniel.rei.api.client.gui.Renderer;
-import me.shedaniel.rei.api.client.gui.widgets.TextField;
-import me.shedaniel.rei.api.client.gui.widgets.Widget;
-import me.shedaniel.rei.api.client.gui.widgets.Widgets;
-import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Matrix4f;
-import net.minecraft.util.math.Vec3f;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class GemTinkeringCategory implements DisplayCategory<GemTinkeringDisplay> {
-    private static final TranslatableText NAME = new TranslatableText("conjuring.gui.gem_tinkerer");
+public class GemTinkeringCategory /*implements DisplayCategory<GemTinkeringDisplay>*/ {
+    /*private static final TranslatableText NAME = new TranslatableText("conjuring.gui.gem_tinkerer");
 
     @Override
     public CategoryIdentifier<? extends GemTinkeringDisplay> getCategoryIdentifier() {
@@ -125,5 +96,5 @@ public class GemTinkeringCategory implements DisplayCategory<GemTinkeringDisplay
             return searchTextField.getText().contains("froge");
         }
         return false;
-    }
+    }*/
 }

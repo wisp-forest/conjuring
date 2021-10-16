@@ -23,8 +23,8 @@ public abstract class SoulEntity extends ProjectileEntity {
     }
 
     @Override
-    public void setProperties(Entity user, float pitch, float yaw, float roll, float modifierZ, float modifierXYZ) {
-        super.setProperties(user, pitch, yaw, roll, modifierZ, modifierXYZ);
+    public void setVelocity(Entity user, float pitch, float yaw, float roll, float modifierZ, float modifierXYZ) {
+        super.setVelocity(user, pitch, yaw, roll, modifierZ, modifierXYZ);
         this.setVelocity(this.getVelocity().subtract(0, user.isOnGround() ? 0.0D : user.getVelocity().y, 0));
 
         //Offset so it's not in your face

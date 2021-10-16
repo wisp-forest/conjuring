@@ -1,27 +1,8 @@
 package com.glisco.conjuring.compat.rei;
 
-import com.glisco.conjuring.Conjuring;
-import com.glisco.conjuring.blocks.ConjuringBlocks;
-import com.glisco.conjuring.blocks.gem_tinkerer.GemTinkererRecipe;
-import com.glisco.conjuring.blocks.soul_weaver.SoulWeaverRecipe;
-import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeRecipe;
-import com.glisco.conjuring.items.ConjuringItems;
-import dev.architectury.event.EventResult;
-import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
-import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
-import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
-import me.shedaniel.rei.api.client.registry.entry.EntryRegistry;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+public class ConjuringPlugin /*implements REIClientPlugin*/ {
 
-import java.util.List;
-import java.util.Objects;
-
-public class ConjuringPlugin implements REIClientPlugin {
-
-    public static final CategoryIdentifier<SoulfireForgeDisplay> SOULFIRE_FORGE = CategoryIdentifier.of(Conjuring.MOD_ID, "soulfire_forge");
+  /*  public static final CategoryIdentifier<SoulfireForgeDisplay> SOULFIRE_FORGE = CategoryIdentifier.of(Conjuring.MOD_ID, "soulfire_forge");
     public static final CategoryIdentifier<GemTinkeringDisplay> GEM_TINKERING = CategoryIdentifier.of(Conjuring.MOD_ID, "gem_tinkering");
     public static final CategoryIdentifier<SoulWeavingDisplay> SOUL_WEAVING = CategoryIdentifier.of(Conjuring.MOD_ID, "soul_weaving");
 
@@ -60,5 +41,5 @@ public class ConjuringPlugin implements REIClientPlugin {
     @Override
     public void registerEntries(EntryRegistry registry) {
         registry.removeEntry(EntryStacks.of(ConjuringItems.PIZZA));
-    }
+    }*/
 }

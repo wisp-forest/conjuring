@@ -1,18 +1,10 @@
 package com.glisco.conjuring.compat.rei;
 
-import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeRecipe;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.display.Display;
-import me.shedaniel.rei.api.common.entry.EntryIngredient;
-import me.shedaniel.rei.api.common.util.EntryIngredients;
-import org.jetbrains.annotations.NotNull;
+public class SoulfireForgeDisplay /*implements Display*/ {
 
-import java.util.Collections;
-import java.util.List;
+   /* protected final SoulfireForgeRecipe display;
 
-public class SoulfireForgeDisplay implements Display {
-
-    protected final SoulfireForgeRecipe display;
+    /*
     protected final List<EntryIngredient> input;
     protected final List<EntryIngredient> output;
 
@@ -41,5 +33,5 @@ public class SoulfireForgeDisplay implements Display {
 
     public int getSmeltTime() {
         return display.getSmeltTime();
-    }
+    }*/
 }

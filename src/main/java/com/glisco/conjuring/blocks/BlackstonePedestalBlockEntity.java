@@ -1,16 +1,19 @@
 package com.glisco.conjuring.blocks;
 
 import com.glisco.owo.ops.ItemOps;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
+import com.glisco.owo.ops.WorldOps;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.network.Packet;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class BlackstonePedestalBlockEntity extends BlockEntity implements BlockEntityClientSerializable {
+public class BlackstonePedestalBlockEntity extends BlockEntity {
 
     @NotNull
     private ItemStack renderedItem = ItemStack.EMPTY;
@@ -23,7 +26,7 @@ public class BlackstonePedestalBlockEntity extends BlockEntity implements BlockE
 
     //Data Logic
     @Override
-    public NbtCompound writeNbt(NbtCompound tag) {
+    public void writeNbt(NbtCompound tag) {
         super.writeNbt(tag);
 
         ItemOps.store(this.renderedItem, tag, "Item");
@@ -35,7 +38,12 @@ public class BlackstonePedestalBlockEntity extends BlockEntity implements BlockE
         }
 
         tag.putBoolean("Active", active);
-        return tag;
+    }
+
+    @Override
+    public void markDirty() {
+        super.markDirty();
+        WorldOps.updateIfOnServer(world, this.getPos());
     }
 
     @Override
@@ -49,15 +57,6 @@ public class BlackstonePedestalBlockEntity extends BlockEntity implements BlockE
         }
 
         active = tag.getBoolean("Active");
-    }
-
-    @Override
-    public void markDirty() {
-        super.markDirty();
-
-        if (this.world instanceof ServerWorld) {
-            this.sync();
-        }
     }
 
     public boolean isActive() {
@@ -92,14 +91,16 @@ public class BlackstonePedestalBlockEntity extends BlockEntity implements BlockE
         return renderedItem;
     }
 
+    @Nullable
     @Override
-    public void fromClientTag(NbtCompound tag) {
-        this.readNbt(tag);
+    public Packet<ClientPlayPacketListener> toUpdatePacket() {
+        return BlockEntityUpdateS2CPacket.create(this);
     }
 
     @Override
-    public NbtCompound toClientTag(NbtCompound tag) {
-        return writeNbt(tag);
+    public NbtCompound toInitialChunkDataNbt() {
+        var tag = new NbtCompound();
+        this.writeNbt(tag);
+        return tag;
     }
-
 }

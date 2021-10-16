@@ -31,12 +31,8 @@ public class ConjurerBlock extends BlockWithEntity {
     }
 
     public ConjurerBlock() {
-        this(FabricBlockSettings.of(Material.METAL).requiresTool().strength(5.0F).sounds(BlockSoundGroup.METAL).nonOpaque().breakByTool(FabricToolTags.PICKAXES, 2).luminance(ConjurerBlock::getLuminance));
+        this(FabricBlockSettings.of(Material.METAL).requiresTool().strength(5.0F).sounds(BlockSoundGroup.METAL).nonOpaque().breakByTool(FabricToolTags.PICKAXES, 2));
         setDefaultState(getDefaultState().with(ACTIVE, false));
-    }
-
-    private static int getLuminance(BlockState state) {
-        return state.get(ACTIVE) ? 7 : 0;
     }
 
     @Nullable

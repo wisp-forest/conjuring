@@ -6,8 +6,7 @@ import com.glisco.conjuring.items.ConjuringItems;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.MobSpawnerEntry;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 public class ConjurerHelper {
 
@@ -24,11 +23,9 @@ public class ConjurerHelper {
         ItemStack ignoranceCharms = conjurer.getStack(4);
 
         if (focus.getItem() instanceof ConjuringFocus) {
-            MobSpawnerEntry entry = new MobSpawnerEntry(1, focus.getNbt().getCompound("Entity"));
-            List<MobSpawnerEntry> entries = new ArrayList<>();
-            entries.add(entry);
+            MobSpawnerEntry entry = new MobSpawnerEntry(focus.getNbt().getCompound("Entity"), Optional.empty());
 
-            conjurer.getLogic().setSpawnPotentials(entries);
+            conjurer.getLogic().setEnty(entry);
             conjurer.getLogic().setSpawnEntry(conjurer.getWorld(), conjurer.getPos(), entry);
             conjurer.setActive(true);
 

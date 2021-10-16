@@ -3,7 +3,6 @@ package com.glisco.conjuring.blocks.conjurer;
 import com.glisco.conjuring.blocks.ConjuringBlocks;
 import com.glisco.conjuring.util.ConjurerScreenHandler;
 import com.glisco.owo.util.ImplementedInventory;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,6 +11,9 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.Packet;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
@@ -21,8 +23,9 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
-public class ConjurerBlockEntity extends BlockEntity implements ImplementedInventory, NamedScreenHandlerFactory, SidedInventory, BlockEntityClientSerializable {
+public class ConjurerBlockEntity extends BlockEntity implements ImplementedInventory, NamedScreenHandlerFactory, SidedInventory {
 
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(5, ItemStack.EMPTY);
 
@@ -60,11 +63,7 @@ public class ConjurerBlockEntity extends BlockEntity implements ImplementedInven
     @Override
     public void markDirty() {
         ConjurerHelper.updateConjurerProperties(this);
-
         super.markDirty();
-        if (world instanceof ServerWorld) {
-            this.sync();
-        }
     }
 
     public boolean isActive() {
@@ -92,25 +91,26 @@ public class ConjurerBlockEntity extends BlockEntity implements ImplementedInven
     }
 
     @Override
-    public NbtCompound writeNbt(NbtCompound tag) {
+    public void writeNbt(NbtCompound tag) {
         super.writeNbt(tag);
         Inventories.writeNbt(tag, items);
-        this.logic.writeNbt(world, pos, tag);
-        return tag;
+        this.logic.writeNbt(tag);
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientPlayPacketListener> toUpdatePacket() {
+        return BlockEntityUpdateS2CPacket.create(this);
     }
 
     @Override
-    public void fromClientTag(NbtCompound tag) {
-        this.readNbt(tag);
-    }
-
-    public NbtCompound toClientTag(NbtCompound tag) {
-        tag = this.writeNbt(tag);
+    public NbtCompound toInitialChunkDataNbt() {
+        var tag = new NbtCompound();
+        this.writeNbt(tag);
         tag.remove("SpawnPotentials");
         tag.remove("Items");
         return tag;
     }
-
 
     //Interface Logic
     @Override

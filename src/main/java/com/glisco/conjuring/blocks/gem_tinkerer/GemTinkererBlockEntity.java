@@ -6,7 +6,7 @@ import com.glisco.conjuring.items.GemItem;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyTool;
 import com.glisco.owo.blockentity.LinearProcess;
 import com.glisco.owo.blockentity.LinearProcessExecutor;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
+import com.glisco.owo.ops.WorldOps;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -16,6 +16,9 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.Packet;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -23,12 +26,13 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class GemTinkererBlockEntity extends BlockEntity implements BlockEntityClientSerializable {
+public class GemTinkererBlockEntity extends BlockEntity {
 
     public static final BlockEntityTicker<GemTinkererBlockEntity> TICKER = (world1, pos1, state, blockEntity) -> blockEntity.executor.tick();
 
@@ -59,11 +63,29 @@ public class GemTinkererBlockEntity extends BlockEntity implements BlockEntityCl
         executor.readState(tag);
     }
 
+    @Nullable
     @Override
-    public NbtCompound writeNbt(NbtCompound tag) {
+    public Packet<ClientPlayPacketListener> toUpdatePacket() {
+        return BlockEntityUpdateS2CPacket.create(this);
+    }
+
+    @Override
+    public NbtCompound toInitialChunkDataNbt() {
+        var tag = new NbtCompound();
+        this.writeNbt(tag);
+        return tag;
+    }
+
+    @Override
+    public void writeNbt(NbtCompound tag) {
         Inventories.writeNbt(tag, inventory);
         executor.writeState(tag);
-        return super.writeNbt(tag);
+    }
+
+    @Override
+    public void markDirty() {
+        super.markDirty();
+        WorldOps.updateIfOnServer(world, this.getPos());
     }
 
     public boolean verifyRecipe() {
@@ -140,13 +162,6 @@ public class GemTinkererBlockEntity extends BlockEntity implements BlockEntityCl
         return executor.getProcessTick() > 100;
     }
 
-    @Override
-    public void markDirty() {
-        super.markDirty();
-
-        if (!world.isClient()) sync();
-    }
-
     static {
         PROCESS.whenFinishedClient((executor, tinkerer) -> executor.getTarget().particlesShown = false);
 
@@ -180,13 +195,4 @@ public class GemTinkererBlockEntity extends BlockEntity implements BlockEntityCl
         PROCESS.finish();
     }
 
-    @Override
-    public void fromClientTag(NbtCompound tag) {
-        this.readNbt(tag);
-    }
-
-    @Override
-    public NbtCompound toClientTag(NbtCompound tag) {
-        return writeNbt(tag);
-    }
 }

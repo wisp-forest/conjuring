@@ -1,18 +1,8 @@
 package com.glisco.conjuring.compat.patchouli;
 
-import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeRecipe;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import vazkii.patchouli.api.IComponentProcessor;
-import vazkii.patchouli.api.IVariable;
-import vazkii.patchouli.api.IVariableProvider;
+public class SoulfireForgeProcessor /*implements IComponentProcessor*/ {
 
-public class SoulfireForgeProcessor implements IComponentProcessor {
-
-    private SoulfireForgeRecipe recipe;
+   /* private SoulfireForgeRecipe recipe;
     private String text;
 
     @Override
@@ -41,5 +31,5 @@ public class SoulfireForgeProcessor implements IComponentProcessor {
         } else {
             return null;
         }
-    }
+    }*/
 }

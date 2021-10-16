@@ -12,25 +12,25 @@ import com.glisco.conjuring.entities.SoulDiggerEntity;
 import com.glisco.conjuring.entities.SoulFellerEntity;
 import com.glisco.conjuring.entities.SoulMagnetEntity;
 import com.glisco.conjuring.entities.SoulProjectileEntity;
+import com.glisco.conjuring.items.ConjuringFocus;
 import com.glisco.conjuring.items.ConjuringItems;
 import com.glisco.conjuring.items.soul_alloy_tools.BlockCrawler;
 import com.glisco.conjuring.items.soul_alloy_tools.ChangeToolModePacket;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyToolAbilities;
-import com.glisco.conjuring.util.ConjurerScreenHandler;
-import com.glisco.conjuring.util.ExtractionRitualCriterion;
-import com.glisco.conjuring.util.GemTinkeringCriterion;
-import com.glisco.conjuring.util.SoulfireForgeScreenHandler;
+import com.glisco.conjuring.util.*;
+import com.glisco.owo.Owo;
 import com.glisco.owo.itemgroup.OwoItemGroup;
 import com.glisco.owo.ops.LootOps;
 import com.glisco.owo.registration.reflect.FieldRegistrationHandler;
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
+import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.advancement.CriterionRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+import net.minecraft.command.argument.EntitySummonArgumentType;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -38,9 +38,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootTables;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
+
+import static net.minecraft.server.command.CommandManager.argument;
+import static net.minecraft.server.command.CommandManager.literal;
 
 public class Conjuring implements ModInitializer {
 
@@ -114,8 +118,10 @@ public class Conjuring implements ModInitializer {
         Registry.register(Registry.ENTITY_TYPE, Conjuring.id("soul_digger"), SOUL_DIGGER);
         Registry.register(Registry.ENTITY_TYPE, Conjuring.id("soul_magnet"), SOUL_MAGNET);
 
-        AutoConfig.register(ConjuringConfig.class, JanksonConfigSerializer::new);
-        CONFIG = AutoConfig.getConfigHolder(ConjuringConfig.class).getConfig();
+//        AutoConfig.register(ConjuringConfig.class, JanksonConfigSerializer::new);
+//        CONFIG = AutoConfig.getConfigHolder(ConjuringConfig.class).getConfig();
+
+        CONFIG = new ConjuringConfig();
 
         CONJURING_GROUP.initialize();
 
@@ -134,6 +140,11 @@ public class Conjuring implements ModInitializer {
         CriterionRegistry.register(GEM_TINKERING_CRITERION);
 
         SoulAlloyToolAbilities.registerCommonEvents();
+
+        if (!Owo.DEBUG) return;
+
+        CommandRegistrationCallback.EVENT.register(CreateConjuringFocusCommand::register);
+
     }
 
     public static Identifier id(String path) {
