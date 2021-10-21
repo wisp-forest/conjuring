@@ -68,11 +68,12 @@ public class BlackstonePedestalBlock extends BlockWithEntity {
 
         if (pedestalItem.isEmpty()) {
             if (playerStack.isEmpty()) return ActionResult.PASS;
+            if (world.isClient) return ActionResult.SUCCESS;
 
             pedestal.setItem(ItemOps.singleCopy(playerStack));
+            ItemOps.decrementPlayerHandItem(player, hand);
+        } else if (!world.isClient) {
 
-            if (!ItemOps.emptyAwareDecrement(playerStack)) player.setStackInHand(hand, ItemStack.EMPTY);
-        } else {
             if (playerStack.isEmpty()) {
                 player.setStackInHand(hand, pedestalItem);
             } else if (ItemOps.canStack(playerStack, pedestalItem)) {
@@ -91,14 +92,15 @@ public class BlackstonePedestalBlock extends BlockWithEntity {
         if (state.getBlock() != newState.getBlock()) {
 
             BlackstonePedestalBlockEntity pedestalEntity = (BlackstonePedestalBlockEntity) world.getBlockEntity(pos);
+            if (pedestalEntity != null) {
+                if (!pedestalEntity.getItem().isEmpty()) {
+                    ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), pedestalEntity.getItem());
+                }
 
-            if (!pedestalEntity.getItem().isEmpty()) {
-                ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), pedestalEntity.getItem());
-            }
-
-            if (pedestalEntity.isLinked()) {
-                if (world.getBlockEntity(pedestalEntity.getLinkedFunnel()) instanceof RitualCore core) {
-                    core.removePedestal(pos, pedestalEntity.isActive());
+                if (pedestalEntity.isLinked()) {
+                    if (world.getBlockEntity(pedestalEntity.getLinkedFunnel()) instanceof RitualCore core) {
+                        core.removePedestal(pos, pedestalEntity.isActive());
+                    }
                 }
             }
 

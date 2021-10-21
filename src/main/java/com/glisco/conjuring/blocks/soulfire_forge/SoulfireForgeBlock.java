@@ -181,7 +181,7 @@ public class SoulfireForgeBlock extends BlockWithEntity {
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock()) {
-            ItemScatterer.spawn(world, pos, (SoulfireForgeBlockEntity) world.getBlockEntity(pos));
+            if (world.getBlockEntity(pos) instanceof SoulfireForgeBlockEntity forge) ItemScatterer.spawn(world, pos, forge);
             super.onStateReplaced(state, world, pos, newState, moved);
         }
     }

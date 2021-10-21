@@ -75,23 +75,28 @@ public class SoulWeaverBlock extends BlockWithEntity {
         final ItemStack weaverItem = weaver.getItem();
 
         if (playerStack.getItem().equals(ConjuringItems.CONJURATION_ESSENCE) && !weaver.isLit()) {
+            if (world.isClient) return ActionResult.SUCCESS;
+
             weaver.setLit(true);
-            if (!ItemOps.emptyAwareDecrement(playerStack)) player.setStackInHand(hand, ItemStack.EMPTY);
+            ItemOps.decrementPlayerHandItem(player, hand);
             return ActionResult.SUCCESS;
         }
 
         if (playerStack.getItem() instanceof ConjuringScepter) {
+            if (world.isClient) return ActionResult.SUCCESS;
+
             weaver.tryStartRitual(player);
             return ActionResult.SUCCESS;
         }
 
         if (weaverItem.isEmpty()) {
             if (playerStack.isEmpty()) return ActionResult.PASS;
+            if (world.isClient) return ActionResult.SUCCESS;
 
             weaver.setItem(ItemOps.singleCopy(playerStack));
+            ItemOps.decrementPlayerHandItem(player, hand);
+        } else if (!world.isClient) {
 
-            if (!ItemOps.emptyAwareDecrement(playerStack)) player.setStackInHand(hand, ItemStack.EMPTY);
-        } else {
             if (playerStack.isEmpty()) {
                 player.setStackInHand(hand, weaverItem);
             } else if (ItemOps.canStack(playerStack, weaverItem)) {
