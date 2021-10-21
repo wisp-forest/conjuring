@@ -76,7 +76,7 @@ public class SoulWeaverBlock extends BlockWithEntity {
 
         if (playerStack.getItem().equals(ConjuringItems.CONJURATION_ESSENCE) && !weaver.isLit()) {
             weaver.setLit(true);
-            ItemOps.decrementPlayerHandItem(player, hand);
+            if (!ItemOps.emptyAwareDecrement(playerStack)) player.setStackInHand(hand, ItemStack.EMPTY);
             return ActionResult.SUCCESS;
         }
 
@@ -91,7 +91,7 @@ public class SoulWeaverBlock extends BlockWithEntity {
             weaver.setItem(ItemOps.singleCopy(playerStack));
 
             ItemOps.decrementPlayerHandItem(player, hand);
-        } else {
+        } else if (!world.isClient) {
             if (playerStack.isEmpty()) {
                 player.setStackInHand(hand, weaverItem);
             } else if (ItemOps.canStack(playerStack, weaverItem)) {

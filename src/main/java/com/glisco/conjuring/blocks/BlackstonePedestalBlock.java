@@ -68,10 +68,12 @@ public class BlackstonePedestalBlock extends BlockWithEntity {
 
         if (pedestalItem.isEmpty()) {
             if (playerStack.isEmpty()) return ActionResult.PASS;
+            if (world.isClient) return ActionResult.SUCCESS;
 
             pedestal.setItem(ItemOps.singleCopy(playerStack));
+
             ItemOps.decrementPlayerHandItem(player, hand);
-        } else {
+        } else if (!world.isClient) {
             if (playerStack.isEmpty()) {
                 player.setStackInHand(hand, pedestalItem);
             } else if (ItemOps.canStack(playerStack, pedestalItem)) {

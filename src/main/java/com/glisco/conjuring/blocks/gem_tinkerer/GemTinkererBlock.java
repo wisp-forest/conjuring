@@ -125,7 +125,7 @@ public class GemTinkererBlock extends BlockWithEntity {
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock()) {
-            ItemScatterer.spawn(world, pos, ((GemTinkererBlockEntity) world.getBlockEntity(pos)).getInventory());
+            if (world.getBlockEntity(pos) instanceof GemTinkererBlockEntity tinkerer) ItemScatterer.spawn(world, pos, tinkerer.getInventory());
             super.onStateReplaced(state, world, pos, newState, moved);
         }
     }
