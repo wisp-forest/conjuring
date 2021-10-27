@@ -261,16 +261,8 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
         if (pedestalPositions.size() >= 4) return false;
 
         if (!pedestalPositions.contains(pedestal)) pedestalPositions.add(pedestal);
-        if (world.isClient) {
-            BlockPos offset = pedestal.subtract(pos);
+        if (!world.isClient) ConjuringParticleEvents.Server.sendFunnelLinked(world, pos, pedestal.subtract(pos));
 
-            float offsetX = 0.5f + offset.getX() / 8f;
-            float offsetY = 0.35f;
-            float offsetZ = 0.5f + offset.getZ() / 8f;
-
-            ClientParticles.setParticleCount(20);
-            ClientParticles.spawnPrecise(ParticleTypes.WITCH, world, new Vec3d(offsetX, offsetY, offsetZ).add(Vec3d.of(pos)), offset.getZ() / 12d, 0.1f, offset.getX() / 12d);
-        }
         this.markDirty();
         return true;
     }

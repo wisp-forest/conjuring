@@ -25,6 +25,7 @@ public class ConjuringParticleEvents {
     public static final Identifier EXTRACTION_RITUAL_FINISHED = Conjuring.id("extraction_ritual_finished");
     public static final Identifier PEDESTAL_REMOVED = Conjuring.id("pedestal_removed");
     public static final Identifier SOULFIRE_FORGE_SOULS = Conjuring.id("soulfire_forge_souls");
+    public static final Identifier LINK_SOUL_FUNNEL = Conjuring.id("link_soul_funnel");
 
     @Environment(EnvType.CLIENT)
     public static class Client {
@@ -99,6 +100,18 @@ public class ConjuringParticleEvents {
                     ClientParticles.spawnPrecise(ParticleTypes.SOUL, client.world, pos.add(.5, .75, .5), .45, 0, .45);
                 });
             });
+
+            ServerParticles.registerClientSideHandler(LINK_SOUL_FUNNEL, (client, pos, data) -> {
+                var offset = data.readBlockPos();
+                client.execute(() -> {
+                    float offsetX = 0.5f + offset.getX() / 8f;
+                    float offsetY = 0.35f;
+                    float offsetZ = 0.5f + offset.getZ() / 8f;
+
+                    ClientParticles.setParticleCount(20);
+                    ClientParticles.spawnPrecise(ParticleTypes.WITCH, client.world, new Vec3d(offsetX, offsetY, offsetZ).add(pos), offset.getZ() / 12d, 0.1f, offset.getX() / 12d);
+                });
+            });
         }
     }
 
@@ -109,6 +122,10 @@ public class ConjuringParticleEvents {
 
         public static void sendPedestalRemoved(World world, BlockPos pos, Direction offset) {
             ServerParticles.issueEvent((ServerWorld) world, Vec3d.of(pos), PEDESTAL_REMOVED, byteBuf -> byteBuf.writeEnumConstant(offset));
+        }
+
+        public static void sendFunnelLinked(World world, BlockPos pos, BlockPos offset) {
+            ServerParticles.issueEvent((ServerWorld) world, Vec3d.of(pos), LINK_SOUL_FUNNEL, byteBuf -> byteBuf.writeBlockPos(offset));
         }
     }
 

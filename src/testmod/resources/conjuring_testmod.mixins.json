@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.glisco.conjuring_testmod.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "StructureManagerAccessor"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

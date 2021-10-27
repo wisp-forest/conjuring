@@ -10,6 +10,13 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
+sourceSets {
+    testmod {
+        runtimeClasspath += main.runtimeClasspath
+        compileClasspath += main.compileClasspath
+    }
+}
+
 repositories {
 
     maven { url "https://maven.shedaniel.me/" }
@@ -28,6 +35,23 @@ repositories {
     }
     mavenCentral()
 
+}
+
+loom {
+    runs {
+        testmodClient {
+            client()
+            ideConfigGenerated project.rootProject == project
+            name = "Testmod Client"
+            source sourceSets.testmod
+        }
+        testmodServer {
+            server()
+            ideConfigGenerated project.rootProject == project
+            name = "Testmod Server"
+            source sourceSets.testmod
+        }
+    }
 }
 
 dependencies {
@@ -52,6 +76,7 @@ dependencies {
     modImplementation "com.glisco:owo-0.3.0+1.18-dev"
 //    include "com.glisco:owo-0.2.2"
 
+    testmodImplementation sourceSets.main.output
 }
 
 minecraft {

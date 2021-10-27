@@ -9,7 +9,7 @@ import net.minecraft.util.Rarity;
 
 public class ConjuringItems implements ItemRegistryContainer {
 
-    public static Item CONJURING_SCEPTER = new ConjuringScepter();
+    public static final Item CONJURING_SCEPTER = new ConjuringScepter();
     public static final Item SUPERIOR_CONJURING_SCEPTER = new SuperiorConjuringScepter();
     public static final Item CONJURING_FOCUS = new ConjuringFocus(false);
     public static final Item STABILIZED_CONJURING_FOCUS = new ConjuringFocus(true);
@@ -21,22 +21,22 @@ public class ConjuringItems implements ItemRegistryContainer {
     public static final Item SOUL_ALLOY_SHOVEL = new SoulAlloyShovel();
 
     public static final Item SOUL_ALLOY = createWithRarity(Rarity.UNCOMMON);
-    public static Item SOUL_SLICE = createWithRarity(Rarity.RARE);
-    public static Item SOUL_ROD = new SoulRod();
+    public static final Item SOUL_SLICE = createWithRarity(Rarity.RARE);
+    public static final Item SOUL_ROD = new SoulRod();
     public static final Item CONJURATION_ESSENCE = new ConjurationEssence();
     public static final Item LESSER_CONJURATION_ESSENCE = createWithRarity(Rarity.RARE);
     public static final Item DISTILLED_SPIRIT = new DistilledSpiritItem();
 
-    public static Item GEM_SOCKET = createWithRarity(Rarity.UNCOMMON);
+    public static final Item GEM_SOCKET = createWithRarity(Rarity.UNCOMMON);
     public static final Item HASTE_CHARM = createCharm();
     public static final Item IGNORANCE_CHARM = createCharm();
     @AssignedName("plentifulness_charm")
     public static final Item ABUNDANCE_CHARM = createCharm();
     public static final Item SCOPE_CHARM = createCharm();
-    public static Item HASTE_GEM = new GemItem(SoulAlloyTool.SoulAlloyModifier.HASTE);
-    public static Item IGNORANCE_GEM = new GemItem(SoulAlloyTool.SoulAlloyModifier.IGNORANCE);
-    public static Item ABUNDANCE_GEM = new GemItem(SoulAlloyTool.SoulAlloyModifier.ABUNDANCE);
-    public static Item SCOPE_GEM = new GemItem(SoulAlloyTool.SoulAlloyModifier.SCOPE);
+    public static final Item HASTE_GEM = new GemItem(SoulAlloyTool.SoulAlloyModifier.HASTE);
+    public static final Item IGNORANCE_GEM = new GemItem(SoulAlloyTool.SoulAlloyModifier.IGNORANCE);
+    public static final Item ABUNDANCE_GEM = new GemItem(SoulAlloyTool.SoulAlloyModifier.ABUNDANCE);
+    public static final Item SCOPE_GEM = new GemItem(SoulAlloyTool.SoulAlloyModifier.SCOPE);
 
     public static final Item PIZZA = new PizzaItem();
 

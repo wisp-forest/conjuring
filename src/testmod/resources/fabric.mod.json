@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "conjuring_testmod",
+  "version": "${version}",
+  "name": "Conjuring but its based testing",
+  "environment": "*",
+  "license": "MIT",
+  "entrypoints": {
+    "fabric-gametest": [
+      "com.glisco.conjuring_testmod.ConjuringTestSuite"
+    ],
+    "main": [
+      "com.glisco.conjuring_testmod.ConjuringTestmod"
+    ]
+  },
+  "mixins": [
+    "conjuring_testmod.mixins.json"
+  ]
+}
