@@ -16,16 +16,15 @@ import com.glisco.conjuring.items.ConjuringItems;
 import com.glisco.conjuring.items.soul_alloy_tools.BlockCrawler;
 import com.glisco.conjuring.items.soul_alloy_tools.ChangeToolModePacket;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyToolAbilities;
-import com.glisco.conjuring.util.ConjurerScreenHandler;
-import com.glisco.conjuring.util.ExtractionRitualCriterion;
-import com.glisco.conjuring.util.GemTinkeringCriterion;
-import com.glisco.conjuring.util.SoulfireForgeScreenHandler;
+import com.glisco.conjuring.util.*;
+import com.glisco.owo.Owo;
 import com.glisco.owo.itemgroup.OwoItemGroup;
 import com.glisco.owo.ops.LootOps;
 import com.glisco.owo.registration.reflect.FieldRegistrationHandler;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.advancement.CriterionRegistry;
@@ -134,6 +133,10 @@ public class Conjuring implements ModInitializer {
         CriterionRegistry.register(GEM_TINKERING_CRITERION);
 
         SoulAlloyToolAbilities.registerCommonEvents();
+
+        if (!Owo.DEBUG) return;
+
+        CommandRegistrationCallback.EVENT.register(CreateConjuringFocusCommand::register);
     }
 
     public static Identifier id(String path) {
