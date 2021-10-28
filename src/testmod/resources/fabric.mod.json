@@ -8,9 +8,6 @@
   "entrypoints": {
     "fabric-gametest": [
       "com.glisco.conjuring_testmod.ConjuringTestSuite"
-    ],
-    "main": [
-      "com.glisco.conjuring_testmod.ConjuringTestmod"
     ]
   },
   "mixins": [

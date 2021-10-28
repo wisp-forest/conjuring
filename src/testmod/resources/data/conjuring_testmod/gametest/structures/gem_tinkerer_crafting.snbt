@@ -1,0 +1,11 @@
+{
+    DataVersion: 2844,
+    size: [1, 1, 1],
+    data: [
+        {pos: [0, 0, 0], state: "conjuring:gem_tinkerer", nbt: {Items: [{Count: 1b, Slot: 0b, id: "conjuring:lesser_conjuration_essence"}, {Count: 1b, Slot: 1b, id: "minecraft:redstone"}, {Count: 1b, Slot: 2b, id: "minecraft:redstone"}, {Count: 1b, Slot: 3b, id: "minecraft:redstone"}, {Count: 1b, Slot: 4b, id: "minecraft:redstone"}], ProcessTick: 0, id: "conjuring:gem_tinkerer"}}
+    ],
+    entities: [],
+    palette: [
+        "conjuring:gem_tinkerer"
+    ]
+}

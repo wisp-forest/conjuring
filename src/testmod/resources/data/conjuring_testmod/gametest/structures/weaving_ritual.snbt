@@ -5,7 +5,7 @@
         {pos: [0, 0, 0], state: "minecraft:air"},
         {pos: [0, 0, 1], state: "minecraft:air"},
         {pos: [0, 0, 2], state: "minecraft:air"},
-        {pos: [0, 0, 3], state: "conjuring:blackstone_pedestal", nbt: {Active: 0b, Item: {Count: 1b, id: "minecraft:gunpowder"}, LinkedFunnel: [I; -35, -60, 26], id: "conjuring:blackstone_pedestal"}},
+        {pos: [0, 0, 3], state: "conjuring:blackstone_pedestal", nbt: {Active: 0b, Item: {Count: 1b, id: "conjuring:conjuration_essence"}, LinkedFunnel: [I; -27, -60, 26], id: "conjuring:blackstone_pedestal"}},
         {pos: [0, 0, 4], state: "minecraft:air"},
         {pos: [0, 0, 5], state: "minecraft:air"},
         {pos: [0, 0, 6], state: "minecraft:air"},
@@ -23,13 +23,13 @@
         {pos: [2, 0, 4], state: "minecraft:air"},
         {pos: [2, 0, 5], state: "minecraft:air"},
         {pos: [2, 0, 6], state: "minecraft:air"},
-        {pos: [3, 0, 0], state: "conjuring:blackstone_pedestal", nbt: {Active: 0b, Item: {Count: 1b, id: "minecraft:gunpowder"}, LinkedFunnel: [I; -35, -60, 26], id: "conjuring:blackstone_pedestal"}},
+        {pos: [3, 0, 0], state: "conjuring:blackstone_pedestal", nbt: {Active: 0b, Item: {Count: 1b, id: "conjuring:conjuration_essence"}, LinkedFunnel: [I; -27, -60, 26], id: "conjuring:blackstone_pedestal"}},
         {pos: [3, 0, 1], state: "minecraft:air"},
         {pos: [3, 0, 2], state: "minecraft:air"},
-        {pos: [3, 0, 3], state: "conjuring:soul_funnel{filled:true}", nbt: {Cooldown: 482, Item: {Count: 1b, id: "conjuring:conjuring_focus", tag: {}}, Pedestals: [[I; -35, -60, 23], [I; -32, -60, 26], [I; -35, -60, 29], [I; -38, -60, 26]], id: "conjuring:soul_funnel"}},
+        {pos: [3, 0, 3], state: "conjuring:soul_weaver", nbt: {Item: {Count: 1b, id: "minecraft:glass_bottle"}, Lit: 1b, Pedestals: [[I; -27, -60, 23], [I; -24, -60, 26], [I; -27, -60, 29], [I; -30, -60, 26]], ProcessTick: 0, id: "conjuring:soul_weaver"}},
         {pos: [3, 0, 4], state: "minecraft:air"},
         {pos: [3, 0, 5], state: "minecraft:air"},
-        {pos: [3, 0, 6], state: "conjuring:blackstone_pedestal", nbt: {Active: 0b, Item: {Count: 1b, id: "minecraft:gunpowder"}, LinkedFunnel: [I; -35, -60, 26], id: "conjuring:blackstone_pedestal"}},
+        {pos: [3, 0, 6], state: "conjuring:blackstone_pedestal", nbt: {Active: 0b, Item: {Count: 1b, id: "conjuring:conjuration_essence"}, LinkedFunnel: [I; -27, -60, 26], id: "conjuring:blackstone_pedestal"}},
         {pos: [4, 0, 0], state: "minecraft:air"},
         {pos: [4, 0, 1], state: "minecraft:air"},
         {pos: [4, 0, 2], state: "minecraft:air"},
@@ -47,17 +47,15 @@
         {pos: [6, 0, 0], state: "minecraft:air"},
         {pos: [6, 0, 1], state: "minecraft:air"},
         {pos: [6, 0, 2], state: "minecraft:air"},
-        {pos: [6, 0, 3], state: "conjuring:blackstone_pedestal", nbt: {Active: 0b, Item: {Count: 1b, id: "minecraft:gunpowder"}, LinkedFunnel: [I; -35, -60, 26], id: "conjuring:blackstone_pedestal"}},
+        {pos: [6, 0, 3], state: "conjuring:blackstone_pedestal", nbt: {Active: 0b, Item: {Count: 1b, id: "conjuring:conjuration_essence"}, LinkedFunnel: [I; -27, -60, 26], id: "conjuring:blackstone_pedestal"}},
         {pos: [6, 0, 4], state: "minecraft:air"},
         {pos: [6, 0, 5], state: "minecraft:air"},
         {pos: [6, 0, 6], state: "minecraft:air"}
     ],
-    entities: [
-        {blockPos: [3, 0, 3], pos: [3.4571126407825616d, 0.5625d, 3.4232891700413077d], nbt: {AbsorptionAmount: 0.0f, ActiveEffects: [{Ambient: 0b, Amplifier: 20b, Duration: 182, Id: 2b, ShowIcon: 1b, ShowParticles: 1b}], Air: 300s, ArmorDropChances: [0.085f, 0.085f, 0.085f, 0.085f], ArmorItems: [{}, {}, {}, {}], Attributes: [{Base: 0.25d, Modifiers: [{Amount: -3.150000125169754d, Name: "effect.minecraft.slowness 20", Operation: 2, UUID: [I; 1896341086, 2095595568, -1811001012, 521537680]}], Name: "minecraft:generic.movement_speed"}], Brain: {memories: {}}, CanPickUpLoot: 0b, DeathTime: 0s, ExplosionRadius: 3b, FallDistance: 0.0f, FallFlying: 0b, Fire: 0s, Fuse: 30s, HandDropChances: [0.085f, 0.085f], HandItems: [{}, {}], Health: 20.0f, HurtByTimestamp: 0, HurtTime: 0s, Invulnerable: 0b, LeftHanded: 0b, Motion: [0.004110468567375131d, 0.0d, 0.017308369868921657d], NoAI: 0b, OnGround: 0b, PersistenceRequired: 0b, PortalCooldown: 0, Pos: [-34.54288735921744d, -59.4375d, 26.423289170041308d], Rotation: [0.0f, 0.0f], UUID: [I; -949265221, -357744561, -1486633669, -955226305], id: "minecraft:creeper", ignited: 0b}}
-    ],
+    entities: [],
     palette: [
         "minecraft:air",
         "conjuring:blackstone_pedestal",
-        "conjuring:soul_funnel{filled:true}"
+        "conjuring:soul_weaver"
     ]
 }

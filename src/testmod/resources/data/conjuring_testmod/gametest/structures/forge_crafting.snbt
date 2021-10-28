@@ -1,0 +1,17 @@
+{
+    DataVersion: 2844,
+    size: [1, 2, 2],
+    data: [
+        {pos: [0, 0, 0], state: "conjuring:soulfire_forge{burning:false,facing:north}", nbt: {Items: [{Count: 1b, Slot: 0b, id: "minecraft:dried_kelp"}, {Count: 1b, Slot: 1b, id: "minecraft:sweet_berries"}, {Count: 1b, Slot: 2b, id: "minecraft:dried_kelp"}, {Count: 1b, Slot: 3b, id: "minecraft:sweet_berries"}, {Count: 1b, Slot: 4b, id: "minecraft:cooked_porkchop"}, {Count: 1b, Slot: 5b, id: "minecraft:sweet_berries"}, {Count: 1b, Slot: 6b, id: "minecraft:bread"}, {Count: 1b, Slot: 7b, id: "minecraft:bread"}, {Count: 1b, Slot: 8b, id: "minecraft:bread"}], Progress: 0, SmeltTime: 0, id: "conjuring:soulfire_forge"}},
+        {pos: [0, 0, 1], state: "minecraft:dispenser{facing:north,triggered:false}", nbt: {Items: [{Count: 1b, Slot: 0b, id: "minecraft:flint_and_steel", tag: {Damage: 0}}], id: "minecraft:dispenser"}},
+        {pos: [0, 1, 0], state: "minecraft:air"},
+        {pos: [0, 1, 1], state: "minecraft:stone_button{face:floor,facing:east,powered:false}"}
+    ],
+    entities: [],
+    palette: [
+        "minecraft:air",
+        "minecraft:stone_button{face:floor,facing:east,powered:false}",
+        "conjuring:soulfire_forge{burning:false,facing:north}",
+        "minecraft:dispenser{facing:north,triggered:false}"
+    ]
+}

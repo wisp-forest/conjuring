@@ -1,0 +1,11 @@
+{
+    DataVersion: 2844,
+    size: [1, 1, 1],
+    data: [
+        {pos: [0, 0, 0], state: "conjuring:gem_tinkerer", nbt: {Items: [{Count: 1b, Slot: 0b, id: "conjuring:soul_alloy_sword", tag: {Damage: 0, Modifiers: {}}}, {Count: 1b, Slot: 1b, id: "conjuring:abundance_gem"}, {Count: 1b, Slot: 2b, id: "conjuring:abundance_gem"}, {Count: 1b, Slot: 3b, id: "conjuring:ignorance_gem"}, {Count: 1b, Slot: 4b, id: "conjuring:abundance_gem"}], ProcessTick: 0, id: "conjuring:gem_tinkerer"}}
+    ],
+    entities: [],
+    palette: [
+        "conjuring:gem_tinkerer"
+    ]
+}

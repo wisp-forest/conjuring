@@ -40,6 +40,10 @@ public class TestInteractionHelper {
         this.player.networkHandler = new ServerPlayNetworkHandler(this.ctx.getWorld().getServer(), new ClientConnection(NetworkSide.CLIENTBOUND), this.player);
     }
 
+    public ServerPlayerEntity getPlayer() {
+        return player;
+    }
+
     public void setHandItem(ItemStack stack) {
         initPlayer();
 
@@ -58,6 +62,13 @@ public class TestInteractionHelper {
 
         this.player.setSneaking(sneaking);
         this.player.getStackInHand(Hand.MAIN_HAND).useOnBlock(new ItemUsageContext(this.player, Hand.MAIN_HAND, createHitResult(relativePos)));
+    }
+
+    public void useItem(boolean sneaking) {
+        initPlayer();
+
+        this.player.setSneaking(sneaking);
+        this.player.getStackInHand(Hand.MAIN_HAND).use(this.ctx.getWorld(), this.player, Hand.MAIN_HAND);
     }
 
     public BlockHitResult createHitResult(BlockPos relativePos) {

@@ -1,0 +1,27 @@
+{
+    DataVersion: 2844,
+    size: [3, 1, 5],
+    data: [
+        {pos: [0, 0, 0], state: "minecraft:air"},
+        {pos: [0, 0, 1], state: "minecraft:air"},
+        {pos: [0, 0, 2], state: "minecraft:air"},
+        {pos: [0, 0, 3], state: "minecraft:air"},
+        {pos: [0, 0, 4], state: "minecraft:air"},
+        {pos: [1, 0, 0], state: "minecraft:air"},
+        {pos: [1, 0, 1], state: "minecraft:air"},
+        {pos: [1, 0, 2], state: "minecraft:air"},
+        {pos: [1, 0, 3], state: "minecraft:air"},
+        {pos: [1, 0, 4], state: "minecraft:air"},
+        {pos: [2, 0, 0], state: "minecraft:air"},
+        {pos: [2, 0, 1], state: "minecraft:air"},
+        {pos: [2, 0, 2], state: "minecraft:air"},
+        {pos: [2, 0, 3], state: "minecraft:air"},
+        {pos: [2, 0, 4], state: "minecraft:air"}
+    ],
+    entities: [
+        {blockPos: [1, 0, 4], pos: [1.5953176248750154d, 0.0d, 4.32101679363041d], nbt: {Age: 366s, Air: 300s, FallDistance: 0.0f, Fire: -1s, Health: 5s, Invulnerable: 0b, Item: {Count: 1b, id: "conjuring:ignorance_gem"}, Motion: [0.0d, -0.04d, 0.0d], OnGround: 1b, PickupDelay: 0s, PortalCooldown: 0, Pos: [-44.404682375124985d, -60.0d, 27.32101679363041d], Rotation: [263.95148f, 0.0f], Thrower: [I; -1237577376, 2016687972, -1837748295, -978528562], UUID: [I; -120599574, 25511416, -2055841758, 339601316], id: "minecraft:item"}}
+    ],
+    palette: [
+        "minecraft:air"
+    ]
+}

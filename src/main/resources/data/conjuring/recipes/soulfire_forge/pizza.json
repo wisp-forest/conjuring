@@ -19,7 +19,7 @@
       "item": "minecraft:dried_kelp"
     }
   },
-  "smeltTime": 1200,
+  "smeltTime": 120,
   "result": {
     "item": "conjuring:pizza",
     "count": 1

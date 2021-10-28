@@ -1,0 +1,16 @@
+{
+    DataVersion: 2844,
+    size: [1, 1, 4],
+    data: [
+        {pos: [0, 0, 0], state: "conjuring:soul_weaver", nbt: {Lit: 0b, Pedestals: [], ProcessTick: 0, id: "conjuring:soul_weaver"}},
+        {pos: [0, 0, 1], state: "minecraft:air"},
+        {pos: [0, 0, 2], state: "minecraft:air"},
+        {pos: [0, 0, 3], state: "conjuring:blackstone_pedestal", nbt: {Active: 0b, LinkedFunnel: [I;], id: "conjuring:blackstone_pedestal"}}
+    ],
+    entities: [],
+    palette: [
+        "minecraft:air",
+        "conjuring:soul_weaver",
+        "conjuring:blackstone_pedestal"
+    ]
+}

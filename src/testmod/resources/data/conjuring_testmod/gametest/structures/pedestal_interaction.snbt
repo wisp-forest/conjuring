@@ -1,0 +1,11 @@
+{
+    DataVersion: 2844,
+    size: [1, 1, 1],
+    data: [
+        {pos: [0, 0, 0], state: "conjuring:blackstone_pedestal", nbt: {Active: 0b, Item: {Count: 1b, id: "conjuring:soul_alloy"}, LinkedFunnel: [I;], id: "conjuring:blackstone_pedestal"}}
+    ],
+    entities: [],
+    palette: [
+        "conjuring:blackstone_pedestal"
+    ]
+}
