@@ -21,6 +21,8 @@ import com.glisco.owo.Owo;
 import com.glisco.owo.itemgroup.OwoItemGroup;
 import com.glisco.owo.ops.LootOps;
 import com.glisco.owo.registration.reflect.FieldRegistrationHandler;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -116,8 +118,8 @@ public class Conjuring implements ModInitializer {
         Registry.register(Registry.ENTITY_TYPE, Conjuring.id("soul_digger"), SOUL_DIGGER);
         Registry.register(Registry.ENTITY_TYPE, Conjuring.id("soul_magnet"), SOUL_MAGNET);
 
-//        AutoConfig.register(ConjuringConfig.class, JanksonConfigSerializer::new);
-//        CONFIG = AutoConfig.getConfigHolder(ConjuringConfig.class).getConfig();
+        AutoConfig.register(ConjuringConfig.class, JanksonConfigSerializer::new);
+        CONFIG = AutoConfig.getConfigHolder(ConjuringConfig.class).getConfig();
 
         CONJURING_GROUP.initialize();
 
