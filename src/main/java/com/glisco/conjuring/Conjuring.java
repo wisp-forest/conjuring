@@ -12,7 +12,6 @@ import com.glisco.conjuring.entities.SoulDiggerEntity;
 import com.glisco.conjuring.entities.SoulFellerEntity;
 import com.glisco.conjuring.entities.SoulMagnetEntity;
 import com.glisco.conjuring.entities.SoulProjectileEntity;
-import com.glisco.conjuring.items.ConjuringFocus;
 import com.glisco.conjuring.items.ConjuringItems;
 import com.glisco.conjuring.items.soul_alloy_tools.BlockCrawler;
 import com.glisco.conjuring.items.soul_alloy_tools.ChangeToolModePacket;
@@ -22,29 +21,28 @@ import com.glisco.owo.Owo;
 import com.glisco.owo.itemgroup.OwoItemGroup;
 import com.glisco.owo.ops.LootOps;
 import com.glisco.owo.registration.reflect.FieldRegistrationHandler;
-import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.advancement.CriterionRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
-import net.minecraft.command.argument.EntitySummonArgumentType;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTables;
+import net.minecraft.loot.entry.ItemEntry;
+import net.minecraft.loot.function.ApplyBonusLootFunction;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
-
-import static net.minecraft.server.command.CommandManager.argument;
-import static net.minecraft.server.command.CommandManager.literal;
 
 public class Conjuring implements ModInitializer {
 
@@ -121,8 +119,6 @@ public class Conjuring implements ModInitializer {
 //        AutoConfig.register(ConjuringConfig.class, JanksonConfigSerializer::new);
 //        CONFIG = AutoConfig.getConfigHolder(ConjuringConfig.class).getConfig();
 
-        CONFIG = new ConjuringConfig();
-
         CONJURING_GROUP.initialize();
 
         ServerTickEvents.END_WORLD_TICK.register(BlockCrawler::tick);
@@ -130,7 +126,17 @@ public class Conjuring implements ModInitializer {
 
         Registry.register(Registry.SOUND_EVENT, Conjuring.id("block.soul_weaver.weee"), WEEE);
 
-        LootOps.injectItem(ConjuringItems.CONJURATION_ESSENCE, 1, new Identifier("blocks/spawner"));
+        if (CONFIG.conjurer_config.fortuneEnabled) {
+            LootTableLoadingCallback.EVENT.register((resourceManager, manager, id, supplier, setter) -> {
+                if (!new Identifier("blocks/spawner").equals(id)) return;
+                supplier.withPool(LootPool.builder().with(
+                                ItemEntry.builder(ConjuringItems.CONJURATION_ESSENCE).apply(ApplyBonusLootFunction.oreDrops(Enchantments.FORTUNE)))
+                        .build());
+            });
+        } else {
+            LootOps.injectItem(ConjuringItems.CONJURATION_ESSENCE, 1, new Identifier("blocks/spawner"));
+        }
+
         LootOps.injectItem(ConjuringItems.CONJURATION_ESSENCE, .35f, LootTables.SIMPLE_DUNGEON_CHEST);
         LootOps.injectItem(ConjuringItems.CONJURATION_ESSENCE, .175f, LootTables.BASTION_TREASURE_CHEST);
         LootOps.injectItem(ConjuringItems.CONJURATION_ESSENCE, .2f, LootTables.DESERT_PYRAMID_CHEST, LootTables.STRONGHOLD_CORRIDOR_CHEST);
