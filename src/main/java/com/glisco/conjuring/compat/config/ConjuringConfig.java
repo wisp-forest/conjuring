@@ -23,6 +23,11 @@ public class ConjuringConfig implements ConfigData {
     public ToolsConfig tools_config = new ToolsConfig();
 
     public static class ConjurerConfig {
+
+        @ConfigEntry.Gui.RequiresRestart
+        @Comment("Whether Fortune should affect the amount of Conjuration Essence you can get when breaking a spawner")
+        public boolean fortuneEnabled = false;
+
         @Comment("How many extra mobs to spawn per abundance charm")
         public int abundance_multiplier = 2;
 
