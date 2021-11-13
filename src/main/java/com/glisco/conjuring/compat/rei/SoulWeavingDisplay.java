@@ -18,9 +18,7 @@ public class SoulWeavingDisplay implements Display {
 
     public SoulWeavingDisplay(SoulWeaverRecipe recipe) {
         this.display = recipe;
-
         this.input = EntryIngredients.ofIngredients(recipe.getInputs());
-
         this.output = Collections.singletonList(EntryIngredients.of(recipe.getOutput()));
     }
 

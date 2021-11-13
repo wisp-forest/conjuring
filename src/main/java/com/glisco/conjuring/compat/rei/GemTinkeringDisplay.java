@@ -18,9 +18,7 @@ public class GemTinkeringDisplay implements Display {
 
     public GemTinkeringDisplay(GemTinkererRecipe recipe) {
         this.display = recipe;
-
         this.input = EntryIngredients.ofIngredients(recipe.getInputs());
-
         this.output = Collections.singletonList(EntryIngredients.of(recipe.getOutput()));
     }
 

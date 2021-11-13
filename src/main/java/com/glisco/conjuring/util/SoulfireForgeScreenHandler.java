@@ -49,6 +49,10 @@ public class SoulfireForgeScreenHandler extends ScreenHandler {
         return propertyDelegate.get(0);
     }
 
+    public Inventory getInventory() {
+        return inventory;
+    }
+
     @Override
     public boolean canUse(PlayerEntity player) {
         return this.inventory.canPlayerUse(player);
@@ -57,9 +61,5 @@ public class SoulfireForgeScreenHandler extends ScreenHandler {
     @Override
     public ItemStack transferSlot(PlayerEntity player, int invSlot) {
         return ScreenUtils.handleSlotTransfer(this, invSlot, this.inventory.size());
-    }
-
-    public Inventory getInventory() {
-        return inventory;
     }
 }

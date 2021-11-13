@@ -15,7 +15,7 @@ public class ConjuringCommonPlugin implements REIServerPlugin {
 
     @Override
     public void registerMenuInfo(MenuInfoRegistry registry) {
-        registry.register(SOULFIRE_FORGE, SoulfireForgeScreenHandler.class, new SoulfireForgeMenuInfo<>());
+        registry.register(SOULFIRE_FORGE, SoulfireForgeScreenHandler.class, new SoulfireForgeMenuInfo());
     }
 
     @Override
