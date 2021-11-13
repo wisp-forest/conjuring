@@ -59,4 +59,7 @@ public class SoulfireForgeScreenHandler extends ScreenHandler {
         return ScreenUtils.handleSlotTransfer(this, invSlot, this.inventory.size());
     }
 
+    public Inventory getInventory() {
+        return inventory;
+    }
 }

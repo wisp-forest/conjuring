@@ -31,7 +31,7 @@ public class SoulWeavingDisplay implements Display {
 
     @Override
     public CategoryIdentifier<?> getCategoryIdentifier() {
-        return ConjuringPlugin.SOUL_WEAVING;
+        return ConjuringCommonPlugin.SOUL_WEAVING;
     }
 
     @Override

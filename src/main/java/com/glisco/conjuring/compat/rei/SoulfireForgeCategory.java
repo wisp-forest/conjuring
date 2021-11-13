@@ -27,7 +27,7 @@ public class SoulfireForgeCategory implements DisplayCategory<SoulfireForgeDispl
 
     @Override
     public CategoryIdentifier<? extends SoulfireForgeDisplay> getCategoryIdentifier() {
-        return ConjuringPlugin.SOULFIRE_FORGE;
+        return ConjuringCommonPlugin.SOULFIRE_FORGE;
     }
 
     @Override
