@@ -34,7 +34,7 @@ public class GemTinkeringCategory implements DisplayCategory<GemTinkeringDisplay
 
     @Override
     public CategoryIdentifier<? extends GemTinkeringDisplay> getCategoryIdentifier() {
-        return ConjuringPlugin.GEM_TINKERING;
+        return ConjuringCommonPlugin.GEM_TINKERING;
     }
 
     @Override
