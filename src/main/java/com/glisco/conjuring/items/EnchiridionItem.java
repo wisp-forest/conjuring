@@ -35,7 +35,7 @@ public class EnchiridionItem extends Item {
 
         if (!world.isClient()) {
             PatchouliAPI.get().openBookGUI((ServerPlayerEntity) player, book.id);
-            player.playSound(PatchouliSounds.getSound(book.openSound, PatchouliSounds.book_open), 1, (float) (0.7 + Math.random() * 0.4));
+            player.playSound(PatchouliSounds.getSound(book.openSound, PatchouliSounds.BOOK_OPEN), 1, (float) (0.7 + Math.random() * 0.4));
         }
 
         return TypedActionResult.success(player.getStackInHand(hand));

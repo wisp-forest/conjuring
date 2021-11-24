@@ -1,13 +1,30 @@
 package com.glisco.conjuring.compat.rei;
 
-public class SoulWeavingCategory /* implements DisplayCategory<SoulWeavingDisplay> */{
+import com.glisco.conjuring.Conjuring;
+import com.glisco.conjuring.blocks.ConjuringBlocks;
+import com.glisco.conjuring.items.ConjuringItems;
+import me.shedaniel.math.Point;
+import me.shedaniel.math.Rectangle;
+import me.shedaniel.rei.api.client.gui.Renderer;
+import me.shedaniel.rei.api.client.gui.widgets.Widget;
+import me.shedaniel.rei.api.client.gui.widgets.Widgets;
+import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import org.jetbrains.annotations.NotNull;
 
-    /*
+import java.util.ArrayList;
+import java.util.List;
+
+public class SoulWeavingCategory implements DisplayCategory<SoulWeavingDisplay> {
+
     private static final TranslatableText NAME = new TranslatableText("conjuring.gui.soul_weaver");
 
     @Override
     public CategoryIdentifier<? extends SoulWeavingDisplay> getCategoryIdentifier() {
-        return ConjuringPlugin.SOUL_WEAVING;
+        return ConjuringCommonPlugin.SOUL_WEAVING;
     }
 
     @Override
@@ -52,5 +69,5 @@ public class SoulWeavingCategory /* implements DisplayCategory<SoulWeavingDispla
         widgets.add(Widgets.createSlot(new Point(bounds.getX() + 24, bounds.getY() + 88)).entry(EntryStacks.of(ConjuringItems.CONJURATION_ESSENCE)));
 
         return widgets;
-    }*/
+    }
 }

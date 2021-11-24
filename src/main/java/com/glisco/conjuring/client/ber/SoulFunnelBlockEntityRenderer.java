@@ -22,7 +22,7 @@ public class SoulFunnelBlockEntityRenderer implements BlockEntityRenderer<SoulFu
     public void render(SoulFunnelBlockEntity blockEntity, float f, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light, int uv) {
         if (blockEntity.getItem().isEmpty()) return;
         ItemStack item = blockEntity.getItem();
-        BakedModel itemModel = MinecraftClient.getInstance().getItemRenderer().getHeldItemModel(item, null, null, 0);
+        BakedModel itemModel = MinecraftClient.getInstance().getItemRenderer().getModel(item, null, null, 0);
 
         matrixStack.push();
 

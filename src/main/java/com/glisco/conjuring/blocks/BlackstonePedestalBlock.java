@@ -1,6 +1,6 @@
 package com.glisco.conjuring.blocks;
 
-import com.glisco.owo.ops.ItemOps;
+import io.wispforest.owo.ops.ItemOps;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -70,8 +70,7 @@ public class BlackstonePedestalBlock extends BlockWithEntity {
             if (playerStack.isEmpty()) return ActionResult.PASS;
 
             pedestal.setItem(ItemOps.singleCopy(playerStack));
-
-            if (!ItemOps.emptyAwareDecrement(playerStack)) player.setStackInHand(hand, ItemStack.EMPTY);
+            ItemOps.decrementPlayerHandItem(player, hand);
         } else {
             if (playerStack.isEmpty()) {
                 player.setStackInHand(hand, pedestalItem);

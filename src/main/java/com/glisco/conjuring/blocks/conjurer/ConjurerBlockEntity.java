@@ -2,7 +2,7 @@ package com.glisco.conjuring.blocks.conjurer;
 
 import com.glisco.conjuring.blocks.ConjuringBlocks;
 import com.glisco.conjuring.util.ConjurerScreenHandler;
-import com.glisco.owo.util.ImplementedInventory;
+import io.wispforest.owo.util.ImplementedInventory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;

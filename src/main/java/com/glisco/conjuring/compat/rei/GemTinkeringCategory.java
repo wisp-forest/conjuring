@@ -1,11 +1,41 @@
 package com.glisco.conjuring.compat.rei;
 
-public class GemTinkeringCategory /*implements DisplayCategory<GemTinkeringDisplay>*/ {
-    /*private static final TranslatableText NAME = new TranslatableText("conjuring.gui.gem_tinkerer");
+import com.glisco.conjuring.Conjuring;
+import com.glisco.conjuring.blocks.ConjuringBlocks;
+import com.glisco.conjuring.blocks.gem_tinkerer.GemTinkererBlockEntity;
+import com.mojang.blaze3d.systems.RenderSystem;
+import me.shedaniel.math.Point;
+import me.shedaniel.math.Rectangle;
+import me.shedaniel.rei.api.client.REIRuntime;
+import me.shedaniel.rei.api.client.gui.Renderer;
+import me.shedaniel.rei.api.client.gui.widgets.TextField;
+import me.shedaniel.rei.api.client.gui.widgets.Widget;
+import me.shedaniel.rei.api.client.gui.widgets.Widgets;
+import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Util;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Matrix4f;
+import net.minecraft.util.math.Vec3f;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class GemTinkeringCategory implements DisplayCategory<GemTinkeringDisplay> {
+    private static final TranslatableText NAME = new TranslatableText("conjuring.gui.gem_tinkerer");
 
     @Override
     public CategoryIdentifier<? extends GemTinkeringDisplay> getCategoryIdentifier() {
-        return ConjuringPlugin.GEM_TINKERING;
+        return ConjuringCommonPlugin.GEM_TINKERING;
     }
 
     @Override
@@ -47,8 +77,14 @@ public class GemTinkeringCategory /*implements DisplayCategory<GemTinkeringDispl
                 RenderSystem.setShaderTexture(0, Conjuring.id("textures/gui/froge.png"));
                 DrawableHelper.drawTexture(matrixStack, origin.x, origin.y, 0, 0, 0, 128, 128, 128, 128);
 
-                matrixStack.method_34425(new Matrix4f(Vec3f.POSITIVE_Y.getDegreesQuaternion((float) (System.currentTimeMillis() / 30d % 360))));
-                matrixStack.translate(15 * (float) Math.sin(System.currentTimeMillis() / 60d % (2 * Math.PI)), 35 * (float) Math.cos(System.currentTimeMillis() / 60d % (2 * Math.PI)), 0);
+                float scale = (float) Math.sin(System.currentTimeMillis() / 1000d % Math.PI);
+
+                RenderSystem.getModelViewStack().multiply(Vec3f.POSITIVE_Y.getRadialQuaternion((float) Math.sin(System.currentTimeMillis() / 1000d)));
+                RenderSystem.getModelViewStack().scale(scale, scale, MathHelper.sqrt(scale));
+
+                matrixStack.multiplyPositionMatrix(new Matrix4f(Vec3f.POSITIVE_Z.getDegreesQuaternion((float) (System.currentTimeMillis() / 30d % 360))));
+                matrixStack.scale(.5f, .5f, .5f);
+                matrixStack.translate(200 + 15 * (float) Math.sin(System.currentTimeMillis() / 60d % (2 * Math.PI)), 100 + 35 * (float) Math.cos(System.currentTimeMillis() / 60d % (2 * Math.PI)), 100);
             }
 
             VertexConsumerProvider.Immediate immediate = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
@@ -96,5 +132,5 @@ public class GemTinkeringCategory /*implements DisplayCategory<GemTinkeringDispl
             return searchTextField.getText().contains("froge");
         }
         return false;
-    }*/
+    }
 }

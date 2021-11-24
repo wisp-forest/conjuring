@@ -1,10 +1,10 @@
 package com.glisco.conjuring.util;
 
 import com.glisco.conjuring.Conjuring;
-import com.glisco.owo.particles.ClientParticles;
-import com.glisco.owo.particles.ServerParticles;
-import com.glisco.owo.util.VectorRandomUtils;
-import com.glisco.owo.util.VectorSerializer;
+import io.wispforest.owo.particles.ClientParticles;
+import io.wispforest.owo.particles.ServerParticles;
+import io.wispforest.owo.util.VectorRandomUtils;
+import io.wispforest.owo.util.VectorSerializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.particle.ParticleEffect;

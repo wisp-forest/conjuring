@@ -2,8 +2,8 @@ package com.glisco.conjuring.blocks;
 
 import com.glisco.conjuring.items.ConjuringFocus;
 import com.glisco.conjuring.items.ConjuringScepter;
-import com.glisco.owo.ops.ItemOps;
-import com.glisco.owo.particles.ClientParticles;
+import io.wispforest.owo.ops.ItemOps;
+import io.wispforest.owo.particles.ClientParticles;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;

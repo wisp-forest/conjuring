@@ -2,7 +2,7 @@ package com.glisco.conjuring.client.ber;
 
 import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.blocks.gem_tinkerer.GemTinkererBlockEntity;
-import com.glisco.owo.particles.ClientParticles;
+import io.wispforest.owo.particles.ClientParticles;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.OverlayTexture;
@@ -45,9 +45,7 @@ public class GemTinkererBlockEntityRenderer implements BlockEntityRenderer<GemTi
     private static final double twoPi = Math.PI * 2;
     private double scalar = 800;
 
-    public GemTinkererBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
-
-    }
+    public GemTinkererBlockEntityRenderer(BlockEntityRendererFactory.Context context) {}
 
     public void render(GemTinkererBlockEntity blockEntity, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
 

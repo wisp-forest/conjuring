@@ -1,7 +1,7 @@
 package com.glisco.conjuring.blocks.conjurer;
 
 import com.glisco.conjuring.util.ConjuringParticleEvents;
-import com.glisco.owo.particles.ServerParticles;
+import io.wispforest.owo.particles.ServerParticles;
 import net.minecraft.entity.*;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -37,7 +37,7 @@ public abstract class ConjurerLogic {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final int field_30951 = 1;
     private int spawnDelay = 20;
-    private DataPool<MobSpawnerEntry> spawnPotentials = DataPool.method_38062();
+    private DataPool<MobSpawnerEntry> spawnPotentials = DataPool.<MobSpawnerEntry>empty();
     private MobSpawnerEntry spawnEntry = new MobSpawnerEntry();
     private double field_9161;
     private double field_9159;
@@ -58,7 +58,7 @@ public abstract class ConjurerLogic {
     }
 
     public boolean isPlayerInRange(World world, BlockPos pos) {
-        return world.getReceivedRedstonePower(pos) == 0 && (!requiresPlayer || world.isPlayerInRange((double)pos.getX() + 0.5, (double)pos.getY() + 0.5, (double)pos.getZ() + 0.5, (double)this.requiredPlayerRange));
+        return world.getReceivedRedstonePower(pos) == 0 && (!requiresPlayer || world.isPlayerInRange((double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5, (double) this.requiredPlayerRange));
     }
 
     public void clientTick(World world, BlockPos pos) {
@@ -66,9 +66,9 @@ public abstract class ConjurerLogic {
         if (!this.isPlayerInRange(world, pos) || !active) {
             this.field_9159 = this.field_9161;
         } else {
-            double $$2 = (double)pos.getX() + world.random.nextDouble();
-            double $$3 = (double)pos.getY() + world.random.nextDouble();
-            double $$4 = (double)pos.getZ() + world.random.nextDouble();
+            double $$2 = (double) pos.getX() + world.random.nextDouble();
+            double $$3 = (double) pos.getY() + world.random.nextDouble();
+            double $$4 = (double) pos.getZ() + world.random.nextDouble();
 
             //These particles have been changed to reflect the custom spawner version
             world.addParticle(ParticleTypes.ENCHANTED_HIT, $$2, $$3, $$4, 0.0D, 1.0D, 0.0D);
@@ -79,7 +79,7 @@ public abstract class ConjurerLogic {
             }
 
             this.field_9159 = this.field_9161;
-            this.field_9161 = (this.field_9161 + (double)(1000.0F / ((float)this.spawnDelay + 200.0F))) % 360.0;
+            this.field_9161 = (this.field_9161 + (double) (1000.0F / ((float) this.spawnDelay + 200.0F))) % 360.0;
         }
 
     }
@@ -96,7 +96,7 @@ public abstract class ConjurerLogic {
             } else {
                 boolean $$2 = false;
 
-                for(int $$3 = 0; $$3 < this.spawnCount; ++$$3) {
+                for (int $$3 = 0; $$3 < this.spawnCount; ++$$3) {
                     NbtCompound $$4 = this.spawnEntry.getNbt();
                     Optional<EntityType<?>> $$5 = EntityType.fromNbt($$4);
                     if ($$5.isEmpty()) {
@@ -106,21 +106,21 @@ public abstract class ConjurerLogic {
 
                     NbtList $$6 = $$4.getList("Pos", 6);
                     int $$7 = $$6.size();
-                    double $$8 = $$7 >= 1 ? $$6.getDouble(0) : (double)pos.getX() + (world.random.nextDouble() - world.random.nextDouble()) * (double)this.spawnRange + 0.5;
-                    double $$9 = $$7 >= 2 ? $$6.getDouble(1) : (double)(pos.getY() + world.random.nextInt(3) - 1);
-                    double $$10 = $$7 >= 3 ? $$6.getDouble(2) : (double)pos.getZ() + (world.random.nextDouble() - world.random.nextDouble()) * (double)this.spawnRange + 0.5;
-                    if (world.isSpaceEmpty(((EntityType)$$5.get()).createSimpleBoundingBox($$8, $$9, $$10))) {
+                    double $$8 = $$7 >= 1 ? $$6.getDouble(0) : (double) pos.getX() + (world.random.nextDouble() - world.random.nextDouble()) * (double) this.spawnRange + 0.5;
+                    double $$9 = $$7 >= 2 ? $$6.getDouble(1) : (double) (pos.getY() + world.random.nextInt(3) - 1);
+                    double $$10 = $$7 >= 3 ? $$6.getDouble(2) : (double) pos.getZ() + (world.random.nextDouble() - world.random.nextDouble()) * (double) this.spawnRange + 0.5;
+                    if (world.isSpaceEmpty(((EntityType) $$5.get()).createSimpleBoundingBox($$8, $$9, $$10))) {
                         BlockPos $$11 = new BlockPos($$8, $$9, $$10);
                         if (this.spawnEntry.getCustomSpawnRules().isPresent()) {
-                            if (!((EntityType)$$5.get()).getSpawnGroup().isPeaceful() && world.getDifficulty() == Difficulty.PEACEFUL) {
+                            if (!((EntityType) $$5.get()).getSpawnGroup().isPeaceful() && world.getDifficulty() == Difficulty.PEACEFUL) {
                                 continue;
                             }
 
-                            MobSpawnerEntry.CustomSpawnRules $$12 = (MobSpawnerEntry.CustomSpawnRules)this.spawnEntry.getCustomSpawnRules().get();
+                            MobSpawnerEntry.CustomSpawnRules $$12 = (MobSpawnerEntry.CustomSpawnRules) this.spawnEntry.getCustomSpawnRules().get();
                             if (!$$12.blockLightLimit().contains(world.getLightLevel(LightType.BLOCK, $$11)) || !$$12.skyLightLimit().contains(world.getLightLevel(LightType.SKY, $$11))) {
                                 continue;
                             }
-                        } else if (!SpawnRestriction.canSpawn((EntityType)$$5.get(), world, SpawnReason.SPAWNER, $$11, world.getRandom())) {
+                        } else if (!SpawnRestriction.canSpawn((EntityType) $$5.get(), world, SpawnReason.SPAWNER, $$11, world.getRandom())) {
                             continue;
                         }
 
@@ -133,7 +133,7 @@ public abstract class ConjurerLogic {
                             return;
                         }
 
-                        int $$14 = world.getNonSpectatingEntities($$13.getClass(), (new Box((double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), (double)(pos.getX() + 1), (double)(pos.getY() + 1), (double)(pos.getZ() + 1))).expand((double)this.spawnRange)).size();
+                        int $$14 = world.getNonSpectatingEntities($$13.getClass(), (new Box((double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), (double) (pos.getX() + 1), (double) (pos.getY() + 1), (double) (pos.getZ() + 1))).expand((double) this.spawnRange)).size();
                         if ($$14 >= this.maxNearbyEntities) {
                             this.updateSpawns(world, pos);
                             return;
@@ -141,13 +141,13 @@ public abstract class ConjurerLogic {
 
                         $$13.refreshPositionAndAngles($$13.getX(), $$13.getY(), $$13.getZ(), world.random.nextFloat() * 360.0F, 0.0F);
                         if ($$13 instanceof MobEntity) {
-                            MobEntity $$15 = (MobEntity)$$13;
+                            MobEntity $$15 = (MobEntity) $$13;
                             if (this.spawnEntry.getCustomSpawnRules().isEmpty() && !$$15.canSpawn(world, SpawnReason.SPAWNER) || !$$15.canSpawn(world)) {
                                 continue;
                             }
 
                             if (this.spawnEntry.getNbt().getSize() == 1 && this.spawnEntry.getNbt().contains("id", 8)) {
-                                ((MobEntity)$$13).initialize(world, world.getLocalDifficulty($$13.getBlockPos()), SpawnReason.SPAWNER, (EntityData)null, (NbtCompound)null);
+                                ((MobEntity) $$13).initialize(world, world.getLocalDifficulty($$13.getBlockPos()), SpawnReason.SPAWNER, (EntityData) null, (NbtCompound) null);
                             }
                         }
 
@@ -159,7 +159,7 @@ public abstract class ConjurerLogic {
                         //This worldEvent has different ID to work in conjunction with a mixin in the Client's WorldRenderer
                         ServerParticles.issueEvent(world, Vec3d.of(pos), ConjuringParticleEvents.CONJURER_SUMMON);
                         if ($$13 instanceof MobEntity) {
-                            ((MobEntity)$$13).playSpawnEffects();
+                            ((MobEntity) $$13).playSpawnEffects();
                         }
 
                         $$2 = true;
@@ -181,7 +181,7 @@ public abstract class ConjurerLogic {
             this.spawnDelay = this.minSpawnDelay + this.random.nextInt(this.maxSpawnDelay - this.minSpawnDelay);
         }
 
-        this.spawnPotentials.getOrEmpty(this.random).ifPresent($$2 -> this.setSpawnEntry(world, pos, (MobSpawnerEntry)$$2.getData()));
+        this.spawnPotentials.getOrEmpty(this.random).ifPresent($$2 -> this.setSpawnEntry(world, pos, (MobSpawnerEntry) $$2.getData()));
         this.sendStatus(world, pos, 1);
     }
 
@@ -192,21 +192,21 @@ public abstract class ConjurerLogic {
         if (!$$3) {
             MobSpawnerEntry $$5;
             if ($$4) {
-                $$5 = (MobSpawnerEntry)MobSpawnerEntry.CODEC.parse(NbtOps.INSTANCE, nbt.getCompound("SpawnData")).resultOrPartial($$0 -> LOGGER.warn("Invalid SpawnData: {}", $$0)).orElseGet(MobSpawnerEntry::new);
+                $$5 = MobSpawnerEntry.CODEC.parse(NbtOps.INSTANCE, nbt.getCompound("SpawnData")).resultOrPartial($$0 -> LOGGER.warn("Invalid SpawnData: {}", $$0)).orElseGet(MobSpawnerEntry::new);
             } else {
                 $$5 = new MobSpawnerEntry();
             }
 
-            this.spawnPotentials = DataPool.method_38061($$5);
+            this.spawnPotentials = DataPool.of($$5);
             this.setSpawnEntry(world, pos, $$5);
         } else {
             NbtList $$7 = nbt.getList("SpawnPotentials", 10);
-            this.spawnPotentials = (DataPool)MobSpawnerEntry.DATA_POOL_CODEC.parse(NbtOps.INSTANCE, $$7).resultOrPartial($$0 -> LOGGER.warn("Invalid SpawnPotentials list: {}", $$0)).orElseGet(DataPool::method_38062);
+            this.spawnPotentials = MobSpawnerEntry.DATA_POOL_CODEC.parse(NbtOps.INSTANCE, $$7).resultOrPartial($$0 -> LOGGER.warn("Invalid SpawnPotentials list: {}", $$0)).orElseGet(() -> DataPool.<MobSpawnerEntry>empty());
             if ($$4) {
-                MobSpawnerEntry $$8 = (MobSpawnerEntry)MobSpawnerEntry.CODEC.parse(NbtOps.INSTANCE, nbt.getCompound("SpawnData")).resultOrPartial($$0 -> LOGGER.warn("Invalid SpawnData: {}", $$0)).orElseGet(MobSpawnerEntry::new);
+                MobSpawnerEntry $$8 = (MobSpawnerEntry) MobSpawnerEntry.CODEC.parse(NbtOps.INSTANCE, nbt.getCompound("SpawnData")).resultOrPartial($$0 -> LOGGER.warn("Invalid SpawnData: {}", $$0)).orElseGet(MobSpawnerEntry::new);
                 this.setSpawnEntry(world, pos, $$8);
             } else {
-                this.spawnPotentials.getOrEmpty(this.random).ifPresent($$2 -> this.setSpawnEntry(world, pos, (MobSpawnerEntry)$$2.getData()));
+                this.spawnPotentials.getOrEmpty(this.random).ifPresent($$2 -> this.setSpawnEntry(world, pos, (MobSpawnerEntry) $$2.getData()));
             }
         }
 
@@ -238,15 +238,15 @@ public abstract class ConjurerLogic {
     }
 
     public NbtCompound writeNbt(NbtCompound $$0) {
-        $$0.putShort("Delay", (short)this.spawnDelay);
-        $$0.putShort("MinSpawnDelay", (short)this.minSpawnDelay);
-        $$0.putShort("MaxSpawnDelay", (short)this.maxSpawnDelay);
-        $$0.putShort("SpawnCount", (short)this.spawnCount);
-        $$0.putShort("MaxNearbyEntities", (short)this.maxNearbyEntities);
-        $$0.putShort("RequiredPlayerRange", (short)this.requiredPlayerRange);
-        $$0.putShort("SpawnRange", (short)this.spawnRange);
-        $$0.put("SpawnData", (NbtElement)MobSpawnerEntry.CODEC.encodeStart(NbtOps.INSTANCE, this.spawnEntry).result().orElseThrow(() -> new IllegalStateException("Invalid SpawnData")));
-        $$0.put("SpawnPotentials", (NbtElement)MobSpawnerEntry.DATA_POOL_CODEC.encodeStart(NbtOps.INSTANCE, this.spawnPotentials).result().orElseThrow());
+        $$0.putShort("Delay", (short) this.spawnDelay);
+        $$0.putShort("MinSpawnDelay", (short) this.minSpawnDelay);
+        $$0.putShort("MaxSpawnDelay", (short) this.maxSpawnDelay);
+        $$0.putShort("SpawnCount", (short) this.spawnCount);
+        $$0.putShort("MaxNearbyEntities", (short) this.maxNearbyEntities);
+        $$0.putShort("RequiredPlayerRange", (short) this.requiredPlayerRange);
+        $$0.putShort("SpawnRange", (short) this.spawnRange);
+        $$0.put("SpawnData", (NbtElement) MobSpawnerEntry.CODEC.encodeStart(NbtOps.INSTANCE, this.spawnEntry).result().orElseThrow(() -> new IllegalStateException("Invalid SpawnData")));
+        $$0.put("SpawnPotentials", (NbtElement) MobSpawnerEntry.DATA_POOL_CODEC.encodeStart(NbtOps.INSTANCE, this.spawnPotentials).result().orElseThrow());
 
         // Write custom values
         $$0.putBoolean("RequiresPlayer", requiresPlayer);
@@ -313,8 +313,8 @@ public abstract class ConjurerLogic {
         this.maxNearbyEntities = maxNearbyEntities;
     }
 
-    public void setEnty(MobSpawnerEntry enty) {
-        this.spawnPotentials = DataPool.method_38061(enty);
+    public void setEnty(MobSpawnerEntry entry) {
+        this.spawnPotentials = DataPool.of(entry);
     }
 
     public void setActive(boolean active) {

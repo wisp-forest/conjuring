@@ -4,8 +4,8 @@ import com.glisco.conjuring.blocks.BlackstonePedestalBlockEntity;
 import com.glisco.conjuring.blocks.ConjuringBlocks;
 import com.glisco.conjuring.items.ConjuringItems;
 import com.glisco.conjuring.items.ConjuringScepter;
-import com.glisco.owo.ops.ItemOps;
-import com.glisco.owo.particles.ClientParticles;
+import io.wispforest.owo.ops.ItemOps;
+import io.wispforest.owo.particles.ClientParticles;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -76,7 +76,7 @@ public class SoulWeaverBlock extends BlockWithEntity {
 
         if (playerStack.getItem().equals(ConjuringItems.CONJURATION_ESSENCE) && !weaver.isLit()) {
             weaver.setLit(true);
-            if (!ItemOps.emptyAwareDecrement(playerStack)) player.setStackInHand(hand, ItemStack.EMPTY);
+            ItemOps.decrementPlayerHandItem(player, hand);
             return ActionResult.SUCCESS;
         }
 
@@ -90,7 +90,7 @@ public class SoulWeaverBlock extends BlockWithEntity {
 
             weaver.setItem(ItemOps.singleCopy(playerStack));
 
-            if (!ItemOps.emptyAwareDecrement(playerStack)) player.setStackInHand(hand, ItemStack.EMPTY);
+            ItemOps.decrementPlayerHandItem(player, hand);
         } else {
             if (playerStack.isEmpty()) {
                 player.setStackInHand(hand, weaverItem);

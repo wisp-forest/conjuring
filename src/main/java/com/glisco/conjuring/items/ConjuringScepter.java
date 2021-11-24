@@ -3,7 +3,7 @@ package com.glisco.conjuring.items;
 import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.blocks.BlackstonePedestalBlockEntity;
 import com.glisco.conjuring.blocks.RitualCore;
-import com.glisco.owo.particles.ClientParticles;
+import io.wispforest.owo.particles.ClientParticles;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;

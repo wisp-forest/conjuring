@@ -1,7 +1,7 @@
 package com.glisco.conjuring.client.ber;
 
 import com.glisco.conjuring.blocks.BlackstonePedestalBlockEntity;
-import com.glisco.owo.particles.ClientParticles;
+import io.wispforest.owo.particles.ClientParticles;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -28,7 +28,7 @@ public class BlackstonePedestalBlockEntityRenderer implements BlockEntityRendere
         if (!blockEntity.getItem().isEmpty()) {
 
             ItemStack item = blockEntity.getItem();
-            BakedModel itemModel = MinecraftClient.getInstance().getItemRenderer().getHeldItemModel(item, null, null, 0);
+            BakedModel itemModel = MinecraftClient.getInstance().getItemRenderer().getModel(item, null, null, 0);
 
             int lightAbove = WorldRenderer.getLightmapCoordinates(Objects.requireNonNull(blockEntity.getWorld()), blockEntity.getPos().up());
 

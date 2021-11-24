@@ -1,7 +1,7 @@
 package com.glisco.conjuring.blocks.gem_tinkerer;
 
 import com.glisco.conjuring.blocks.ConjuringBlocks;
-import com.glisco.owo.ops.ItemOps;
+import io.wispforest.owo.ops.ItemOps;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;

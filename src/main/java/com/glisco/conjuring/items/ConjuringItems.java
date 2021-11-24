@@ -2,8 +2,8 @@ package com.glisco.conjuring.items;
 
 import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.items.soul_alloy_tools.*;
-import com.glisco.owo.registration.annotations.AssignedName;
-import com.glisco.owo.registration.reflect.ItemRegistryContainer;
+import io.wispforest.owo.registration.annotations.AssignedName;
+import io.wispforest.owo.registration.reflect.ItemRegistryContainer;
 import net.minecraft.item.Item;
 import net.minecraft.util.Rarity;
 

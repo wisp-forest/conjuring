@@ -28,7 +28,8 @@
       "com.glisco.conjuring.Conjuring"
     ],
     "rei_plugins": [
-      "com.glisco.conjuring.compat.rei.ConjuringPlugin"
+      "com.glisco.conjuring.compat.rei.ConjuringClientPlugin",
+      "com.glisco.conjuring.compat.rei.ConjuringCommonPlugin"
     ],
     "modmenu": [
       "com.glisco.conjuring.compat.config.ModMenuIntegration"
@@ -39,7 +40,8 @@
   ],
   "depends": {
     "fabricloader": ">=0.9.2+build.206",
-    "fabric": "*"
+    "fabric": "*",
+    "minecraft": "*"
   },
   "custom": {
     "modmenu": {

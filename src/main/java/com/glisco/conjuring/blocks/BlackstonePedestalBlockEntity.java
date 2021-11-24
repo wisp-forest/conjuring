@@ -1,7 +1,7 @@
 package com.glisco.conjuring.blocks;
 
-import com.glisco.owo.ops.ItemOps;
-import com.glisco.owo.ops.WorldOps;
+import io.wispforest.owo.ops.ItemOps;
+import io.wispforest.owo.ops.WorldOps;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
