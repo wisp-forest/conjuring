@@ -41,7 +41,10 @@
   "depends": {
     "fabricloader": ">=0.9.2+build.206",
     "fabric": "*",
-    "minecraft": "*"
+    "minecraft": ">=1.18",
+    "cloth-config2": ">=6.0.0",
+    "owo": ">=0.3.8+1.18",
+    "patchouli": "*"
   },
   "custom": {
     "modmenu": {

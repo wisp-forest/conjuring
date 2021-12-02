@@ -151,7 +151,7 @@ public abstract class ConjurerLogic {
                             }
                         }
 
-                        if (!world.shouldCreateNewEntityWithPassenger($$13)) {
+                        if (!world.spawnNewEntityAndPassengers($$13)) {
                             this.updateSpawns(world, pos);
                             return;
                         }
