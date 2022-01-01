@@ -1,0 +1,15 @@
+{
+  "name": "入门",
+  "icon": "conjuring:enchiridion",
+  "category": "conjuring:basics",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "要开始灵魂戏法，基本的$(item)下界合金碎片$()和$(l:conjuring:basics/conjuration_essence)灵魂精华$()供应是必不可少的。为了制造基本的$(l:conjuring:basics/soul_composite_materials)灵魂复合材料$()，$(l:conjuring:basics/soulfire_forge)灵魂火冶炼台$()应该是第一件被做出来的装置。然后，依次做出$(l:conjuring:basics/conjurer)召唤之笼$()，$(l:conjuring:basics/conjuring_scepter)召唤权杖$()和$(l:conjuring:basics/conjuring_focus)召唤核心$()。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "在这些设备制作完成后，建议复习一下$(l:conjuring:rituals/ritual_basics)仪式基础$()，并尝试着进行$(l:conjuring:rituals/ritual_of_extraction)灵魂提取仪式$()，来完成第一次召唤的准备工作。这些工作可以按照$(l:conjuring:basics/basic_gem_tinkering)基本宝石加工$()中提到的办法来改进。在积累了一些处理灵魂的经验后，制作$(thing)灵魂合金工具$()应该是一件有趣的事情。通过$(l:conjuring:soul_alloy_tools/advanced_gem_tinkering)进阶宝石加工$()，你还能改良这些工具。然而，这些工具的制造需要$(l:conjuring:rituals/ritual_of_weaving)灵魂织造仪式$()。"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "name": "灵魂合金剑",
+  "icon": "conjuring:soul_alloy_sword",
+  "category": "conjuring:soul_alloy_tools",
+  "extra_recipe_mappings": {
+    "conjuring:soul_alloy_sword": 0
+  },
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(item)灵魂合金剑$()是对拥有它的勇士的赞赏。它的能力是发射 5 道射线，每道造成剑本身攻击力 20% 的伤害。$(item)灵魂合金剑$()可以被$(l:conjuring:basics/basic_gem_tinkering)灵能宝石$()以以下方式强化：$(br) $(li)$(#007a18)≈ 急迫：提高挥剑速度；$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(#a80f01)ღ 富足：提高击杀后战利品掉落数，可与抢夺叠加；$()$(br) $(li)$(#4d8184)λ 视域：禁用横扫之刃来强化大范围内的有效攻击，这种范围攻击的伤害会随着宝石的数量而提升。 $()$(br) $(li)$(#123f89)ʊ 无视：攻击时无视目标的护甲值，数值取决于宝石数量。"
+    }
+  ]
+}

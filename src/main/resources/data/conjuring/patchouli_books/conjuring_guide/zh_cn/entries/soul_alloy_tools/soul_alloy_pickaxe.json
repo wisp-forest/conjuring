@@ -1,0 +1,18 @@
+{
+  "name": "灵魂合金镐",
+  "icon": "conjuring:soul_alloy_pickaxe",
+  "category": "conjuring:soul_alloy_tools",
+  "extra_recipe_mappings": {
+    "conjuring:soul_alloy_pickaxe": 0
+  },
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "危险的$(item)灵魂合金镐$()比你平庸而又可怜的$(item)下界合金镐$()更有价值。$(thing)右键点击$()时它会发射出一道射线，连锁采集碰到的任何矿石。将不同的$(l:conjuring:basics/basic_gem_tinkering#aspect_gems)灵能宝石$()应用于其上会产生以下的效果：$(br) $(li)$(#007a18)≈ 急迫：提高挖掘速度，可与效率叠加；$()$(br) "
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(#a80f01)ღ 富足：提高部分矿石的掉落数量，可与时运叠加；$()$(br) $(li)$(#4d8184)λ 视域：显著提高挖掘范围，每颗宝石提高 1 格挖掘范围；$()$(br) $(li)$(#123f89)ʊ 无视：无视小部分耐久损耗，可与耐久叠加。"
+    }
+  ]
+}

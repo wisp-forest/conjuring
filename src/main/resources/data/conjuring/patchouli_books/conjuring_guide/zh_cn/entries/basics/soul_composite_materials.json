@@ -1,0 +1,19 @@
+{
+  "name": "灵魂复合材料",
+  "icon": "conjuring:soul_alloy",
+  "category": "conjuring:basics",
+  "pages": [
+    {
+      "type": "conjuring:soulfire_forge_recipe",
+      "recipe": "conjuring:soulfire_forge/soul_alloy",
+      "text": "在任何与召唤有关的尝试中，$(item)灵魂合金$()是极其重要的一种材料。$(p)它是一种几乎完全有基础材料组成的合金，拥有着较好的坚韧性，并能给工具的制造提供便利。",
+      "anchor": "soul_alloy"
+    },
+    {
+      "type": "conjuring:soulfire_forge_recipe",
+      "recipe": "conjuring:soulfire_forge/soul_slice",
+      "text": "由$(l:conjuring:basics/conjuration_essence)灵魂精华$()和$(item)铁锭$()混合而成，并用$(item)下界之星$()点缀的$(item)灵魂薄片$()是一种令人敬畏的材料。它可怕的力量可以帮助制造更加强大的仪器，比如$(l:conjuring:basics/stabilized_conjuring_focus)稳定的召唤核心$()。",
+      "anchor": "soul_slice"
+    }
+  ]
+}

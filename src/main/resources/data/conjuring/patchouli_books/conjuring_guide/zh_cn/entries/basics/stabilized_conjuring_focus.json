@@ -1,0 +1,20 @@
+{
+  "name": "稳定的核心",
+  "icon": "conjuring:stabilized_conjuring_focus",
+  "category": "conjuring:basics",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(l:conjuring:basics/conjuring_focus)召唤核心$()也能够完成一些不错的任务，但是有时候这并不足够。相比之下，用$(l:conjuring:basics/soul_composite_materials#soul_slice)灵魂薄片$()加强的$(item)稳定的召唤核心$()，要强大得多。  在插入$(l:conjuring:basics/conjurer)召唤之笼$()之后，它就会持续不断地召唤生物，如同玩家就在附近一样。"
+    },
+    {
+      "type": "conjuring:soulfire_forge_recipe",
+      "recipe": "conjuring:soulfire_forge/stabilized_conjuring_focus",
+      "text": "考虑到稳定的召唤核心造价高昂，清空并复用它会是一个可行的好主意。为了实现这一点，需要用到$(item)纯净灵魄$()。这种奇特的液体可以用四个$(l:conjuring:basics/conjuration_essence)灵魂精华$()制造出来。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "利用$(l:conjuring:rituals/ritual_of_weaving)灵魂织造器$()，将$(l:conjuring:basics/conjuration_essence)灵魂精华$()塞进一个普通的空玻璃瓶中即可制造出纯净灵魄。将要清空的核心放在$(item)灵魂漏斗$()上，然后将$(item)纯净灵魄$()扔在上面，最后用$(l:conjuring:basics/conjuring_scepters)召唤权杖$()$(thing)右键$()即可释放其中的灵魂。"
+    }
+  ]
+}

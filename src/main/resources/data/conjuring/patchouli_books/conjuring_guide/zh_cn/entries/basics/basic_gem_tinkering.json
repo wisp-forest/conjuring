@@ -1,0 +1,25 @@
+{
+  "name": "基本宝石加工",
+  "icon": "conjuring:ignorance_charm",
+  "category": "conjuring:basics",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(item)宝石加工台$()是制作$(thing)灵能宝石$()所需要的特殊装置。这些宝石各代表了大部分$(l:conjuring:basics/soul_composite_materials#soul_alloy)灵魂合金$()制作的工具可被升级的一些方面。$(p)一共有四种灵能宝石，分别由以下材料制成: $(item)红石(), $(item)青金石$(), $(item)末影之眼$()和$(item)绿宝石$().",
+      "anchor": "aspect_gems"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "conjuring:crafting/gem_tinkerer",
+      "text": "要操作$(item)宝石加工台$(), 先在顶上放置$(l:conjuring:basics/conjuration_essence#lesser_essence)小型灵魂精华$()，然后用制作宝石用的材料填满周围悬浮着的支柱。最后，$(thing)空手$()$(thing)潜行右键$()来完成加工流程。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "在$(l:conjuring:basics/conjurer)召唤之笼$()内部的极端环境里使用$(item)灵能宝石$()时，有一些地方需要注意。使用$(item)宝石底座$()来加固它们是必需的。这些坚固的容器允许$(item)宝石$()将它们的能量直接注入$(l:conjuring:basics/conjuring_focus)召唤核心$()，从而增强$(l:conjuring:basics/conjuring_focus)召唤核心$()的能力。"
+    },
+    {
+      "type": "conjuring:soulfire_forge_recipe",
+      "recipe": "conjuring:soulfire_forge/gem_socket"
+    }
+  ]
+}

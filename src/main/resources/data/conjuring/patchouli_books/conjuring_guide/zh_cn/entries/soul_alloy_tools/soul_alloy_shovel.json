@@ -1,0 +1,18 @@
+{
+  "name": "灵魂合金铲",
+  "icon": "conjuring:soul_alloy_shovel",
+  "category": "conjuring:soul_alloy_tools",
+  "extra_recipe_mappings": {
+    "conjuring:soul_alloy_shovel": 0
+  },
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "尽管铲子平时用得不多，$(item)灵魂合金铲$()的能力会使其成为你的得力助手。在使用时，它会自动收集附近的掉落物，并将其带回到使用者处。$(item)灵魂合金铲$()可以被$(l:conjuring:basics/basic_gem_tinkering#aspect_gems)灵能宝石强$()化，并产生以下影响：$(br) $(li)$(#007a18)≈ 急迫：提高挖掘速度，可与效率叠加；$()$(br) "
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(#a80f01)ღ 富足：提高挖掘宝藏时获得的战利品数量，可与时运叠加；$()$(br) $(li)$(#4d8184)λ 视域：提高挖掘范围，每颗宝石提高 1 格范围；$()$(br) $(li)$(#123f89)ʊ 无视：无视小部分耐久消耗，可与耐久叠加。"
+    }
+  ]
+}

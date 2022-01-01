@@ -1,0 +1,20 @@
+{
+  "name": "灵魂火冶炼台",
+  "icon": "conjuring:soulfire_forge",
+  "category": "conjuring:basics",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "许多灵魂戏法中用到的材料以及相关的操作既不$(o)安全$()，也不$(o)方便$()。特别是$(item)灵魂土$()。在$(item)灵魂合金$()的制造工艺中，对$(item)灵魂土$()的挤压会弄得到处都脏兮兮的。$(p)要解决这些问题，可以使用$(item)灵魂火冶炼台$()来处理这类物质。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "conjuring:crafting/soulfire_forge",
+      "text": "$(thing)灵魂火$()可以烧尽危险的或者是不需要的东西，并创造出纯净的复合材料。$(p)然而这个过程会消耗掉$(thing)灵魂火$()，换言之，每次利用$(item)灵魂火冶炼台$()合成物品后，都需要再次点火。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "显然，这是一项枯燥的工作。然而，一些人们所熟知的基础设备可以被用来解决这个问题。$(p)采用这些安全措施也会导致一个随着配方复杂度而增长的时间消耗，而一些更高级的设备可以降低这个消耗。"
+    }
+  ]
+}
