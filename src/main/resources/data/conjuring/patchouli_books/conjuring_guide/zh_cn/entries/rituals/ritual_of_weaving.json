@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "一些合成过程，比如说制造$(l:conjuring:soul_alloy_tools/basics)灵魂合金工具$()，比较复杂，且总是需要$(thing)灵魂织造仪式$()参与其中。$(p)要进行仪式，需要放置$(item)灵魂织造器$()并将其与四个基座连接，如同$(l:conjuring:rituals/ritual_basics)仪式基础$()中提到的那样。然后，合成原料应当被放在织造器和基座上。"
+      "text": "一些合成过程，比如说制造$(l:conjuring:soul_alloy_tools/soul_alloy_sword)灵魂合金工具$()，比较复杂，且总是需要$(thing)灵魂织造仪式$()参与其中。$(p)要进行仪式，需要放置$(item)灵魂织造器$()并将其与四个基座连接，如同$(l:conjuring:rituals/ritual_basics)仪式基础$()中提到的那样。然后，合成原料应当被放在织造器和基座上。"
     },
     {
       "type": "patchouli:crafting",

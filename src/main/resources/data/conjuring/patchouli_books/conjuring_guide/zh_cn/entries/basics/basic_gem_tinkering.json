@@ -1,11 +1,11 @@
 {
-  "name": "基本宝石加工",
+  "name": "基础宝石加工",
   "icon": "conjuring:ignorance_charm",
   "category": "conjuring:basics",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(item)宝石加工台$()是制作$(thing)灵能宝石$()所需要的特殊装置。这些宝石各代表了大部分$(l:conjuring:basics/soul_composite_materials#soul_alloy)灵魂合金$()制作的工具可被升级的一些方面。$(p)一共有四种灵能宝石，分别由以下材料制成: $(item)红石(), $(item)青金石$(), $(item)末影之眼$()和$(item)绿宝石$().",
+      "text": "$(item)宝石加工台$()是制作$(thing)灵能宝石$()所需要的特殊装置。这些宝石各代表了大部分$(l:conjuring:basics/soul_composite_materials#soul_alloy)灵魂合金$()制作的工具可被升级的一些方面。$(p)一共有四种灵能宝石，分别由以下材料制成: $(item)红石$(), $(item)青金石$(), $(item)末影之眼$()和$(item)绿宝石$()。",
       "anchor": "aspect_gems"
     },
     {

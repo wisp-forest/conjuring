@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "要开始灵魂戏法，基本的$(item)下界合金碎片$()和$(l:conjuring:basics/conjuration_essence)灵魂精华$()供应是必不可少的。为了制造基本的$(l:conjuring:basics/soul_composite_materials)灵魂复合材料$()，$(l:conjuring:basics/soulfire_forge)灵魂火冶炼台$()应该是第一件被做出来的装置。然后，依次做出$(l:conjuring:basics/conjurer)召唤之笼$()，$(l:conjuring:basics/conjuring_scepter)召唤权杖$()和$(l:conjuring:basics/conjuring_focus)召唤核心$()。"
+      "text": "要开始灵魂戏法，基本的$(item)下界合金碎片$()和$(l:conjuring:basics/conjuration_essence)灵魂精华$()供应是必不可少的。为了制造基本的$(l:conjuring:basics/soul_composite_materials)灵魂复合材料$()，$(l:conjuring:basics/soulfire_forge)灵魂火冶炼台$()应该是第一件被做出来的装置。然后，依次做出$(l:conjuring:basics/conjurer)召唤之笼$()，$(l:conjuring:basics/conjuring_scepters)召唤权杖$()和$(l:conjuring:basics/conjuring_focus)召唤核心$()。"
     },
     {
       "type": "patchouli:text",
