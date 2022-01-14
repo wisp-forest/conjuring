@@ -1,0 +1,37 @@
+{
+  "parent": "conjuring:soul_weaver",
+  "display": {
+    "icon": {
+      "item": "conjuring:soul_alloy_scythe"
+    },
+    "title": {
+      "translate": "advancement.conjuring.soul_alloy_scythe.title"
+    },
+    "description": {
+      "translate": "advancement.conjuring.soul_alloy_scythe.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "soul_alloy_scythe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "conjuring:soul_alloy_scythe"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "soul_alloy_scythe"
+    ]
+  ]
+}

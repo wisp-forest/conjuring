@@ -82,6 +82,21 @@ public class ConjuringConfig implements ConfigData {
         @Comment("Cooldown for firing projectiles with the hatchet, in ticks")
         public int axe_secondary_cooldown = 15;
 
+        // <-- --- -->
+
+
+        @Comment("The exponent for the scope level, tree cutting range is calculated like this: 8 + scope_level^exponent * 8")
+        public double scythe_scope_exponent = 3d;
+
+        @Comment("How much durability firing a projectile with the scythe costs, base value")
+        public int scythe_secondary_base_durability_cost = 10;
+
+        @Comment("How much durability firing a projectile with the scythe costs, added per scope level")
+        public int scythe_secondary_per_scope_durability_cost = 5;
+
+        @Comment("Cooldown for firing projectiles with the scythe, in ticks")
+        public int scythe_secondary_cooldown = 15;
+
 
         // <-- --- -->
 

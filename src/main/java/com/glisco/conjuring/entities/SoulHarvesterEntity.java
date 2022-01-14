@@ -2,8 +2,8 @@ package com.glisco.conjuring.entities;
 
 import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.items.soul_alloy_tools.BlockCrawler;
-import net.minecraft.block.OreBlock;
-import net.minecraft.block.RedstoneOreBlock;
+import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyScythe;
+import net.minecraft.block.CropBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -14,22 +14,24 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
-public class SoulDiggerEntity extends SoulEntity {
+public class SoulHarvesterEntity extends SoulEntity {
 
+    private int maxBlocks = 8;
     private static final TrackedData<ItemStack> STACK;
 
     static {
-        STACK = DataTracker.registerData(SoulDiggerEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
+        STACK = DataTracker.registerData(SoulHarvesterEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
     }
 
-    public SoulDiggerEntity(World world, LivingEntity owner) {
-        super(Conjuring.SOUL_DIGGER, world);
+    public SoulHarvesterEntity(World world, LivingEntity owner) {
+        super(Conjuring.SOUL_HARVESTER, world);
         setOwner(owner);
     }
 
-    public SoulDiggerEntity(EntityType<SoulDiggerEntity> entityType, World world) {
+    public SoulHarvesterEntity(EntityType<SoulHarvesterEntity> entityType, World world) {
         super(entityType, world);
     }
 
@@ -56,6 +58,14 @@ public class SoulDiggerEntity extends SoulEntity {
     }
 
     @Override
+    public void tick() {
+        super.tick();
+        if (world.getBlockState(getBlockPos()).getBlock() instanceof CropBlock) {
+            this.onBlockHit(new BlockHitResult(getPos(), Direction.UP, getBlockPos(), true));
+        }
+    }
+
+    @Override
     public void setVelocity(Entity user, float pitch, float yaw, float roll, float modifierZ, float modifierXYZ) {
         super.setVelocity(user, pitch, yaw, roll, modifierZ, modifierXYZ);
         this.setVelocity(this.getVelocity().multiply(0.65f));
@@ -67,12 +77,23 @@ public class SoulDiggerEntity extends SoulEntity {
 
         BlockPos pos = blockHitResult.getBlockPos();
 
-        final var block = world.getBlockState(pos).getBlock();
-        if (block instanceof OreBlock || block instanceof RedstoneOreBlock || block.getClass().getSimpleName().contains("OreBlock")) {
-            BlockCrawler.crawl(world, pos, getDataTracker().get(STACK), Conjuring.CONFIG.tools_config.pickaxe_veinmine_max_blocks);
+        var state = world.getBlockState(pos);
+        var predicate = SoulAlloyScythe.getCrawlPredicate(getDataTracker().get(STACK));
+
+        if (state.getBlock() instanceof CropBlock && predicate.apply(state.getBlock(), state)) {
+            BlockCrawler.crawl(world, pos, getDataTracker().get(STACK), maxBlocks, predicate);
+        } else {
+            state = world.getBlockState(pos.up());
+            if (state.getBlock() instanceof CropBlock && predicate.apply(state.getBlock(), state)) {
+                BlockCrawler.crawl(world, pos.up(), getDataTracker().get(STACK), maxBlocks, predicate);
+            }
         }
 
         this.remove(RemovalReason.KILLED);
+    }
+
+    public void setMaxBlocks(int maxBlocks) {
+        this.maxBlocks = maxBlocks;
     }
 
 }

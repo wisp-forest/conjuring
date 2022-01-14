@@ -47,4 +47,10 @@ public class SoulAlloyPickaxe extends PickaxeItem implements SoulAlloyTool {
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         tooltip.addAll(SoulAlloyTool.getTooltip(stack));
     }
+
+    @Override
+    public boolean canAoeDig() {
+        return true;
+    }
+
 }

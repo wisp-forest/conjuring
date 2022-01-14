@@ -19,6 +19,7 @@ public class ConjuringItems implements ItemRegistryContainer {
     public static final Item SOUL_ALLOY_PICKAXE = new SoulAlloyPickaxe();
     public static final Item SOUL_ALLOY_HATCHET = new SoulAlloyHatchet();
     public static final Item SOUL_ALLOY_SHOVEL = new SoulAlloyShovel();
+    public static final Item SOUL_ALLOY_SCYTHE = new SoulAlloyScythe();
 
     public static final Item SOUL_ALLOY = createWithRarity(Rarity.UNCOMMON);
     public static final Item SOUL_SLICE = createWithRarity(Rarity.RARE);

@@ -61,4 +61,9 @@ public class SoulAlloyShovel extends ShovelItem implements SoulAlloyTool {
         tooltip.addAll(SoulAlloyTool.getTooltip(stack));
     }
 
+    @Override
+    public boolean canAoeDig() {
+        return true;
+    }
+
 }

@@ -33,7 +33,9 @@ public class EnchantmentHelperMixin {
     @Inject(method = "getLevel", at = @At(value = "RETURN"), cancellable = true)
     private static void applyAbundanceFortune(Enchantment enchantment, ItemStack stack, CallbackInfoReturnable<Integer> cir) {
         if (enchantment != Enchantments.FORTUNE) return;
-        if (!(stack.getItem() == ConjuringItems.SOUL_ALLOY_PICKAXE || stack.getItem() == ConjuringItems.SOUL_ALLOY_SHOVEL)) return;
+        if (!(stack.getItem() == ConjuringItems.SOUL_ALLOY_PICKAXE
+                || stack.getItem() == ConjuringItems.SOUL_ALLOY_SHOVEL
+                || stack.getItem() == ConjuringItems.SOUL_ALLOY_SCYTHE)) return;
 
         cir.setReturnValue(cir.getReturnValue() + SoulAlloyTool.getModifierLevel(stack, SoulAlloyTool.SoulAlloyModifier.ABUNDANCE));
     }

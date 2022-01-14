@@ -94,8 +94,7 @@ public class GemTinkererRecipe implements Recipe<Inventory> {
     }
 
     public static class Type implements RecipeType<GemTinkererRecipe> {
-        private Type() {
-        }
+        private Type() {}
 
         public static final Type INSTANCE = new Type();
 

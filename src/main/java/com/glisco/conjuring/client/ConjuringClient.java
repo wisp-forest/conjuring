@@ -9,6 +9,7 @@ import com.glisco.conjuring.entities.EntityCreatePacket;
 import com.glisco.conjuring.entities.SoulEntityRenderer;
 import com.glisco.conjuring.items.ConjuringItems;
 import com.glisco.conjuring.items.soul_alloy_tools.ChangeToolModePacket;
+import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyTool;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyToolAbilities;
 import com.glisco.conjuring.mixin.WorldRendererInvoker;
 import com.glisco.conjuring.util.ConjuringParticleEvents;
@@ -53,6 +54,7 @@ public class ConjuringClient implements ClientModInitializer {
         EntityRendererRegistry.register(Conjuring.SOUL_DIGGER, SoulEntityRenderer::new);
         EntityRendererRegistry.register(Conjuring.SOUL_FELLER, SoulEntityRenderer::new);
         EntityRendererRegistry.register(Conjuring.SOUL_MAGNET, SoulEntityRenderer::new);
+        EntityRendererRegistry.register(Conjuring.SOUL_HARVESTER, SoulEntityRenderer::new);
 
         ClientPlayNetworking.registerGlobalReceiver(EntityCreatePacket.ID, EntityCreatePacket::onPacket);
 
@@ -81,7 +83,8 @@ public class ConjuringClient implements ClientModInitializer {
             }
 
             BlockState blockState;
-            for (BlockPos pos : SoulAlloyToolAbilities.getBlocksToDig(client.player)) {
+            for (BlockPos pos : SoulAlloyToolAbilities.getBlocksToDig(client.player, ((SoulAlloyTool) client.player.getMainHandStack().getItem()).getAoeToolOverridePredicate())) {
+
                 blockState = client.world.getBlockState(pos);
                 if (!blockState.isAir()) {
                     WorldRendererInvoker.conjuring_drawShapeOutline(worldRenderContext.matrixStack(), blockOutlineContext.vertexConsumer(), blockState.getOutlineShape(client.world, pos, ShapeContext.of(blockOutlineContext.entity())), (double) pos.getX() - blockOutlineContext.cameraX(), (double) pos.getY() - blockOutlineContext.cameraY(), (double) pos.getZ() - blockOutlineContext.cameraZ(), 0.0F, 0.0F, 0.0F, 0.4F);

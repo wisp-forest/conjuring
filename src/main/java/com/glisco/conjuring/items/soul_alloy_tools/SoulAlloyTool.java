@@ -1,5 +1,6 @@
 package com.glisco.conjuring.items.soul_alloy_tools;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.*;
@@ -8,8 +9,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 public interface SoulAlloyTool {
+
+    default boolean canAoeDig() {
+        return false;
+    }
+
+    default Predicate<BlockState> getAoeToolOverridePredicate() {
+        return SoulAlloyToolAbilities.NO_TOOL_OVERRIDE;
+    }
 
     static void toggleEnabledState(ItemStack stack) {
         boolean currentState = stack.getOrCreateNbt().contains("SecondaryEnabled") && stack.getOrCreateNbt().getBoolean("SecondaryEnabled");
@@ -92,7 +102,6 @@ public interface SoulAlloyTool {
         modifierTag.getKeys().forEach(s -> modifierMap.put(SoulAlloyModifier.valueOf(s), modifierTag.getInt(s)));
         return modifierMap;
     }
-
     enum SoulAlloyModifier {
 
         HASTE(0x007a18, "modifier.conjuring.haste"),

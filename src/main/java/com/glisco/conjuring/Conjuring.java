@@ -8,10 +8,7 @@ import com.glisco.conjuring.blocks.soul_weaver.SoulWeaverRecipeSerializer;
 import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeRecipe;
 import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeRecipeSerializer;
 import com.glisco.conjuring.compat.config.ConjuringConfig;
-import com.glisco.conjuring.entities.SoulDiggerEntity;
-import com.glisco.conjuring.entities.SoulFellerEntity;
-import com.glisco.conjuring.entities.SoulMagnetEntity;
-import com.glisco.conjuring.entities.SoulProjectileEntity;
+import com.glisco.conjuring.entities.*;
 import com.glisco.conjuring.items.ConjuringItems;
 import com.glisco.conjuring.items.soul_alloy_tools.BlockCrawler;
 import com.glisco.conjuring.items.soul_alloy_tools.ChangeToolModePacket;
@@ -63,7 +60,7 @@ public class Conjuring implements ModInitializer {
             super.appendStacks(stacks);
             for (int i = 0; i < 3; i++) stacks.add(6, ItemStack.EMPTY);
             for (int i = 0; i < 4; i++) stacks.add(14, ItemStack.EMPTY);
-            for (int i = 0; i < 5; i++) stacks.add(22, ItemStack.EMPTY);
+            for (int i = 0; i < 4; i++) stacks.add(23, ItemStack.EMPTY);
             for (int i = 0; i < 3; i++) stacks.add(33, ItemStack.EMPTY);
         }
 
@@ -78,6 +75,7 @@ public class Conjuring implements ModInitializer {
 
     public static final EntityType<SoulProjectileEntity> SOUL_PROJECTILE;
     public static final EntityType<SoulDiggerEntity> SOUL_DIGGER;
+    public static final EntityType<SoulHarvesterEntity> SOUL_HARVESTER;
     public static final EntityType<SoulFellerEntity> SOUL_FELLER;
     public static final EntityType<SoulMagnetEntity> SOUL_MAGNET;
 
@@ -92,6 +90,7 @@ public class Conjuring implements ModInitializer {
 
         SOUL_PROJECTILE = FabricEntityTypeBuilder.<SoulProjectileEntity>create(SpawnGroup.MISC, SoulProjectileEntity::new).dimensions(EntityDimensions.fixed(0.25f, 0.25f)).build();
         SOUL_DIGGER = FabricEntityTypeBuilder.<SoulDiggerEntity>create(SpawnGroup.MISC, SoulDiggerEntity::new).dimensions(EntityDimensions.fixed(0.25f, 0.25f)).build();
+        SOUL_HARVESTER = FabricEntityTypeBuilder.<SoulHarvesterEntity>create(SpawnGroup.MISC, SoulHarvesterEntity::new).dimensions(EntityDimensions.fixed(0.25f, 0.25f)).build();
         SOUL_FELLER = FabricEntityTypeBuilder.<SoulFellerEntity>create(SpawnGroup.MISC, SoulFellerEntity::new).dimensions(EntityDimensions.fixed(0.25f, 0.25f)).build();
         SOUL_MAGNET = FabricEntityTypeBuilder.<SoulMagnetEntity>create(SpawnGroup.MISC, SoulMagnetEntity::new).dimensions(EntityDimensions.fixed(0.25f, 0.25f)).build();
     }
@@ -117,6 +116,7 @@ public class Conjuring implements ModInitializer {
         Registry.register(Registry.ENTITY_TYPE, Conjuring.id("soul_feller"), SOUL_FELLER);
         Registry.register(Registry.ENTITY_TYPE, Conjuring.id("soul_digger"), SOUL_DIGGER);
         Registry.register(Registry.ENTITY_TYPE, Conjuring.id("soul_magnet"), SOUL_MAGNET);
+        Registry.register(Registry.ENTITY_TYPE, Conjuring.id("soul_harvester"), SOUL_HARVESTER);
 
         AutoConfig.register(ConjuringConfig.class, JanksonConfigSerializer::new);
         CONFIG = AutoConfig.getConfigHolder(ConjuringConfig.class).getConfig();
@@ -152,7 +152,6 @@ public class Conjuring implements ModInitializer {
         if (!Owo.DEBUG) return;
 
         CommandRegistrationCallback.EVENT.register(CreateConjuringFocusCommand::register);
-
     }
 
     public static Identifier id(String path) {

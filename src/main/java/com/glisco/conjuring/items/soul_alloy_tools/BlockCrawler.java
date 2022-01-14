@@ -4,6 +4,7 @@ import com.glisco.conjuring.util.ConjuringParticleEvents;
 import io.wispforest.owo.ops.WorldOps;
 import io.wispforest.owo.particles.ServerParticles;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -15,12 +16,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.BiFunction;
 
 public class BlockCrawler {
 
-    public static final ConcurrentLinkedQueue<CrawlData> blocksToCrawl = new ConcurrentLinkedQueue<>();
+    public static final BiFunction<Block, BlockState, Boolean> IDENTITY_PREDICATE = (block, blockState) -> block == blockState.getBlock();
+    private static final ConcurrentLinkedQueue<CrawlData> blocksToCrawl = new ConcurrentLinkedQueue<>();
 
     public static void crawl(World world, BlockPos firstBlock, ItemStack breakStack, int maxBlocks) {
+        crawl(world, firstBlock, breakStack, maxBlocks, IDENTITY_PREDICATE);
+    }
+
+    public static void crawl(World world, BlockPos firstBlock, ItemStack breakStack, int maxBlocks, BiFunction<Block, BlockState, Boolean> predicate) {
 
         if (world.isClient()) return;
 
@@ -42,7 +49,7 @@ public class BlockCrawler {
                 for (BlockPos pos : getNeighbors(foundBlock)) {
 
                     if (foundBlocks.size() >= maxBlocks) break outerLoop;
-                    if (!world.getBlockState(pos).getBlock().equals(blockType) || foundBlocks.contains(pos)) continue;
+                    if (!predicate.apply(blockType, world.getBlockState(pos)) || foundBlocks.contains(pos)) continue;
 
                     foundBlocks.add(pos);
                     scanBlocks.add(pos);

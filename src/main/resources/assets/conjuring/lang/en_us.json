@@ -45,6 +45,7 @@
   "item.conjuring.soul_alloy_sword": "Soul Alloy Sword",
   "item.conjuring.soul_alloy_pickaxe": "Soul Alloy Pickaxe",
   "item.conjuring.soul_alloy_shovel": "Soul Alloy Shovel",
+  "item.conjuring.soul_alloy_scythe": "Soul Alloy Scythe",
 
   "item.conjuring.conjuring_scepter.linking": "Linking from ",
   "item.conjuring.conjuring_scepter.linking_success": "Link established!",
@@ -80,10 +81,11 @@
   "advancement.conjuring.gem_tinkerer.description": "Use a Gem Tinkerer to apply modifiers to a Soul Alloy Tool",
   "advancement.conjuring.soul_alloy_sword.title": "Spiritual Implements",
   "advancement.conjuring.soul_alloy_sword.description": "Craft a Soul Alloy Tool",
+  "advancement.conjuring.soul_alloy_scythe.title": "It's A Rotten Banana",
+  "advancement.conjuring.soul_alloy_scythe.description": "You crafted a Soul Alloy Scythe. You obviously make good decisions",
 
   "category.conjuring": "Conjuring",
   "key.conjuring.toggle_tool_mode": "Toggle Tool Mode",
-
 
   "text.autoconfig.conjuring.title": "Conjuring Configuration",
 
@@ -113,6 +115,11 @@
   "text.autoconfig.conjuring.option.tools_config.pickaxe_secondary_durability_cost": "§bPickaxe §7- §rSecondary Durability Cost",
   "text.autoconfig.conjuring.option.tools_config.pickaxe_secondary_cooldown": "§bPickaxe §7- §rSecondary Cooldown",
   "text.autoconfig.conjuring.option.tools_config.pickaxe_veinmine_max_blocks": "§bPickaxe §7- §rVeinmining Range",
+
+  "text.autoconfig.conjuring.option.tools_config.scythe_scope_exponent": "§eScythe §7- §rScope Exponent",
+  "text.autoconfig.conjuring.option.tools_config.scythe_secondary_base_durability_cost": "§eScythe §7- §rSecondary Base Durability Cost",
+  "text.autoconfig.conjuring.option.tools_config.scythe_secondary_per_scope_durability_cost": "§eScythe §7- §rSecondary Scope Durability Cost",
+  "text.autoconfig.conjuring.option.tools_config.scythe_secondary_cooldown": "§eScythe §7- §rSecondary Cooldown",
 
   "text.autoconfig.conjuring.option.tools_config.shovel_magnet_range": "§dShovel §7- §rMagnet Range"
 }
