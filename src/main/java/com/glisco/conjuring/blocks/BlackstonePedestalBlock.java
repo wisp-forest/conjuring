@@ -34,8 +34,8 @@ public class BlackstonePedestalBlock extends BlockWithEntity {
 
     private static final VoxelShape SHAPE = VoxelShapes.union(BASE1, BASE2, PILLAR, PLATE_SOUTH, PLATE_NORTH, PLATE_WEST, PLATE_EAST, ARM_NW, ARM_SW, ARM_SE, ARM_NE);
 
-
     //Construction stuff
+
     public BlackstonePedestalBlock() {
         super(Settings.copy(Blocks.BLACKSTONE).nonOpaque());
     }
@@ -91,15 +91,15 @@ public class BlackstonePedestalBlock extends BlockWithEntity {
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock()) {
 
-            BlackstonePedestalBlockEntity pedestalEntity = (BlackstonePedestalBlockEntity) world.getBlockEntity(pos);
+            if (world.getBlockEntity(pos) instanceof BlackstonePedestalBlockEntity pedestalEntity) {
+                if (!pedestalEntity.getItem().isEmpty()) {
+                    ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), pedestalEntity.getItem());
+                }
 
-            if (!pedestalEntity.getItem().isEmpty()) {
-                ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), pedestalEntity.getItem());
-            }
-
-            if (pedestalEntity.isLinked()) {
-                if (world.getBlockEntity(pedestalEntity.getLinkedFunnel()) instanceof RitualCore core) {
-                    core.removePedestal(pos, pedestalEntity.isActive());
+                if (pedestalEntity.isLinked()) {
+                    if (world.getBlockEntity(pedestalEntity.getLinkedFunnel()) instanceof RitualCore core) {
+                        core.removePedestal(pos, pedestalEntity.isActive());
+                    }
                 }
             }
 
