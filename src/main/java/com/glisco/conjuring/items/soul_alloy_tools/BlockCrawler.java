@@ -2,11 +2,9 @@ package com.glisco.conjuring.items.soul_alloy_tools;
 
 import com.glisco.conjuring.util.ConjuringParticleEvents;
 import io.wispforest.owo.ops.WorldOps;
-import io.wispforest.owo.particles.ServerParticles;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.RegistryKey;
@@ -81,7 +79,7 @@ public class BlockCrawler {
 
             WorldOps.breakBlockWithItem(world, pos, data.mineItem);
 
-            ServerParticles.issueEvent((ServerWorld) world, Vec3d.of(pos), ConjuringParticleEvents.BREAK_BLOCK, packetByteBuf -> {});
+            ConjuringParticleEvents.BREAK_BLOCK.execute(world, Vec3d.of(pos), null);
         }
     }
 

@@ -1,7 +1,6 @@
 package com.glisco.conjuring.blocks.conjurer;
 
 import com.glisco.conjuring.util.ConjuringParticleEvents;
-import io.wispforest.owo.particles.ServerParticles;
 import net.minecraft.entity.*;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -157,7 +156,7 @@ public abstract class ConjurerLogic {
                         }
 
                         //This worldEvent has different ID to work in conjunction with a mixin in the Client's WorldRenderer
-                        ServerParticles.issueEvent(world, Vec3d.of(pos), ConjuringParticleEvents.CONJURER_SUMMON);
+                        ConjuringParticleEvents.CONJURER_SUMMON.execute(world, Vec3d.of(pos), null);
                         if ($$13 instanceof MobEntity) {
                             ((MobEntity) $$13).playSpawnEffects();
                         }

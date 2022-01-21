@@ -12,7 +12,6 @@ import com.glisco.conjuring.items.soul_alloy_tools.ChangeToolModePacket;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyTool;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyToolAbilities;
 import com.glisco.conjuring.mixin.WorldRendererInvoker;
-import com.glisco.conjuring.util.ConjuringParticleEvents;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -73,8 +72,6 @@ public class ConjuringClient implements ClientModInitializer {
                 client.getNetworkHandler().sendPacket(ChangeToolModePacket.create());
             }
         });
-
-        ConjuringParticleEvents.Client.registerClientListeners();
 
         WorldRenderEvents.BLOCK_OUTLINE.register((worldRenderContext, blockOutlineContext) -> {
             final MinecraftClient client = MinecraftClient.getInstance();

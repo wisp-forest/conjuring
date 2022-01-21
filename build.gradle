@@ -40,6 +40,8 @@ repositories {
 
     maven { url 'https://maven.blamejared.com' }
 
+    mavenLocal()
+
     maven { url 'https://maven.wispforest.io' }
 }
 

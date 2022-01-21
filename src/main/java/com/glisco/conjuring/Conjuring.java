@@ -149,6 +149,8 @@ public class Conjuring implements ModInitializer {
 
         SoulAlloyToolAbilities.registerCommonEvents();
 
+        ConjuringParticleEvents.register();
+
         if (!Owo.DEBUG) return;
 
         CommandRegistrationCallback.EVENT.register(CreateConjuringFocusCommand::register);
