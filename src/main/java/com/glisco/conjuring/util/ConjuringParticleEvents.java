@@ -2,8 +2,8 @@ package com.glisco.conjuring.util;
 
 import com.glisco.conjuring.Conjuring;
 import io.wispforest.owo.particles.ClientParticles;
-import io.wispforest.owo.particles.system.ParticleSystem;
-import io.wispforest.owo.particles.system.ParticleSystemManager;
+import io.wispforest.owo.particles.systems.ParticleSystem;
+import io.wispforest.owo.particles.systems.ParticleSystemController;
 import io.wispforest.owo.util.VectorRandomUtils;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -13,7 +13,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class ConjuringParticleEvents {
 
-    public static final ParticleSystemManager MANAGER = new ParticleSystemManager(Conjuring.id("particles"));
+    public static final ParticleSystemController MANAGER = new ParticleSystemController(Conjuring.id("particles"));
 
     public static final ParticleSystem<Line> LINE = MANAGER.register(Line.class, (world, pos, data) -> {
         ClientParticles.setParticleCount(15);
