@@ -208,7 +208,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
             newEntity.updatePosition(pos.getX(), pos.getY() + 1, pos.getZ());
             world.spawnEntity(newEntity);
 
-            ConjuringParticleEvents.EXTRACTION_RITUAL_FINISHED.execute(world, Vec3d.of(pos.add(0, 1, 0)), false);
+            ConjuringParticleEvents.EXTRACTION_RITUAL_FINISHED.spawn(world, Vec3d.of(pos.add(0, 1, 0)), false);
             world.playSound(null, pos, SoundEvents.ENTITY_WITHER_HURT, SoundCategory.BLOCKS, 1, 0);
 
             ItemScatterer.spawn(world, pos.getX(), pos.getY() + 0.75, pos.getZ(), new ItemStack(this.item.getItem()));
@@ -261,7 +261,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
         if (pedestalPositions.size() >= 4) return false;
 
         if (!pedestalPositions.contains(pedestal)) pedestalPositions.add(pedestal);
-        if (!world.isClient) ConjuringParticleEvents.LINK_SOUL_FUNNEL.execute(world, Vec3d.of(pos), pedestal.subtract(pos));
+        if (!world.isClient) ConjuringParticleEvents.LINK_SOUL_FUNNEL.spawn(world, Vec3d.of(pos), pedestal.subtract(pos));
 
         this.markDirty();
         return true;
@@ -272,7 +272,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
         this.markDirty();
 
         BlockPos offset = new BlockPos(Vec3d.of(pedestal.subtract(pos)).normalize());
-        ConjuringParticleEvents.PEDESTAL_REMOVED.execute(world, Vec3d.of(pos), Direction.fromVector(offset));
+        ConjuringParticleEvents.PEDESTAL_REMOVED.spawn(world, Vec3d.of(pos), Direction.fromVector(offset));
 
         if (pedestalActive) {
             ritualExecutor.cancel();
@@ -423,7 +423,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
 
             boolean success = targetEntity.world.random.nextDouble() < funnel.ritualStability;
 
-            ConjuringParticleEvents.EXTRACTION_RITUAL_FINISHED.execute(world, Vec3d.of(pos.add(0, 2, 0)), success);
+            ConjuringParticleEvents.EXTRACTION_RITUAL_FINISHED.spawn(world, Vec3d.of(pos.add(0, 2, 0)), success);
             world.playSound(null, pos, success ? SoundEvents.ITEM_TOTEM_USE : SoundEvents.ENTITY_WITHER_HURT, SoundCategory.BLOCKS, 1, 0);
             world.setBlockState(pos, world.getBlockState(pos).with(SoulFunnelBlock.FILLED, false));
 
@@ -444,7 +444,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
             final var world = funnel.world;
             final var funnelPos = funnel.pos;
 
-            ConjuringParticleEvents.EXTRACTION_RITUAL_FINISHED.execute(world, Vec3d.of(funnelPos.add(0, 2, 0)), false);
+            ConjuringParticleEvents.EXTRACTION_RITUAL_FINISHED.spawn(world, Vec3d.of(funnelPos.add(0, 2, 0)), false);
             world.playSound(null, funnelPos, SoundEvents.ENTITY_WITHER_HURT, SoundCategory.BLOCKS, 1, 0);
 
             funnel.disablePedestals();

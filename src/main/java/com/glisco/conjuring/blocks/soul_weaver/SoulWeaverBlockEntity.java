@@ -112,7 +112,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore {
         this.markDirty();
 
         if (!world.isClient())
-            ConjuringParticleEvents.UNLINK_WEAVER.execute(world, Vec3d.of(pos), pedestal);
+            ConjuringParticleEvents.UNLINK_WEAVER.spawn(world, Vec3d.of(pos), pedestal);
 
         ritualExecutor.cancel();
 

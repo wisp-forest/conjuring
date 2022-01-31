@@ -66,7 +66,7 @@ public abstract class LivingEntityMixin extends Entity {
 
             if (!world.isClient()) {
                 final int entityIndex = i;
-                ConjuringParticleEvents.LINE.execute(world, getPos(), new ConjuringParticleEvents.Line(
+                ConjuringParticleEvents.LINE.spawn(world, getPos(), new ConjuringParticleEvents.Line(
                     getPos().add(0, 0.25 + random.nextDouble(), 0),
                     entities.get(entityIndex).getPos().add(0, 0.25 + random.nextDouble(), 0)
                 ));

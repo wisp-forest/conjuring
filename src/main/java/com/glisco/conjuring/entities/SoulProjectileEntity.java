@@ -70,7 +70,7 @@ public class SoulProjectileEntity extends SoulEntity {
 
         if (!e.isAlive() && damage == 1.5f) {
             e.dropItem(ConjuringItems.CONJURATION_ESSENCE);
-            ConjuringParticleEvents.EXTRACTION_RITUAL_FINISHED.execute(world, Vec3d.of(entityHitResult.getEntity().getBlockPos()), true);
+            ConjuringParticleEvents.EXTRACTION_RITUAL_FINISHED.spawn(world, Vec3d.of(entityHitResult.getEntity().getBlockPos()), true);
 
             if (!e.world.isClient) {
                 BlockPos pos = e.getBlockPos();

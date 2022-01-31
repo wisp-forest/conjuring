@@ -156,7 +156,7 @@ public abstract class ConjurerLogic {
                         }
 
                         //This worldEvent has different ID to work in conjunction with a mixin in the Client's WorldRenderer
-                        ConjuringParticleEvents.CONJURER_SUMMON.execute(world, Vec3d.of(pos), null);
+                        ConjuringParticleEvents.CONJURER_SUMMON.spawn(world, Vec3d.of(pos), null);
                         if ($$13 instanceof MobEntity) {
                             ((MobEntity) $$13).playSpawnEffects();
                         }

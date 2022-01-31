@@ -90,7 +90,7 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
             this.progress = Math.round(((float) smeltTime / (float) targetSmeltTime) * 32);
 
             if (world.random.nextDouble() < .05) {
-                ConjuringParticleEvents.SOULFIRE_FORGE_SOULS.execute(world, Vec3d.of(pos), null);
+                ConjuringParticleEvents.SOULFIRE_FORGE_SOULS.spawn(world, Vec3d.of(pos), null);
             }
 
         }
@@ -140,7 +140,7 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
         if (this.world.isClient()) return;
 
         this.smeltTime = targetSmeltTime;
-        ConjuringParticleEvents.CONJURER_SUMMON.execute(world, Vec3d.of(this.pos), null);
+        ConjuringParticleEvents.CONJURER_SUMMON.spawn(world, Vec3d.of(this.pos), null);
     }
 
     //Inventory Logic

@@ -79,7 +79,7 @@ public class BlockCrawler {
 
             WorldOps.breakBlockWithItem(world, pos, data.mineItem);
 
-            ConjuringParticleEvents.BREAK_BLOCK.execute(world, Vec3d.of(pos), null);
+            ConjuringParticleEvents.BREAK_BLOCK.spawn(world, Vec3d.of(pos), null);
         }
     }
 
