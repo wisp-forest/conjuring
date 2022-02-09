@@ -5,15 +5,12 @@ import com.glisco.conjuring.items.soul_alloy_tools.CopycatPlayerDamageSource;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyTool;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyToolAbilities;
 import com.glisco.conjuring.util.ConjuringParticleEvents;
-import io.wispforest.owo.particles.ServerParticles;
-import io.wispforest.owo.util.VectorSerializer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
@@ -69,10 +66,10 @@ public abstract class LivingEntityMixin extends Entity {
 
             if (!world.isClient()) {
                 final int entityIndex = i;
-                ServerParticles.issueEvent((ServerWorld) world, getPos(), ConjuringParticleEvents.LINE, byteBuf -> {
-                    VectorSerializer.write(getPos().add(0, 0.25 + random.nextDouble(), 0), byteBuf);
-                    VectorSerializer.write(entities.get(entityIndex).getPos().add(0, 0.25 + random.nextDouble(), 0), byteBuf);
-                });
+                ConjuringParticleEvents.LINE.spawn(world, getPos(), new ConjuringParticleEvents.Line(
+                    getPos().add(0, 0.25 + random.nextDouble(), 0),
+                    entities.get(entityIndex).getPos().add(0, 0.25 + random.nextDouble(), 0)
+                ));
             }
         }
 

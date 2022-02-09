@@ -10,7 +10,6 @@ import io.wispforest.owo.blockentity.LinearProcessExecutor;
 import io.wispforest.owo.ops.ItemOps;
 import io.wispforest.owo.ops.WorldOps;
 import io.wispforest.owo.particles.ClientParticles;
-import io.wispforest.owo.particles.ServerParticles;
 import io.wispforest.owo.util.VectorRandomUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -113,7 +112,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore {
         this.markDirty();
 
         if (!world.isClient())
-            ServerParticles.issueEvent((ServerWorld) world, Vec3d.of(pos), ConjuringParticleEvents.UNLINK_WEAVER, buffer -> buffer.writeBlockPos(pedestal));
+            ConjuringParticleEvents.UNLINK_WEAVER.spawn(world, Vec3d.of(pos), pedestal);
 
         ritualExecutor.cancel();
 

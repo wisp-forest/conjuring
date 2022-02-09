@@ -60,6 +60,7 @@ dependencies {
     modImplementation "vazkii.patchouli:Patchouli:${project.patchouli_version}"
 
     modImplementation "io.wispforest:owo-lib:${project.owo_version}"
+    include "io.wispforest:owo-sentinel:${project.owo_version}"
 
     modImplementation 'com.ptsmods:devlogin:1.2.1'
 
@@ -85,6 +86,8 @@ tasks.withType(JavaCompile).configureEach {
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
         it.options.release = targetJavaVersion
     }
+
+    options.compilerArgs << "-Xlint:deprecation"
 }
 
 java {

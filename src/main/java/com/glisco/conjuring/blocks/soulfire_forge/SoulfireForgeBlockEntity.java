@@ -5,7 +5,6 @@ import com.glisco.conjuring.util.ConjuringParticleEvents;
 import com.glisco.conjuring.util.SoulfireForgeScreenHandler;
 import io.wispforest.owo.ops.ItemOps;
 import io.wispforest.owo.particles.ClientParticles;
-import io.wispforest.owo.particles.ServerParticles;
 import io.wispforest.owo.util.ImplementedInventory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -20,7 +19,6 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.collection.DefaultedList;
@@ -92,7 +90,7 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
             this.progress = Math.round(((float) smeltTime / (float) targetSmeltTime) * 32);
 
             if (world.random.nextDouble() < .05) {
-                ServerParticles.issueEvent((ServerWorld) world, Vec3d.of(pos), ConjuringParticleEvents.SOULFIRE_FORGE_SOULS);
+                ConjuringParticleEvents.SOULFIRE_FORGE_SOULS.spawn(world, Vec3d.of(pos), null);
             }
 
         }
@@ -142,7 +140,7 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
         if (this.world.isClient()) return;
 
         this.smeltTime = targetSmeltTime;
-        ServerParticles.issueEvent((ServerWorld) world, Vec3d.of(this.pos), ConjuringParticleEvents.CONJURER_SUMMON);
+        ConjuringParticleEvents.CONJURER_SUMMON.spawn(world, Vec3d.of(this.pos), null);
     }
 
     //Inventory Logic
