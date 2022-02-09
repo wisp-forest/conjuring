@@ -24,8 +24,8 @@ public class SoulfireForgeScreen extends HandledScreen<ScreenHandler> {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        int x = (width - backgroundWidth) / 2;
-        int y = (height - backgroundHeight) / 2;
+        int x = getRootX();
+        int y = getRootY();
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
 
         int progress = ((SoulfireForgeScreenHandler) this.handler).getProgress();
@@ -45,5 +45,13 @@ public class SoulfireForgeScreen extends HandledScreen<ScreenHandler> {
         super.init();
         titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
         titleY--;
+    }
+
+    public int getRootX() {
+        return (width - backgroundWidth) / 2;
+    }
+
+    public int getRootY() {
+        return (height - backgroundHeight) / 2;
     }
 }

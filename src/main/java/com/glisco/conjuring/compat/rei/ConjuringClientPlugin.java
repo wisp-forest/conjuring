@@ -4,12 +4,15 @@ import com.glisco.conjuring.blocks.ConjuringBlocks;
 import com.glisco.conjuring.blocks.gem_tinkerer.GemTinkererRecipe;
 import com.glisco.conjuring.blocks.soul_weaver.SoulWeaverRecipe;
 import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeRecipe;
+import com.glisco.conjuring.client.ui.SoulfireForgeScreen;
 import com.glisco.conjuring.items.ConjuringItems;
 import dev.architectury.event.EventResult;
+import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.client.registry.entry.EntryRegistry;
+import me.shedaniel.rei.api.client.registry.screen.ScreenRegistry;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -31,6 +34,12 @@ public class ConjuringClientPlugin implements REIClientPlugin {
         registry.addWorkstations(GEM_TINKERING, EntryStacks.of(ConjuringBlocks.GEM_TINKERER));
         registry.addWorkstations(SOUL_WEAVING, EntryStacks.of(ConjuringBlocks.SOUL_WEAVER));
         registry.addWorkstations(SOUL_WEAVING, EntryStacks.of(ConjuringBlocks.BLACKSTONE_PEDESTAL));
+    }
+
+    @Override
+    public void registerScreens(ScreenRegistry registry) {
+        registry.registerClickArea(screen -> new Rectangle(screen.getRootX() + 98, screen.getRootY() + 27, 16, 26),
+                SoulfireForgeScreen.class, SOULFIRE_FORGE);
     }
 
     @Override
