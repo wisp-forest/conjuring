@@ -44,7 +44,7 @@ public class SoulfireForgeScreen extends HandledScreen<ScreenHandler> {
     protected void init() {
         super.init();
         titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
-        titleY--;
+        titleY = 5;
     }
 
     public int getRootX() {
