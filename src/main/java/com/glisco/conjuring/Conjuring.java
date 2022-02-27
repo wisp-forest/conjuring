@@ -18,8 +18,6 @@ import io.wispforest.owo.Owo;
 import io.wispforest.owo.itemgroup.OwoItemGroup;
 import io.wispforest.owo.ops.LootOps;
 import io.wispforest.owo.registration.reflect.FieldRegistrationHandler;
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -47,7 +45,7 @@ public class Conjuring implements ModInitializer {
 
     public static final String MOD_ID = "conjuring";
 
-    public static ConjuringConfig CONFIG;
+    public static ConjuringConfig CONFIG = new ConjuringConfig();
 
     public static final OwoItemGroup CONJURING_GROUP = new OwoItemGroup(Conjuring.id("general")) {
         @Override
@@ -118,8 +116,9 @@ public class Conjuring implements ModInitializer {
         Registry.register(Registry.ENTITY_TYPE, Conjuring.id("soul_magnet"), SOUL_MAGNET);
         Registry.register(Registry.ENTITY_TYPE, Conjuring.id("soul_harvester"), SOUL_HARVESTER);
 
-        AutoConfig.register(ConjuringConfig.class, JanksonConfigSerializer::new);
-        CONFIG = AutoConfig.getConfigHolder(ConjuringConfig.class).getConfig();
+        // TODO re-enable config serialization
+//        AutoConfig.register(ConjuringConfig.class, JanksonConfigSerializer::new);
+//        CONFIG = AutoConfig.getConfigHolder(ConjuringConfig.class).getConfig();
 
         CONJURING_GROUP.initialize();
 

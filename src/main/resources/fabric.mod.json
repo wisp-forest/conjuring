@@ -42,9 +42,7 @@
     "fabricloader": ">=0.9.2+build.206",
     "fabric": "*",
     "minecraft": ">=1.18",
-    "cloth-config2": ">=6.0.0",
-    "owo": ">=0.5.1+1.18",
-    "patchouli": "*"
+    "owo": ">=0.5.1+1.18"
   },
   "custom": {
     "modmenu": {

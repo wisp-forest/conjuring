@@ -4,7 +4,6 @@ import com.glisco.conjuring.blocks.ConjuringBlocks;
 import com.glisco.conjuring.items.ConjuringScepter;
 import com.glisco.conjuring.items.SuperiorConjuringScepter;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;

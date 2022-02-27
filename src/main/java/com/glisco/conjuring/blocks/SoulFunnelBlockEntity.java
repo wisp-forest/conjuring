@@ -261,7 +261,8 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
         if (pedestalPositions.size() >= 4) return false;
 
         if (!pedestalPositions.contains(pedestal)) pedestalPositions.add(pedestal);
-        if (!world.isClient) ConjuringParticleEvents.LINK_SOUL_FUNNEL.spawn(world, Vec3d.of(pos), pedestal.subtract(pos));
+        if (!world.isClient)
+            ConjuringParticleEvents.LINK_SOUL_FUNNEL.spawn(world, Vec3d.of(pos), pedestal.subtract(pos));
 
         this.markDirty();
         return true;
@@ -287,7 +288,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
     }
 
     public void calculateStability() {
-        if (world.getServer().getRegistryManager().get(Registry.BIOME_KEY).getKey(world.getBiome(pos)).orElse(null) == BiomeKeys.SOUL_SAND_VALLEY)
+        if (world.getBiome(pos).getKey().orElse(null) == BiomeKeys.SOUL_SAND_VALLEY)
             ritualStability += .1f;
 
         var drops = extractDrops(world.getServer().getLootManager().getTable(((MobEntity) ((ServerWorld) world).getEntity(ritualEntity)).getLootTable()));
@@ -370,7 +371,8 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
             final var world = funnel.getWorld();
 
             for (BlockPos pos : funnel.pedestalPositions) {
-                if (!(world.getBlockEntity(pos) instanceof BlackstonePedestalBlockEntity pedestal) || !pedestal.isActive()) continue;
+                if (!(world.getBlockEntity(pos) instanceof BlackstonePedestalBlockEntity pedestal) || !pedestal.isActive())
+                    continue;
 
                 BlockPos particleOrigin = pos.add(0, 1, 0);
                 BlockPos particleVelocity = pos.subtract(funnel.pos);

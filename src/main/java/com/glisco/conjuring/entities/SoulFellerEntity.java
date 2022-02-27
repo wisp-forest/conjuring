@@ -62,7 +62,7 @@ public class SoulFellerEntity extends SoulEntity {
 
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
-        if (BlockTags.LOGS.contains(world.getBlockState(blockHitResult.getBlockPos()).getBlock())) {
+        if (world.getBlockState(blockHitResult.getBlockPos()).isIn(BlockTags.LOGS)) {
             BlockCrawler.crawl(world, blockHitResult.getBlockPos(), getDataTracker().get(STACK), maxBlocks);
         }
         this.remove(RemovalReason.KILLED);
