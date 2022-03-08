@@ -1,0 +1,43 @@
+{
+  "name": "灵魂提取仪式",
+  "icon": "conjuring:soul_funnel",
+  "category": "conjuring:rituals",
+  "extra_recipe_mappings": {
+    "conjuring:soul_funnel": 0
+  },
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "知道如何进行$(thing)灵魂提取仪式$()是与召唤相关的技能中最重要的一个。这种杀伤性的仪式会暴力地抽走一个目标生物的灵魂，将其困在$(l:conjuring:basics/conjuring_focus)召唤核心$()中。$(p)这是一个天然不安全的仪式，据说没有基座时只有$(thing)十分之一$()的概率成功。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "要开始仪式，首先放置一个$(item)灵魂漏斗$()，并用$(item)灵魂沙$()填充它，并将$(l:conjuring:basics/conjuring_focus)召唤核心$()放在漏斗上面。有一个可选的步骤，就是将四个$(l:conjuring:rituals/ritual_basics)仪式基础$()中提到的基座摆在漏斗附近，并将它们连接到漏斗。通过以$(thing)该生物已知的掉落物$()的形式，向仪式提供生物精华的样本，有助于提高仪式的稳定性。据报告，提供四份样品并在$(thing)灵魂沙峡谷$()举行仪式能够确保仪式的成功。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "一切就绪以后，将目标生物引诱到漏斗上，然后用$(l:conjuring:basics/conjuring_scepters)召唤权杖$()$(thing)右键$()$(item)灵魂漏斗$()即可启动仪式。"
+    },
+    {
+      "type": "multiblock",
+      "name": "灵魂提取仪式",
+      "multiblock": {
+        "mapping": {
+          "0": "conjuring:soul_funnel[filled=true]",
+          "P": "conjuring:blackstone_pedestal"
+        },
+        "pattern": [
+          [
+            "___P___",
+            "___ ___",
+            "___ ___",
+            "P  0  P",
+            "___ ___",
+            "___ ___",
+            "___P___"
+          ]
+        ]
+      }
+    }
+  ]
+}

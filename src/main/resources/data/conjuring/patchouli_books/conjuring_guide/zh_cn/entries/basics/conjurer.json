@@ -1,0 +1,24 @@
+{
+  "name": "召唤之笼",
+  "icon": "conjuring:conjurer",
+  "category": "conjuring:basics",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "在一般人眼里，$(item)召唤之笼$()看起来可能和一般的刷怪笼没什么差别。然而，这只是一个目光短浅的结论。$(br)尽管事实上只不过是一个$(l:conjuring:basics/soulfire_forge#soul_alloy)灵魂合金$()做的笼子，$(item)召唤之笼$()却能让插入其中的$(l:conjuring:basics/conjuring_focus)召唤核心$()正常工作。"
+    },
+    {
+      "type": "conjuring:soulfire_forge_recipe",
+      "recipe": "conjuring:soulfire_forge/conjurer",
+      "text": "在这些小玩意被插入之后，$(item)召唤之笼$()就会开始召唤生物。尽管这最基本的工作已经很有用了，通过利用$(l:conjuring:basics/basic_gem_tinkering)符咒$()，我们仍然可以作出不少改进。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "不同的符咒将以以下方式影响$(item)召唤之笼$()：$(br) $(li)$(#007a18)≈ 急迫之咒：缩短召唤之笼每个周期间的时间间隔$()$(br) $(li)$(#a80f01)ღ 富足之咒：增加召唤之笼每个周期召唤出的生物数量$()$(br) $(li)$(#4d8184)λ 视域之咒：增加召唤之笼感知玩家存在的范围$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(#123f89)ʊ 无视之咒： 提高在决定要召唤的生物数量时，召唤之笼要无视的附近生物数量$()$(p)$(item)召唤之笼$()有一个应当被记住的一个特性，那就是，在接收到$(thing)红石信号$()时，生物召唤过程会立即被暂停。"
+    }
+  ]
+}

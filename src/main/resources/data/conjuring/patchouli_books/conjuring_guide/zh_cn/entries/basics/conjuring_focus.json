@@ -1,0 +1,16 @@
+{
+  "name": "召唤核心",
+  "icon": "conjuring:conjuring_focus",
+  "category": "conjuring:basics",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "灵魂是一种复杂的东西，所以捕获它们并不是一件容易的事。用来容纳灵魂的工具被称为$(item)召唤核心$()，一种用$(l:conjuring:basics/soul_composite_materials#soul_alloy)灵魂合金$()制作并用$(item)黄金$()强化的简易透镜。它们能够利用自身的特性来安全地容纳一些类型的灵魂的内部构造。"
+    },
+    {
+      "type": "conjuring:soulfire_forge_recipe",
+      "recipe": "conjuring:soulfire_forge/conjuring_focus",
+      "text": "在插入$(l:conjuring:basics/conjurer)召唤之笼$()后，$(item)召唤核心$()便会开始释放它们真正的力量，并召唤其保存的灵魂所对应的生物。$(p)你可以通过$(l:conjuring:rituals/ritual_of_extraction)灵魂提取仪式$()来将灵魂困在核心中。"
+    }
+  ]
+}

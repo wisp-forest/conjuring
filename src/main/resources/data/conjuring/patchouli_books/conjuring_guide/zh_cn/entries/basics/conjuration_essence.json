@@ -1,0 +1,24 @@
+{
+  "name": "灵魂精华",
+  "icon": "conjuring:conjuration_essence",
+  "category": "conjuring:basics",
+  "extra_recipe_mappings": {
+    "conjuring:lesser_conjuration_essence": 1
+  },
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(item)灵魂精华$()是生物召唤过程中最基本也是最重要的东西。由于包含了众多灵魂所共有的最基本的东西，$(item)灵魂精华$()也被用于制作许多其他材料。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "获取$(item)灵魂精华$()有两种途径：$(thing)破坏刷怪笼$()和$(thing)掠夺战利品宝箱$()。$(br)如果需要制作的东西对精华的浓度要求不高，只需要拿着一些精华$(thing)潜行右键$()任意石质方块的表面即可将它分解成四块$(item)小型灵魂精华$()。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "conjuring:crafting/conjuration_essence",
+      "text": "$(o)～场面一度十分尴尬$()",
+      "anchor": "lesser_essence"
+    }
+  ]
+}

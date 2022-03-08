@@ -1,0 +1,22 @@
+{
+  "name": "进阶宝石加工",
+  "icon": "conjuring:ignorance_gem",
+  "category": "conjuring:soul_alloy_tools",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "在完成$(l:conjuring:basics/basic_gem_tinkering)基本宝石加工$()之后，你应该认识到了$(item)宝石加工台$()的$(o)全部潜能$()。对于$(item)灵魂合金工具$()，宝石加工台能够将$(l:conjuring:basics/basic_gem_tinkering)灵能宝石$()的镶嵌至其中。这和常规的操作极其相似：将$(item)小型灵魂精华$()替换成要强化的工具，然后用宝石填充周围悬浮着的支柱。这种强化也有着其缺陷。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "conjuring:textures/gui/patchouli/gem_tinkerer_patchouli_1.png",
+        "conjuring:textures/gui/patchouli/gem_tinkerer_patchouli_2.png",
+        "conjuring:textures/gui/patchouli/gem_tinkerer_patchouli_3.png"
+      ],
+      "border": true,
+      "title": "镶嵌宝石",
+      "text": "每个工具至多可以镶嵌不超过 2 种，5 枚灵能宝石。"
+    }
+  ]
+}

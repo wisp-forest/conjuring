@@ -1,0 +1,24 @@
+{
+  "name": "召唤权杖",
+  "icon": "conjuring:conjuring_scepter",
+  "category": "conjuring:basics",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "熟练使用灵魂戏法中用到的装置绝非易事，比如，与它们中的大部分交互需要用到$(item)召唤权杖$()。把一颗$(item)钻石$()挂在$(item)烈焰棒$()上能够极大地增强它们的魔法能力，从而使得使用灵魂戏法的装置不再困难。"
+    },
+    {
+      "type": "conjuring:soulfire_forge_recipe",
+      "recipe": "conjuring:soulfire_forge/conjuring_scepter"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "然而，如果只是靠打破刷怪笼和掠夺战利品宝箱这些不可再生的手段获取$(l:conjuring:basics/conjuration_essence)灵魂精华$()，总有一天，精华会被用完。如果这种情况发生了，别担心，你并非走投无路。在所有可能的方法中，$(item)高阶灵魂权杖$()提供了最可靠的长期解决方案。通过利用插在顶端的$(item)下界之星$()与生俱来的神秘力量，它可以发射出一种叫做$(thing)灵魂飞弹$()的魔法飞弹，将死于飞弹的生物的灵魂凝结成$(l:conjuring:basics/conjuration_essence)灵魂精华$()。（译注：高阶灵魂权杖无限耐久，超远射程，小范围自动寻敌，就是伤害很低。）"
+    },
+    {
+      "type": "conjuring:soulfire_forge_recipe",
+      "recipe": "conjuring:soulfire_forge/superior_conjuring_scepter",
+      "text": "值得一提的是，只需轻轻$(thing)潜行右键$()，灵魂权杖还能立即完成$(l:conjuring:basics/soulfire_forge)灵魂火冶炼台$()正在进行的任何加工流程。"
+    }
+  ]
+}
