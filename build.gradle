@@ -4,7 +4,6 @@ plugins {
     id 'io.github.juuxel.loom-quiltflower' version '1.6.0'
 }
 
-// TODO re-declare patchouli and cloth dependency in fmj
 version = "${project.mod_version}+${project.minecraft_base_version}"
 group = project.maven_group
 
@@ -59,18 +58,14 @@ dependencies {
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}"
     modLocalRuntime "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
 
-    modImplementation ("com.terraformersmc:modmenu:${project.modmenu_version}") {
-        exclude group: 'net.fabricmc.fabric-api'
-    }
+    modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 
-//    modImplementation "vazkii.patchouli:Patchouli:${project.patchouli_version}"
+    modImplementation "vazkii.patchouli:Patchouli:${project.patchouli_version}"
 
     modImplementation "io.wispforest:owo-lib:${project.owo_version}"
     include "io.wispforest:owo-sentinel:${project.owo_version}"
 
-    modImplementation 'com.ptsmods:devlogin:1.2.1', {
-        exclude group: 'net.fabricmc.fabric-api'
-    }
+    modImplementation 'com.ptsmods:devlogin:2.0'
 
     testmodImplementation sourceSets.main.output
 }

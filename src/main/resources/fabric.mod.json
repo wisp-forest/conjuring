@@ -43,7 +43,8 @@
     "fabric": "*",
     "minecraft": ">=1.18.2",
     "owo": ">=0.5.1+1.18",
-    "cloth-config": ">=6.0.0"
+    "cloth-config": ">=6.0.0",
+    "patchouli": "*"
   },
   "custom": {
     "modmenu": {
