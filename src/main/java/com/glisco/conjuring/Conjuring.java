@@ -21,13 +21,13 @@ import io.wispforest.owo.registration.reflect.FieldRegistrationHandler;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.fabric.api.object.builder.v1.advancement.CriterionRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
@@ -144,8 +144,8 @@ public class Conjuring implements ModInitializer {
         LootOps.injectItem(ConjuringItems.CONJURATION_ESSENCE, .2f, LootTables.DESERT_PYRAMID_CHEST, LootTables.STRONGHOLD_CORRIDOR_CHEST);
         LootOps.injectItem(ConjuringItems.CONJURATION_ESSENCE, .05f, LootTables.STRONGHOLD_LIBRARY_CHEST);
 
-        CriterionRegistry.register(EXTRACTION_RITUAL_CRITERION);
-        CriterionRegistry.register(GEM_TINKERING_CRITERION);
+        Criteria.register(EXTRACTION_RITUAL_CRITERION);
+        Criteria.register(GEM_TINKERING_CRITERION);
 
         SoulAlloyToolAbilities.registerCommonEvents();
 

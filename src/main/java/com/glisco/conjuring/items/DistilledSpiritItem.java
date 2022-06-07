@@ -14,7 +14,6 @@ import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
@@ -25,7 +24,7 @@ import java.util.List;
 public class DistilledSpiritItem extends Item {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(new TranslatableText("text.conjuring.distilled_spirit_tooltip").formatted(Formatting.GRAY));
+        tooltip.add(Text.translatable("text.conjuring.distilled_spirit_tooltip").formatted(Formatting.GRAY));
     }
 
     public DistilledSpiritItem() {
@@ -75,7 +74,7 @@ public class DistilledSpiritItem extends Item {
             }
         }
 
-        world.emitGameEvent(user, GameEvent.DRINKING_FINISH, user.getCameraBlockPos());
+        user.emitGameEvent(GameEvent.DRINK);
         return stack;
     }
 }

@@ -27,7 +27,7 @@ public class ConjuringTestSuite {
     private static final BlockPos TEST_ORIGIN = new BlockPos(0, 1, 0);
     private static final List<BlockPos> PEDESTAL_OFFSETS;
 
-    @GameTest(structureName = "conjuring_testmod:linking_funnel", tickLimit = 20)
+    @GameTest(templateName = "conjuring_testmod:linking_funnel", tickLimit = 20)
     public void linkingFunnel(TestContext context) {
         var helper = new TestInteractionHelper(context);
 
@@ -45,7 +45,7 @@ public class ConjuringTestSuite {
         context.complete();
     }
 
-    @GameTest(structureName = "conjuring_testmod:linking_weaver", tickLimit = 20)
+    @GameTest(templateName = "conjuring_testmod:linking_weaver", tickLimit = 20)
     public void linkingWeaver(TestContext context) {
         var helper = new TestInteractionHelper(context);
 
@@ -63,7 +63,7 @@ public class ConjuringTestSuite {
         context.complete();
     }
 
-    @GameTest(structureName = "conjuring_testmod:pedestal_interaction", tickLimit = 20)
+    @GameTest(templateName = "conjuring_testmod:pedestal_interaction", tickLimit = 20)
     public void pedestalInteraction(TestContext context) {
         var helper = new TestInteractionHelper(context);
         var pedestal = context.getBlockEntity(TEST_ORIGIN);
@@ -79,7 +79,7 @@ public class ConjuringTestSuite {
         context.complete();
     }
 
-    @GameTest(structureName = "conjuring_testmod:magnet", tickLimit = 200)
+    @GameTest(templateName = "conjuring_testmod:magnet", tickLimit = 200)
     public void magnet(TestContext context) {
         var helper = new TestInteractionHelper(context);
         var playerPos = Vec3d.ofCenter(context.getAbsolutePos(new BlockPos(1, 1, 0)));
@@ -100,7 +100,7 @@ public class ConjuringTestSuite {
         });
     }
 
-    @GameTest(structureName = "conjuring_testmod:digger_veinmining")
+    @GameTest(templateName = "conjuring_testmod:digger_veinmining")
     public void diggerVeinmining(TestContext context) {
         var helper = new TestInteractionHelper(context);
         var playerPos = Vec3d.ofCenter(context.getAbsolutePos(new BlockPos(1, 1, 0)));
@@ -121,7 +121,7 @@ public class ConjuringTestSuite {
         });
     }
 
-    @GameTest(structureName = "conjuring_testmod:forge_crafting", tickLimit = 150)
+    @GameTest(templateName = "conjuring_testmod:forge_crafting", tickLimit = 150)
     public void forgeCrafting(TestContext context) {
         context.pushButton(new BlockPos(0, 2, 1));
 
@@ -133,7 +133,7 @@ public class ConjuringTestSuite {
         });
     }
 
-    @GameTest(structureName = "conjuring_testmod:gem_tinkerer_crafting", tickLimit = 150)
+    @GameTest(templateName = "conjuring_testmod:gem_tinkerer_crafting", tickLimit = 150)
     public void gemTinkererCrafting(TestContext context) {
         var helper = new TestInteractionHelper(context);
         helper.clickBlock(TEST_ORIGIN, true);
@@ -146,7 +146,7 @@ public class ConjuringTestSuite {
         });
     }
 
-    @GameTest(structureName = "conjuring_testmod:gem_tinkerer_aspecting", tickLimit = 150)
+    @GameTest(templateName = "conjuring_testmod:gem_tinkerer_aspecting", tickLimit = 150)
     public void gemTinkererAspecting(TestContext context) {
         var helper = new TestInteractionHelper(context);
         helper.clickBlock(TEST_ORIGIN, true);
@@ -163,7 +163,7 @@ public class ConjuringTestSuite {
         });
     }
 
-    @GameTest(structureName = "conjuring_testmod:extraction_ritual")
+    @GameTest(templateName = "conjuring_testmod:extraction_ritual")
     public void extractionRitual(TestContext context) {
         final var funnelPos = new BlockPos(3, 1, 3);
         final var helper = new TestInteractionHelper(context);
@@ -184,7 +184,7 @@ public class ConjuringTestSuite {
         });
     }
 
-    @GameTest(structureName = "conjuring_testmod:weaving_ritual", tickLimit = 200)
+    @GameTest(templateName = "conjuring_testmod:weaving_ritual", tickLimit = 200)
     public void weavingRitual(TestContext context) {
         final var weaverPos = new BlockPos(3, 1, 3);
         final var helper = new TestInteractionHelper(context);

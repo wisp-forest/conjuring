@@ -7,7 +7,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
@@ -31,7 +30,7 @@ public class ConjuringFocus extends Item {
         }
 
         String entityName = "entity." + stack.getNbt().getCompound("Entity").getString("id").replace(':', '.');
-        tooltip.add(new TranslatableText(entityName).formatted(Formatting.GRAY));
+        tooltip.add(Text.translatable(entityName).formatted(Formatting.GRAY));
     }
 
     public static ItemStack writeData(ItemStack focus, EntityType<?> entityType) {

@@ -19,7 +19,6 @@ import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -31,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GemTinkeringCategory implements DisplayCategory<GemTinkeringDisplay> {
-    private static final TranslatableText NAME = new TranslatableText("conjuring.gui.gem_tinkerer");
+    private static final Text NAME = Text.translatable("conjuring.gui.gem_tinkerer");
 
     @Override
     public CategoryIdentifier<? extends GemTinkeringDisplay> getCategoryIdentifier() {

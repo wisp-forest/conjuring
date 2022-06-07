@@ -22,11 +22,11 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
-import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
-import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ingame.HandledScreens;
+import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.util.InputUtil;
@@ -57,13 +57,13 @@ public class ConjuringClient implements ClientModInitializer {
 
         ClientPlayNetworking.registerGlobalReceiver(EntityCreatePacket.ID, EntityCreatePacket::onPacket);
 
-        FabricModelPredicateProviderRegistry.register(ConjuringItems.CONJURING_FOCUS, new Identifier("has_soul"), (stack, world, entity, seed) -> stack.getOrCreateNbt().contains("Entity") ? 1f : 0f);
-        FabricModelPredicateProviderRegistry.register(ConjuringItems.STABILIZED_CONJURING_FOCUS, new Identifier("has_soul"), (stack, world, entity, seed) -> stack.getOrCreateNbt().contains("Entity") ? 1f : 0f);
-        FabricModelPredicateProviderRegistry.register(ConjuringItems.ENCHIRIDION, new Identifier("is_sandwich"), (stack, world, entity, seed) -> stack.getOrCreateNbt().getBoolean("Sandwich") ? 1f : 0f);
-        FabricModelPredicateProviderRegistry.register(ConjuringItems.PIZZA, new Identifier("is_brinsa"), (stack, world, entity, seed) -> stack.getOrCreateNbt().contains("Brinsa") ? 1f : 0f);
+        ModelPredicateProviderRegistry.register(ConjuringItems.CONJURING_FOCUS, new Identifier("has_soul"), (stack, world, entity, seed) -> stack.getOrCreateNbt().contains("Entity") ? 1f : 0f);
+        ModelPredicateProviderRegistry.register(ConjuringItems.STABILIZED_CONJURING_FOCUS, new Identifier("has_soul"), (stack, world, entity, seed) -> stack.getOrCreateNbt().contains("Entity") ? 1f : 0f);
+        ModelPredicateProviderRegistry.register(ConjuringItems.ENCHIRIDION, new Identifier("is_sandwich"), (stack, world, entity, seed) -> stack.getOrCreateNbt().getBoolean("Sandwich") ? 1f : 0f);
+        ModelPredicateProviderRegistry.register(ConjuringItems.PIZZA, new Identifier("is_brinsa"), (stack, world, entity, seed) -> stack.getOrCreateNbt().contains("Brinsa") ? 1f : 0f);
 
-        ScreenRegistry.register(Conjuring.CONJURER_SCREEN_HANDLER_TYPE, ConjurerScreen::new);
-        ScreenRegistry.register(Conjuring.SOULFIRE_FORGE_SCREEN_HANDLER_TYPE, SoulfireForgeScreen::new);
+        HandledScreens.register(Conjuring.CONJURER_SCREEN_HANDLER_TYPE, ConjurerScreen::new);
+        HandledScreens.register(Conjuring.SOULFIRE_FORGE_SCREEN_HANDLER_TYPE, SoulfireForgeScreen::new);
 
         TOGGLE_TOOL_MODE = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.conjuring.toggle_tool_mode", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_ALT, "category.conjuring"));
 

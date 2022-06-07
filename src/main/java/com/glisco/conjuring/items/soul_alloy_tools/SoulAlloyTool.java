@@ -3,7 +3,9 @@ package com.glisco.conjuring.items.soul_alloy_tools;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.*;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.text.TextColor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,11 +84,11 @@ public interface SoulAlloyTool {
 
             String level = "●".repeat(Math.max(0, modifiers.getInt(key)));
 
-            tooltip.add(new TranslatableText(modifier.translation_key).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(modifier.textColor))).append(": §7" + level));
+            tooltip.add(Text.translatable(modifier.translation_key).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(modifier.textColor))).append(": §7" + level));
         }
 
         if (!tooltip.isEmpty() && stack.hasEnchantments()) {
-            tooltip.add(new LiteralText(""));
+            tooltip.add(Text.literal(""));
         }
 
         return tooltip;

@@ -27,8 +27,10 @@
     "main": [
       "com.glisco.conjuring.Conjuring"
     ],
-    "rei_plugins": [
-      "com.glisco.conjuring.compat.rei.ConjuringClientPlugin",
+    "rei_client": [
+      "com.glisco.conjuring.compat.rei.ConjuringClientPlugin"
+    ],
+    "rei_server": [
       "com.glisco.conjuring.compat.rei.ConjuringCommonPlugin"
     ],
     "modmenu": [
@@ -43,8 +45,7 @@
     "fabric": "*",
     "minecraft": ">=1.18.2",
     "owo": ">=0.5.1+1.18",
-    "cloth-config": ">=6.0.0",
-    "patchouli": "*"
+    "cloth-config": ">=6.0.0"
   },
   "custom": {
     "modmenu": {

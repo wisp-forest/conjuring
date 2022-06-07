@@ -10,6 +10,6 @@ void frx_startFragment(inout frx_FragmentData fragData) {
     fragData.ao = false;
 
     #ifdef LUMI_PBRX
-    pbr_roughness = 0.4;// make it smooth
+        pbr_roughness = 0.4;// make it smooth
     #endif
 }

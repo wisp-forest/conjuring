@@ -14,10 +14,8 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -86,13 +84,13 @@ public class ConjuringScepter extends Item {
             String result = finishLinking(world, scepter, pos);
             switch (result) {
                 case "SUCCESS":
-                    context.getPlayer().sendMessage(new TranslatableText("item.conjuring.conjuring_scepter.linking_success").formatted(Formatting.GREEN), true);
+                    context.getPlayer().sendMessage(Text.translatable("item.conjuring.conjuring_scepter.linking_success").formatted(Formatting.GREEN), true);
                     return ActionResult.SUCCESS;
                 case "PEDESTAL_LIMIT_REACHED":
-                    context.getPlayer().sendMessage(new TranslatableText("item.conjuring.conjuring_scepter.max_pedestals").formatted(Formatting.RED), true);
+                    context.getPlayer().sendMessage(Text.translatable("item.conjuring.conjuring_scepter.max_pedestals").formatted(Formatting.RED), true);
                     return ActionResult.PASS;
                 case "INCORRECT_POSITION":
-                    context.getPlayer().sendMessage(new TranslatableText("item.conjuring.conjuring_scepter.incorrect_position").formatted(Formatting.RED), true);
+                    context.getPlayer().sendMessage(Text.translatable("item.conjuring.conjuring_scepter.incorrect_position").formatted(Formatting.RED), true);
                     return ActionResult.PASS;
                 default:
                     return ActionResult.PASS;
@@ -138,9 +136,9 @@ public class ConjuringScepter extends Item {
         ParticleEffect particle = new DustParticleEffect(new Vec3f(1, 1, 1), 1);
         ClientParticles.spawnWithOffsetFromBlock(particle, world, pedestal, new Vec3d(0.5, 1.25, 0.5), 0.15);
 
-        MutableText linkingFrom = new TranslatableText("item.conjuring.conjuring_scepter.linking");
+        MutableText linkingFrom = Text.translatable("item.conjuring.conjuring_scepter.linking");
 
-        MutableText text = new LiteralText("§7[§3" + pedestal.getZ() + " " + pedestal.getY() + " " + pedestal.getX() + "§7]");
+        MutableText text = Text.literal("§7[§3" + pedestal.getZ() + " " + pedestal.getY() + " " + pedestal.getX() + "§7]");
 
         Text message = linkingFrom.append(text);
         player.sendMessage(message, true);
