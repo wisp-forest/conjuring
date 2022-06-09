@@ -26,7 +26,7 @@ public class ItemStackMixin {
     @Final
     private Item item;
 
-    @ModifyVariable(method = "damage(ILjava/util/Random;Lnet/minecraft/server/network/ServerPlayerEntity;)Z", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getLevel(Lnet/minecraft/enchantment/Enchantment;Lnet/minecraft/item/ItemStack;)I", shift = At.Shift.AFTER), ordinal = 1)
+    @ModifyVariable(method = "damage(ILnet/minecraft/util/math/random/Random;Lnet/minecraft/server/network/ServerPlayerEntity;)Z", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getLevel(Lnet/minecraft/enchantment/Enchantment;Lnet/minecraft/item/ItemStack;)I", shift = At.Shift.AFTER), ordinal = 1)
     public int applyIgnorance(int i) {
         if (!(item instanceof SoulAlloyTool)) return i;
         if (item == ConjuringItems.SOUL_ALLOY_SWORD) return i;

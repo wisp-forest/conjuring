@@ -57,11 +57,11 @@ dependencies {
 
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}"
     modLocalRuntime "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
-    modLocalRuntime "dev.architectury:architectury-fabric:5.4.14"
+//    modLocalRuntime "dev.architectury:architectury-fabric:5.4.14"
 
     modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 
-//    modImplementation "vazkii.patchouli:Patchouli:${project.patchouli_version}"
+    modImplementation "vazkii.patchouli:Patchouli:${project.patchouli_version}"
 
     modImplementation "io.wispforest:owo-lib:${project.owo_version}"
     include "io.wispforest:owo-sentinel:${project.owo_version}"

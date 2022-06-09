@@ -9,8 +9,5 @@
     "fabric-gametest": [
       "com.glisco.conjuring_testmod.ConjuringTestSuite"
     ]
-  },
-  "mixins": [
-    "conjuring_testmod.mixins.json"
-  ]
+  }
 }

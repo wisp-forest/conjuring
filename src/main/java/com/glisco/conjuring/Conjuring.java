@@ -23,7 +23,7 @@ import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
+import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
@@ -129,9 +129,9 @@ public class Conjuring implements ModInitializer {
         Registry.register(Registry.SOUND_EVENT, Conjuring.id("block.soul_weaver.weee"), WEEE);
 
         if (CONFIG.conjurer_config.fortuneEnabled) {
-            LootTableLoadingCallback.EVENT.register((resourceManager, manager, id, supplier, setter) -> {
+            LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) -> {
                 if (!new Identifier("blocks/spawner").equals(id)) return;
-                supplier.withPool(LootPool.builder().with(
+                tableBuilder.pool(LootPool.builder().with(
                                 ItemEntry.builder(ConjuringItems.CONJURATION_ESSENCE).apply(ApplyBonusLootFunction.oreDrops(Enchantments.FORTUNE)))
                         .build());
             });
