@@ -51,11 +51,11 @@ public abstract class ConjurerLogic {
 
     // This method is made public
     public boolean isPlayerInRange(World world, BlockPos pos) {
-        return world.isPlayerInRange((double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5, (double) this.requiredPlayerRange);
+        return world.getReceivedRedstonePower(pos) == 0 && (!requiresPlayer || world.isPlayerInRange((double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5, (double) this.requiredPlayerRange));
     }
 
     public void clientTick(World world, BlockPos pos) {
-        if (!this.isPlayerInRange(world, pos)) {
+        if (!this.isPlayerInRange(world, pos)  || !active) {
             this.field_9159 = this.field_9161;
         } else {
             Random random = world.getRandom();
