@@ -91,6 +91,7 @@
 
   "text.autoconfig.conjuring.option.conjurer_config": "Conjurer",
   "text.autoconfig.conjuring.option.conjurer_config.fortuneEnabled": "Fortune Enabled",
+  "text.autoconfig.conjuring.option.conjurer_config.respectSilkTouch": "Respect Silk Touch",
   "text.autoconfig.conjuring.option.conjurer_config.abundance_multiplier": "Abundance Multiplier",
   "text.autoconfig.conjuring.option.conjurer_config.haste_multiplier": "Haste Multiplier",
   "text.autoconfig.conjuring.option.conjurer_config.scope_multiplier": "Scope Multiplier",

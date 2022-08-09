@@ -35,8 +35,13 @@ import net.minecraft.entity.SpawnGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTables;
+import net.minecraft.loot.condition.InvertedLootCondition;
+import net.minecraft.loot.condition.MatchToolLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.ApplyBonusLootFunction;
+import net.minecraft.predicate.NumberRange;
+import net.minecraft.predicate.item.EnchantmentPredicate;
+import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
@@ -128,16 +133,26 @@ public class Conjuring implements ModInitializer {
 
         Registry.register(Registry.SOUND_EVENT, Conjuring.id("block.soul_weaver.weee"), WEEE);
 
-        if (CONFIG.conjurer_config.fortuneEnabled) {
-            LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) -> {
-                if (!new Identifier("blocks/spawner").equals(id)) return;
-                tableBuilder.pool(LootPool.builder().with(
-                                ItemEntry.builder(ConjuringItems.CONJURATION_ESSENCE).apply(ApplyBonusLootFunction.oreDrops(Enchantments.FORTUNE)))
-                        .build());
-            });
-        } else {
-            LootOps.injectItem(ConjuringItems.CONJURATION_ESSENCE, 1, new Identifier("blocks/spawner"));
-        }
+        final var spawnerLootTableId = new Identifier("blocks/spawner");
+        LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) -> {
+            if (!spawnerLootTableId.equals(id)) return;
+
+            var itemEntry = ItemEntry.builder(ConjuringItems.CONJURATION_ESSENCE);
+            if (CONFIG.conjurer_config.fortuneEnabled) {
+                itemEntry.apply(ApplyBonusLootFunction.oreDrops(Enchantments.FORTUNE));
+            }
+
+            if (CONFIG.conjurer_config.respectSilkTouch) {
+                itemEntry.conditionally(InvertedLootCondition.builder(
+                        MatchToolLootCondition.builder(ItemPredicate.Builder.create().enchantment(
+                                new EnchantmentPredicate(Enchantments.SILK_TOUCH, NumberRange.IntRange.atLeast(1))
+                        )))
+                );
+            }
+
+            tableBuilder.pool(LootPool.builder().with(itemEntry).build());
+        });
+
 
         LootOps.injectItem(ConjuringItems.CONJURATION_ESSENCE, .35f, LootTables.SIMPLE_DUNGEON_CHEST);
         LootOps.injectItem(ConjuringItems.CONJURATION_ESSENCE, .175f, LootTables.BASTION_TREASURE_CHEST);
