@@ -1,6 +1,7 @@
 package com.glisco.conjuring.items;
 
 import com.glisco.conjuring.Conjuring;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
@@ -19,7 +20,7 @@ public class ConjuringFocus extends Item {
     private final boolean hasGlint;
 
     public ConjuringFocus(boolean hasGlint) {
-        super(new Settings().group(Conjuring.CONJURING_GROUP).maxCount(1).rarity(Rarity.UNCOMMON));
+        super(new OwoItemSettings().group(Conjuring.CONJURING_GROUP).maxCount(1).rarity(Rarity.UNCOMMON));
         this.hasGlint = hasGlint;
     }
 

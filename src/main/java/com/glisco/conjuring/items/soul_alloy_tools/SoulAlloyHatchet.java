@@ -3,6 +3,7 @@ package com.glisco.conjuring.items.soul_alloy_tools;
 import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.entities.SoulFellerEntity;
 import com.glisco.conjuring.items.ConjuringItems;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
@@ -21,7 +22,7 @@ import java.util.List;
 public class SoulAlloyHatchet extends AxeItem implements SoulAlloyTool {
 
     public SoulAlloyHatchet() {
-        super(SoulAlloyToolMaterial.INSTANCE, 5.0f, -3.0f, new Settings().group(Conjuring.CONJURING_GROUP).rarity(Rarity.UNCOMMON));
+        super(SoulAlloyToolMaterial.INSTANCE, 5.0f, -3.0f, new OwoItemSettings().group(Conjuring.CONJURING_GROUP).rarity(Rarity.UNCOMMON));
     }
 
     @Override

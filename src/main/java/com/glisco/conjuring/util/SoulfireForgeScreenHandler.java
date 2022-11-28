@@ -2,6 +2,7 @@ package com.glisco.conjuring.util;
 
 import com.glisco.conjuring.Conjuring;
 import io.wispforest.owo.client.screens.ScreenUtils;
+import io.wispforest.owo.client.screens.SlotGenerator;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -42,7 +43,7 @@ public class SoulfireForgeScreenHandler extends ScreenHandler {
             }
         });
 
-        ScreenUtils.generatePlayerSlots(8, 84, playerInventory, this::addSlot);
+        SlotGenerator.begin(this::addSlot, 8, 84).playerInventory(playerInventory);
     }
 
     public Inventory getInventory() {

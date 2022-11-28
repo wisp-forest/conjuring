@@ -1,6 +1,7 @@
 package com.glisco.conjuring.items;
 
 import com.glisco.conjuring.Conjuring;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Rarity;
@@ -12,7 +13,7 @@ public class SoulRod extends Item {
     }
 
     public SoulRod() {
-        this(new Settings().group(Conjuring.CONJURING_GROUP).rarity(Rarity.UNCOMMON));
+        this(new OwoItemSettings().group(Conjuring.CONJURING_GROUP).rarity(Rarity.UNCOMMON));
     }
 
     @Override

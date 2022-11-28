@@ -3,6 +3,7 @@ package com.glisco.conjuring.items.soul_alloy_tools;
 import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.entities.SoulProjectileEntity;
 import com.glisco.conjuring.items.ConjuringItems;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityGroup;
@@ -22,7 +23,7 @@ import java.util.List;
 public class SoulAlloySword extends SwordItem implements SoulAlloyTool {
 
     public SoulAlloySword() {
-        super(SoulAlloyToolMaterial.INSTANCE, 3, -2.4f, new Settings().group(Conjuring.CONJURING_GROUP).rarity(Rarity.UNCOMMON));
+        super(SoulAlloyToolMaterial.INSTANCE, 3, -2.4f, new OwoItemSettings().group(Conjuring.CONJURING_GROUP).rarity(Rarity.UNCOMMON));
     }
 
     @Override

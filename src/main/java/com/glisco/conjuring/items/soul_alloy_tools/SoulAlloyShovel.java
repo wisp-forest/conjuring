@@ -2,6 +2,7 @@ package com.glisco.conjuring.items.soul_alloy_tools;
 
 import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.entities.SoulMagnetEntity;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -21,7 +22,7 @@ import java.util.List;
 public class SoulAlloyShovel extends ShovelItem implements SoulAlloyTool {
 
     public SoulAlloyShovel() {
-        super(SoulAlloyToolMaterial.INSTANCE, 1.5f, -3.0f, new Settings().group(Conjuring.CONJURING_GROUP).rarity(Rarity.UNCOMMON));
+        super(SoulAlloyToolMaterial.INSTANCE, 1.5f, -3.0f, new OwoItemSettings().group(Conjuring.CONJURING_GROUP).rarity(Rarity.UNCOMMON));
     }
 
     @Override

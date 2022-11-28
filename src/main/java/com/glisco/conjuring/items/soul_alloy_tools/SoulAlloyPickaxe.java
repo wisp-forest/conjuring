@@ -3,6 +3,7 @@ package com.glisco.conjuring.items.soul_alloy_tools;
 import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.entities.SoulDiggerEntity;
 import com.glisco.conjuring.items.ConjuringItems;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -19,7 +20,7 @@ import java.util.List;
 public class SoulAlloyPickaxe extends PickaxeItem implements SoulAlloyTool {
 
     public SoulAlloyPickaxe() {
-        super(SoulAlloyToolMaterial.INSTANCE, 1, -2.8f, new Settings().group(Conjuring.CONJURING_GROUP).rarity(Rarity.UNCOMMON));
+        super(SoulAlloyToolMaterial.INSTANCE, 1, -2.8f, new OwoItemSettings().group(Conjuring.CONJURING_GROUP).rarity(Rarity.UNCOMMON));
     }
 
     @Override

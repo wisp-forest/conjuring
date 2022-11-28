@@ -3,6 +3,7 @@ package com.glisco.conjuring.items;
 import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeBlockEntity;
 import com.glisco.conjuring.entities.SoulProjectileEntity;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -19,7 +20,7 @@ public class SuperiorConjuringScepter extends ConjuringScepter {
     }
 
     public SuperiorConjuringScepter() {
-        this(new Settings().group(Conjuring.CONJURING_GROUP).maxCount(1).rarity(Rarity.RARE));
+        this(new OwoItemSettings().group(Conjuring.CONJURING_GROUP).maxCount(1).rarity(Rarity.RARE));
     }
 
     @Override

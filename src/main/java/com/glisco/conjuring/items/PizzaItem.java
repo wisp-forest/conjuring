@@ -1,5 +1,6 @@
 package com.glisco.conjuring.items;
 
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
@@ -11,7 +12,7 @@ import net.minecraft.world.World;
 public class PizzaItem extends Item {
 
     public PizzaItem() {
-        super(new Settings().food(new FoodComponent.Builder().hunger(20).saturationModifier(0.75f).build()));
+        super(new OwoItemSettings().food(new FoodComponent.Builder().hunger(20).saturationModifier(0.75f).build()));
     }
 
     @Override

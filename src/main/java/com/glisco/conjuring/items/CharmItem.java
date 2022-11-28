@@ -15,17 +15,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class GemItem extends Item {
+public class CharmItem extends Item {
 
     public final SoulAlloyTool.SoulAlloyModifier modifier;
 
-    public GemItem(SoulAlloyTool.SoulAlloyModifier modifier) {
-        super(new OwoItemSettings().rarity(Rarity.UNCOMMON).group(Conjuring.CONJURING_GROUP));
+    public CharmItem(SoulAlloyTool.SoulAlloyModifier modifier) {
+        super(new OwoItemSettings().rarity(Rarity.UNCOMMON).maxCount(8).group(Conjuring.CONJURING_GROUP));
         this.modifier = modifier;
-    }
-
-    public SoulAlloyTool.SoulAlloyModifier getModifier() {
-        return modifier;
     }
 
     @Override

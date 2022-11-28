@@ -9,6 +9,7 @@ import com.glisco.conjuring.blocks.soul_weaver.SoulWeaverBlock;
 import com.glisco.conjuring.blocks.soul_weaver.SoulWeaverBlockEntity;
 import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeBlock;
 import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeBlockEntity;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import io.wispforest.owo.registration.reflect.AutoRegistryContainer;
 import io.wispforest.owo.registration.reflect.BlockRegistryContainer;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
@@ -29,7 +30,7 @@ public class ConjuringBlocks implements BlockRegistryContainer {
 
     @Override
     public BlockItem createBlockItem(Block block, String identifier) {
-        return new BlockItem(block, new Item.Settings().group(Conjuring.CONJURING_GROUP));
+        return new BlockItem(block, new OwoItemSettings().group(Conjuring.CONJURING_GROUP));
     }
 
     public static class Entities implements AutoRegistryContainer<BlockEntityType<?>> {

@@ -1,6 +1,7 @@
 package com.glisco.conjuring.items;
 
 import com.glisco.conjuring.Conjuring;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.minecraft.block.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,7 +17,7 @@ public class ConjurationEssence extends Item {
     }
 
     public ConjurationEssence() {
-        this(new Settings().group(Conjuring.CONJURING_GROUP).rarity(Rarity.RARE));
+        this(new OwoItemSettings().group(Conjuring.CONJURING_GROUP).rarity(Rarity.RARE));
     }
 
     @Override

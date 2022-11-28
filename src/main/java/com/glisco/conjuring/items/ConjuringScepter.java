@@ -3,6 +3,7 @@ package com.glisco.conjuring.items;
 import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.blocks.BlackstonePedestalBlockEntity;
 import com.glisco.conjuring.blocks.RitualCore;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import io.wispforest.owo.particles.ClientParticles;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
@@ -29,7 +30,7 @@ public class ConjuringScepter extends Item {
     }
 
     public ConjuringScepter() {
-        this(new Settings().group(Conjuring.CONJURING_GROUP).maxCount(1).rarity(Rarity.UNCOMMON));
+        this(new OwoItemSettings().group(Conjuring.CONJURING_GROUP).maxCount(1).rarity(Rarity.UNCOMMON));
     }
 
     public static boolean isLinking(ItemStack scepter) {

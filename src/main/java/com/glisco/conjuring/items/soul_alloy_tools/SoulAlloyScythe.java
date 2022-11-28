@@ -3,6 +3,7 @@ package com.glisco.conjuring.items.soul_alloy_tools;
 import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.entities.SoulHarvesterEntity;
 import com.glisco.conjuring.items.ConjuringItems;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CropBlock;
@@ -30,7 +31,7 @@ public class SoulAlloyScythe extends HoeItem implements SoulAlloyTool {
             block == blockState.getBlock() && blockState.getBlock() instanceof CropBlock crop && crop.isMature(blockState);
 
     public SoulAlloyScythe() {
-        super(SoulAlloyToolMaterial.INSTANCE, 2, -3.0f, new Settings().group(Conjuring.CONJURING_GROUP).rarity(Rarity.UNCOMMON));
+        super(SoulAlloyToolMaterial.INSTANCE, 2, -3.0f, new OwoItemSettings().group(Conjuring.CONJURING_GROUP).rarity(Rarity.UNCOMMON));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.glisco.conjuring.items;
 
 import com.glisco.conjuring.Conjuring;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -24,7 +25,7 @@ public class EnchiridionItem extends Item {
     private final Identifier BOOK_ID = Conjuring.id("conjuring_guide");
 
     public EnchiridionItem() {
-        super(new Settings().maxCount(1).group(Conjuring.CONJURING_GROUP));
+        super(new OwoItemSettings().maxCount(1).group(Conjuring.CONJURING_GROUP));
     }
 
     @Override
