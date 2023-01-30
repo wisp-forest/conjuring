@@ -20,8 +20,8 @@ import net.minecraft.text.Text;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
+import org.joml.Vector3f;
 
 public class ConjuringScepter extends Item {
 
@@ -134,7 +134,7 @@ public class ConjuringScepter extends Item {
         BlockPos pedestal = getLinkingFrom(stack);
         ClientPlayerEntity player = (ClientPlayerEntity) entity;
 
-        ParticleEffect particle = new DustParticleEffect(new Vec3f(1, 1, 1), 1);
+        ParticleEffect particle = new DustParticleEffect(new Vector3f(1, 1, 1), 1);
         ClientParticles.spawnWithOffsetFromBlock(particle, world, pedestal, new Vec3d(0.5, 1.25, 0.5), 0.15);
 
         MutableText linkingFrom = Text.translatable("item.conjuring.conjuring_scepter.linking");

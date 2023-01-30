@@ -20,8 +20,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
 import java.util.Collections;
@@ -70,7 +70,7 @@ public class GemTinkererBlockEntityRenderer implements BlockEntityRenderer<GemTi
 
         matrixStack.translate(0.125, 0.85, 0.125);
         matrixStack.scale(0.5f, 0.5f, 0.5f);
-        matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(itemRotation));
+        matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(itemRotation));
         itemRenderer.renderItem(items.get(0), ModelTransformation.Mode.GROUND, i, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider, 0);
 
         if (particles) {
@@ -92,7 +92,7 @@ public class GemTinkererBlockEntityRenderer implements BlockEntityRenderer<GemTi
 
         matrixStack.translate(0.0625, 0.425, 0.0625);
         matrixStack.scale(0.25f, 0.25f, 0.25f);
-        matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(scaledRotation));
+        matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(scaledRotation));
         itemRenderer.renderItem(items.get(1), ModelTransformation.Mode.GROUND, i, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider, 0);
 
         if (particles && !items.get(1).isEmpty()) spawnItemParticles(world, pos, 0.1, 0.45, 0.5 * twoPi);
@@ -108,7 +108,7 @@ public class GemTinkererBlockEntityRenderer implements BlockEntityRenderer<GemTi
 
         matrixStack.translate(0.0625, 0.425, 0.0625);
         matrixStack.scale(0.25f, 0.25f, 0.25f);
-        matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(scaledRotation));
+        matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(scaledRotation));
         itemRenderer.renderItem(items.get(2), ModelTransformation.Mode.GROUND, i, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider, 0);
 
         if (particles && !items.get(2).isEmpty()) spawnItemParticles(world, pos, 0.45, 0.1, 1.5 * twoPi);
@@ -124,7 +124,7 @@ public class GemTinkererBlockEntityRenderer implements BlockEntityRenderer<GemTi
 
         matrixStack.translate(0.0625, 0.425, 0.0625);
         matrixStack.scale(0.25f, 0.25f, 0.25f);
-        matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(scaledRotation));
+        matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(scaledRotation));
         itemRenderer.renderItem(items.get(3), ModelTransformation.Mode.GROUND, i, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider, 0);
 
         if (particles && !items.get(3).isEmpty()) spawnItemParticles(world, pos, 0.45, 0.8, twoPi);
@@ -140,7 +140,7 @@ public class GemTinkererBlockEntityRenderer implements BlockEntityRenderer<GemTi
 
         matrixStack.translate(0.0625, 0.425, 0.0625);
         matrixStack.scale(0.25f, 0.25f, 0.25f);
-        matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(scaledRotation));
+        matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(scaledRotation));
         itemRenderer.renderItem(items.get(4), ModelTransformation.Mode.GROUND, i, OverlayTexture.DEFAULT_UV, matrixStack, vertexConsumerProvider, 0);
 
         if (particles && !items.get(4).isEmpty()) spawnItemParticles(world, pos, 0.8, 0.45, 0);

@@ -32,9 +32,6 @@
     ],
     "rei_server": [
       "com.glisco.conjuring.compat.rei.ConjuringCommonPlugin"
-    ],
-    "modmenu": [
-      "com.glisco.conjuring.compat.config.ModMenuIntegration"
     ]
   },
   "mixins": [
@@ -45,7 +42,9 @@
     "fabric": "*",
     "minecraft": ">=1.18.2",
     "owo": ">=0.5.1+1.18",
-    "cloth-config": ">=6.0.0",
+    "cloth-config": ">=6.0.0"
+  },
+  "recommends": {
     "patchouli": "*"
   },
   "custom": {

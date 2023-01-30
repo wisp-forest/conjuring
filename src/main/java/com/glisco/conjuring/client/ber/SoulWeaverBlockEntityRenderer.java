@@ -13,8 +13,8 @@ import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
 
 import java.util.Objects;
 
@@ -40,8 +40,8 @@ public class SoulWeaverBlockEntityRenderer implements BlockEntityRenderer<SoulWe
 
             matrixStack.translate(0.5 + xOffset, 1.25 + yOffset + scale, 0.5 + zOffset);
             matrixStack.scale(0.75f, 0.75f, 0.75f);
-            matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion((float) (System.currentTimeMillis() / (60d) % 360d)));
-            matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion((float) Math.pow(scale * 100, 3)));
+            matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees((float) (System.currentTimeMillis() / (60d) % 360d)));
+            matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees((float) Math.pow(scale * 100, 3)));
 
             MinecraftClient.getInstance().getItemRenderer().renderItem(item, ModelTransformation.Mode.GROUND, false, matrixStack, vertexConsumerProvider, lightAbove, OverlayTexture.DEFAULT_UV, itemModel);
 

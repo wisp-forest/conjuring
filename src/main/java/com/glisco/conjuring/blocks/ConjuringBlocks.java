@@ -10,14 +10,12 @@ import com.glisco.conjuring.blocks.soul_weaver.SoulWeaverBlockEntity;
 import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeBlock;
 import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeBlockEntity;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
-import io.wispforest.owo.registration.reflect.AutoRegistryContainer;
+import io.wispforest.owo.registration.reflect.BlockEntityRegistryContainer;
 import io.wispforest.owo.registration.reflect.BlockRegistryContainer;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.util.registry.Registry;
 
 public class ConjuringBlocks implements BlockRegistryContainer {
 
@@ -33,7 +31,7 @@ public class ConjuringBlocks implements BlockRegistryContainer {
         return new BlockItem(block, new OwoItemSettings().group(Conjuring.CONJURING_GROUP));
     }
 
-    public static class Entities implements AutoRegistryContainer<BlockEntityType<?>> {
+    public static class Entities implements BlockEntityRegistryContainer {
 
         public static final BlockEntityType<ConjurerBlockEntity> CONJURER = FabricBlockEntityTypeBuilder.create(ConjurerBlockEntity::new, ConjuringBlocks.CONJURER).build();
         public static final BlockEntityType<SoulfireForgeBlockEntity> SOULFIRE_FORGE = FabricBlockEntityTypeBuilder.create(SoulfireForgeBlockEntity::new, ConjuringBlocks.SOULFIRE_FORGE).build();
@@ -42,15 +40,5 @@ public class ConjuringBlocks implements BlockRegistryContainer {
         public static final BlockEntityType<SoulWeaverBlockEntity> SOUL_WEAVER = FabricBlockEntityTypeBuilder.create(SoulWeaverBlockEntity::new, ConjuringBlocks.SOUL_WEAVER).build();
         public static final BlockEntityType<GemTinkererBlockEntity> GEM_TINKERER = FabricBlockEntityTypeBuilder.create(GemTinkererBlockEntity::new, ConjuringBlocks.GEM_TINKERER).build();
 
-        @Override
-        public Registry<BlockEntityType<?>> getRegistry() {
-            return Registry.BLOCK_ENTITY_TYPE;
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public Class<BlockEntityType<?>> getTargetFieldType() {
-            return (Class<BlockEntityType<?>>) (Object) BlockEntityType.class;
-        }
     }
 }

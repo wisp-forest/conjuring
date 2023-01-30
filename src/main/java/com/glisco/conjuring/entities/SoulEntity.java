@@ -4,7 +4,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
-import net.minecraft.network.Packet;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -15,11 +14,6 @@ public abstract class SoulEntity extends ProjectileEntity {
 
     protected SoulEntity(EntityType<? extends ProjectileEntity> entityType, World world) {
         super(entityType, world);
-    }
-
-    @Override
-    public Packet<?> createSpawnPacket() {
-        return EntityCreatePacket.create(this);
     }
 
     @Override

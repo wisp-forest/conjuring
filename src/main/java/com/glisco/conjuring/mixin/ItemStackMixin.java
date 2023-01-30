@@ -48,7 +48,7 @@ public class ItemStackMixin {
         modifierMap = HashMultimap.create(modifierMap);
         modifierMap.removeAll(EntityAttributes.GENERIC_ATTACK_SPEED);
 
-        modifierMap.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ItemAccessor.getAttackSpeedModifierID(), "Weapon modifier", -2.4f + Math.pow(SoulAlloyTool.getModifierLevel(thisStack, SoulAlloyTool.SoulAlloyModifier.HASTE), Conjuring.CONFIG.tools_config.sword_haste_exponent), EntityAttributeModifier.Operation.ADDITION));
+        modifierMap.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ItemAccessor.getAttackSpeedModifierID(), "Weapon modifier", -2.4f + Math.pow(SoulAlloyTool.getModifierLevel(thisStack, SoulAlloyTool.SoulAlloyModifier.HASTE), Conjuring.CONFIG.tools_config.sword_haste_exponent()), EntityAttributeModifier.Operation.ADDITION));
 
         cir.setReturnValue(modifierMap);
     }

@@ -10,7 +10,7 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.tag.BlockTags;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.world.World;
 
@@ -20,7 +20,7 @@ public class SoulFellerEntity extends SoulEntity {
     private static final TrackedData<ItemStack> STACK;
 
     static {
-        STACK = DataTracker.registerData(SoulDiggerEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
+        STACK = DataTracker.registerData(SoulFellerEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
     }
 
     public SoulFellerEntity(World world, LivingEntity owner) {

@@ -22,9 +22,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Matrix4f;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.RotationAxis;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class GemTinkeringCategory implements DisplayCategory<GemTinkeringDisplay
 
     @Override
     public Renderer getIcon() {
-        return EntryStacks.of(  ConjuringBlocks.GEM_TINKERER);
+        return EntryStacks.of(ConjuringBlocks.GEM_TINKERER);
     }
 
     @Override
@@ -78,10 +78,10 @@ public class GemTinkeringCategory implements DisplayCategory<GemTinkeringDisplay
 
                 float scale = (float) Math.sin(System.currentTimeMillis() / 1000d % Math.PI);
 
-                RenderSystem.getModelViewStack().multiply(Vec3f.POSITIVE_Y.getRadialQuaternion((float) Math.sin(System.currentTimeMillis() / 1000d)));
+                RenderSystem.getModelViewStack().multiply(RotationAxis.POSITIVE_Y.rotationDegrees((float) Math.sin(System.currentTimeMillis() / 1000d)));
                 RenderSystem.getModelViewStack().scale(scale, scale, MathHelper.sqrt(scale));
 
-                matrixStack.multiplyPositionMatrix(new Matrix4f(Vec3f.POSITIVE_Z.getDegreesQuaternion((float) (System.currentTimeMillis() / 30d % 360))));
+                matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees((float) (System.currentTimeMillis() / 30d % 360)));
                 matrixStack.scale(.5f, .5f, .5f);
                 matrixStack.translate(200 + 15 * (float) Math.sin(System.currentTimeMillis() / 60d % (2 * Math.PI)), 100 + 35 * (float) Math.cos(System.currentTimeMillis() / 60d % (2 * Math.PI)), 100);
             }
@@ -91,10 +91,10 @@ public class GemTinkeringCategory implements DisplayCategory<GemTinkeringDisplay
             matrixStack.push();
             matrixStack.translate(bounds.getCenterX() - 83, bounds.getCenterY() + 28, 0);
             matrixStack.scale((float) bounds.getWidth() * 0.75f, (float) (bounds.getWidth() + bounds.getHeight()) / -3.15f, (float) bounds.getHeight() * 0.75f);
-            matrixStack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(30));
-            matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(45));
+            matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(30));
+            matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(45));
 
-            RenderSystem.setupGuiFlatDiffuseLighting(Util.make(new Vec3f(0.2F, 1.0F, -0.7F), Vec3f::normalize), Util.make(new Vec3f(-0.2F, 1.0F, 0.7F), Vec3f::normalize));
+            RenderSystem.setupGuiFlatDiffuseLighting(Util.make(new Vector3f(0.2F, 1.0F, -0.7F), Vector3f::normalize), Util.make(new Vector3f(-0.2F, 1.0F, 0.7F), Vector3f::normalize));
 
             MinecraftClient.getInstance().getBlockEntityRenderDispatcher().get(tinkerer).render(tinkerer, 0, matrixStack, immediate, 15728880, OverlayTexture.DEFAULT_UV);
 

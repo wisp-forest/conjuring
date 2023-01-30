@@ -5,7 +5,6 @@ import com.glisco.conjuring.blocks.ConjuringBlocks;
 import com.glisco.conjuring.client.ber.*;
 import com.glisco.conjuring.client.ui.ConjurerScreen;
 import com.glisco.conjuring.client.ui.SoulfireForgeScreen;
-import com.glisco.conjuring.entities.EntityCreatePacket;
 import com.glisco.conjuring.entities.SoulEntityRenderer;
 import com.glisco.conjuring.items.ConjuringItems;
 import com.glisco.conjuring.items.soul_alloy_tools.ChangeToolModePacket;
@@ -18,7 +17,6 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
@@ -29,8 +27,6 @@ import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import org.lwjgl.glfw.GLFW;
@@ -56,8 +52,6 @@ public class ConjuringClient implements ClientModInitializer {
         EntityRendererRegistry.register(Conjuring.SOUL_MAGNET, SoulEntityRenderer::new);
         EntityRendererRegistry.register(Conjuring.SOUL_HARVESTER, SoulEntityRenderer::new);
 
-        ClientPlayNetworking.registerGlobalReceiver(EntityCreatePacket.ID, EntityCreatePacket::onPacket);
-
         ModelPredicateProviderRegistry.register(ConjuringItems.CONJURING_FOCUS, new Identifier("has_soul"), (stack, world, entity, seed) -> stack.getOrCreateNbt().contains("Entity") ? 1f : 0f);
         ModelPredicateProviderRegistry.register(ConjuringItems.STABILIZED_CONJURING_FOCUS, new Identifier("has_soul"), (stack, world, entity, seed) -> stack.getOrCreateNbt().contains("Entity") ? 1f : 0f);
         ModelPredicateProviderRegistry.register(ConjuringItems.ENCHIRIDION, new Identifier("is_sandwich"), (stack, world, entity, seed) -> stack.getOrCreateNbt().getBoolean("Sandwich") ? 1f : 0f);
@@ -66,7 +60,7 @@ public class ConjuringClient implements ClientModInitializer {
         HandledScreens.register(Conjuring.CONJURER_SCREEN_HANDLER_TYPE, ConjurerScreen::new);
         HandledScreens.register(Conjuring.SOULFIRE_FORGE_SCREEN_HANDLER_TYPE, SoulfireForgeScreen::new);
 
-        TOGGLE_TOOL_MODE = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.conjuring.toggle_tool_mode", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_ALT, "category.conjuring"));
+        TOGGLE_TOOL_MODE = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.conjuring.toggle_tool_mode", GLFW.GLFW_KEY_LEFT_ALT, "category.conjuring"));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (TOGGLE_TOOL_MODE.wasPressed()) {

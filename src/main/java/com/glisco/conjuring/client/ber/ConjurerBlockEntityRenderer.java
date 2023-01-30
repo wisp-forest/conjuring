@@ -9,7 +9,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.RotationAxis;
 
 public class ConjurerBlockEntityRenderer implements BlockEntityRenderer<ConjurerBlockEntity> {
 
@@ -33,9 +33,9 @@ public class ConjurerBlockEntityRenderer implements BlockEntityRenderer<Conjurer
             if (!conjurerBlockEntity.getLogic().isPlayerInRange(conjurerBlockEntity.getWorld(), conjurerBlockEntity.getPos())) tickDelta = 0;
 
             matrixStack.translate(0.0D, 0.4000000059604645D, 0.0D);
-            matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion((float) MathHelper.lerp(tickDelta, mobSpawnerLogic.method_8279(), mobSpawnerLogic.method_8278()) * 10.0F));
+            matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees((float) MathHelper.lerp(tickDelta, mobSpawnerLogic.method_8279(), mobSpawnerLogic.method_8278()) * 10.0F));
             matrixStack.translate(0.0D, -0.20000000298023224D, 0.0D);
-            matrixStack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-30.0F));
+            matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-30.0F));
             matrixStack.scale(g, g, g);
             MinecraftClient.getInstance().getEntityRenderDispatcher().render(entity, 0.0D, 0.0D, 0.0D, 0.0F, tickDelta, matrixStack, vertexConsumerProvider, i);
         }

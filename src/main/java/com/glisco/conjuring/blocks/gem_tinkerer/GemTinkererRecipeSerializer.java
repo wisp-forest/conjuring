@@ -10,8 +10,8 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.registry.Registry;
 
 public class GemTinkererRecipeSerializer implements RecipeSerializer<GemTinkererRecipe> {
 
@@ -39,8 +39,8 @@ public class GemTinkererRecipeSerializer implements RecipeSerializer<GemTinkerer
             index++;
         }
 
-        Item resultItem = Registry.ITEM.getOrEmpty(Identifier.tryParse(recipe.result.get("item").getAsString())).orElseThrow(() -> new JsonSyntaxException("No such item '" + recipe.result.get("item").getAsString() + "'"));
-        ItemStack result = new ItemStack(resultItem, recipe.result.get("count").getAsInt());
+        var resultItem = JsonHelper.getItem(recipe.result, "item");
+        var result = new ItemStack(resultItem, recipe.result.get("count").getAsInt());
 
         return new GemTinkererRecipe(id, result, inputs);
     }

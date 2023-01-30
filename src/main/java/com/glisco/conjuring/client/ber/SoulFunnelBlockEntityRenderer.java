@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.RotationAxis;
 
 public class SoulFunnelBlockEntityRenderer implements BlockEntityRenderer<SoulFunnelBlockEntity> {
 
@@ -28,7 +28,7 @@ public class SoulFunnelBlockEntityRenderer implements BlockEntityRenderer<SoulFu
 
         matrixStack.translate(0.5, 0.45 + (float) 1.5 * Math.sin(Math.PI * ((float) (System.currentTimeMillis() / 20d % 200d)) / 100f) / 50f, 0.405);
         matrixStack.scale(0.75f, 0.75f, 0.75f);
-        matrixStack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90f));
+        matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90f));
 
         MinecraftClient.getInstance().getItemRenderer().renderItem(item, ModelTransformation.Mode.GROUND, false, matrixStack, vertexConsumerProvider, light, OverlayTexture.DEFAULT_UV, itemModel);
 

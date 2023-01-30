@@ -60,8 +60,8 @@ public abstract class LivingEntityMixin extends Entity {
 
         entities.remove(player);
 
-        for (int i = 0; i < Conjuring.CONFIG.tools_config.sword_scope_max_entities && i < entities.size(); i++) {
-            entities.get(i).damage(new CopycatPlayerDamageSource(player), amount * Conjuring.CONFIG.tools_config.sword_scope_damage_multiplier * scopeLevel);
+        for (int i = 0; i < Conjuring.CONFIG.tools_config.sword_scope_max_entities() && i < entities.size(); i++) {
+            entities.get(i).damage(new CopycatPlayerDamageSource(player), amount * Conjuring.CONFIG.tools_config.sword_scope_damage_multiplier() * scopeLevel);
             player.getMainHandStack().damage(4 * scopeLevel, player, playerEntity -> player.sendToolBreakStatus(Hand.MAIN_HAND));
 
             if (!world.isClient()) {
@@ -91,7 +91,7 @@ public abstract class LivingEntityMixin extends Entity {
 
         if (!SoulAlloyToolAbilities.canArmorPierce(player)) return;
 
-        float pierceDamage = SoulAlloyTool.getModifierLevel(player.getMainHandStack(), SoulAlloyTool.SoulAlloyModifier.IGNORANCE) * Conjuring.CONFIG.tools_config.sword_ignorance_multiplier * amount;
+        float pierceDamage = SoulAlloyTool.getModifierLevel(player.getMainHandStack(), SoulAlloyTool.SoulAlloyModifier.IGNORANCE) * Conjuring.CONFIG.tools_config.sword_ignorance_multiplier() * amount;
         applyDamage(new CopycatPlayerDamageSource(player).pierceArmor(), pierceDamage);
         damageReduction = pierceDamage;
     }

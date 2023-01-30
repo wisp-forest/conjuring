@@ -7,8 +7,8 @@ import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
+import org.joml.Vector3f;
 
 public class SoulMagnetEntity extends SoulEntity {
 
@@ -50,7 +50,7 @@ public class SoulMagnetEntity extends SoulEntity {
             ticksInBlock = 0;
         }
 
-        int range = Conjuring.CONFIG.tools_config.shovel_magnet_range;
+        int range = Conjuring.CONFIG.tools_config.shovel_magnet_range();
         Box box = new Box(getPos().subtract(range, range, range), getPos().add(range, range, range));
 
         for (ItemEntity item : world.getEntitiesByType(EntityType.ITEM, box, ItemEntity::isAlive)) {
@@ -58,7 +58,7 @@ public class SoulMagnetEntity extends SoulEntity {
             item.setVelocity(difference);
 
             if (world.isClient && difference.length() > 0.5) {
-                ParticleEffect dust = new DustParticleEffect(new Vec3f(0.5f, 1f, 1f), 0.5f);
+                ParticleEffect dust = new DustParticleEffect(new Vector3f(0.5f, 1f, 1f), 0.5f);
                 ClientParticles.setParticleCount(45);
                 ClientParticles.spawnLine(dust, world, getPos(), item.getPos(), 0);
             }

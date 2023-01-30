@@ -72,13 +72,13 @@ public class SoulAlloyScythe extends HoeItem implements SoulAlloyTool {
 
             int scopeGems = SoulAlloyTool.getModifierLevel(user.getStackInHand(hand), SoulAlloyModifier.SCOPE);
             if (scopeGems > 0) {
-                harvester.setMaxBlocks((int) (8 + Math.pow(scopeGems, Conjuring.CONFIG.tools_config.scythe_scope_exponent) * 8));
+                harvester.setMaxBlocks((int) (8 + Math.pow(scopeGems, Conjuring.CONFIG.tools_config.scythe_scope_exponent()) * 8));
             }
 
             world.spawnEntity(harvester);
 
-            user.getItemCooldownManager().set(ConjuringItems.SOUL_ALLOY_SCYTHE, Conjuring.CONFIG.tools_config.scythe_secondary_cooldown);
-            user.getStackInHand(hand).damage(Conjuring.CONFIG.tools_config.scythe_secondary_base_durability_cost + Conjuring.CONFIG.tools_config.scythe_secondary_per_scope_durability_cost,
+            user.getItemCooldownManager().set(ConjuringItems.SOUL_ALLOY_SCYTHE, Conjuring.CONFIG.tools_config.scythe_secondary_cooldown());
+            user.getStackInHand(hand).damage(Conjuring.CONFIG.tools_config.scythe_secondary_base_durability_cost() + Conjuring.CONFIG.tools_config.scythe_secondary_per_scope_durability_cost(),
                     user, player -> player.sendToolBreakStatus(hand));
         }
 

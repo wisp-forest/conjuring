@@ -4,14 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.registry.Registry;
 
 public class SoulWeaverRecipeSerializer implements RecipeSerializer<SoulWeaverRecipe> {
 
@@ -37,8 +36,8 @@ public class SoulWeaverRecipeSerializer implements RecipeSerializer<SoulWeaverRe
             index++;
         }
 
-        Item resultItem = Registry.ITEM.getOrEmpty(Identifier.tryParse(recipe.result.get("item").getAsString())).orElseThrow(() -> new JsonSyntaxException("No such item '" + recipe.result.get("item").getAsString() + "'"));
-        ItemStack result = new ItemStack(resultItem, recipe.result.get("count").getAsInt());
+        var resultItem = JsonHelper.getItem(recipe.result, "item");
+        var result = new ItemStack(resultItem, recipe.result.get("count").getAsInt());
 
         return new SoulWeaverRecipe(id, result, inputs, recipe.transferTag);
     }

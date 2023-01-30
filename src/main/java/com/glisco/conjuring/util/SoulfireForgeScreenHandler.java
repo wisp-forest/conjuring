@@ -60,7 +60,7 @@ public class SoulfireForgeScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public ItemStack transferSlot(PlayerEntity player, int invSlot) {
+    public ItemStack quickMove(PlayerEntity player, int invSlot) {
         return ScreenUtils.handleSlotTransfer(this, invSlot, this.inventory.size());
     }
 

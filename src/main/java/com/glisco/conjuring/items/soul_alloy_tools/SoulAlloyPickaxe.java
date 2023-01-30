@@ -37,8 +37,8 @@ public class SoulAlloyPickaxe extends PickaxeItem implements SoulAlloyTool {
 
             world.spawnEntity(digger);
 
-            user.getItemCooldownManager().set(ConjuringItems.SOUL_ALLOY_PICKAXE, Conjuring.CONFIG.tools_config.pickaxe_secondary_cooldown);
-            user.getStackInHand(hand).damage(Conjuring.CONFIG.tools_config.pickaxe_secondary_durability_cost, user, player -> player.sendToolBreakStatus(hand));
+            user.getItemCooldownManager().set(ConjuringItems.SOUL_ALLOY_PICKAXE, Conjuring.CONFIG.tools_config.pickaxe_secondary_cooldown());
+            user.getStackInHand(hand).damage(Conjuring.CONFIG.tools_config.pickaxe_secondary_durability_cost(), user, player -> player.sendToolBreakStatus(hand));
         }
 
         return TypedActionResult.success(user.getStackInHand(hand));

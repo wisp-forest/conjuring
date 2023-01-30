@@ -7,10 +7,10 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Rarity;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -38,7 +38,7 @@ public class ConjuringFocus extends Item {
         NbtCompound stackTag = focus.getOrCreateNbt();
 
         NbtCompound entityTag = new NbtCompound();
-        entityTag.putString("id", Registry.ENTITY_TYPE.getId(entityType).toString());
+        entityTag.putString("id", Registries.ENTITY_TYPE.getId(entityType).toString());
 
         stackTag.put("Entity", entityTag);
         focus.setNbt(stackTag);

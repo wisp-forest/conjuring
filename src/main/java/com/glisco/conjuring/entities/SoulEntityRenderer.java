@@ -12,8 +12,8 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
+import org.joml.Vector3f;
 
 public class SoulEntityRenderer extends EntityRenderer<SoulEntity> {
 
@@ -24,7 +24,7 @@ public class SoulEntityRenderer extends EntityRenderer<SoulEntity> {
     @Override
     public void render(SoulEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
 
-        ParticleEffect dust = new DustParticleEffect(new Vec3f(0.5f, 1f, 1f), 0.75f);
+        ParticleEffect dust = new DustParticleEffect(new Vector3f(0.5f, 1f, 1f), 0.75f);
 
         World world = MinecraftClient.getInstance().world;
         boolean allParticles = MinecraftClient.getInstance().options.getParticles().getValue() == ParticlesMode.ALL;

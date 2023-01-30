@@ -31,8 +31,7 @@ public class TestInteractionHelper {
         this.player = new ServerPlayerEntity(this.ctx.getWorld().getServer(),
                 this.ctx.getWorld(),
                 new GameProfile(UUID.randomUUID(),
-                        "test-mock-player"),
-                null
+                        "test-mock-player")
         ) {
             public boolean isSpectator() {
                 return false;

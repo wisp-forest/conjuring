@@ -1,28 +1,24 @@
-package com.glisco.conjuring.compat.config;
+package com.glisco.conjuring;
 
-import me.shedaniel.autoconfig.ConfigData;
-import me.shedaniel.autoconfig.annotation.Config;
-import me.shedaniel.autoconfig.annotation.ConfigEntry;
+import io.wispforest.owo.config.annotation.Config;
+import io.wispforest.owo.config.annotation.Expanded;
+import io.wispforest.owo.config.annotation.Modmenu;
+import io.wispforest.owo.config.annotation.Nest;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Config(name = "conjuring")
-public class ConjuringConfig implements ConfigData {
+@Modmenu(modId = "conjuring")
+@Config(name = "conjuring", wrapperName = "ConjuringConfig")
+public class ConjuringConfigModel {
 
-    public ConjuringConfig() {
-        conjurer_config.conjurer_blacklist.add("minecraft:wither");
-        conjurer_config.conjurer_blacklist.add("minecraft:ender_dragon");
-    }
-
-    @ConfigEntry.Gui.CollapsibleObject
+    @Nest
+    @Expanded
     public ConjurerConfig conjurer_config = new ConjurerConfig();
 
-    @ConfigEntry.Gui.CollapsibleObject
-    public ToolsConfig tools_config = new ToolsConfig();
-
     public static class ConjurerConfig {
+
         @Comment("Whether Fortune should affect the amount of Conjuration Essence you can get when breaking a spawner")
         public boolean fortuneEnabled = false;
 
@@ -42,8 +38,12 @@ public class ConjuringConfig implements ConfigData {
         public int ignorance_multiplier = 2;
 
         @Comment("Which mob types you shouldn't be able to create a conjuring focus for")
-        public List<String> conjurer_blacklist = new ArrayList<>();
+        public List<String> conjurer_blacklist = new ArrayList<>(List.of("minecraft:wither", "minecraft:ender_dragon"));
     }
+
+    @Nest
+    @Expanded
+    public ToolsConfig tools_config = new ToolsConfig();
 
     public static class ToolsConfig {
 

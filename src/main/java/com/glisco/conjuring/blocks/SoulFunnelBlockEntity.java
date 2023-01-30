@@ -39,6 +39,7 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -50,7 +51,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeKeys;
 import org.jetbrains.annotations.NotNull;
@@ -219,7 +219,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
             return true;
         }
 
-        if (!(e instanceof MobEntity) || Conjuring.CONFIG.conjurer_config.conjurer_blacklist.contains(Registry.ENTITY_TYPE.getId(e.getType()).toString()))
+        if (!(e instanceof MobEntity) || Conjuring.CONFIG.conjurer_config.conjurer_blacklist().contains(Registries.ENTITY_TYPE.getId(e.getType()).toString()))
             return false;
 
         if (item.getOrCreateNbt().contains("Entity")) return false;
@@ -329,7 +329,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
                     JsonObject entryObject = entryElement.getAsJsonObject();
                     if (!"minecraft:item".equals(JsonHelper.getString(entryObject, "type"))) continue;
 
-                    extractedDrops.add(Registry.ITEM.get(new Identifier(JsonHelper.getString(entryObject, "name"))));
+                    extractedDrops.add(Registries.ITEM.get(new Identifier(JsonHelper.getString(entryObject, "name"))));
                 }
             }
 
