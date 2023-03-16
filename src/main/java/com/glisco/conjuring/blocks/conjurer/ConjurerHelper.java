@@ -59,6 +59,5 @@ public class ConjurerHelper {
         conjurer.getLogic().setMinSpawnDelay(maxSpawnDelay / 4);
         conjurer.getLogic().setSpawnCount(spawnCount);
         conjurer.getLogic().updateSpawns(conjurer.getWorld(), conjurer.getPos());
-        conjurer.markDirty();
     }
 }
