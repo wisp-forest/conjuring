@@ -66,15 +66,15 @@ public class ConjuringTestSuite {
     @GameTest(templateName = "conjuring_testmod:pedestal_interaction", tickLimit = 20)
     public void pedestalInteraction(TestContext context) {
         var helper = new TestInteractionHelper(context);
-        var pedestal = context.getBlockEntity(TEST_ORIGIN);
+        var pedestal = (BlackstonePedestalBlockEntity) context.getBlockEntity(TEST_ORIGIN);
 
         helper.clickBlock(TEST_ORIGIN, false);
         if (!helper.getPlayer().getStackInHand(Hand.MAIN_HAND).isOf(ConjuringItems.SOUL_ALLOY))
             throw new GameTestException("Expected some tasty soul alloy in my hjand");
 
         helper.clickBlock(TEST_ORIGIN, false);
-        if (!helper.getPlayer().getStackInHand(Hand.MAIN_HAND).isEmpty())
-            throw new GameTestException("Expected a clean hand");
+        if (!pedestal.getItem().isOf(ConjuringItems.SOUL_ALLOY))
+            throw new GameTestException("Expected soul alloy on pedestal");
 
         context.complete();
     }

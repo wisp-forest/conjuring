@@ -38,13 +38,10 @@
     "conjuring.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.9.2+build.206",
+    "fabricloader": "*",
     "fabric": "*",
-    "minecraft": ">=1.18.2",
-    "owo": ">=0.5.1+1.18",
-    "cloth-config": ">=6.0.0"
-  },
-  "recommends": {
+    "minecraft": ">=1.19.3",
+    "owo": ">=0.10.3+1.18",
     "patchouli": "*"
   },
   "custom": {
