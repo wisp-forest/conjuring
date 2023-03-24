@@ -9,7 +9,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Box;
@@ -47,7 +46,7 @@ public abstract class LivingEntityMixin extends Entity {
     public void applySwordAoe(DamageSource source, float amount, CallbackInfo ci) {
         if (source instanceof CopycatPlayerDamageSource) return;
         if (!source.getName().equals("player")) return;
-        if (!(source instanceof EntityDamageSource)) return;
+        if (source.getAttacker() == null) return;
 
         final PlayerEntity player = (PlayerEntity) source.getAttacker();
 
@@ -67,25 +66,23 @@ public abstract class LivingEntityMixin extends Entity {
             if (!world.isClient()) {
                 final int entityIndex = i;
                 ConjuringParticleEvents.LINE.spawn(world, getPos(), new ConjuringParticleEvents.Line(
-                    getPos().add(0, 0.25 + random.nextDouble(), 0),
-                    entities.get(entityIndex).getPos().add(0, 0.25 + random.nextDouble(), 0)
+                        getPos().add(0, 0.25 + random.nextDouble(), 0),
+                        entities.get(entityIndex).getPos().add(0, 0.25 + random.nextDouble(), 0)
                 ));
             }
         }
 
     }
 
-
     // ---
     //Ignorance handlers
     // ---
-
 
     //Calculates the amount of armor piercing damage and applies it
     @Inject(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;applyDamage(Lnet/minecraft/entity/damage/DamageSource;F)V"))
     public void calculateDamageReduction(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         if (!source.getName().equals("player")) return;
-        if (!(source instanceof EntityDamageSource)) return;
+        if (source.getAttacker() == null) return;
 
         final PlayerEntity player = (PlayerEntity) source.getAttacker();
 

@@ -10,10 +10,12 @@ import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.ProjectileDamageSource;
+import net.minecraft.entity.damage.DamageType;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
@@ -25,6 +27,8 @@ import net.minecraft.world.World;
 import java.util.HashMap;
 
 public class SoulProjectileEntity extends SoulEntity {
+
+    private static final RegistryKey<DamageType> DAMAGE_TYPE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Conjuring.id("soul_projectile"));
 
     private float damage = 1.5f;
     private static final HashMap<SoulProjectileEntity, Entity> TARGET_ENTITIES = new HashMap<>();
@@ -111,7 +115,7 @@ public class SoulProjectileEntity extends SoulEntity {
     }
 
     public DamageSource createDamageSource() {
-        return new ProjectileDamageSource("soul_projectile", this, getOwner()).setProjectile();
+        return new DamageSource(this.world.getRegistryManager().get(RegistryKeys.DAMAGE_TYPE).getEntry(DAMAGE_TYPE).get(), this.getOwner());
     }
 
 }

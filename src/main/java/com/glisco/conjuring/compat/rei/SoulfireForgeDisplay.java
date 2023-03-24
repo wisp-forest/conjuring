@@ -24,7 +24,7 @@ public class SoulfireForgeDisplay implements Display {
     public SoulfireForgeDisplay(SoulfireForgeRecipe recipe) {
         this.smeltTime = recipe.getSmeltTime();
         this.input = EntryIngredients.ofIngredients(recipe.getInputs());
-        this.output = Collections.singletonList(EntryIngredients.of(recipe.getOutput()));
+        this.output = Collections.singletonList(EntryIngredients.of(recipe.getOutput(null)));
     }
 
     public SoulfireForgeDisplay(int smeltTime, List<EntryIngredient> input, List<EntryIngredient> output) {

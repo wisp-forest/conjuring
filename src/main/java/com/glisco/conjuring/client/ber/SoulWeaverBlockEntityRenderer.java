@@ -10,6 +10,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
@@ -43,7 +44,7 @@ public class SoulWeaverBlockEntityRenderer implements BlockEntityRenderer<SoulWe
             matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees((float) (System.currentTimeMillis() / (60d) % 360d)));
             matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees((float) Math.pow(scale * 100, 3)));
 
-            MinecraftClient.getInstance().getItemRenderer().renderItem(item, ModelTransformation.Mode.GROUND, false, matrixStack, vertexConsumerProvider, lightAbove, OverlayTexture.DEFAULT_UV, itemModel);
+            MinecraftClient.getInstance().getItemRenderer().renderItem(item, ModelTransformationMode.GROUND, false, matrixStack, vertexConsumerProvider, lightAbove, OverlayTexture.DEFAULT_UV, itemModel);
 
             matrixStack.pop();
         }

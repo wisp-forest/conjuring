@@ -60,7 +60,7 @@ dependencies {
 
     modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 
-    modImplementation "vazkii.patchouli:Patchouli:${project.patchouli_version}"
+    modCompileOnly "vazkii.patchouli:Patchouli:${project.patchouli_version}"
 
     modImplementation annotationProcessor("io.wispforest:owo-lib:${project.owo_version}")
     include "io.wispforest:owo-sentinel:${project.owo_version}"

@@ -13,7 +13,6 @@
   ],
   "client": [
     "InGameHudMixin",
-    "ItemRendererMixin",
     "WorldRendererInvoker"
   ],
   "injectors": {

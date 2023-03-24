@@ -79,7 +79,7 @@ public class SoulfireForgeRecipeSerializer implements RecipeSerializer<SoulfireF
     @Override
     public void write(PacketByteBuf buf, SoulfireForgeRecipe recipe) {
         buf.writeInt(recipe.getSmeltTime());
-        buf.writeItemStack(recipe.getOutput());
+        buf.writeItemStack(recipe.getOutput(null));
 
         for (Ingredient ingredient : recipe.getInputs()) {
             ingredient.write(buf);

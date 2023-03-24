@@ -8,6 +8,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleEffect;
@@ -30,7 +31,7 @@ public class SoulFunnelBlockEntityRenderer implements BlockEntityRenderer<SoulFu
         matrixStack.scale(0.75f, 0.75f, 0.75f);
         matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90f));
 
-        MinecraftClient.getInstance().getItemRenderer().renderItem(item, ModelTransformation.Mode.GROUND, false, matrixStack, vertexConsumerProvider, light, OverlayTexture.DEFAULT_UV, itemModel);
+        MinecraftClient.getInstance().getItemRenderer().renderItem(item, ModelTransformationMode.GROUND, false, matrixStack, vertexConsumerProvider, light, OverlayTexture.DEFAULT_UV, itemModel);
 
         matrixStack.pop();
 

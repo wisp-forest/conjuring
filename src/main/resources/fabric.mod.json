@@ -41,8 +41,7 @@
     "fabricloader": "*",
     "fabric": "*",
     "minecraft": ">=1.19.3",
-    "owo": ">=0.10.3+1.18",
-    "patchouli": "*"
+    "owo": ">=0.10.3+1.18"
   },
   "custom": {
     "modmenu": {

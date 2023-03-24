@@ -22,8 +22,8 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
-import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
 import net.minecraft.network.packet.s2c.play.StopSoundS2CPacket;
@@ -322,11 +322,11 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore {
 
             if (cachedRecipe != null) {
                 if (cachedRecipe.transferTag) {
-                    ItemStack output = cachedRecipe.getOutput();
+                    ItemStack output = cachedRecipe.getOutput(null);
                     output.setNbt(weaver.getItem().getOrCreateNbt());
                     weaver.setItem(output);
                 } else {
-                    weaver.setItem(cachedRecipe.getOutput());
+                    weaver.setItem(cachedRecipe.getOutput(null));
                 }
             }
 

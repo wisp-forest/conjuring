@@ -16,8 +16,8 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
@@ -185,7 +185,7 @@ public class GemTinkererBlockEntity extends BlockEntity {
                 }
             } else {
                 inventory.clear();
-                inventory.set(0, tinkerer.cachedRecipe.getOutput());
+                inventory.set(0, tinkerer.cachedRecipe.getOutput(null));
             }
 
             tinkerer.cachedRecipe = null;

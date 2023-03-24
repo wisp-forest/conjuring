@@ -42,6 +42,7 @@ import net.minecraft.predicate.item.EnchantmentPredicate;
 import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
@@ -56,8 +57,8 @@ public class Conjuring implements ModInitializer {
             .builder(Conjuring.id("conjuring"), () -> Icon.of(ConjuringBlocks.CONJURER))
             .build();
 
-    public static final ScreenHandlerType<ConjurerScreenHandler> CONJURER_SCREEN_HANDLER_TYPE = new ScreenHandlerType<>(ConjurerScreenHandler::new);
-    public static final ScreenHandlerType<SoulfireForgeScreenHandler> SOULFIRE_FORGE_SCREEN_HANDLER_TYPE = new ScreenHandlerType<>(SoulfireForgeScreenHandler::new);
+    public static final ScreenHandlerType<ConjurerScreenHandler> CONJURER_SCREEN_HANDLER_TYPE = new ScreenHandlerType<>(ConjurerScreenHandler::new, FeatureFlags.DEFAULT_ENABLED_FEATURES);
+    public static final ScreenHandlerType<SoulfireForgeScreenHandler> SOULFIRE_FORGE_SCREEN_HANDLER_TYPE = new ScreenHandlerType<>(SoulfireForgeScreenHandler::new, FeatureFlags.DEFAULT_ENABLED_FEATURES);
 
     public static final EntityType<SoulProjectileEntity> SOUL_PROJECTILE;
     public static final EntityType<SoulDiggerEntity> SOUL_DIGGER;

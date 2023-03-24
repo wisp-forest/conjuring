@@ -21,7 +21,7 @@ public class GemTinkeringDisplay implements Display {
 
         this.input = EntryIngredients.ofIngredients(recipe.getInputs());
 
-        this.output = Collections.singletonList(EntryIngredients.of(recipe.getOutput()));
+        this.output = Collections.singletonList(EntryIngredients.of(recipe.getOutput(null)));
     }
 
     @Override

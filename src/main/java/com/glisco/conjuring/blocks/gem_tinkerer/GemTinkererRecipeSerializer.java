@@ -60,7 +60,7 @@ public class GemTinkererRecipeSerializer implements RecipeSerializer<GemTinkerer
 
     @Override
     public void write(PacketByteBuf buf, GemTinkererRecipe recipe) {
-        buf.writeItemStack(recipe.getOutput());
+        buf.writeItemStack(recipe.getOutput(null));
 
         for (Ingredient ingredient : recipe.getInputs()) {
             ingredient.write(buf);

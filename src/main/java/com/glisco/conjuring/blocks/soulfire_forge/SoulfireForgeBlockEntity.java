@@ -77,7 +77,7 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
 
         if (smeltTime == targetSmeltTime) {
             this.decrementCraftingItems();
-            this.incrementOutput(cachedRecipe.getOutput());
+            this.incrementOutput(cachedRecipe.getOutput(null));
 
             this.progress = 0;
             this.smeltTime = 0;
@@ -102,7 +102,7 @@ public class SoulfireForgeBlockEntity extends BlockEntity implements Implemented
         var recipe = world.getRecipeManager().getFirstMatch(SoulfireForgeRecipe.Type.INSTANCE, this, world);
         if (recipe.isPresent()) {
             this.cachedRecipe = recipe.get();
-            return ItemOps.canStack(this.getItems().get(9), recipe.get().getOutput());
+            return ItemOps.canStack(this.getItems().get(9), recipe.get().getOutput(null));
         } else {
             this.progress = 0;
             this.smeltTime = 0;

@@ -104,7 +104,7 @@ public abstract class ConjurerLogic {
                     double e = j >= 2 ? nbtList.getDouble(1) : (double) (pos.getY() + random.nextInt(3) - 1);
                     double f = j >= 3 ? nbtList.getDouble(2) : (double) pos.getZ() + (random.nextDouble() - random.nextDouble()) * (double) this.spawnRange + 0.5;
                     if (world.isSpaceEmpty((optional.get()).createSimpleBoundingBox(d, e, f))) {
-                        BlockPos blockPos = new BlockPos(d, e, f);
+                        BlockPos blockPos = BlockPos.ofFloored(d, e, f);
                         if (this.spawnEntry.getCustomSpawnRules().isPresent()) {
                             if (!(optional.get()).getSpawnGroup().isPeaceful() && world.getDifficulty() == Difficulty.PEACEFUL) {
                                 continue;

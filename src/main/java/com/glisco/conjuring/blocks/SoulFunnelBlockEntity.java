@@ -33,8 +33,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootGsons;
 import net.minecraft.loot.LootTable;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleEffect;
@@ -163,7 +163,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
             if (world.getOtherEntities(null, new Box(pos)).isEmpty()) return;
 
             Entity e = world.getOtherEntities(null, new Box(pos)).get(0);
-            if (e instanceof PlayerEntity || e instanceof EnderDragonEntity || e instanceof WitherEntity || !(e instanceof LivingEntity) || e.getScoreboardTags().contains("affected"))
+            if (e instanceof PlayerEntity || e instanceof EnderDragonEntity || e instanceof WitherEntity || !(e instanceof LivingEntity) || e.getCommandTags().contains("affected"))
                 return;
 
             ((LivingEntity) e).addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 15 * 20, 20));
@@ -272,7 +272,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
         boolean returnValue = pedestalPositions.remove(pedestal);
         this.markDirty();
 
-        BlockPos offset = new BlockPos(Vec3d.of(pedestal.subtract(pos)).normalize());
+        BlockPos offset = BlockPos.ofFloored(Vec3d.of(pedestal.subtract(pos)).normalize());
         ConjuringParticleEvents.PEDESTAL_REMOVED.spawn(world, Vec3d.of(pos), Direction.fromVector(offset));
 
         if (pedestalActive) {
@@ -414,7 +414,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
 
         PROCESS.addServerStep(20, 60, (executor, funnel) -> {
             if (executor.getProcessTick() % 10 != 0) return;
-            ((ServerWorld) funnel.world).getEntity(funnel.ritualEntity).damage(DamageSource.OUT_OF_WORLD, 0.01f);
+            ((ServerWorld) funnel.world).getEntity(funnel.ritualEntity).damage(funnel.world.getDamageSources().outOfWorld(), 0.01f);
         });
 
         PROCESS.whenFinishedServer((executor, funnel) -> {

@@ -86,6 +86,18 @@ public class SoulAlloyScythe extends HoeItem implements SoulAlloyTool {
     }
 
     @Override
+    public boolean isItemBarVisible(ItemStack stack) {
+        return SoulAlloyTool.isSecondaryEnabled(stack) || super.isItemBarVisible(stack);
+    }
+
+    @Override
+    public int getItemBarColor(ItemStack stack) {
+        return SoulAlloyTool.isSecondaryEnabled(stack)
+                ? 0x00FFFFF
+                : super.getItemBarColor(stack);
+    }
+
+    @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         tooltip.addAll(SoulAlloyTool.getTooltip(stack));
     }

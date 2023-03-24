@@ -33,9 +33,9 @@ public class SoulfireForgeProcessor implements IComponentProcessor {
         } else if (key.equals("time")) {
             return IVariable.from(Text.of(recipe.getSmeltTime() / 20 + "s"));
         } else if (key.equals("output")) {
-            return IVariable.from(new ItemStack[]{recipe.getOutput()});
+            return IVariable.from(new ItemStack[]{recipe.getOutput(null)});
         } else if (key.equals("iname")) {
-            return IVariable.from(recipe.getOutput().getName());
+            return IVariable.from(recipe.getOutput(null).getName());
         } else if (key.equals("text")) {
             return IVariable.from(Text.of(text));
         } else {

@@ -10,6 +10,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleEffect;
@@ -36,7 +37,7 @@ public class BlackstonePedestalBlockEntityRenderer implements BlockEntityRendere
             matrixStack.translate(0.5, 1.25, 0.5);
             matrixStack.scale(0.75f, 0.75f, 0.75f);
             matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees((float) (System.currentTimeMillis() / 20d % 360d)));
-            MinecraftClient.getInstance().getItemRenderer().renderItem(item, ModelTransformation.Mode.GROUND, false, matrixStack, vertexConsumerProvider, lightAbove, OverlayTexture.DEFAULT_UV, itemModel);
+            MinecraftClient.getInstance().getItemRenderer().renderItem(item, ModelTransformationMode.GROUND, false, matrixStack, vertexConsumerProvider, lightAbove, OverlayTexture.DEFAULT_UV, itemModel);
             matrixStack.pop();
 
         }

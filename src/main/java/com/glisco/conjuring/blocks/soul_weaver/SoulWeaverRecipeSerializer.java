@@ -58,7 +58,7 @@ public class SoulWeaverRecipeSerializer implements RecipeSerializer<SoulWeaverRe
 
     @Override
     public void write(PacketByteBuf buf, SoulWeaverRecipe recipe) {
-        buf.writeItemStack(recipe.getOutput());
+        buf.writeItemStack(recipe.getOutput(null));
         buf.writeBoolean(recipe.transferTag);
 
         for (Ingredient ingredient : recipe.getInputs()) {
