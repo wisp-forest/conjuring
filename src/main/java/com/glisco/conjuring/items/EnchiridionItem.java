@@ -2,13 +2,13 @@ package com.glisco.conjuring.items;
 
 import com.glisco.conjuring.Conjuring;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
+import io.wispforest.owo.nbt.NbtKey;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
@@ -22,6 +22,8 @@ import vazkii.patchouli.common.book.Book;
 import vazkii.patchouli.common.book.BookRegistry;
 
 public class EnchiridionItem extends Item {
+
+    private static final NbtKey<Boolean> SANDWICH = new NbtKey<>("Sandwich", NbtKey.Type.BOOLEAN);
 
     private final Identifier BOOK_ID = Conjuring.id("conjuring_guide");
 
@@ -68,14 +70,12 @@ public class EnchiridionItem extends Item {
         if (!context.getPlayer().isSneaking()) return ActionResult.PASS;
         if (!context.getWorld().getBlockState(context.getBlockPos()).isOf(Blocks.SNOW_BLOCK)) return ActionResult.PASS;
 
-        final NbtCompound stackTag = context.getStack().getOrCreateNbt();
-        stackTag.putBoolean("Sandwich", !stackTag.getBoolean("Sandwich"));
-
+        context.getStack().mutate(SANDWICH, sandwich -> !sandwich);
         return ActionResult.SUCCESS;
     }
 
     @Override
     public Text getName(ItemStack stack) {
-        return stack.getOrCreateNbt().getBoolean("Sandwich") ? Text.literal("Ice Cream Sandwich") : super.getName(stack);
+        return stack.getOr(SANDWICH, false) ? Text.literal("Ice Cream Sandwich") : super.getName(stack);
     }
 }

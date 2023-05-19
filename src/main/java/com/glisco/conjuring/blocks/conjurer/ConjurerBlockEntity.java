@@ -126,7 +126,7 @@ public class ConjurerBlockEntity extends BlockEntity implements ImplementedInven
 
     @Override
     public Text getDisplayName() {
-        return Text.literal("");
+        return Text.empty();
     }
 
     @Override

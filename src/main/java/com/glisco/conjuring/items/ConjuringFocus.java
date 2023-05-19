@@ -2,6 +2,7 @@ package com.glisco.conjuring.items;
 
 import com.glisco.conjuring.Conjuring;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
+import io.wispforest.owo.nbt.NbtKey;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
@@ -10,12 +11,16 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
+import net.minecraft.util.Util;
 import net.minecraft.world.World;
 
 import java.util.List;
 
 public class ConjuringFocus extends Item {
+
+    private static final NbtKey<NbtCompound> ENTITY_KEY = new NbtKey<>("Entity", NbtKey.Type.COMPOUND);
 
     private final boolean hasGlint;
 
@@ -26,27 +31,24 @@ public class ConjuringFocus extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        if (!stack.getOrCreateNbt().contains("Entity")) {
-            return;
-        }
+        if (!stack.has(ENTITY_KEY)) return;
 
-        String entityName = "entity." + stack.getNbt().getCompound("Entity").getString("id").replace(':', '.');
-        tooltip.add(Text.translatable(entityName).formatted(Formatting.GRAY));
+        tooltip.add(Text.translatable(Util.createTranslationKey(
+                "entity",
+                Identifier.tryParse(stack.get(ENTITY_KEY).getString("id"))
+        )).formatted(Formatting.GRAY));
     }
 
     public static ItemStack writeData(ItemStack focus, EntityType<?> entityType) {
-        NbtCompound stackTag = focus.getOrCreateNbt();
-
-        NbtCompound entityTag = new NbtCompound();
+        var entityTag = new NbtCompound();
         entityTag.putString("id", Registries.ENTITY_TYPE.getId(entityType).toString());
 
-        stackTag.put("Entity", entityTag);
-        focus.setNbt(stackTag);
+        focus.put(ENTITY_KEY, entityTag);
         return focus;
     }
 
     @Override
     public boolean hasGlint(ItemStack stack) {
-        return hasGlint;
+        return this.hasGlint;
     }
 }

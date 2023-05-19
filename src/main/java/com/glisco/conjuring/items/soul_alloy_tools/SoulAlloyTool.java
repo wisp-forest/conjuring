@@ -1,11 +1,12 @@
 package com.glisco.conjuring.items.soul_alloy_tools;
 
+import io.wispforest.owo.nbt.NbtKey;
+import io.wispforest.owo.ops.TextOps;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
+import net.minecraft.util.Formatting;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +15,9 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 public interface SoulAlloyTool {
+
+    String MODIFIERS_KEY = "Modifiers";
+    NbtKey<Boolean> SECONDARY_ENABLED = new NbtKey<>("SecondaryEnabled", NbtKey.Type.BOOLEAN);
 
     default boolean canAoeDig() {
         return false;
@@ -24,17 +28,15 @@ public interface SoulAlloyTool {
     }
 
     static void toggleEnabledState(ItemStack stack) {
-        boolean currentState = stack.getOrCreateNbt().contains("SecondaryEnabled") && stack.getOrCreateNbt().getBoolean("SecondaryEnabled");
-        currentState = !currentState;
-        stack.getOrCreateNbt().putBoolean("SecondaryEnabled", currentState);
+        stack.mutate(SECONDARY_ENABLED, enabled -> !enabled);
     }
 
     static boolean isSecondaryEnabled(ItemStack stack) {
-        return stack.getOrCreateNbt().contains("SecondaryEnabled") && stack.getOrCreateNbt().getBoolean("SecondaryEnabled");
+        return stack.getOr(SECONDARY_ENABLED, false);
     }
 
     static void addModifier(ItemStack stack, SoulAlloyModifier modifier) {
-        NbtCompound modifierTag = stack.getOrCreateSubNbt("Modifiers");
+        NbtCompound modifierTag = stack.getOrCreateSubNbt(MODIFIERS_KEY);
 
         int level = modifierTag.contains(modifier.name()) ? modifierTag.getInt(modifier.name()) : 0;
         level++;
@@ -43,7 +45,7 @@ public interface SoulAlloyTool {
     }
 
     static boolean canAddModifier(ItemStack stack, SoulAlloyModifier modifier) {
-        NbtCompound modifierTag = stack.getOrCreateSubNbt("Modifiers");
+        NbtCompound modifierTag = stack.getOrCreateSubNbt(MODIFIERS_KEY);
 
         if (modifierTag.getKeys().size() >= 2 && getModifierLevel(stack, modifier) == 0) return false;
 
@@ -54,7 +56,7 @@ public interface SoulAlloyTool {
 
     static boolean canAddModifiers(ItemStack stack, List<SoulAlloyModifier> modifiers) {
 
-        HashMap<SoulAlloyModifier, Integer> modifierMap = getModifiers(stack);
+        var modifierMap = getModifiers(stack);
 
         for (SoulAlloyModifier modifier : modifiers) {
             if (!modifierMap.containsKey(modifier)) {
@@ -64,10 +66,11 @@ public interface SoulAlloyTool {
             }
         }
 
-        for (Map.Entry<SoulAlloyModifier, Integer> entry : modifierMap.entrySet()) {
+        for (var entry : modifierMap.entrySet()) {
             if (entry.getValue() < 3) continue;
             if (entry.getValue() > 3) return false;
-            if (modifierMap.entrySet().stream().anyMatch(currentEntry -> currentEntry != entry && currentEntry.getValue() > 2)) return false;
+            if (modifierMap.entrySet().stream().anyMatch(currentEntry -> currentEntry != entry && currentEntry.getValue() > 2))
+                return false;
         }
 
         return modifierMap.size() <= 2;
@@ -75,35 +78,38 @@ public interface SoulAlloyTool {
     }
 
     static List<Text> getTooltip(ItemStack stack) {
+        if (stack.getSubNbt(MODIFIERS_KEY) == null) return List.of();
 
-        List<Text> tooltip = new ArrayList<>();
-        NbtCompound modifiers = stack.getOrCreateSubNbt("Modifiers");
+        var tooltip = new ArrayList<Text>();
+        var modifiers = stack.getOrCreateSubNbt(MODIFIERS_KEY);
 
         for (String key : modifiers.getKeys()) {
-            final SoulAlloyModifier modifier = SoulAlloyModifier.valueOf(key);
+            var level = "●".repeat(Math.max(0, modifiers.getInt(key)));
 
-            String level = "●".repeat(Math.max(0, modifiers.getInt(key)));
-
-            tooltip.add(Text.translatable(modifier.translation_key).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(modifier.textColor))).append(": §7" + level));
+            var modifier = SoulAlloyModifier.valueOf(key);
+            tooltip.add(Text.translatable(modifier.translation_key).styled(style -> style.withColor(modifier.textColor)).append(": ").append(TextOps.withFormatting(level, Formatting.GRAY)));
         }
 
         if (!tooltip.isEmpty() && stack.hasEnchantments()) {
-            tooltip.add(Text.literal(""));
+            tooltip.add(Text.empty());
         }
 
         return tooltip;
     }
 
     static int getModifierLevel(ItemStack stack, SoulAlloyModifier modifier) {
-        return stack.getOrCreateSubNbt("Modifiers").contains(modifier.name()) ? stack.getOrCreateSubNbt("Modifiers").getInt(modifier.name()) : 0;
+        return stack.getSubNbt(MODIFIERS_KEY) != null && stack.getSubNbt(MODIFIERS_KEY).contains(modifier.name()) ? stack.getSubNbt(MODIFIERS_KEY).getInt(modifier.name()) : 0;
     }
 
-    static HashMap<SoulAlloyModifier, Integer> getModifiers(ItemStack stack) {
-        HashMap<SoulAlloyModifier, Integer> modifierMap = new HashMap<>();
-        NbtCompound modifierTag = stack.getOrCreateSubNbt("Modifiers");
+    static Map<SoulAlloyModifier, Integer> getModifiers(ItemStack stack) {
+        if (stack.getNbt() == null) return Map.of();
+
+        var modifierMap = new HashMap<SoulAlloyModifier, Integer>();
+        var modifierTag = stack.getOrCreateSubNbt(MODIFIERS_KEY);
         modifierTag.getKeys().forEach(s -> modifierMap.put(SoulAlloyModifier.valueOf(s), modifierTag.getInt(s)));
         return modifierMap;
     }
+
     enum SoulAlloyModifier {
 
         HASTE(0x007a18, "modifier.conjuring.haste"),
