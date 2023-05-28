@@ -57,6 +57,9 @@
   "conjuring.gui.gem_tinkerer": "Gem Tinkering",
   "conjuring.gui.soul_weaver": "Soul Weaving",
 
+  "structure.conjuring.ritual_of_extraction": "Ritual of Extraction",
+  "structure.conjuring.ritual_of_weaving": "Ritual of Weaving",
+
   "advancement.conjuring.root.title": "Conjuring",
   "advancement.conjuring.root.description": "It\u0027s all about that soul",
   "advancement.conjuring.soulfire_forge.title": "Soul Forgery",

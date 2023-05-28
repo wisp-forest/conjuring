@@ -61,8 +61,9 @@ public class SoulfireForgeRecipe implements Recipe<Inventory> {
         return result.copy();
     }
 
-    public DefaultedList<Ingredient> getInputs() {
-        return inputs;
+    @Override
+    public DefaultedList<Ingredient> getIngredients() {
+        return this.inputs;
     }
 
     @Override
@@ -90,8 +91,7 @@ public class SoulfireForgeRecipe implements Recipe<Inventory> {
     }
 
     public static class Type implements RecipeType<SoulfireForgeRecipe> {
-        private Type() {
-        }
+        private Type() {}
 
         public static final Type INSTANCE = new Type();
 

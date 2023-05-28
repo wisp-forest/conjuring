@@ -62,12 +62,12 @@ public class SoulDiggerEntity extends SoulEntity {
 
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
-        if (getOwner() == null) return;
+        if (this.getOwner() == null) return;
 
         BlockPos pos = blockHitResult.getBlockPos();
 
         if (world.getBlockState(pos).isIn(ConventionalBlockTags.ORES)) {
-            BlockCrawler.crawl(world, pos, getDataTracker().get(STACK), Conjuring.CONFIG.tools_config.pickaxe_veinmine_max_blocks());
+            BlockCrawler.crawl(world, pos, getDataTracker().get(STACK), this.getOwner().getUuid(), Conjuring.CONFIG.tools_config.pickaxe_veinmine_max_blocks());
         }
 
         this.remove(RemovalReason.KILLED);

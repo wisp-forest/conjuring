@@ -21,7 +21,6 @@ import io.wispforest.owo.registration.reflect.FieldRegistrationHandler;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
@@ -30,7 +29,6 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTables;
 import net.minecraft.loot.condition.InvertedLootCondition;
@@ -60,24 +58,21 @@ public class Conjuring implements ModInitializer {
     public static final ScreenHandlerType<ConjurerScreenHandler> CONJURER_SCREEN_HANDLER_TYPE = new ScreenHandlerType<>(ConjurerScreenHandler::new, FeatureFlags.DEFAULT_ENABLED_FEATURES);
     public static final ScreenHandlerType<SoulfireForgeScreenHandler> SOULFIRE_FORGE_SCREEN_HANDLER_TYPE = new ScreenHandlerType<>(SoulfireForgeScreenHandler::new, FeatureFlags.DEFAULT_ENABLED_FEATURES);
 
-    public static final EntityType<SoulProjectileEntity> SOUL_PROJECTILE;
-    public static final EntityType<SoulDiggerEntity> SOUL_DIGGER;
-    public static final EntityType<SoulHarvesterEntity> SOUL_HARVESTER;
-    public static final EntityType<SoulFellerEntity> SOUL_FELLER;
-    public static final EntityType<SoulMagnetEntity> SOUL_MAGNET;
+    public static final EntityType<SoulProjectileEntity> SOUL_PROJECTILE
+            = FabricEntityTypeBuilder.<SoulProjectileEntity>create(SpawnGroup.MISC, SoulProjectileEntity::new).dimensions(EntityDimensions.fixed(0.25f, 0.25f)).build();
+    public static final EntityType<SoulDiggerEntity> SOUL_DIGGER
+            = FabricEntityTypeBuilder.<SoulDiggerEntity>create(SpawnGroup.MISC, SoulDiggerEntity::new).dimensions(EntityDimensions.fixed(0.25f, 0.25f)).build();
+    public static final EntityType<SoulHarvesterEntity> SOUL_HARVESTER
+            = FabricEntityTypeBuilder.<SoulHarvesterEntity>create(SpawnGroup.MISC, SoulHarvesterEntity::new).dimensions(EntityDimensions.fixed(0.25f, 0.25f)).build();
+    public static final EntityType<SoulFellerEntity> SOUL_FELLER
+            = FabricEntityTypeBuilder.<SoulFellerEntity>create(SpawnGroup.MISC, SoulFellerEntity::new).dimensions(EntityDimensions.fixed(0.25f, 0.25f)).build();
+    public static final EntityType<SoulMagnetEntity> SOUL_MAGNET
+            = FabricEntityTypeBuilder.<SoulMagnetEntity>create(SpawnGroup.MISC, SoulMagnetEntity::new).dimensions(EntityDimensions.fixed(0.25f, 0.25f)).build();
 
     public static final SoundEvent WEEE = SoundEvent.of(Conjuring.id("block.soul_weaver.weee"));
 
     public static final ExtractionRitualCriterion EXTRACTION_RITUAL_CRITERION = new ExtractionRitualCriterion();
     public static final GemTinkeringCriterion GEM_TINKERING_CRITERION = new GemTinkeringCriterion();
-
-    static {
-        SOUL_PROJECTILE = FabricEntityTypeBuilder.<SoulProjectileEntity>create(SpawnGroup.MISC, SoulProjectileEntity::new).dimensions(EntityDimensions.fixed(0.25f, 0.25f)).build();
-        SOUL_DIGGER = FabricEntityTypeBuilder.<SoulDiggerEntity>create(SpawnGroup.MISC, SoulDiggerEntity::new).dimensions(EntityDimensions.fixed(0.25f, 0.25f)).build();
-        SOUL_HARVESTER = FabricEntityTypeBuilder.<SoulHarvesterEntity>create(SpawnGroup.MISC, SoulHarvesterEntity::new).dimensions(EntityDimensions.fixed(0.25f, 0.25f)).build();
-        SOUL_FELLER = FabricEntityTypeBuilder.<SoulFellerEntity>create(SpawnGroup.MISC, SoulFellerEntity::new).dimensions(EntityDimensions.fixed(0.25f, 0.25f)).build();
-        SOUL_MAGNET = FabricEntityTypeBuilder.<SoulMagnetEntity>create(SpawnGroup.MISC, SoulMagnetEntity::new).dimensions(EntityDimensions.fixed(0.25f, 0.25f)).build();
-    }
 
     @Override
     public void onInitialize() {
@@ -146,7 +141,6 @@ public class Conjuring implements ModInitializer {
         ConjuringParticleEvents.register();
 
         if (!Owo.DEBUG) return;
-
         CommandRegistrationCallback.EVENT.register(CreateConjuringFocusCommand::register);
     }
 

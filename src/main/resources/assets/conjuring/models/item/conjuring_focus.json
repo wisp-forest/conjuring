@@ -6,7 +6,7 @@
   "overrides": [
     {
       "predicate": {
-        "has_soul": 1
+        "conjuring:has_soul": 1
       },
       "model": "conjuring:item/conjuring_focus_filled"
     }

@@ -81,7 +81,7 @@ public class SoulfireForgeRecipeSerializer implements RecipeSerializer<SoulfireF
         buf.writeInt(recipe.getSmeltTime());
         buf.writeItemStack(recipe.getOutput(null));
 
-        for (Ingredient ingredient : recipe.getInputs()) {
+        for (Ingredient ingredient : recipe.getIngredients()) {
             ingredient.write(buf);
         }
     }

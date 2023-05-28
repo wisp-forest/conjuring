@@ -6,7 +6,7 @@
   "overrides": [
     {
       "predicate": {
-        "is_brinsa": 1
+        "conjuring:is_brinsa": 1
       },
       "model": "conjuring:item/brinsa"
     }

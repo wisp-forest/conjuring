@@ -1,0 +1,145 @@
+<owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.19.4/owo-ui.xsd">
+
+    <templates>
+        <template name="soulfire-forge-recipe">
+            <flow-layout direction="horizontal">
+                <children>
+                    <flow-layout direction="vertical">
+                        <children>
+                            <texture texture="conjuring:textures/gui/soulfire_forge_enchiridion.png" texture-width="128" texture-height="64" region-width="104" region-height="54">
+                                <blend>true</blend>
+                            </texture>
+
+                            <grid-layout rows="3" columns="3" id="input-grid">
+                                <children>
+                                    <lavender.ingredient row="0" column="0">
+                                        <margins>
+                                            <top>1</top>
+                                            <left>1</left>
+                                        </margins>
+                                    </lavender.ingredient>
+                                    <lavender.ingredient row="0" column="1">
+                                        <margins>
+                                            <top>1</top>
+                                            <left>1</left>
+                                        </margins>
+                                    </lavender.ingredient>
+                                    <lavender.ingredient row="0" column="2">
+                                        <margins>
+                                            <top>1</top>
+                                            <left>1</left>
+                                        </margins>
+                                    </lavender.ingredient>
+                                    <lavender.ingredient row="1" column="0">
+                                        <margins>
+                                            <top>1</top>
+                                            <left>1</left>
+                                        </margins>
+                                    </lavender.ingredient>
+                                    <lavender.ingredient row="1" column="1">
+                                        <margins>
+                                            <top>1</top>
+                                            <left>1</left>
+                                        </margins>
+                                    </lavender.ingredient>
+                                    <lavender.ingredient row="1" column="2">
+                                        <margins>
+                                            <top>1</top>
+                                            <left>1</left>
+                                        </margins>
+                                    </lavender.ingredient>
+                                    <lavender.ingredient row="2" column="0">
+                                        <margins>
+                                            <top>1</top>
+                                            <left>1</left>
+                                        </margins>
+                                    </lavender.ingredient>
+                                    <lavender.ingredient row="2" column="1">
+                                        <margins>
+                                            <top>1</top>
+                                            <left>1</left>
+                                        </margins>
+                                    </lavender.ingredient>
+                                    <lavender.ingredient row="2" column="2">
+                                        <margins>
+                                            <top>1</top>
+                                            <left>1</left>
+                                        </margins>
+                                    </lavender.ingredient>
+                                </children>
+
+                                <padding>
+                                    <all>1</all>
+                                    <right>2</right>
+                                    <bottom>2</bottom>
+                                </padding>
+
+                                <positioning type="absolute">0,0</positioning>
+                            </grid-layout>
+
+                            <item id="output">
+                                <set-tooltip-from-stack>true</set-tooltip-from-stack>
+                                <positioning type="absolute">83,19</positioning>
+                            </item>
+
+                            <label>
+                                <text>{{duration}}</text>
+                                <color>dark-gray</color>
+                                <horizontal-text-alignment>center</horizontal-text-alignment>
+
+                                <sizing>
+                                    <horizontal method="fixed">25</horizontal>
+                                </sizing>
+                                <positioning type="absolute">55,42</positioning>
+                            </label>
+
+                            <item>
+                                <stack>conjuring:soulfire_forge</stack>
+                                <set-tooltip-from-stack>true</set-tooltip-from-stack>
+                                <positioning type="absolute">85,41</positioning>
+                                <sizing>
+                                    <horizontal method="fixed">12</horizontal>
+                                    <vertical method="fixed">12</vertical>
+                                </sizing>
+                            </item>
+                        </children>
+                    </flow-layout>
+                </children>
+
+                <horizontal-alignment>center</horizontal-alignment>
+                <vertical-alignment>center</vertical-alignment>
+
+                <sizing>
+                    <horizontal method="fill">100</horizontal>
+                </sizing>
+            </flow-layout>
+        </template>
+
+        <template name="gem-tinkerer-preview">
+            <stack-layout>
+                <children>
+                    <template name="fit-image-background@lavender:book_components"/>
+                    <block state="conjuring:gem_tinkerer{Items:[{Slot: 0b, id: 'conjuring:soul_alloy_sword', Count: 1b}, {Slot: 1b, id: 'conjuring:abundance_gem', Count: 1b}, {Slot: 2b, id: 'conjuring:abundance_gem', Count: 1b}, {Slot: 3b, id: 'conjuring:abundance_gem', Count: 1b}, {Slot: 4b, id: 'conjuring:scope_gem', Count: 1b}]}">
+
+                        <margins>
+                            <bottom>-25</bottom>
+                        </margins>
+
+                        <sizing>
+                            <vertical method="fixed">125</vertical>
+                            <horizontal method="fixed">125</horizontal>
+                        </sizing>
+                    </block>
+                </children>
+
+                <horizontal-alignment>center</horizontal-alignment>
+                <vertical-alignment>center</vertical-alignment>
+
+                <sizing>
+                    <horizontal method="fill">100</horizontal>
+                </sizing>
+            </stack-layout>
+        </template>
+    </templates>
+</owo-ui>

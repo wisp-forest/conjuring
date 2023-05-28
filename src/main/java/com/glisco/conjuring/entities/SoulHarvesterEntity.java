@@ -73,7 +73,7 @@ public class SoulHarvesterEntity extends SoulEntity {
 
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
-        if (getOwner() == null) return;
+        if (this.getOwner() == null) return;
 
         BlockPos pos = blockHitResult.getBlockPos();
 
@@ -81,11 +81,11 @@ public class SoulHarvesterEntity extends SoulEntity {
         var predicate = SoulAlloyScythe.getCrawlPredicate(getDataTracker().get(STACK));
 
         if (state.getBlock() instanceof CropBlock && predicate.apply(state.getBlock(), state)) {
-            BlockCrawler.crawl(world, pos, getDataTracker().get(STACK), maxBlocks, predicate);
+            BlockCrawler.crawl(world, pos, getDataTracker().get(STACK), this.getOwner().getUuid(), maxBlocks, predicate);
         } else {
             state = world.getBlockState(pos.up());
             if (state.getBlock() instanceof CropBlock && predicate.apply(state.getBlock(), state)) {
-                BlockCrawler.crawl(world, pos.up(), getDataTracker().get(STACK), maxBlocks, predicate);
+                BlockCrawler.crawl(world, pos.up(), getDataTracker().get(STACK), this.getOwner().getUuid(), maxBlocks, predicate);
             }
         }
 

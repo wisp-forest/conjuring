@@ -1,0 +1,17 @@
+{
+    "keys": {
+        "0": "conjuring:soul_funnel[filled=true]",
+        "P": "conjuring:blackstone_pedestal"
+    },
+    "layers": [
+        [
+            "   P   ",
+            "   _   ",
+            "   _   ",
+            "P__0__P",
+            "   _   ",
+            "   _   ",
+            "   P   "
+        ]
+    ]
+}

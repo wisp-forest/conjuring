@@ -1,68 +1,21 @@
 package com.glisco.conjuring.items;
 
 import com.glisco.conjuring.Conjuring;
+import io.wispforest.lavender.book.BookItem;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
 import io.wispforest.owo.nbt.NbtKey;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.HoverEvent;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.util.*;
-import net.minecraft.world.World;
-import vazkii.patchouli.api.PatchouliAPI;
-import vazkii.patchouli.common.base.PatchouliSounds;
-import vazkii.patchouli.common.book.Book;
-import vazkii.patchouli.common.book.BookRegistry;
+import net.minecraft.util.ActionResult;
 
-public class EnchiridionItem extends Item {
+public class EnchiridionItem extends BookItem {
 
     private static final NbtKey<Boolean> SANDWICH = new NbtKey<>("Sandwich", NbtKey.Type.BOOLEAN);
 
-    private final Identifier BOOK_ID = Conjuring.id("conjuring_guide");
-
     public EnchiridionItem() {
-        super(new OwoItemSettings().maxCount(1).group(Conjuring.CONJURING_GROUP));
-    }
-
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-        if (!world.isClient()) {
-            if (FabricLoader.getInstance().isModLoaded("patchouli")) {
-                this.openPatchouliBook(player);
-            } else {
-                player.sendMessage(
-                        Text.literal("You don't currently have ")
-                                .append(link("Patchouli", "https://modrinth.com/mod/patchouli"))
-                                .append(Text.literal(" installed. You can view "))
-                                .append(link("the online Enchiridion", "https://guides.wispforest.io/conjuring/"))
-                                .append(Text.literal(" instead"))
-                );
-            }
-        }
-
-        return TypedActionResult.success(player.getStackInHand(hand));
-    }
-
-    private MutableText link(String text, String url) {
-        return Text.literal(text).styled(style -> {
-            return style.withFormatting(Formatting.BLUE)
-                    .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url))
-                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal(url)));
-        });
-    }
-
-    private void openPatchouliBook(PlayerEntity player) {
-        Book book = BookRegistry.INSTANCE.books.get(BOOK_ID);
-
-        PatchouliAPI.get().openBookGUI((ServerPlayerEntity) player, book.id);
-        player.playSound(PatchouliSounds.getSound(book.openSound, PatchouliSounds.BOOK_OPEN), 1, (float) (0.7 + Math.random() * 0.4));
+        super(new OwoItemSettings().maxCount(1).group(Conjuring.CONJURING_GROUP), Conjuring.id("enchiridion"));
     }
 
     @Override
@@ -78,4 +31,5 @@ public class EnchiridionItem extends Item {
     public Text getName(ItemStack stack) {
         return stack.getOr(SANDWICH, false) ? Text.literal("Ice Cream Sandwich") : super.getName(stack);
     }
+
 }

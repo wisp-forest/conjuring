@@ -22,13 +22,12 @@ public class SoulAlloyToolAbilities {
 
     public static void registerCommonEvents() {
         PlayerBlockBreakEvents.BEFORE.register((world, playerEntity, blockPos, blockState, blockEntity) -> {
-
             if (!SoulAlloyToolAbilities.canAoeDig(playerEntity)) return true;
 
             final var playerStack = playerEntity.getMainHandStack();
 
             for (BlockPos pos : SoulAlloyToolAbilities.getBlocksToDig(playerEntity, ((SoulAlloyTool) playerStack.getItem()).getAoeToolOverridePredicate())) {
-                WorldOps.breakBlockWithItem(world, pos, playerStack);
+                WorldOps.breakBlockWithItem(world, pos, playerStack, playerEntity);
 
                 playerStack.damage(SoulAlloyTool.getModifierLevel(playerStack, SoulAlloyTool.SoulAlloyModifier.SCOPE) * 2, playerEntity, p -> p.sendToolBreakStatus(Hand.MAIN_HAND));
             }
@@ -55,7 +54,8 @@ public class SoulAlloyToolAbilities {
 
     public static List<BlockPos> getBlocksToDig(PlayerEntity player, Predicate<BlockState> toolOverridePredicate) {
 
-        if ((!(player.getMainHandStack().getItem() instanceof SoulAlloyTool tool)) || !tool.canAoeDig()) return Collections.emptyList();
+        if ((!(player.getMainHandStack().getItem() instanceof SoulAlloyTool tool)) || !tool.canAoeDig())
+            return Collections.emptyList();
 
         List<BlockPos> blocksToDig = new ArrayList<>();
 
@@ -68,7 +68,8 @@ public class SoulAlloyToolAbilities {
         int scopeLevel = SoulAlloyTool.getModifiers(player.getMainHandStack()).get(SoulAlloyTool.SoulAlloyModifier.SCOPE);
 
         final var targetState = player.world.getBlockState(hit);
-        if (!toolOverridePredicate.test(targetState) && player.getMainHandStack().getItem().getMiningSpeedMultiplier(player.getMainHandStack(), targetState) == 1) return blocksToDig;
+        if (!toolOverridePredicate.test(targetState) && player.getMainHandStack().getItem().getMiningSpeedMultiplier(player.getMainHandStack(), targetState) == 1)
+            return blocksToDig;
 
         switch (side.getAxis()) {
             case X -> {
