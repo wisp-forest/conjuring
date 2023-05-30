@@ -4,7 +4,8 @@
     "title": "Stabilized Focuses",
     "category": "conjuring:basics",
     "associated_items": [
-        "conjuring:distilled_spirit"
+        "conjuring:distilled_spirit",
+        "conjuring:stabilized_conjuring_focus"
     ]
 }
 ```

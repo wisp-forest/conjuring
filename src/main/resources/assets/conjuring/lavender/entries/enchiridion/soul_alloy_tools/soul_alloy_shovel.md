@@ -1,17 +1,17 @@
 ```json
 {
-    "icon": "conjuring:soul_alloy_shovel",
-    "title": "Soul Alloy Shovel",
-    "category": "conjuring:soul_alloy_tools",
-    "associated_items": [
-        "conjuring:soul_alloy_shovel"
-    ]
+  "icon": "conjuring:soul_alloy_shovel",
+  "title": "Soul Alloy Shovel",
+  "category": "conjuring:soul_alloy_tools",
+  "associated_items": [
+    "conjuring:soul_alloy_shovel"
+  ]
 }
 ```
 
-While the shovel sees little use normally, the ability of the {light_purple}Soul Alloy Shovel{} is likely to become a 
+While the shovel sees little use normally, the ability of the {light_purple}Soul Alloy Shovel{} is likely to become a
 good friend. When used it will seek out any items around and bring them back to it's caller. The
-{light_purple}Soul Alloy Shovel{} may be fitted with [Aspect Gems](^conjuring:basics/basic_gem_tinkering), 
+{light_purple}Soul Alloy Shovel{} may be fitted with [Aspect Gems](^conjuring:basics/basic_gem_tinkering),
 which improves it in certain aspects:
 
 ;;;;;
