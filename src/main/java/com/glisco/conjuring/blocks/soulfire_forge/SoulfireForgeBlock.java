@@ -1,6 +1,7 @@
 package com.glisco.conjuring.blocks.soulfire_forge;
 
 import com.glisco.conjuring.blocks.ConjuringBlocks;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -100,7 +101,7 @@ public class SoulfireForgeBlock extends BlockWithEntity {
 
     //Construction stuff
     public SoulfireForgeBlock() {
-        super(Settings.of(Material.STONE).requiresTool().strength(5.0F, 1200.0F).sounds(BlockSoundGroup.STONE).nonOpaque().luminance(getLightLevel()));
+        super(FabricBlockSettings.create().requiresTool().strength(5.0F, 1200.0F).sounds(BlockSoundGroup.STONE).nonOpaque().luminance(getLightLevel()));
         setDefaultState(getStateManager().getDefaultState().with(BURNING, false));
     }
 

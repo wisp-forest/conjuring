@@ -6,7 +6,7 @@ import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateSerializer;
-import net.minecraft.predicate.entity.EntityPredicate;
+import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
@@ -20,7 +20,7 @@ public class GemTinkeringCriterion extends AbstractCriterion<GemTinkeringCriteri
     }
 
     @Override
-    protected Conditions conditionsFromJson(JsonObject obj, EntityPredicate.Extended playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
+    protected Conditions conditionsFromJson(JsonObject obj, LootContextPredicate playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
         return new Conditions(ID, playerPredicate);
     }
 
@@ -30,7 +30,7 @@ public class GemTinkeringCriterion extends AbstractCriterion<GemTinkeringCriteri
 
     public static class Conditions extends AbstractCriterionConditions {
 
-        public Conditions(Identifier id, EntityPredicate.Extended playerPredicate) {
+        public Conditions(Identifier id, LootContextPredicate playerPredicate) {
             super(id, playerPredicate);
         }
 

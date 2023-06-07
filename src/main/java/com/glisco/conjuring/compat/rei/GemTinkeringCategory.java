@@ -15,7 +15,6 @@ import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.text.Text;
@@ -68,13 +67,13 @@ public class GemTinkeringCategory implements DisplayCategory<GemTinkeringDisplay
         tinkerer.getInventory().set(4, recipeDisplay.getInputEntries().get(4).get(0).castValue());
         tinkerer.setWorld(MinecraftClient.getInstance().world);
 
-        widgets.add(Widgets.createDrawableWidget((drawableHelper, matrixStack, i, i1, v) -> {
+        widgets.add(Widgets.createDrawableWidget((context, mouseX, mouseY, tickDelta) -> {
             boolean FROGE_MODE = isFroge();
+            var matrixStack = context.getMatrices();
 
             if (FROGE_MODE) {
                 matrixStack.push();
-                RenderSystem.setShaderTexture(0, Conjuring.id("textures/gui/froge.png"));
-                DrawableHelper.drawTexture(matrixStack, origin.x, origin.y, 0, 0, 0, 128, 128, 128, 128);
+                context.drawTexture(Conjuring.id("textures/gui/froge.png"), origin.x, origin.y, 0, 0, 0, 128, 128, 128, 128);
 
                 float scale = (float) Math.sin(System.currentTimeMillis() / 1000d % Math.PI);
 

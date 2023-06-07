@@ -30,7 +30,7 @@ public class ConjurerBlock extends BlockWithEntity {
     }
 
     public ConjurerBlock() {
-        this(FabricBlockSettings.of(Material.METAL).requiresTool().strength(5.0F).sounds(BlockSoundGroup.METAL).nonOpaque());
+        this(FabricBlockSettings.create().requiresTool().strength(5.0F).sounds(BlockSoundGroup.METAL).nonOpaque());
         setDefaultState(getDefaultState().with(ACTIVE, false));
     }
 

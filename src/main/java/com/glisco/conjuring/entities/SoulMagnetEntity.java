@@ -44,7 +44,7 @@ public class SoulMagnetEntity extends SoulEntity {
 
         super.tick();
 
-        if (world.getBlockState(getBlockPos()).isSolidBlock(world, getBlockPos())) {
+        if (getWorld().getBlockState(getBlockPos()).isSolidBlock(getWorld(), getBlockPos())) {
             ticksInBlock++;
         } else {
             ticksInBlock = 0;
@@ -53,18 +53,18 @@ public class SoulMagnetEntity extends SoulEntity {
         int range = Conjuring.CONFIG.tools_config.shovel_magnet_range();
         Box box = new Box(getPos().subtract(range, range, range), getPos().add(range, range, range));
 
-        for (ItemEntity item : world.getEntitiesByType(EntityType.ITEM, box, ItemEntity::isAlive)) {
+        for (ItemEntity item : getWorld().getEntitiesByType(EntityType.ITEM, box, ItemEntity::isAlive)) {
             Vec3d difference = getPos().subtract(item.getPos()).multiply(0.25d);
             item.setVelocity(difference);
 
-            if (world.isClient && difference.length() > 0.5) {
+            if (getWorld().isClient && difference.length() > 0.5) {
                 ParticleEffect dust = new DustParticleEffect(new Vector3f(0.5f, 1f, 1f), 0.5f);
                 ClientParticles.setParticleCount(45);
-                ClientParticles.spawnLine(dust, world, getPos(), item.getPos(), 0);
+                ClientParticles.spawnLine(dust, getWorld(), getPos(), item.getPos(), 0);
             }
         }
 
-        for (ExperienceOrbEntity orb : world.getEntitiesByType(EntityType.EXPERIENCE_ORB, box, ExperienceOrbEntity::isAlive)) {
+        for (ExperienceOrbEntity orb : getWorld().getEntitiesByType(EntityType.EXPERIENCE_ORB, box, ExperienceOrbEntity::isAlive)) {
             Vec3d difference = getPos().subtract(orb.getPos()).multiply(0.25d);
             orb.setVelocity(difference);
         }

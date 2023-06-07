@@ -2,10 +2,10 @@ package com.glisco.conjuring.items;
 
 import com.glisco.conjuring.Conjuring;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
-import net.minecraft.block.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.Rarity;
@@ -28,7 +28,7 @@ public class ConjurationEssence extends Item {
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         if (!context.getPlayer().isSneaking()) return ActionResult.PASS;
-        if (!(context.getWorld().getBlockState(context.getBlockPos()).getMaterial() == Material.STONE)) return ActionResult.PASS;
+        if (!(context.getWorld().getBlockState(context.getBlockPos()).isIn(BlockTags.BASE_STONE_OVERWORLD))) return ActionResult.PASS;
 
         context.getStack().decrement(1);
         if (context.getStack().getCount() == 0) {

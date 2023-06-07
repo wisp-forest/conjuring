@@ -74,11 +74,11 @@ public class SoulProjectileEntity extends SoulEntity {
 
         if (!e.isAlive() && damage == 1.5f) {
             e.dropItem(ConjuringItems.CONJURATION_ESSENCE);
-            ConjuringParticleEvents.EXTRACTION_RITUAL_FINISHED.spawn(world, Vec3d.of(entityHitResult.getEntity().getBlockPos()), true);
+            ConjuringParticleEvents.EXTRACTION_RITUAL_FINISHED.spawn(getWorld(), Vec3d.of(entityHitResult.getEntity().getBlockPos()), true);
 
-            if (!e.world.isClient) {
+            if (!e.getWorld().isClient) {
                 BlockPos pos = e.getBlockPos();
-                World world = e.world;
+                World world = e.getWorld();
 
                 world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, SoundCategory.PLAYERS, 0.5f, 0);
             }
@@ -93,7 +93,7 @@ public class SoulProjectileEntity extends SoulEntity {
 
     @Override
     public void tick() {
-        Entity closest = world.getClosestEntity(MobEntity.class, UNIQUE_CLOSEST, null, getX(), getY(), getZ(), getBoundingBox().expand(3, 2, 3));
+        Entity closest = getWorld().getClosestEntity(MobEntity.class, UNIQUE_CLOSEST, null, getX(), getY(), getZ(), getBoundingBox().expand(3, 2, 3));
         if (closest == null && TARGET_ENTITIES.containsKey(this)) closest = TARGET_ENTITIES.get(this);
         if (closest != null) {
             Vec3d targetVector = closest.getPos().add(0, closest.getHeight() * 0.5, 0).subtract(getPos());
@@ -115,7 +115,7 @@ public class SoulProjectileEntity extends SoulEntity {
     }
 
     public DamageSource createDamageSource() {
-        return new DamageSource(this.world.getRegistryManager().get(RegistryKeys.DAMAGE_TYPE).getEntry(DAMAGE_TYPE).get(), this.getOwner());
+        return new DamageSource(this.getWorld().getRegistryManager().get(RegistryKeys.DAMAGE_TYPE).getEntry(DAMAGE_TYPE).get(), this.getOwner());
     }
 
 }

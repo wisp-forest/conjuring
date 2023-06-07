@@ -273,7 +273,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
         this.markDirty();
 
         BlockPos offset = BlockPos.ofFloored(Vec3d.of(pedestal.subtract(pos)).normalize());
-        ConjuringParticleEvents.PEDESTAL_REMOVED.spawn(world, Vec3d.of(pos), Direction.fromVector(offset));
+        ConjuringParticleEvents.PEDESTAL_REMOVED.spawn(world, Vec3d.of(pos), Direction.fromVector(offset.getX(), offset.getY(), offset.getZ()));
 
         if (pedestalActive) {
             ritualExecutor.cancel();
@@ -291,7 +291,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
         if (world.getBiome(pos).getKey().orElse(null) == BiomeKeys.SOUL_SAND_VALLEY)
             ritualStability += .1f;
 
-        var drops = extractDrops(world.getServer().getLootManager().getTable(((MobEntity) ((ServerWorld) world).getEntity(ritualEntity)).getLootTable()));
+        var drops = extractDrops(world.getServer().getLootManager().getLootTable(((MobEntity) ((ServerWorld) world).getEntity(ritualEntity)).getLootTable()));
 
         for (var pedestalPos : pedestalPositions) {
             if (!(world.getBlockEntity(pedestalPos) instanceof BlackstonePedestalBlockEntity pedestal)) continue;
@@ -423,7 +423,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
 
             var targetEntity = (MobEntity) ((ServerWorld) world).getEntity(funnel.ritualEntity);
 
-            boolean success = targetEntity.world.random.nextDouble() < funnel.ritualStability;
+            boolean success = targetEntity.getWorld().random.nextDouble() < funnel.ritualStability;
 
             ConjuringParticleEvents.EXTRACTION_RITUAL_FINISHED.spawn(world, Vec3d.of(pos.add(0, 2, 0)), success);
             world.playSound(null, pos, success ? SoundEvents.ITEM_TOTEM_USE : SoundEvents.ENTITY_WITHER_HURT, SoundCategory.BLOCKS, 1, 0);

@@ -1,7 +1,6 @@
 package com.glisco.conjuring.client;
 
 import com.glisco.conjuring.Conjuring;
-import com.glisco.conjuring.ConjuringConfig;
 import com.glisco.conjuring.blocks.ConjuringBlocks;
 import com.glisco.conjuring.blocks.soulfire_forge.SoulfireForgeRecipe;
 import com.glisco.conjuring.client.ber.*;
@@ -14,8 +13,7 @@ import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyTool;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyToolAbilities;
 import com.glisco.conjuring.mixin.WorldRendererInvoker;
 import io.wispforest.lavender.client.BookScreen;
-import io.wispforest.lavender.md.extensions.RecipeExtension;
-import io.wispforest.owo.config.ConfigSynchronizer;
+import io.wispforest.lavender.md.features.RecipeFeature;
 import io.wispforest.owo.ui.component.ItemComponent;
 import io.wispforest.owo.ui.core.ParentComponent;
 import io.wispforest.owo.ui.parsing.UIModelLoader;
@@ -37,7 +35,6 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeGridAligner;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import org.lwjgl.glfw.GLFW;
 
@@ -105,7 +102,7 @@ public class ConjuringClient implements ClientModInitializer {
 
             var inputGrid = recipeComponent.childById(ParentComponent.class, "input-grid");
             ((RecipeGridAligner<Ingredient>) (inputs, slot, amount, gridX, gridY) -> {
-                if (!(inputGrid.children().get(slot) instanceof RecipeExtension.IngredientComponent ingredient)) return;
+                if (!(inputGrid.children().get(slot) instanceof RecipeFeature.IngredientComponent ingredient)) return;
                 ingredient.ingredient(inputs.next());
             }).alignRecipeToGrid(3, 3, 9, recipe, recipe.getIngredients().iterator(), 0);
 

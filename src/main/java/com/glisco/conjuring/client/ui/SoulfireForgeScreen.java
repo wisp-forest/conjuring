@@ -3,6 +3,7 @@ package com.glisco.conjuring.client.ui;
 import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.util.SoulfireForgeScreenHandler;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
@@ -18,20 +19,19 @@ public class SoulfireForgeScreen extends HandledScreen<SoulfireForgeScreenHandle
     }
 
     @Override
-    protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-        this.renderBackground(matrices);
+    protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
+        this.renderBackground(context);
 
-        RenderSystem.setShaderTexture(0, TEXTURE);
-        drawTexture(matrices, this.x, this.y, 0, 0, backgroundWidth, backgroundHeight);
+        context.drawTexture(TEXTURE, this.x, this.y, 0, 0, backgroundWidth, backgroundHeight);
 
         int progress = this.handler.getProgress();
-        drawTexture(matrices, this.x + 90, this.y + 57 - progress, 176, 32 - progress, 32, 32);
+        context.drawTexture(TEXTURE, this.x + 90, this.y + 57 - progress, 176, 32 - progress, 32, 32);
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        super.render(matrices, mouseX, mouseY, delta);
-        drawMouseoverTooltip(matrices, mouseX, mouseY);
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        super.render(context, mouseX, mouseY, delta);
+        drawMouseoverTooltip(context, mouseX, mouseY);
     }
 
     @Override

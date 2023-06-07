@@ -60,7 +60,7 @@ public class SoulHarvesterEntity extends SoulEntity {
     @Override
     public void tick() {
         super.tick();
-        if (world.getBlockState(getBlockPos()).getBlock() instanceof CropBlock) {
+        if (getWorld().getBlockState(getBlockPos()).getBlock() instanceof CropBlock) {
             this.onBlockHit(new BlockHitResult(getPos(), Direction.UP, getBlockPos(), true));
         }
     }
@@ -77,15 +77,15 @@ public class SoulHarvesterEntity extends SoulEntity {
 
         BlockPos pos = blockHitResult.getBlockPos();
 
-        var state = world.getBlockState(pos);
+        var state = getWorld().getBlockState(pos);
         var predicate = SoulAlloyScythe.getCrawlPredicate(getDataTracker().get(STACK));
 
         if (state.getBlock() instanceof CropBlock && predicate.apply(state.getBlock(), state)) {
-            BlockCrawler.crawl(world, pos, getDataTracker().get(STACK), this.getOwner().getUuid(), maxBlocks, predicate);
+            BlockCrawler.crawl(getWorld(), pos, getDataTracker().get(STACK), this.getOwner().getUuid(), maxBlocks, predicate);
         } else {
-            state = world.getBlockState(pos.up());
+            state = getWorld().getBlockState(pos.up());
             if (state.getBlock() instanceof CropBlock && predicate.apply(state.getBlock(), state)) {
-                BlockCrawler.crawl(world, pos.up(), getDataTracker().get(STACK), this.getOwner().getUuid(), maxBlocks, predicate);
+                BlockCrawler.crawl(getWorld(), pos.up(), getDataTracker().get(STACK), this.getOwner().getUuid(), maxBlocks, predicate);
             }
         }
 

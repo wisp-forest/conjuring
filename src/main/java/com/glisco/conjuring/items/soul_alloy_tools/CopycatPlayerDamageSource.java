@@ -11,7 +11,7 @@ public class CopycatPlayerDamageSource extends DamageSource {
     private boolean pierceArmor = false;
 
     public CopycatPlayerDamageSource(PlayerEntity source) {
-        super(source.world.getDamageSources().playerAttack(source).getTypeRegistryEntry(), source);
+        super(source.getWorld().getDamageSources().playerAttack(source).getTypeRegistryEntry(), source);
     }
 
     public CopycatPlayerDamageSource pierceArmor() {

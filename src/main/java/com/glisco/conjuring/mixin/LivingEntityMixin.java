@@ -55,7 +55,7 @@ public abstract class LivingEntityMixin extends Entity {
         final int scopeLevel = SoulAlloyTool.getModifierLevel(player.getMainHandStack(), SoulAlloyTool.SoulAlloyModifier.SCOPE);
         final int range = 2 + scopeLevel;
 
-        List<Entity> entities = world.getOtherEntities(this, new Box(getPos().subtract(range, 1, range), getPos().add(range, 1, range)), entity -> entity instanceof LivingEntity);
+        List<Entity> entities = getWorld().getOtherEntities(this, new Box(getPos().subtract(range, 1, range), getPos().add(range, 1, range)), entity -> entity instanceof LivingEntity);
 
         entities.remove(player);
 
@@ -63,11 +63,10 @@ public abstract class LivingEntityMixin extends Entity {
             entities.get(i).damage(new CopycatPlayerDamageSource(player), amount * Conjuring.CONFIG.tools_config.sword_scope_damage_multiplier() * scopeLevel);
             player.getMainHandStack().damage(4 * scopeLevel, player, playerEntity -> player.sendToolBreakStatus(Hand.MAIN_HAND));
 
-            if (!world.isClient()) {
-                final int entityIndex = i;
-                ConjuringParticleEvents.LINE.spawn(world, getPos(), new ConjuringParticleEvents.Line(
+            if (!getWorld().isClient()) {
+                ConjuringParticleEvents.LINE.spawn(getWorld(), getPos(), new ConjuringParticleEvents.Line(
                         getPos().add(0, 0.25 + random.nextDouble(), 0),
-                        entities.get(entityIndex).getPos().add(0, 0.25 + random.nextDouble(), 0)
+                        entities.get(i).getPos().add(0, 0.25 + random.nextDouble(), 0)
                 ));
             }
         }

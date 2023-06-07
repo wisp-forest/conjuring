@@ -67,7 +67,7 @@ public class SoulAlloyToolAbilities {
         Direction side = ((BlockHitResult) target).getSide();
         int scopeLevel = SoulAlloyTool.getModifiers(player.getMainHandStack()).get(SoulAlloyTool.SoulAlloyModifier.SCOPE);
 
-        final var targetState = player.world.getBlockState(hit);
+        final var targetState = player.getWorld().getBlockState(hit);
         if (!toolOverridePredicate.test(targetState) && player.getMainHandStack().getItem().getMiningSpeedMultiplier(player.getMainHandStack(), targetState) == 1)
             return blocksToDig;
 
@@ -100,8 +100,8 @@ public class SoulAlloyToolAbilities {
 
         blocksToDig.remove(origin);
         blocksToDig.removeIf(blockPos -> {
-            var state = player.world.getBlockState(blockPos);
-            if (state.getHardness(player.world, blockPos) < 0) return true;
+            var state = player.getWorld().getBlockState(blockPos);
+            if (state.getHardness(player.getWorld(), blockPos) < 0) return true;
             if (toolOverridePredicate.test(state)) return false;
 
             return player.getMainHandStack().getItem().getMiningSpeedMultiplier(player.getMainHandStack(), state) <= 1;

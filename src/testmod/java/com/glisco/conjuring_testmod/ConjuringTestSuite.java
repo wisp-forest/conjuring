@@ -87,7 +87,7 @@ public class ConjuringTestSuite {
         helper.setHandItem(ItemStack.EMPTY);
 
         helper.getPlayer().updatePositionAndAngles(playerPos.x, playerPos.y, playerPos.z, 0, 0);
-        helper.getPlayer().setWorld(context.getWorld());
+        helper.getPlayer().setServerWorld(context.getWorld());
 
         helper.setHandItem(new ItemStack(ConjuringItems.SOUL_ALLOY_SHOVEL));
         helper.useItem(false);
@@ -108,7 +108,7 @@ public class ConjuringTestSuite {
         helper.setHandItem(ItemStack.EMPTY);
 
         helper.getPlayer().updatePositionAndAngles(playerPos.x, playerPos.y, playerPos.z, 0, 0);
-        helper.getPlayer().setWorld(context.getWorld());
+        helper.getPlayer().setServerWorld(context.getWorld());
 
         final var stack = new ItemStack(ConjuringItems.SOUL_ALLOY_PICKAXE);
         SoulAlloyTool.toggleEnabledState(stack);
