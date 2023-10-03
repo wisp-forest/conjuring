@@ -20,8 +20,6 @@ public class SoulfireForgeScreen extends HandledScreen<SoulfireForgeScreenHandle
 
     @Override
     protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
-        this.renderBackground(context);
-
         context.drawTexture(TEXTURE, this.x, this.y, 0, 0, backgroundWidth, backgroundHeight);
 
         int progress = this.handler.getProgress();

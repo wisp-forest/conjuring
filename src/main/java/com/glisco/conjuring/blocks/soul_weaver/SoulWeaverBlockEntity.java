@@ -30,6 +30,7 @@ import net.minecraft.network.packet.s2c.play.StopSoundS2CPacket;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -57,7 +58,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore {
     private boolean lit = false;
 
     private final LinearProcessExecutor<SoulWeaverBlockEntity> ritualExecutor;
-    private SoulWeaverRecipe cachedRecipe = null;
+    private RecipeEntry<SoulWeaverRecipe> cachedRecipe = null;
 
     public SoulWeaverBlockEntity(BlockPos pos, BlockState state) {
         super(ConjuringBlocks.Entities.SOUL_WEAVER, pos, state);
@@ -78,7 +79,8 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore {
 
         this.item = ItemOps.get(tag, "Item");
         if (tag.contains("CachedRecipe", NbtElement.STRING_TYPE) && world != null) {
-            this.cachedRecipe = (SoulWeaverRecipe) world.getRecipeManager().get(new Identifier(tag.getString("CachedRecipe"))).orElse(null);
+            //noinspection unchecked
+            this.cachedRecipe = (RecipeEntry<SoulWeaverRecipe>) world.getRecipeManager().get(new Identifier(tag.getString("CachedRecipe"))).orElse(null);
         }
 
         lit = tag.getBoolean("Lit");
@@ -90,7 +92,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore {
         ritualExecutor.writeState(tag);
 
         ItemOps.store(item, tag, "Item");
-        if (cachedRecipe != null) tag.putString("CachedRecipe", cachedRecipe.getId().toString());
+        if (cachedRecipe != null) tag.putString("CachedRecipe", cachedRecipe.id().toString());
 
         tag.putBoolean("Lit", lit);
     }
@@ -165,15 +167,13 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore {
             index++;
         }
 
-        Optional<SoulWeaverRecipe> recipeOptional = world.getRecipeManager().getFirstMatch(SoulWeaverRecipe.Type.INSTANCE, testInventory, world);
-
+        var recipeOptional = world.getRecipeManager().getFirstMatch(SoulWeaverRecipe.Type.INSTANCE, testInventory, world);
         if (recipeOptional.isEmpty()) {
             this.cachedRecipe = null;
             return false;
         }
 
         this.cachedRecipe = recipeOptional.get();
-
         return true;
     }
 
@@ -312,8 +312,7 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore {
         });
 
         PROCESS.whenFinishedServer((executor, weaver) -> {
-            final SoulWeaverRecipe cachedRecipe = weaver.cachedRecipe;
-
+            final var cachedRecipe = weaver.cachedRecipe;
             weaver.world.playSound(null, weaver.pos, SoundEvents.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.BLOCKS, 1, 0);
 
             for (BlockPos pedestal : weaver.pedestals) {
@@ -321,12 +320,12 @@ public class SoulWeaverBlockEntity extends BlockEntity implements RitualCore {
             }
 
             if (cachedRecipe != null) {
-                if (cachedRecipe.transferTag) {
-                    ItemStack output = cachedRecipe.getOutput(null);
+                if (cachedRecipe.value().transferTag) {
+                    ItemStack output = cachedRecipe.value().getResult(null);
                     output.setNbt(weaver.getItem().getOrCreateNbt());
                     weaver.setItem(output);
                 } else {
-                    weaver.setItem(cachedRecipe.getOutput(null));
+                    weaver.setItem(cachedRecipe.value().getResult(null));
                 }
             }
 

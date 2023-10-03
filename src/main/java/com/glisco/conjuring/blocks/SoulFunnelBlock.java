@@ -170,7 +170,7 @@ public class SoulFunnelBlock extends BlockWithEntity {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, ConjuringBlocks.Entities.SOUL_FUNNEL, world.isClient ? SoulFunnelBlockEntity.CLIENT_TICKER : SoulFunnelBlockEntity.SERVER_TICKER);
+        return validateTicker(type, ConjuringBlocks.Entities.SOUL_FUNNEL, world.isClient ? SoulFunnelBlockEntity.CLIENT_TICKER : SoulFunnelBlockEntity.SERVER_TICKER);
     }
 
     @Override

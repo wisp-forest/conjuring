@@ -12,7 +12,7 @@ import com.glisco.conjuring.items.soul_alloy_tools.ChangeToolModePacket;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyTool;
 import com.glisco.conjuring.items.soul_alloy_tools.SoulAlloyToolAbilities;
 import com.glisco.conjuring.mixin.WorldRendererInvoker;
-import io.wispforest.lavender.client.BookScreen;
+import io.wispforest.lavender.client.LavenderBookScreen;
 import io.wispforest.lavender.md.features.RecipeFeature;
 import io.wispforest.owo.ui.component.ItemComponent;
 import io.wispforest.owo.ui.core.ParentComponent;
@@ -92,7 +92,8 @@ public class ConjuringClient implements ClientModInitializer {
             return true;
         });
 
-        BookScreen.registerRecipeHandler(Conjuring.id("enchiridion"), SoulfireForgeRecipe.Type.INSTANCE, (componentSource, recipe) -> {
+        LavenderBookScreen.registerRecipeHandler(Conjuring.id("enchiridion"), SoulfireForgeRecipe.Type.INSTANCE, (componentSource, recipeEntry) -> {
+            var recipe = recipeEntry.value();
             var recipeComponent = componentSource.template(
                     UIModelLoader.get(Conjuring.id("enchiridion_components")),
                     ParentComponent.class,
@@ -104,9 +105,9 @@ public class ConjuringClient implements ClientModInitializer {
             ((RecipeGridAligner<Ingredient>) (inputs, slot, amount, gridX, gridY) -> {
                 if (!(inputGrid.children().get(slot) instanceof RecipeFeature.IngredientComponent ingredient)) return;
                 ingredient.ingredient(inputs.next());
-            }).alignRecipeToGrid(3, 3, 9, recipe, recipe.getIngredients().iterator(), 0);
+            }).alignRecipeToGrid(3, 3, 9, recipeEntry, recipe.getIngredients().iterator(), 0);
 
-            recipeComponent.childById(ItemComponent.class, "output").stack(recipe.getOutput(MinecraftClient.getInstance().world.getRegistryManager()));
+            recipeComponent.childById(ItemComponent.class, "output").stack(recipe.getResult(MinecraftClient.getInstance().world.getRegistryManager()));
             return recipeComponent;
         });
 

@@ -5,6 +5,7 @@ import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.Display;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
+import net.minecraft.recipe.RecipeEntry;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -16,12 +17,11 @@ public class GemTinkeringDisplay implements Display {
     protected final List<EntryIngredient> input;
     protected final List<EntryIngredient> output;
 
-    public GemTinkeringDisplay(GemTinkererRecipe recipe) {
+    public GemTinkeringDisplay(RecipeEntry<GemTinkererRecipe> recipeEntry) {
+        var recipe = recipeEntry.value();
         this.display = recipe;
-
         this.input = EntryIngredients.ofIngredients(recipe.getInputs());
-
-        this.output = Collections.singletonList(EntryIngredients.of(recipe.getOutput(null)));
+        this.output = Collections.singletonList(EntryIngredients.of(recipe.getResult(null)));
     }
 
     @Override

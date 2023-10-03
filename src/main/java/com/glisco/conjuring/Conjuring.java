@@ -133,8 +133,8 @@ public class Conjuring implements ModInitializer {
         LootOps.injectItem(ConjuringItems.CONJURATION_ESSENCE, .2f, LootTables.DESERT_PYRAMID_CHEST, LootTables.STRONGHOLD_CORRIDOR_CHEST);
         LootOps.injectItem(ConjuringItems.CONJURATION_ESSENCE, .05f, LootTables.STRONGHOLD_LIBRARY_CHEST);
 
-        Criteria.register(EXTRACTION_RITUAL_CRITERION);
-        Criteria.register(GEM_TINKERING_CRITERION);
+        Criteria.register("conjuring:extraction_ritual", EXTRACTION_RITUAL_CRITERION);
+        Criteria.register("conjuring:gem_tinkering", GEM_TINKERING_CRITERION);
 
         SoulAlloyToolAbilities.registerCommonEvents();
 

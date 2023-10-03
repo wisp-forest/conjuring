@@ -1,17 +1,18 @@
 package com.glisco.conjuring.blocks.gem_tinkerer;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import net.minecraft.item.Item;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.RecipeCodecs;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.dynamic.Codecs;
+
+import java.util.List;
 
 public class GemTinkererRecipeSerializer implements RecipeSerializer<GemTinkererRecipe> {
 
@@ -21,46 +22,46 @@ public class GemTinkererRecipeSerializer implements RecipeSerializer<GemTinkerer
     public static final GemTinkererRecipeSerializer INSTANCE = new GemTinkererRecipeSerializer();
     public static final Identifier ID = GemTinkererRecipe.Type.ID;
 
+    public static final Codec<GemTinkererRecipe> CODEC = RecordCodecBuilder.create(instance -> {
+        return instance.group(
+                RecipeCodecs.CRAFTING_RESULT.fieldOf("result").forGetter(o -> ItemStack.EMPTY),
+                Codecs.validate(Ingredient.DISALLOW_EMPTY_CODEC.listOf(), ingredients -> {
+                    if (ingredients.size() <= 5) {
+                        return DataResult.success(ingredients);
+                    } else {
+                        return DataResult.error(() -> "Gem tinkerer recipes cannot have more than 5 inputs");
+                    }
+                }).fieldOf("inputs").forGetter(o -> List.of())
+        ).apply(instance, (stack, ingredients) -> {
+            var inputs = DefaultedList.ofSize(5, Ingredient.EMPTY);
+            for (int i = 0; i < ingredients.size(); i++) {
+                inputs.set(i, ingredients.get(i));
+            }
+
+            return new GemTinkererRecipe(stack, inputs);
+        });
+    });
 
     @Override
-    public GemTinkererRecipe read(Identifier id, JsonObject json) {
-        GemTinkererRecipeJson recipe = new Gson().fromJson(json, GemTinkererRecipeJson.class);
-
-        if (recipe.inputs == null || recipe.result == null) {
-            throw new JsonSyntaxException("Missing recipe attributes");
-        }
-
-        DefaultedList<Ingredient> inputs = DefaultedList.ofSize(5, Ingredient.EMPTY);
-
-        int index = 0;
-        for (JsonElement element : recipe.inputs) {
-            if (!element.isJsonObject()) continue;
-            inputs.set(index, Ingredient.fromJson(element.getAsJsonObject()));
-            index++;
-        }
-
-        var resultItem = JsonHelper.getItem(recipe.result, "item");
-        var result = new ItemStack(resultItem, recipe.result.get("count").getAsInt());
-
-        return new GemTinkererRecipe(id, result, inputs);
+    public Codec<GemTinkererRecipe> codec() {
+        return CODEC;
     }
 
     @Override
-    public GemTinkererRecipe read(Identifier id, PacketByteBuf buf) {
+    public GemTinkererRecipe read(PacketByteBuf buf) {
         ItemStack result = buf.readItemStack();
 
-        DefaultedList<Ingredient> inputs = DefaultedList.ofSize(5, Ingredient.EMPTY);
-
+        var inputs = DefaultedList.ofSize(5, Ingredient.EMPTY);
         for (int i = 0; i < 5; i++) {
             inputs.set(i, Ingredient.fromPacket(buf));
         }
 
-        return new GemTinkererRecipe(id, result, inputs);
+        return new GemTinkererRecipe(result, inputs);
     }
 
     @Override
     public void write(PacketByteBuf buf, GemTinkererRecipe recipe) {
-        buf.writeItemStack(recipe.getOutput(null));
+        buf.writeItemStack(recipe.getResult(null));
 
         for (Ingredient ingredient : recipe.getInputs()) {
             ingredient.write(buf);

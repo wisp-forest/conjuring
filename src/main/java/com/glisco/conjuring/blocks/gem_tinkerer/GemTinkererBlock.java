@@ -39,7 +39,7 @@ public class GemTinkererBlock extends BlockWithEntity {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, ConjuringBlocks.Entities.GEM_TINKERER, GemTinkererBlockEntity.TICKER);
+        return validateTicker(type, ConjuringBlocks.Entities.GEM_TINKERER, GemTinkererBlockEntity.TICKER);
     }
 
     @Override

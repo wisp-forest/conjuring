@@ -19,7 +19,6 @@ public class SoulfireForgeRecipe implements Recipe<Inventory> {
 
     private final DefaultedList<Ingredient> inputs;
     private final ItemStack result;
-    private final Identifier id;
     private final int smeltTime;
 
     @Override
@@ -27,8 +26,7 @@ public class SoulfireForgeRecipe implements Recipe<Inventory> {
         return true;
     }
 
-    public SoulfireForgeRecipe(Identifier id, ItemStack result, int smeltTime, DefaultedList<Ingredient> inputs) {
-        this.id = id;
+    public SoulfireForgeRecipe(ItemStack result, int smeltTime, DefaultedList<Ingredient> inputs) {
         this.result = result;
         this.smeltTime = smeltTime;
         this.inputs = inputs;
@@ -57,18 +55,13 @@ public class SoulfireForgeRecipe implements Recipe<Inventory> {
     }
 
     @Override
-    public ItemStack getOutput(DynamicRegistryManager drm) {
+    public ItemStack getResult(DynamicRegistryManager drm) {
         return result.copy();
     }
 
     @Override
     public DefaultedList<Ingredient> getIngredients() {
         return this.inputs;
-    }
-
-    @Override
-    public Identifier getId() {
-        return this.id;
     }
 
     @Environment(EnvType.CLIENT)

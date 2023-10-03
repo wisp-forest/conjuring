@@ -1,27 +1,19 @@
 package com.glisco.conjuring.util;
 
-import com.glisco.conjuring.Conjuring;
 import com.google.gson.JsonObject;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
-import net.minecraft.predicate.entity.AdvancementEntityPredicateSerializer;
 import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
+
+import java.util.Optional;
 
 public class ExtractionRitualCriterion extends AbstractCriterion<ExtractionRitualCriterion.Conditions> {
 
-    public static final Identifier ID = Conjuring.id("extraction_ritual");
-
     @Override
-    public Identifier getId() {
-        return ID;
-    }
-
-    @Override
-    protected Conditions conditionsFromJson(JsonObject obj, LootContextPredicate playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
-        return new Conditions(ID, playerPredicate);
+    protected Conditions conditionsFromJson(JsonObject obj, Optional<LootContextPredicate> playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
+        return new Conditions(playerPredicate);
     }
 
     public void trigger(ServerPlayerEntity player) {
@@ -29,19 +21,8 @@ public class ExtractionRitualCriterion extends AbstractCriterion<ExtractionRitua
     }
 
     public static class Conditions extends AbstractCriterionConditions {
-
-        public Conditions(Identifier id, LootContextPredicate playerPredicate) {
-            super(id, playerPredicate);
-        }
-
-        @Override
-        public Identifier getId() {
-            return ID;
-        }
-
-        @Override
-        public JsonObject toJson(AdvancementEntityPredicateSerializer predicateSerializer) {
-            return new JsonObject();
+        public Conditions(Optional<LootContextPredicate> playerPredicate) {
+            super(playerPredicate);
         }
     }
 }

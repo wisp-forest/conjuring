@@ -19,6 +19,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -95,7 +96,7 @@ public class GemTinkererBlockEntity extends BlockEntity {
             testInventory.setStack(i, inventory.get(i));
         }
 
-        Optional<GemTinkererRecipe> recipeOptional = world.getRecipeManager().getFirstMatch(GemTinkererRecipe.Type.INSTANCE, testInventory, world);
+        Optional<GemTinkererRecipe> recipeOptional = world.getRecipeManager().getFirstMatch(GemTinkererRecipe.Type.INSTANCE, testInventory, world).map(RecipeEntry::value);
         if (recipeOptional.isEmpty()) return false;
 
         cachedRecipe = recipeOptional.get();
@@ -185,7 +186,7 @@ public class GemTinkererBlockEntity extends BlockEntity {
                 }
             } else {
                 inventory.clear();
-                inventory.set(0, tinkerer.cachedRecipe.getOutput(null));
+                inventory.set(0, tinkerer.cachedRecipe.getResult(null));
             }
 
             tinkerer.cachedRecipe = null;

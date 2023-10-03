@@ -22,15 +22,13 @@ public class GemTinkererRecipe implements Recipe<Inventory> {
 
     private final DefaultedList<Ingredient> inputs;
     private final ItemStack result;
-    private final Identifier id;
 
     @Override
     public boolean isIgnoredInRecipeBook() {
         return true;
     }
 
-    public GemTinkererRecipe(Identifier id, ItemStack result, DefaultedList<Ingredient> inputs) {
-        this.id = id;
+    public GemTinkererRecipe(ItemStack result, DefaultedList<Ingredient> inputs) {
         this.result = result;
         this.inputs = inputs;
     }
@@ -66,17 +64,12 @@ public class GemTinkererRecipe implements Recipe<Inventory> {
     }
 
     @Override
-    public ItemStack getOutput(DynamicRegistryManager drm) {
+    public ItemStack getResult(DynamicRegistryManager drm) {
         return result.copy();
     }
 
     public DefaultedList<Ingredient> getInputs() {
         return inputs;
-    }
-
-    @Override
-    public Identifier getId() {
-        return this.id;
     }
 
     @Environment(EnvType.CLIENT)

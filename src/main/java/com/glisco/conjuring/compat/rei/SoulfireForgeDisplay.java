@@ -9,6 +9,7 @@ import me.shedaniel.rei.api.common.util.EntryIngredients;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.recipe.RecipeEntry;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -21,10 +22,11 @@ public class SoulfireForgeDisplay implements Display {
     protected final List<EntryIngredient> input;
     protected final List<EntryIngredient> output;
 
-    public SoulfireForgeDisplay(SoulfireForgeRecipe recipe) {
+    public SoulfireForgeDisplay(RecipeEntry<SoulfireForgeRecipe> recipeEntry) {
+        var recipe = recipeEntry.value();
         this.smeltTime = recipe.getSmeltTime();
         this.input = EntryIngredients.ofIngredients(recipe.getIngredients());
-        this.output = Collections.singletonList(EntryIngredients.of(recipe.getOutput(null)));
+        this.output = Collections.singletonList(EntryIngredients.of(recipe.getResult(null)));
     }
 
     public SoulfireForgeDisplay(int smeltTime, List<EntryIngredient> input, List<EntryIngredient> output) {
@@ -65,12 +67,12 @@ public class SoulfireForgeDisplay implements Display {
 
             // Store the recipe inputs
             NbtList input = new NbtList();
-            display.input.forEach(entryStacks -> input.add(entryStacks.save()));
+            display.input.forEach(entryStacks -> input.add(entryStacks.saveIngredient()));
             tag.put("input", input);
 
             // Store the recipe outputs
             NbtList output = new NbtList();
-            display.output.forEach(entryStacks -> output.add(entryStacks.save()));
+            display.output.forEach(entryStacks -> output.add(entryStacks.saveIngredient()));
             tag.put("output", output);
 
             return tag;

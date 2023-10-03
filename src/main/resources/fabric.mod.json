@@ -42,7 +42,7 @@
     "fabric": "*",
     "minecraft": ">=1.19.3",
     "owo": ">=0.10.3+1.18",
-    "lavender": ">=0.1.0-pre.6"
+    "lavender": ">=0.1.0-pre.15"
   },
   "custom": {
     "modmenu": {

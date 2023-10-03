@@ -1,19 +1,15 @@
 package com.glisco.conjuring.blocks.soulfire_forge;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class SoulfireForgeRecipeSerializer implements RecipeSerializer<SoulfireForgeRecipe> {
 
@@ -22,64 +18,60 @@ public class SoulfireForgeRecipeSerializer implements RecipeSerializer<SoulfireF
     public static final SoulfireForgeRecipeSerializer INSTANCE = new SoulfireForgeRecipeSerializer();
     public static final Identifier ID = SoulfireForgeRecipe.Type.ID;
 
-    @Override
-    public SoulfireForgeRecipe read(Identifier id, JsonObject json) {
-        SoulfireForgeRecipeJson recipe = new Gson().fromJson(json, SoulfireForgeRecipeJson.class);
-
-        if (recipe.key == null || recipe.pattern == null || recipe.result == null || recipe.smeltTime == 0) {
-            throw new JsonSyntaxException("Missing recipe attributes");
+    public static final Codec<SoulfireForgeRecipe> CODEC = SoulfireForgeRecipeModel.CODEC.flatXmap(model -> {
+        var keys = new HashMap<Character, Ingredient>();
+        for (var key : model.key().entrySet()) {
+            keys.put(key.getKey().charAt(0), key.getValue());
         }
 
-        HashMap<Character, Ingredient> keys = new HashMap<>();
-        for (Map.Entry<String, JsonElement> key : recipe.key.entrySet()) {
-            if (key.getKey().length() != 1) throw new JsonSyntaxException("Invalid key '" + key.getKey() + " ', must be 1 char in length");
-            Ingredient ingredient = Ingredient.fromJson(key.getValue());
-            if (ingredient.isEmpty()) throw new JsonSyntaxException("Invalid key '" + key.getKey() + " ', no item found");
-            keys.put(key.getKey().charAt(0), ingredient);
-        }
+        var inputs = DefaultedList.ofSize(9, Ingredient.EMPTY);
 
-        DefaultedList<Ingredient> inputs = DefaultedList.ofSize(9, Ingredient.EMPTY);
-        int rowCounter = 0;
-        for (JsonElement e : recipe.pattern) {
-            String row = e.getAsString();
-            if (row.length() != 3) throw new JsonSyntaxException("Wrong pattern length");
-            int columnCounter = 0;
-
+        int rowIdx = 0;
+        for (var row : model.pattern()) {
+            int columnIdx = 0;
             for (char c : row.toCharArray()) {
                 if (c == ' ') {
-                    inputs.set(rowCounter * 3 + columnCounter, Ingredient.EMPTY);
+                    inputs.set(rowIdx * 3 + columnIdx, Ingredient.EMPTY);
                 } else {
-                    inputs.set(rowCounter * 3 + columnCounter, keys.get(c));
+                    var ingredient = keys.get(c);
+                    if (ingredient == null) {
+                        return DataResult.error(() -> "Pattern references symbol '" + c + "' which was not defined in key");
+                    }
+
+                    inputs.set(rowIdx * 3 + columnIdx, ingredient);
                 }
-                columnCounter++;
+                columnIdx++;
             }
-            rowCounter++;
+
+            rowIdx++;
         }
 
-        var resultItem = JsonHelper.getItem(recipe.result, "item");
-        var result = new ItemStack(resultItem, recipe.result.get("count").getAsInt());
+        return DataResult.success(new SoulfireForgeRecipe(model.result(), model.smeltTime(), inputs));
+    }, soulfireForgeRecipe -> DataResult.error(() -> "don't serialize recipes"));
 
-        return new SoulfireForgeRecipe(id, result, recipe.smeltTime, inputs);
+
+    @Override
+    public Codec<SoulfireForgeRecipe> codec() {
+        return CODEC;
     }
 
     @Override
-    public SoulfireForgeRecipe read(Identifier id, PacketByteBuf buf) {
+    public SoulfireForgeRecipe read(PacketByteBuf buf) {
         int smeltTime = buf.readInt();
-        ItemStack result = buf.readItemStack();
+        var result = buf.readItemStack();
 
-        DefaultedList<Ingredient> inputs = DefaultedList.ofSize(9, Ingredient.EMPTY);
-
+        var inputs = DefaultedList.ofSize(9, Ingredient.EMPTY);
         for (int i = 0; i < 9; i++) {
             inputs.set(i, Ingredient.fromPacket(buf));
         }
 
-        return new SoulfireForgeRecipe(id, result, smeltTime, inputs);
+        return new SoulfireForgeRecipe(result, smeltTime, inputs);
     }
 
     @Override
     public void write(PacketByteBuf buf, SoulfireForgeRecipe recipe) {
         buf.writeInt(recipe.getSmeltTime());
-        buf.writeItemStack(recipe.getOutput(null));
+        buf.writeItemStack(recipe.getResult(null));
 
         for (Ingredient ingredient : recipe.getIngredients()) {
             ingredient.write(buf);

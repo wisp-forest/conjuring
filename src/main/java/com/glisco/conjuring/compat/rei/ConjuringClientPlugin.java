@@ -44,9 +44,9 @@ public class ConjuringClientPlugin implements REIClientPlugin {
 
     @Override
     public void registerDisplays(DisplayRegistry registry) {
-        registry.registerFiller(SoulfireForgeRecipe.class, SoulfireForgeDisplay::new);
-        registry.registerFiller(GemTinkererRecipe.class, GemTinkeringDisplay::new);
-        registry.registerFiller(SoulWeaverRecipe.class, SoulWeavingDisplay::new);
+        registry.registerRecipeFiller(SoulfireForgeRecipe.class, SoulfireForgeRecipe.Type.INSTANCE, SoulfireForgeDisplay::new);
+        registry.registerRecipeFiller(GemTinkererRecipe.class,  GemTinkererRecipe.Type.INSTANCE, GemTinkeringDisplay::new);
+        registry.registerRecipeFiller(SoulWeaverRecipe.class, SoulWeaverRecipe.Type.INSTANCE, SoulWeavingDisplay::new);
 
         registry.registerVisibilityPredicate((category, display) -> {
             if (Objects.equals(category.getCategoryIdentifier(), SOULFIRE_FORGE)) {

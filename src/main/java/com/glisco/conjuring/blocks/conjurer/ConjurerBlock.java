@@ -43,7 +43,7 @@ public class ConjurerBlock extends BlockWithEntity {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, ConjuringBlocks.Entities.CONJURER, ConjurerBlockEntity::tick);
+        return validateTicker(type, ConjuringBlocks.Entities.CONJURER, ConjurerBlockEntity::tick);
     }
 
     @Override

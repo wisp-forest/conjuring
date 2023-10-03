@@ -4,10 +4,10 @@ import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.items.ConjuringFocus;
 import com.glisco.conjuring.items.ConjuringItems;
 import com.glisco.conjuring.util.ConjuringParticleEvents;
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.JsonOps;
 import io.wispforest.owo.Owo;
 import io.wispforest.owo.blockentity.LinearProcess;
 import io.wispforest.owo.blockentity.LinearProcessExecutor;
@@ -23,14 +23,12 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootGsons;
 import net.minecraft.loot.LootTable;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
@@ -68,7 +66,6 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
     public static final BlockEntityTicker<SoulFunnelBlockEntity> CLIENT_TICKER = (world1, pos1, state, blockEntity) -> blockEntity.tickClient();
 
     public static final LinearProcess<SoulFunnelBlockEntity> PROCESS = new LinearProcess<>(80);
-    public static final Gson GSON = LootGsons.getTableGsonBuilder().create();
 
     @NotNull
     private ItemStack item = ItemStack.EMPTY;
@@ -163,8 +160,9 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
             if (world.getOtherEntities(null, new Box(pos)).isEmpty()) return;
 
             Entity e = world.getOtherEntities(null, new Box(pos)).get(0);
-            if (e instanceof PlayerEntity || e instanceof EnderDragonEntity || e instanceof WitherEntity || !(e instanceof LivingEntity) || e.getCommandTags().contains("affected"))
+            if (e instanceof PlayerEntity || e instanceof EnderDragonEntity || e instanceof WitherEntity || !(e instanceof LivingEntity) || e.getCommandTags().contains("affected")) {
                 return;
+            }
 
             ((LivingEntity) e).addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 15 * 20, 20));
             slownessCooldown = 30 * 20;
@@ -219,8 +217,9 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
             return true;
         }
 
-        if (!(e instanceof MobEntity) || Conjuring.CONFIG.conjurer_config.conjurer_blacklist().contains(Registries.ENTITY_TYPE.getId(e.getType()).toString()))
+        if (!(e instanceof MobEntity) || Conjuring.CONFIG.conjurer_config.conjurer_blacklist().contains(Registries.ENTITY_TYPE.getId(e.getType()).toString())) {
             return false;
+        }
 
         if (item.getOrCreateNbt().contains("Entity")) return false;
 
@@ -261,8 +260,9 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
         if (pedestalPositions.size() >= 4) return false;
 
         if (!pedestalPositions.contains(pedestal)) pedestalPositions.add(pedestal);
-        if (!world.isClient)
+        if (!world.isClient) {
             ConjuringParticleEvents.LINK_SOUL_FUNNEL.spawn(world, Vec3d.of(pos), pedestal.subtract(pos));
+        }
 
         this.markDirty();
         return true;
@@ -288,8 +288,7 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
     }
 
     public void calculateStability() {
-        if (world.getBiome(pos).getKey().orElse(null) == BiomeKeys.SOUL_SAND_VALLEY)
-            ritualStability += .1f;
+        if (world.getBiome(pos).getKey().orElse(null) == BiomeKeys.SOUL_SAND_VALLEY) {ritualStability += .1f;}
 
         var drops = extractDrops(world.getServer().getLootManager().getLootTable(((MobEntity) ((ServerWorld) world).getEntity(ritualEntity)).getLootTable()));
 
@@ -317,9 +316,8 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
     }
 
     private static List<Item> extractDrops(LootTable table) {
-
-        final JsonObject tableObject = GSON.toJsonTree(table).getAsJsonObject();
-        final ArrayList extractedDrops = new ArrayList<Item>();
+        var tableObject = (JsonObject) LootTable.CODEC.encodeStart(JsonOps.INSTANCE, table).result().get();
+        var extractedDrops = new ArrayList<Item>();
 
         try {
             for (JsonElement poolElement : tableObject.get("pools").getAsJsonArray()) {
@@ -371,8 +369,9 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
             final var world = funnel.getWorld();
 
             for (BlockPos pos : funnel.pedestalPositions) {
-                if (!(world.getBlockEntity(pos) instanceof BlackstonePedestalBlockEntity pedestal) || !pedestal.isActive())
+                if (!(world.getBlockEntity(pos) instanceof BlackstonePedestalBlockEntity pedestal) || !pedestal.isActive()) {
                     continue;
+                }
 
                 BlockPos particleOrigin = pos.add(0, 1, 0);
                 BlockPos particleVelocity = pos.subtract(funnel.pos);

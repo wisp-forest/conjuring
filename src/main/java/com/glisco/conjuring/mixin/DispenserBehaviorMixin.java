@@ -17,14 +17,14 @@ public class DispenserBehaviorMixin {
 
     @Inject(method = "dispenseSilently(Lnet/minecraft/util/math/BlockPointer;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/ItemStack;", at = @At("HEAD"), cancellable = true)
     public void checkFroge(BlockPointer pointer, ItemStack stack, CallbackInfoReturnable<ItemStack> cir) {
-        Direction direction = pointer.getWorld().getBlockState(pointer.getPos()).get(DispenserBlock.FACING);
-        BlockState state = pointer.getWorld().getBlockState(pointer.getPos().offset(direction));
+        Direction direction = pointer.world().getBlockState(pointer.pos()).get(DispenserBlock.FACING);
+        BlockState state = pointer.world().getBlockState(pointer.pos().offset(direction));
         if (!state.getBlock().equals(ConjuringBlocks.SOULFIRE_FORGE)) return;
 
         if (state.get(SoulfireForgeBlock.BURNING)) return;
 
-        pointer.getWorld().setBlockState(pointer.getPos().offset(direction), state.with(SoulfireForgeBlock.BURNING, true));
-        stack.damage(1, pointer.getWorld().getRandom(), null);
+        pointer.world().setBlockState(pointer.pos().offset(direction), state.with(SoulfireForgeBlock.BURNING, true));
+        stack.damage(1, pointer.world().getRandom(), null);
 
         cir.setReturnValue(stack.getDamage() > stack.getMaxDamage() ? ItemStack.EMPTY : stack);
 

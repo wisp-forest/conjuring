@@ -22,7 +22,6 @@ public class SoulWeaverRecipe implements Recipe<Inventory> {
 
     private final DefaultedList<Ingredient> inputs;
     private final ItemStack result;
-    private final Identifier id;
     public final boolean transferTag;
 
     @Override
@@ -30,8 +29,7 @@ public class SoulWeaverRecipe implements Recipe<Inventory> {
         return true;
     }
 
-    public SoulWeaverRecipe(Identifier id, ItemStack result, DefaultedList<Ingredient> inputs, boolean transferTag) {
-        this.id = id;
+    public SoulWeaverRecipe(ItemStack result, DefaultedList<Ingredient> inputs, boolean transferTag) {
         this.result = result;
         this.inputs = inputs;
         this.transferTag = transferTag;
@@ -68,17 +66,12 @@ public class SoulWeaverRecipe implements Recipe<Inventory> {
     }
 
     @Override
-    public ItemStack getOutput(DynamicRegistryManager drm) {
+    public ItemStack getResult(DynamicRegistryManager drm) {
         return result.copy();
     }
 
     public DefaultedList<Ingredient> getInputs() {
         return inputs;
-    }
-
-    @Override
-    public Identifier getId() {
-        return this.id;
     }
 
     @Environment(EnvType.CLIENT)
@@ -97,11 +90,9 @@ public class SoulWeaverRecipe implements Recipe<Inventory> {
     }
 
     public static class Type implements RecipeType<SoulWeaverRecipe> {
-        private Type() {
-        }
+        private Type() {}
 
         public static final Type INSTANCE = new Type();
-
         public static final Identifier ID = Conjuring.id("soul_weaving");
     }
 }
