@@ -16,7 +16,7 @@ public class ConjurerBlockEntityRenderer implements BlockEntityRenderer<Conjurer
     public ConjurerBlockEntityRenderer(BlockEntityRendererFactory.Context context) {}
 
     public void render(ConjurerBlockEntity conjurerBlockEntity, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
-        if (!conjurerBlockEntity.isActive()) return;
+        if (!conjurerBlockEntity.isActive() || conjurerBlockEntity.hasRenderError) return;
 
         matrixStack.push();
 
@@ -37,7 +37,12 @@ public class ConjurerBlockEntityRenderer implements BlockEntityRenderer<Conjurer
             matrixStack.translate(0.0D, -0.20000000298023224D, 0.0D);
             matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-30.0F));
             matrixStack.scale(g, g, g);
-            MinecraftClient.getInstance().getEntityRenderDispatcher().render(entity, 0.0D, 0.0D, 0.0D, 0.0F, tickDelta, matrixStack, vertexConsumerProvider, i);
+            try {
+                MinecraftClient.getInstance().getEntityRenderDispatcher().render(entity, 0.0D, 0.0D, 0.0D, 0.0F, tickDelta, matrixStack, vertexConsumerProvider, i);
+            } catch (Exception e) {
+                conjurerBlockEntity.hasRenderError = true;
+                // Maybe also log it?
+            }
         }
 
         matrixStack.pop();

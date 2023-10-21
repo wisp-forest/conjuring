@@ -27,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 public class ConjurerBlockEntity extends BlockEntity implements ImplementedInventory, NamedScreenHandlerFactory, SidedInventory {
 
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(5, ItemStack.EMPTY);
+    public boolean hasRenderError = false;
 
     private final ConjurerLogic logic = new ConjurerLogic() {
         @Override
