@@ -8,6 +8,7 @@ import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.recipe.RecipeEntry;
 import org.jetbrains.annotations.NotNull;
@@ -85,11 +86,11 @@ public class SoulfireForgeDisplay implements Display {
 
             // We get a list of all the recipe inputs
             List<EntryIngredient> input = new ArrayList<>();
-            tag.getList("input", NbtType.LIST).forEach(nbtElement -> input.add(EntryIngredient.read((NbtList) nbtElement)));
+            tag.getList("input", NbtElement.LIST_TYPE).forEach(nbtElement -> input.add(EntryIngredient.read((NbtList) nbtElement)));
 
             // We get a list of all the recipe outputs
             List<EntryIngredient> output = new ArrayList<>();
-            tag.getList("output", NbtType.LIST).forEach(nbtElement -> output.add(EntryIngredient.read((NbtList) nbtElement)));
+            tag.getList("output", NbtElement.LIST_TYPE).forEach(nbtElement -> output.add(EntryIngredient.read((NbtList) nbtElement)));
 
             return new SoulfireForgeDisplay(smeltTime, input, output);
         }
