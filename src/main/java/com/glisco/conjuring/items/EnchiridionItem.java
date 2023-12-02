@@ -1,7 +1,7 @@
 package com.glisco.conjuring.items;
 
 import com.glisco.conjuring.Conjuring;
-import io.wispforest.lavender.book.BookItem;
+import io.wispforest.lavender.book.LavenderBookItem;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
 import io.wispforest.owo.nbt.NbtKey;
 import net.minecraft.block.Blocks;
@@ -10,7 +10,7 @@ import net.minecraft.item.ItemUsageContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 
-public class EnchiridionItem extends BookItem {
+public class EnchiridionItem extends LavenderBookItem {
 
     private static final NbtKey<Boolean> SANDWICH = new NbtKey<>("Sandwich", NbtKey.Type.BOOLEAN);
 

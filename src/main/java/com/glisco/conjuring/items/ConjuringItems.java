@@ -2,10 +2,9 @@ package com.glisco.conjuring.items;
 
 import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.items.soul_alloy_tools.*;
-import io.wispforest.lavender.book.BookItem;
+import io.wispforest.lavender.book.LavenderBookItem;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
 import io.wispforest.owo.registration.annotations.AssignedName;
-import io.wispforest.owo.registration.annotations.IterationIgnored;
 import io.wispforest.owo.registration.reflect.ItemRegistryContainer;
 import net.minecraft.item.Item;
 import net.minecraft.util.Rarity;
@@ -16,7 +15,7 @@ public class ConjuringItems implements ItemRegistryContainer {
     public static final Item SUPERIOR_CONJURING_SCEPTER = new SuperiorConjuringScepter();
     public static final Item CONJURING_FOCUS = new ConjuringFocus(false);
     public static final Item STABILIZED_CONJURING_FOCUS = new ConjuringFocus(true);
-    public static final Item ENCHIRIDION = BookItem.registerForBook(new EnchiridionItem());
+    public static final Item ENCHIRIDION = LavenderBookItem.registerForBook(new EnchiridionItem());
 
     public static final Item SOUL_ALLOY_SWORD = new SoulAlloySword();
     public static final Item SOUL_ALLOY_PICKAXE = new SoulAlloyPickaxe();
