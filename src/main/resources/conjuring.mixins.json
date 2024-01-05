@@ -9,7 +9,7 @@
     "ItemAccessor",
     "ItemStackMixin",
     "LivingEntityMixin",
-    "PlayerEntityMixin", "ShapedRecipeSerializerAccessor"
+    "PlayerEntityMixin", "RawShapedRecipeDataAccessor"
   ],
   "client": [
     "InGameHudMixin",

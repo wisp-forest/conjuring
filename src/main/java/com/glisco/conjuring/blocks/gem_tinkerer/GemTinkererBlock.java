@@ -1,6 +1,7 @@
 package com.glisco.conjuring.blocks.gem_tinkerer;
 
 import com.glisco.conjuring.blocks.ConjuringBlocks;
+import com.mojang.serialization.MapCodec;
 import io.wispforest.owo.ops.ItemOps;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -143,5 +144,10 @@ public class GemTinkererBlock extends BlockWithEntity {
         SIDE_TO_INDEX.put(Direction.SOUTH, 3);
         SIDE_TO_INDEX.put(Direction.UP, 0);
         SIDE_TO_INDEX.put(Direction.DOWN, 0);
+    }
+
+    @Override
+    protected MapCodec<? extends BlockWithEntity> getCodec() {
+        return null;
     }
 }

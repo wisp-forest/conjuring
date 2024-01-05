@@ -187,8 +187,8 @@ public class SoulFunnelBlockEntity extends BlockEntity implements RitualCore {
 
         if (item.isEmpty()) return false;
 
-        if (world.getOtherEntities(player, new Box(pos, pos.add(1, 3, 1))).isEmpty()) return false;
-        Entity e = world.getOtherEntities(player, new Box(pos, pos.add(1, 3, 1))).get(0);
+        if (world.getOtherEntities(player, Box.enclosing(pos, pos.add(1, 3, 1))).isEmpty()) return false;
+        Entity e = world.getOtherEntities(player, Box.enclosing(pos, pos.add(1, 3, 1))).get(0);
 
         if (e instanceof ItemEntity item && item.getStack().isOf(ConjuringItems.DISTILLED_SPIRIT) && this.item != null) {
             if (world.isClient) return true;

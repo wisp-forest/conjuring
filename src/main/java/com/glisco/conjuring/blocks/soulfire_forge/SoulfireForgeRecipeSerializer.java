@@ -19,11 +19,6 @@ public class SoulfireForgeRecipeSerializer implements RecipeSerializer<SoulfireF
     public static final Identifier ID = SoulfireForgeRecipe.Type.ID;
 
     public static final Codec<SoulfireForgeRecipe> CODEC = SoulfireForgeRecipeModel.CODEC.flatXmap(model -> {
-        var keys = new HashMap<Character, Ingredient>();
-        for (var key : model.key().entrySet()) {
-            keys.put(key.getKey().charAt(0), key.getValue());
-        }
-
         var inputs = DefaultedList.ofSize(9, Ingredient.EMPTY);
 
         int rowIdx = 0;
@@ -33,7 +28,7 @@ public class SoulfireForgeRecipeSerializer implements RecipeSerializer<SoulfireF
                 if (c == ' ') {
                     inputs.set(rowIdx * 3 + columnIdx, Ingredient.EMPTY);
                 } else {
-                    var ingredient = keys.get(c);
+                    var ingredient = model.key().get(c);
                     if (ingredient == null) {
                         return DataResult.error(() -> "Pattern references symbol '" + c + "' which was not defined in key");
                     }
@@ -47,7 +42,7 @@ public class SoulfireForgeRecipeSerializer implements RecipeSerializer<SoulfireF
         }
 
         return DataResult.success(new SoulfireForgeRecipe(model.result(), model.smeltTime(), inputs));
-    }, soulfireForgeRecipe -> DataResult.error(() -> "don't serialize recipes"));
+    }, soulfireForgeRecipe -> DataResult.error(() -> "don't serialize recipes :)")).codec();
 
 
     @Override

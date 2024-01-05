@@ -3,8 +3,8 @@ package com.glisco.conjuring.blocks.conjurer;
 import com.glisco.conjuring.Conjuring;
 import com.glisco.conjuring.items.ConjuringFocus;
 import com.glisco.conjuring.items.ConjuringItems;
+import net.minecraft.block.spawner.MobSpawnerEntry;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.MobSpawnerEntry;
 
 import java.util.Optional;
 

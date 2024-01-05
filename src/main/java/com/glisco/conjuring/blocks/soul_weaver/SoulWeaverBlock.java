@@ -4,6 +4,7 @@ import com.glisco.conjuring.blocks.BlackstonePedestalBlockEntity;
 import com.glisco.conjuring.blocks.ConjuringBlocks;
 import com.glisco.conjuring.items.ConjuringItems;
 import com.glisco.conjuring.items.ConjuringScepter;
+import com.mojang.serialization.MapCodec;
 import io.wispforest.owo.ops.ItemOps;
 import io.wispforest.owo.particles.ClientParticles;
 import net.minecraft.block.*;
@@ -47,6 +48,11 @@ public class SoulWeaverBlock extends BlockWithEntity {
 
     public SoulWeaverBlock() {
         super(Settings.copy(Blocks.BLACKSTONE).nonOpaque());
+    }
+
+    @Override
+    protected MapCodec<? extends BlockWithEntity> getCodec() {
+        return null;
     }
 
     @Override

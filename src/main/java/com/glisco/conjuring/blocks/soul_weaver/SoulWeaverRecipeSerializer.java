@@ -6,7 +6,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeCodecs;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
@@ -23,7 +22,7 @@ public class SoulWeaverRecipeSerializer implements RecipeSerializer<SoulWeaverRe
 
     public static final Codec<SoulWeaverRecipe> CODEC = RecordCodecBuilder.create(instance -> {
         return instance.group(
-                RecipeCodecs.CRAFTING_RESULT.fieldOf("result").forGetter(o -> ItemStack.EMPTY),
+                ItemStack.RECIPE_RESULT_CODEC.fieldOf("result").forGetter(o -> ItemStack.EMPTY),
                 Codecs.validate(Ingredient.DISALLOW_EMPTY_CODEC.listOf(), ingredients -> {
                     if (ingredients.size() <= 5) {
                         return DataResult.success(ingredients);

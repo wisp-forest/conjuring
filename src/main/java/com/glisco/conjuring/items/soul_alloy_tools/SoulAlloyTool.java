@@ -1,7 +1,8 @@
 package com.glisco.conjuring.items.soul_alloy_tools;
 
-import io.wispforest.owo.nbt.NbtKey;
 import io.wispforest.owo.ops.TextOps;
+import io.wispforest.owo.serialization.Endec;
+import io.wispforest.owo.serialization.endec.KeyedEndec;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -17,7 +18,7 @@ import java.util.function.Predicate;
 public interface SoulAlloyTool {
 
     String MODIFIERS_KEY = "Modifiers";
-    NbtKey<Boolean> SECONDARY_ENABLED = new NbtKey<>("SecondaryEnabled", NbtKey.Type.BOOLEAN);
+    KeyedEndec<Boolean> SECONDARY_ENABLED = Endec.BOOLEAN.keyed("SecondaryEnabled", false);
 
     default boolean canAoeDig() {
         return false;
@@ -32,7 +33,7 @@ public interface SoulAlloyTool {
     }
 
     static boolean isSecondaryEnabled(ItemStack stack) {
-        return stack.getOr(SECONDARY_ENABLED, false);
+        return stack.get(SECONDARY_ENABLED);
     }
 
     static void addModifier(ItemStack stack, SoulAlloyModifier modifier) {

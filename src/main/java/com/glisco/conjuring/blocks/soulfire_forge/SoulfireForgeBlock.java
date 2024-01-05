@@ -1,6 +1,7 @@
 package com.glisco.conjuring.blocks.soulfire_forge;
 
 import com.glisco.conjuring.blocks.ConjuringBlocks;
+import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -109,6 +110,11 @@ public class SoulfireForgeBlock extends BlockWithEntity {
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new SoulfireForgeBlockEntity(pos, state);
+    }
+
+    @Override
+    protected MapCodec<? extends BlockWithEntity> getCodec() {
+        return null;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.glisco.conjuring.blocks.conjurer;
 
 import com.glisco.conjuring.util.ConjuringParticleEvents;
 import com.mojang.logging.LogUtils;
+import net.minecraft.block.spawner.MobSpawnerEntry;
 import net.minecraft.entity.*;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.nbt.NbtCompound;

@@ -3,7 +3,8 @@ package com.glisco.conjuring.items;
 import com.glisco.conjuring.Conjuring;
 import io.wispforest.lavender.book.LavenderBookItem;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
-import io.wispforest.owo.nbt.NbtKey;
+import io.wispforest.owo.serialization.Endec;
+import io.wispforest.owo.serialization.endec.KeyedEndec;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
@@ -12,7 +13,7 @@ import net.minecraft.util.ActionResult;
 
 public class EnchiridionItem extends LavenderBookItem {
 
-    private static final NbtKey<Boolean> SANDWICH = new NbtKey<>("Sandwich", NbtKey.Type.BOOLEAN);
+    private static final KeyedEndec<Boolean> SANDWICH = Endec.BOOLEAN.keyed("Sandwich", false);
 
     public EnchiridionItem() {
         super(new OwoItemSettings().maxCount(1).group(Conjuring.CONJURING_GROUP), Conjuring.id("enchiridion"));
@@ -29,7 +30,7 @@ public class EnchiridionItem extends LavenderBookItem {
 
     @Override
     public Text getName(ItemStack stack) {
-        return stack.getOr(SANDWICH, false) ? Text.literal("Ice Cream Sandwich") : super.getName(stack);
+        return stack.get(SANDWICH) ? Text.literal("Ice Cream Sandwich") : super.getName(stack);
     }
 
 }
