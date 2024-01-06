@@ -25,19 +25,19 @@ public class ExtractionRitualCriterion extends AbstractCriterion<ExtractionRitua
     public static class Conditions implements AbstractCriterion.Conditions {
 
         public static final Codec<Conditions> CODEC = StructEndecBuilder.of(
-                Endec.ofCodec(EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC).optionalOf().fieldOf("player", Conditions::player),
+                Endec.ofCodec(EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC).optionalFieldOf("player", c -> c.playerPredicate, (LootContextPredicate) null),
                 Conditions::new
         ).codec(SerializationAttribute.HUMAN_READABLE);
 
-        private final Optional<LootContextPredicate> playerPredicate;
+        private final LootContextPredicate playerPredicate;
 
-        public Conditions(Optional<LootContextPredicate> playerPredicate) {
+        public Conditions(LootContextPredicate playerPredicate) {
             this.playerPredicate = playerPredicate;
         }
 
         @Override
         public Optional<LootContextPredicate> player() {
-            return this.playerPredicate;
+            return Optional.ofNullable(this.playerPredicate);
         }
     }
 }
