@@ -23,8 +23,7 @@ import io.wispforest.owo.registration.reflect.FieldRegistrationHandler;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.enchantment.Enchantments;
@@ -126,14 +125,10 @@ public class Conjuring implements ModInitializer {
         Registry.register(Registries.SOUND_EVENT, Conjuring.id("block.soul_weaver.weee"), WEEE);
 
         final var spawnerLootTableId = Identifier.of("blocks/spawner");
-        LootTableEvents.MODIFY.register((key, tableBuilder, source) -> {
+        LootTableEvents.MODIFY.register((key, tableBuilder, source, registries) -> {
             if (!spawnerLootTableId.equals(key.getValue())) return;
 
-
-            var server = Owo.currentServer();
-            if (server == null) return;
-
-            var wrapper = server.getRegistryManager().getWrapperOrThrow(RegistryKeys.ENCHANTMENT);
+            var wrapper = registries.getWrapperOrThrow(RegistryKeys.ENCHANTMENT);
 
             var itemEntry = ItemEntry.builder(ConjuringItems.CONJURATION_ESSENCE);
             if (CONFIG.conjurer_config.fortuneEnabled()) {
