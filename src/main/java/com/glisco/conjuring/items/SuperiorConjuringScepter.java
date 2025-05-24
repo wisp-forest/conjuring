@@ -61,6 +61,7 @@ public class SuperiorConjuringScepter extends ConjuringScepter {
             SoulProjectileEntity projectile = new SoulProjectileEntity(world, user);
             projectile.refreshPositionAndAngles(user.getX(), user.getEyeY(), user.getZ(), 0, 0);
             projectile.setVelocity(user, user.getPitch(), user.getYaw(), 0f, 1.5f, 1);
+            projectile.setBaseDamage(1.5f);
             world.spawnEntity(projectile);
 
             world.playSound(null, user.getBlockPos(), SoundEvents.PARTICLE_SOUL_ESCAPE.value(), SoundCategory.PLAYERS, 2, 1);
