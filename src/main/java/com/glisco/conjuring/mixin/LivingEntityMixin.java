@@ -81,15 +81,15 @@ public abstract class LivingEntityMixin extends Entity {
     @Inject(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;applyDamage(Lnet/minecraft/entity/damage/DamageSource;F)V"))
     public void calculateDamageReduction(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         if (!source.getName().equals("player")) return;
-        if (source.getAttacker() == null) return;
 
-        final PlayerEntity player = (PlayerEntity) source.getAttacker();
-
-        if (!SoulAlloyToolAbilities.canArmorPierce(player)) return;
-
-        float pierceDamage = SoulAlloyTool.getModifierLevel(player.getMainHandStack(), SoulAlloyTool.SoulAlloyModifier.IGNORANCE) * Conjuring.CONFIG.tools_config.sword_ignorance_multiplier() * amount;
-        applyDamage(new CopycatPlayerDamageSource(player).pierceArmor(), pierceDamage);
-        damageReduction = pierceDamage;
+        if (source.getAttacker() instanceof PlayerEntity player) {
+            if (!SoulAlloyToolAbilities.canArmorPierce(player)) return;
+            float pierceDamage = SoulAlloyTool.getModifierLevel(player.getMainHandStack(),
+                SoulAlloyTool.SoulAlloyModifier.IGNORANCE)
+                * Conjuring.CONFIG.tools_config.sword_ignorance_multiplier() * amount;
+            applyDamage(new CopycatPlayerDamageSource(player).pierceArmor(), pierceDamage);
+            damageReduction = pierceDamage;
+        }
     }
 
     //Reduces the normal damage so that it's even with the original amount again
